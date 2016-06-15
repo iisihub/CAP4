@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xmlns:context="http://www.springframework.org/schema/context"
     xmlns:p="http://www.springframework.org/schema/p"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
- http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
- http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd ">
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+ http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+ http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd ">
     <!-- ①：對web包中的所有類進行掃描，以完成Bean創建和自動依賴注入的功能 -->
     <context:component-scan base-package="com.iisigroup.cap.**.page" />
     <bean class="com.iisigroup.cap.mvc.action.PageAction" />
