@@ -11,12 +11,12 @@
     <context:component-scan base-package="com.iisigroup.cap.websocket.service" />
     <!-- @Task -->
     <bean id="reminderTask" class="com.iisigroup.cap.websocket.timer.CapReminderTimerTask"></bean>
-    <bean id="scheduledTimerTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+    <bean id="scheduledTimerTask" class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
         <property name="timerTask" ref="reminderTask"></property>
         <property name="period" value="30000"></property>
         <property name="delay" value="1000"></property>
     </bean>
-    <bean id="timerFactoryBean" class="org.springframework.scheduling.timer.TimerFactoryBean">
+    <bean id="timerFactoryBean" class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean">
         <property name="scheduledTimerTasks">
             <list>
                 <ref bean="scheduledTimerTask" />

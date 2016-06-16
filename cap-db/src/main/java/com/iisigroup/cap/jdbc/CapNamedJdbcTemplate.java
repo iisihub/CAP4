@@ -56,6 +56,7 @@ import com.iisigroup.cap.utils.CapCommonUtil;
  * @version
  *          <ul>
  *          <li>2012/8/17,iristu,new
+ *          <li>2016/6/16,sunkist,update for queryForInt() is deprecated
  *          </ul>
  */
 public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
@@ -267,7 +268,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         }
         long cur = System.currentTimeMillis();
         try {
-            return super.queryForInt(sql.toString(), (Map) args);
+            return super.queryForObject(sql.toString(), (Map) args, Integer.class);
         } catch (Exception e) {
             throw new CapDBException(e, causeClass);
         } finally {
@@ -459,7 +460,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         List<Map<String, Object>> list = this.queryPaging(sqlId, args, startRow, fetchSize);
         long cur = System.currentTimeMillis();
         try {
-            return new Page<Map<String, Object>>(list, super.queryForInt(sql.toString(), args), fetchSize, startRow);
+            return new Page<Map<String, Object>>(list, super.queryForObject(sql.toString(), args, Integer.class), fetchSize, startRow);
         } catch (Exception e) {
             throw new CapDBException(e, causeClass);
         } finally {
@@ -504,7 +505,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         }
         long cur = System.currentTimeMillis();
         try {
-            int totalRows = super.queryForInt(sqlRow, provider.getParams());
+            int totalRows = super.queryForObject(sqlRow, provider.getParams(), Integer.class);
             List<Map<String, Object>> list = super.queryForList(sql.toString(), provider.getParams());
             return new Page<Map<String, Object>>(list, totalRows, search.getMaxResults(), search.getFirstResult());
         } catch (Exception e) {
@@ -537,7 +538,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         }
         long cur = System.currentTimeMillis();
         try {
-            int totalRows = super.queryForInt(sqlRow, provider.getParams());
+            int totalRows = super.queryForObject(sqlRow, provider.getParams(), Integer.class);
             List<T> list = super.query(sql.toString(), provider.getParams(), rm);
             return new Page<T>(list, totalRows, search.getMaxResults(), search.getFirstResult());
         } catch (Exception e) {

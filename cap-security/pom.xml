@@ -6,9 +6,6 @@
         <version>4.0.0</version>
     </parent>
     <artifactId>cap-security</artifactId>
-    <properties>
-        <spring-security.version>4.1.0.RELEASE</spring-security.version>
-    </properties>
     <dependencies>
         <!-- Project ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <dependency>

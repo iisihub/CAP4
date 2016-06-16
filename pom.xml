@@ -6,9 +6,12 @@
     <packaging>pom</packaging>
     <properties>
         <slf4j.version>1.7.9</slf4j.version>
-        <spring.version>4.1.4.RELEASE</spring.version>
+        <spring.version>4.3.0.RELEASE</spring.version>
+        <spring-security.version>4.1.0.RELEASE</spring-security.version>
         <localRepositoryPath>src/localRepos</localRepositoryPath>
         <hibernate.version>5.2.0.Final</hibernate.version>
+        <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
+        <bean.validation.version>1.1.0.Final</bean.validation.version>
     </properties>
     <repositories>
         <repository>
@@ -187,11 +190,11 @@
         </profile>
     </profiles>
     <dependencies>
-        <!-- SERVLET 2.5 API ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- SERVLET API ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <version>2.4</version>
+            <version>2.5</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

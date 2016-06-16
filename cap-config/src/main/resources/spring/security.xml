@@ -2,7 +2,7 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p"
     xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.1.xsd">
     <http pattern="/img/**" security="none" />
     <http pattern="/**/images/**" security="none" />
     <http pattern="/jquery/**" security="none" />
@@ -12,7 +12,7 @@
     <http pattern="/captcha.png*" security="none" />
     <http pattern="/app/error/message*" security="none" />
     <http pattern="/page/login*" security="none" />
-    <http auto-config="false" access-decision-manager-ref="accessDecisionManager" entry-point-ref="capAuthenticationEntryPoint" access-denied-page="/page/login?error">
+    <http auto-config="false" access-decision-manager-ref="accessDecisionManager" entry-point-ref="capAuthenticationEntryPoint">
         <intercept-url pattern="/page/home/*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <intercept-url pattern="/page/index" access="IS_AUTHENTICATED_FULLY" />
         <intercept-url pattern="/page/common/*" access="IS_AUTHENTICATED_FULLY" />
