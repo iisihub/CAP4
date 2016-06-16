@@ -112,7 +112,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
                 <configuration>
                     <webResources>
                         <resource>
@@ -125,7 +124,6 @@
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>maven-jetty-plugin</artifactId>
-                <version>9.4.0-SNAPSHOT</version>
                 <configuration>
                     <webAppConfig>
                         <extraClasspath>target/cap-web-4.0.0/WEB-INF/classes</extraClasspath>
@@ -135,14 +133,14 @@
                     <stopPort>8080</stopPort>
                     <!-- <systemProperties>
                         <systemProperty>
-                        <name>cola.cas.host</name>
-                        <value>https://citi/citi-cas</value>
+                            <name>cola.cas.host</name>
+                            <value>https://citi/citi-cas</value>
                         </systemProperty>
                         <systemProperty>
-                        <name>cola.ap.host</name>
-                        <value>http://localhost:8080</value>
+                            <name>cola.ap.host</name>
+                            <value>http://localhost:8080</value>
                         </systemProperty>
-                        </systemProperties> -->
+                    </systemProperties> -->
                 </configuration>
                 <executions>
                     <execution>
@@ -168,7 +166,6 @@
                         <!-- goal => exec:exec =or=> -Preq exec:exec -->
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.1</version>
                         <executions>
                             <execution>
                                 <!-- <phase>compile</phase> -->
@@ -203,7 +200,6 @@
                     <plugin>
                         <groupId>com.github.bringking</groupId>
                         <artifactId>requirejs-maven-plugin</artifactId>
-                        <version>2.0.4</version>
                         <executions>
                             <execution>
                                 <phase>compile</phase>
@@ -214,9 +210,7 @@
                         </executions>
                         <configuration>
                             <!-- optional path to a nodejs executable -->
-                            <!-- <nodeExecutable>
-                                C:/Program Files/nodejs/node
-                                </nodeExecutable> -->
+                            <!-- <nodeExecutable> C:/Program Files/nodejs/node </nodeExecutable> -->
                             <!-- path to optimizer json config file -->
                             <configFile> ${basedir}/src/main/webapp/static/build.js
                             </configFile>
@@ -230,9 +224,7 @@
                                 <parameter>baseUrl=${basedir}/src/main/webapp/static</parameter>
                                 <parameter>out=${basedir}/src/main/webapp/static/build-main.js</parameter>
                             </optimizerParameters>
-                            <!-- Whether or not to process configFile with maven filters. If you use
-                                this option, some options in your configFile must resolve to absolute paths
-                                (see below) -->
+                            <!-- Whether or not to process configFile with maven filters. If you use this option, some options in your configFile must resolve to absolute paths (see below) -->
                             <filterConfig> false
                             </filterConfig>
                             <!-- Skip requirejs optimization if true -->
@@ -251,7 +243,6 @@
                         <!-- goal => -PreqOpNone exec:exec -->
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.1</version>
                         <executions>
                             <execution>
                                 <!-- <phase>compile</phase> -->
@@ -287,7 +278,6 @@
                         <!-- goal => -Pcabin exec:exec -->
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.1</version>
                         <executions>
                             <execution>
                                 <phase>prepare-package</phase>
