@@ -36,7 +36,7 @@ public class RemindServiceImpl implements RemindService {
     private SessionRegistry sessionRegistry;
 
     @Resource
-    private SecUserDao<User> usrDao;
+    private SecUserDao<? extends User> usrDao;
 
     @Resource
     private CapSystemConfig config;

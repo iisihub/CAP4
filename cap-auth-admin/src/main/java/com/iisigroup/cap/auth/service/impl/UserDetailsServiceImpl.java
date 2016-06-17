@@ -45,7 +45,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
     @Resource
-    private SecUserDao<User> userDao;
+    private SecUserDao<? extends User> userDao;
 
     /*
      * (non-Javadoc)
