@@ -48,10 +48,10 @@
             <groupId>com.iisigroup.cap</groupId>
             <artifactId>cap-report</artifactId>
         </dependency>
-        <dependency>
+       <!--  <dependency>
             <groupId>com.iisigroup.cap</groupId>
             <artifactId>cap-rule</artifactId>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>org.tuckey</groupId>
             <artifactId>urlrewritefilter</artifactId>
