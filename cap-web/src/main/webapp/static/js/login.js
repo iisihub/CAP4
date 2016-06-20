@@ -4,7 +4,7 @@ pageInit(function() {
     var agreeChange = false;
     function login(ignoreNotify) {
       $.ajax({
-        url : "../j_spring_security_check",
+        url : url("j_spring_security_check"),
         dataType : 'html',
         data : {
           j_username : $('#j_username').val(),
@@ -17,7 +17,7 @@ pageInit(function() {
         },
         success : function() {
           API.formSubmit({
-            url : 'index'
+            url : url('page/index')
           });
         },
         error : function(jqXHR, status, errorThrown) {
