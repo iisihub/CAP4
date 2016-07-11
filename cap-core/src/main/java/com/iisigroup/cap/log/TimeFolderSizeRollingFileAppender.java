@@ -1,28 +1,38 @@
-/* 
+/*
  * TimeFolderSizeRollingFileAppender.java
- * 
- * Copyright (c) 2009-2013 International Integrated System, Inc. 
+ *
+ * Copyright (c) 2009-2013 International Integrated System, Inc.
  * All Rights Reserved.
- * 
+ *
  * Licensed Materials - Property of International Integrated System, Inc.
- * 
- * This software is confidential and proprietary information of 
+ *
+ * This software is confidential and proprietary information of
  * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
 package com.iisigroup.cap.log;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Layout;
 import org.apache.log4j.helpers.CountingQuietWriter;
@@ -30,9 +40,8 @@ import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.helpers.OptionConverter;
 import org.apache.log4j.spi.ErrorCode;
 import org.apache.log4j.spi.LoggingEvent;
-import org.springframework.util.StringUtils;
 
-import com.iisigroup.cap.utils.CapString;
+import com.iisigroup.cap.utils.CapDate;
 
 /**
  * <pre>
@@ -44,7 +53,7 @@ import com.iisigroup.cap.utils.CapString;
  * @version
  *          <ul>
  *          <li>2013/7/18,rodeschen,new
- *          <li>2015/10/30,Sk,Update for 「Fortify Security Report-2015/10/26」
+ *          <li>2016/3/17,sunkist,update for zip and remove old directory
  *          </ul>
  *          log4j.appender.FILE.encoding=UTF-8
  *          log4j.appender.FILE=com.iisigroup.
@@ -82,7 +91,6 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
      * There is one backup file by default.
      */
     protected int maxBackupIndex = 1;
-
     // The code assumes that the following constants are in a increasing
     // sequence.
     static final int TOP_OF_TROUBLE = -1;
@@ -114,6 +122,10 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
      * The next time we estimate a rollover should occur.
      */
     private long nextCheck;
+
+    private boolean zipEnabled = false;
+    private int zipDayBefore = 1;
+    private String zipPath = "zips";
 
     Date now = new Date();
 
@@ -166,7 +178,7 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
 
     /**
      * Get the maximum size that the output file is allowed to reach before being rolled over to backup files.
-     * 
+     *
      * @since 1.1
      */
     public long getMaximumFileSize() {
@@ -176,23 +188,16 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
     public void setFile(String file) {
         // Trim spaces from both ends. The users probably does not want
         // trailing spaces in file names.
+        sourceFileName = file.trim();
+        String val = file.trim();
+        String tmpfileName = val.replace('/', File.separatorChar);
 
-        file = CapString.trimNull(file);
-
-        int lastIndex = file.lastIndexOf("/");
-        LogLog.debug("file: " + file + ", lastIndex: " + lastIndex);
-        if (lastIndex != -1) {
-            setLogRootPath(file.substring(0, lastIndex));
-        }
-
-        sourceFileName = StringUtils.getFilename(file);
-
-        fileName = getLogRootPath().replaceAll("[/\\\\]$", "") + "/" + new SimpleDateFormat(datePattern).format(new Date()) + "/" + sourceFileName;
+        fileName = getLogRootPath().replaceAll("[/\\\\]$", "") + File.separator + new SimpleDateFormat(datePattern).format(new Date()) + File.separator + tmpfileName;
 
         // create non-exist path
         LogLog.debug("fileName:" + fileName);
 
-        int index = fileName.lastIndexOf("/");
+        int index = fileName.lastIndexOf(File.separatorChar);
         if (index > 0) {
             String sPath = fileName.substring(0, index);
             File path = new File(sPath);
@@ -202,11 +207,26 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
         }
 
         LogLog.debug("File set:" + fileName);
+
+        LogLog.debug("zipfile::zipEnabled=" + zipEnabled);
+        if (zipEnabled) {
+            try {
+                for (int i = 1; i <= zipDayBefore; i++) {
+                    String beforeTheDay = getLogRootPath().replaceAll("[/\\\\]$", "") + File.separator + new SimpleDateFormat(datePattern).format(CapDate.shiftDays(new Date(), -i));
+                    String destUrl = zipPath + File.separator + FilenameUtils.getBaseName(fileName) + "." + new SimpleDateFormat(datePattern).format(CapDate.shiftDays(new Date(), -i)) + ".zip";
+                    LogLog.debug("zipfile::destUrl=" + destUrl);
+                    zipFiles(beforeTheDay, destUrl);
+
+                    LogLog.debug("zipfile::delete diretory " + beforeTheDay);
+                    FileUtils.deleteDirectory(new File(beforeTheDay));
+                }
+            } catch (Exception e) {
+                LogLog.error(e.getMessage());
+            }
+        }
     }
 
     public synchronized void setFile(String pFileName, boolean append, boolean bufferedIO, int bufferSize) throws IOException {
-        FileOutputStream fos = null;
-        Writer fw = null;
         try {
             reset();
             this.fileName = pFileName;
@@ -216,8 +236,7 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
                 setImmediateFlush(false);
             }
 
-            fos = new FileOutputStream(fileName, append);
-            fw = createWriter(fos);
+            Writer fw = createWriter(new FileOutputStream(fileName));
             if (bufferedIO) {
                 fw = new BufferedWriter(fw, bufferSize);
             }
@@ -234,9 +253,78 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
             LogLog.debug("setFile ended");
         } catch (IOException e) {
             errorHandler.error("Create log File error", e, FILE_OPEN_FAILURE);
+        } catch (Exception e) {
+            errorHandler.error("Create log File error", e, FILE_OPEN_FAILURE);
+        }
+    }
+
+    final int BUFFER = 2048;
+
+    public void zipFiles(String source, String dest) throws IOException {
+        FileUtils.forceMkdir(new File(source));
+        List<String> list = new ArrayList<String>();
+        Collection<File> allFiles = FileUtils.listFiles(new File(source), null, false);
+        for (File f : allFiles) {
+            list.add(f.getAbsolutePath());
+        }
+        if (list.size() > 0) {
+            zipFiles(list, dest);
+        }
+    }
+
+    public void zipFiles(List<String> fileList, String destUrl) throws IOException {
+
+        FileUtils.forceMkdir(new File(FilenameUtils.getFullPathNoEndSeparator(destUrl)));
+        BufferedInputStream origin = null;
+        FileOutputStream fos = null;
+        BufferedOutputStream bos = null;
+        ZipArchiveOutputStream out = null;
+        byte data[] = new byte[BUFFER];
+        try {
+            fos = new FileOutputStream(destUrl);
+            bos = new BufferedOutputStream(fos);
+            out = new ZipArchiveOutputStream(bos);
+
+            for (String fName : fileList) {
+                File file = new File(fName);
+                FileInputStream fi = new FileInputStream(file);
+                origin = new BufferedInputStream(fi, BUFFER);
+                ZipArchiveEntry entry = new ZipArchiveEntry(file.getName());
+                out.putArchiveEntry(entry);
+                int count;
+                while ((count = origin.read(data, 0, BUFFER)) != -1) {
+                    out.write(data, 0, count);
+                }
+                out.closeArchiveEntry();
+                fi.close();
+                origin.close();
+            }
+
         } finally {
-            // IOUtils.closeQuietly(fos);
-            // IOUtils.closeQuietly(fw);
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                }
+            }
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                }
+            }
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                }
+            }
+            if (origin != null) {
+                try {
+                    origin.close();
+                } catch (IOException e) {
+                }
+            }
         }
     }
 
@@ -410,7 +498,7 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
 
     /**
      * This method differentiates TimeSizeRollingFileAppender from its super class.
-     * 
+     *
      * <p>
      * Before actually logging, this method will check whether it is time to do a rollover. If it is, it will schedule the next rollover time and then rollover.
      */
@@ -432,6 +520,30 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
         // @CheckItem@ OPT-yanfeng-20030909 remove file exist check while
         // logging for better effencience
         super.subAppend(event);
+    }
+
+    public boolean isZipEnabled() {
+        return zipEnabled;
+    }
+
+    public void setZipEnabled(boolean zipEnabled) {
+        this.zipEnabled = zipEnabled;
+    }
+
+    public int getZipDayBefore() {
+        return zipDayBefore;
+    }
+
+    public void setZipDayBefore(int zipDayBefore) {
+        this.zipDayBefore = zipDayBefore;
+    }
+
+    public String getZipPath() {
+        return zipPath;
+    }
+
+    public void setZipPath(String zipPath) {
+        this.zipPath = zipPath;
     }
 }
 
