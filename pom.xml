@@ -220,9 +220,9 @@
                     <version>2.6</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.mortbay.jetty</groupId>
-                    <artifactId>maven-jetty-plugin</artifactId>
-                    <version>9.4.0-SNAPSHOT</version>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>9.2.11.v20150529</version>
                 </plugin>
                 <plugin>
                     <groupId>com.github.bringking</groupId>
