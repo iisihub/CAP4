@@ -71,6 +71,35 @@ public interface Request extends Map<String, Object>, Serializable {
     String get(String key, String defaultValue);
 
     /**
+     * get request parameter use xssEncode
+     * 
+     * @param key
+     *            欄位名
+     * @return 回傳
+     */
+    String getEscapString(String key);
+
+    /**
+     * get request parameter use xssEncode
+     * 
+     * @param key
+     *            欄位名
+     * @param defaultValue
+     *            預設值
+     * @return 回傳
+     */
+    String getEscapString(String key, String defaultValue);
+
+    /**
+     * get escape string with xssEncode
+     * 
+     * @param value
+     *            String
+     * @return escape string
+     */
+    String getEscapeStringFromValue(String value);
+
+    /**
      * set customize parameter
      * 
      * @param key

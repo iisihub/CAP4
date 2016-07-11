@@ -11,6 +11,7 @@
  */
 package com.iisigroup.cap.component.impl;
 
+import java.io.StringWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +68,6 @@ public class CapSpringMVCRequest extends HashMap<String, Object> implements Requ
      *            HttpServletRequest
      * @return Map 前頁傳過來的參數值
      */
-    @SuppressWarnings("unchecked")
     public Map<String, Object> getReqParameter(ServletRequest req) {
         Enumeration<String> fids = req.getParameterNames();
         HashMap<String, Object> hm = new HashMap<String, Object>();
@@ -108,6 +108,73 @@ public class CapSpringMVCRequest extends HashMap<String, Object> implements Requ
             }
             return String.valueOf(value);
         }
+    }
+
+    @Override
+    public String getEscapString(String key) {
+        return getEscapString(key, null);
+    }
+
+    @Override
+    public String getEscapString(String key, String defaultValue) {
+        Object value = null;
+        value = super.containsKey(key) ? super.get(key) : request.getParameter(key);
+        if (value != null) {
+            // String s = ((String[]) value)[0];
+            // return StringEscapeUtils.escapeHtml(s);
+            return xssEncode(((String[]) value)[0]);
+        }
+        logger.trace("can't find request parameter :" + key);
+        return defaultValue;
+    }
+
+    public String getEscapeStringFromValue(String value) {
+        if (value != null) {
+            return xssEncode(value);
+        }
+        logger.trace("can't get value of string. ");
+        return null;
+    }
+
+    private String xssEncode(String s) {
+        if (CapString.isEmpty(s)) {
+            return s;
+        }
+        StringWriter writer = new StringWriter();
+        // 配合underscore的unescape
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch (c) {
+            case '&':
+                writer.write("&amp;");
+                break;
+            case '<':
+                writer.write("&lt;");
+                break;
+            case '>':
+                writer.write("&gt;");
+                break;
+            case '\"':
+                writer.write("&quot;");
+                break;
+            case '\'':
+                writer.write("&#x27;");
+                break;
+            case '/':
+                writer.write("&#x2F;");
+                break;
+            case '(':
+                writer.write("&#40;");
+                break;
+            case ')':
+                writer.write("&#41;");
+                break;
+            default:
+                writer.write(c);
+                break;
+            }
+        }
+        return writer.toString();
     }
 
     /*
