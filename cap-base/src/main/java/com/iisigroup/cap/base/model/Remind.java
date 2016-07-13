@@ -47,13 +47,13 @@ public class Remind extends GenericBean implements DataObject {
 
     /** id */
     @Id
-    @Column(length = 32, nullable = false)
+    @Column(length = 32, nullable = false, columnDefinition="CHAR")
     private String oid;
     /** 內文 */
     @Column(length = 2000)
     private String content;
     /** 0.個人 1.組別(業務) 2.群組 3.部門 9.全體 */
-    @Column(length = 1)
+    @Column(length = 1, columnDefinition="CHAR")
     private String scopeTyp;
     /** 對象號碼 */
     @Column(length = 10)
@@ -65,7 +65,7 @@ public class Remind extends GenericBean implements DataObject {
     /** 建立時間 */
     private Timestamp crTime;
     /** 語系 */
-    @Column(length = 5)
+    @Column(length = 5, columnDefinition="CHAR")
     private String locale;
     /** 最後異動人員 */
     @Column(length = 10)

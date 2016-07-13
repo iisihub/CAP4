@@ -88,7 +88,7 @@ public class ErrorCode extends GenericBean implements DataObject {
     /**
      * 是否送監控
      */
-    @Column(length = 1)
+    @Column(length = 1, columnDefinition="CHAR")
     private String sendMon;
 
     /**
