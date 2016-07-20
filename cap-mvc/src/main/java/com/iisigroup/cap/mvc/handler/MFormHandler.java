@@ -13,11 +13,10 @@ package com.iisigroup.cap.mvc.handler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-
-import net.sf.json.JSONArray;
 
 import com.iisigroup.cap.action.Action;
 import com.iisigroup.cap.annotation.HandlerType;
@@ -38,6 +37,7 @@ import com.iisigroup.cap.plugin.HandlerPlugin;
 import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapBeanUtil;
 import com.iisigroup.cap.utils.CapString;
+import com.iisigroup.cap.utils.GsonUtil;
 
 /**
  * <pre>
@@ -191,10 +191,10 @@ public abstract class MFormHandler extends HandlerPlugin {
      */
     @SuppressWarnings("unchecked")
     protected String[] getColumns(String params) {
-        JSONArray arr = JSONArray.fromObject(params);
+        List<Object> arr = GsonUtil.jsonToObjectList(params);
         String[] colNames = new String[arr.size()];
         for (int i = 0; i < arr.size(); i++) {
-            Map<String, String> m = (Map<String, String>) arr.get(i);
+            Map<String, String> m = (Map<String, String>) GsonUtil.objToObj(arr.get(i));
             if (m.containsKey(GridEnum.COL_INDEX.getCode())) {
                 colNames[i] = new StringBuffer().append(m.get(GridEnum.COL_NAME.getCode())).append("|").append(m.get(GridEnum.COL_INDEX.getCode())).toString();
             } else {

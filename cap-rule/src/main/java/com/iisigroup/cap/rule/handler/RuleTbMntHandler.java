@@ -83,6 +83,7 @@ import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapBeanUtil;
 import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.cap.utils.CapString;
+import com.iisigroup.cap.utils.GsonUtil;
 
 import jxl.Workbook;
 import jxl.format.Alignment;
@@ -95,7 +96,6 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
-import net.sf.json.JSONObject;
 
 /**
  * <pre>
@@ -192,7 +192,7 @@ public class RuleTbMntHandler extends MFormHandler {
                 delRlDtl = rlItm.getDivRlDtls();
             }
             for (int i = 0; i < ftGridData.length; i++) {
-                JSONObject jsData = JSONObject.fromObject(ftGridData[i]);
+                Map<String, Object> jsData = GsonUtil.jsonToMap(ftGridData[i]);
                 DivRlDtl rlDtl = new DivRlDtl();
                 // int j = 0;
                 // boolean haveOld = false;
@@ -209,8 +209,8 @@ public class RuleTbMntHandler extends MFormHandler {
                 CapBeanUtil.map2Bean(jsData, rlDtl);
                 rlDtl.setDivRlNo(rlItm.getDivRlNo());
                 rlDtl.setDivRlSor(new BigDecimal(i + 1));
-                rlDtl.setDivCtNo(jsData.optString("divCtNo"));
-                DivCtItm ctItm = conditionMntService.getById(jsData.optString("divCtOid"));
+                rlDtl.setDivCtNo(CapString.trimNull(jsData.get("divCtNo")));
+                DivCtItm ctItm = conditionMntService.getById(CapString.trimNull(jsData.get("divCtOid")));
                 // rlDtl.setDivCtItm(ctItm);
                 rlDtl.setDivRlItm(rlItm);
                 // if(haveOld){

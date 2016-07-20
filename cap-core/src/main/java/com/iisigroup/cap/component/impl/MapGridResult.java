@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.servlet.ServletResponse;
 
+import com.google.gson.JsonArray;
 import com.iisigroup.cap.component.GridResult;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.constants.GridEnum;
@@ -29,9 +30,7 @@ import com.iisigroup.cap.formatter.BeanFormatter;
 import com.iisigroup.cap.formatter.Formatter;
 import com.iisigroup.cap.formatter.impl.ADDateFormatter;
 import com.iisigroup.cap.formatter.impl.ADDateTimeFormatter;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.iisigroup.cap.utils.GsonUtil;
 
 /**
  * <pre>
@@ -58,7 +57,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
     protected Map<String, Formatter> dataReformatter;
 
     public MapGridResult() {
-        resultMap = new JSONObject();
+        resultMap = new HashMap<String, Object>();
     }
 
     public MapGridResult(List<Map<String, Object>> rowData, int records) {
@@ -66,7 +65,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
     }
 
     public MapGridResult(List<Map<String, Object>> rowData, int records, Map<String, Formatter> dataReformatter) {
-        resultMap = new JSONObject();
+        resultMap = new HashMap<String, Object>();
         setRowData(rowData);
         setRecords(records);
         setDataReformatter(dataReformatter);
@@ -165,7 +164,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
     @Override
     public String getResult() {
         resultMap.put(GridEnum.PAGEROWS.getCode(), getRowDataToJSON());
-        return resultMap.toString();
+        return GsonUtil.mapToJson(resultMap);
     }
 
     @Override
@@ -178,7 +177,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
 
     @Override
     public void add(Result result) {
-        JSONObject json = JSONObject.fromObject(result);
+        Map<String, Object> json = GsonUtil.jsonToMap(result.getResult());
         resultMap.putAll(json);
     }
 
@@ -198,8 +197,8 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
         return this.rowData;
     }
 
-    private JSONArray getRowDataToJSON() {
-        JSONArray rows = new JSONArray();
+    private JsonArray getRowDataToJSON() {
+        JsonArray rows = new JsonArray();
         Map<String, Object> row = new HashMap<String, Object>();
         if (rowData != null && !rowData.isEmpty()) {
             for (Map<String, Object> data : rowData) {
@@ -208,7 +207,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
                 } catch (CapException e) {
                     logger.error(e.getMessage(), getClass());
                 }
-                rows.add(row);
+                rows.add(GsonUtil.mapToJson(row));
             }
         }
         return rows;
@@ -218,7 +217,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
     private static String SPLIT = "\\|";
 
     protected String dataToJsonString(Map<String, Object> data) {
-        JSONArray row = new JSONArray();
+        JsonArray row = new JsonArray();
         for (String str : columns) {
             Object val = null;
             try {

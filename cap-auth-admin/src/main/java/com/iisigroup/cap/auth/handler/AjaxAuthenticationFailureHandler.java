@@ -2,6 +2,8 @@ package com.iisigroup.cap.auth.handler;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,8 +14,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.stereotype.Component;
 
 import com.iisigroup.cap.auth.exception.CapAuthenticationException;
-
-import net.sf.json.JSONObject;
+import com.iisigroup.cap.utils.GsonUtil;
 
 @Component("ajaxAuthenticationFailureHandler")
 public class AjaxAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
@@ -23,12 +24,12 @@ public class AjaxAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
         boolean capchaEnabled = ((CapAuthenticationException) exception).isCaptchaEnabled();
         boolean forceChangePwd = ((CapAuthenticationException) exception).isForceChangePwd();
         boolean askChangePwd = ((CapAuthenticationException) exception).isAskChangePwd();
-        JSONObject o = new JSONObject();
+        Map<String, Object> o = new HashMap<String, Object>();
         o.put("capchaEnabled", capchaEnabled);
         o.put("forceChangePwd", forceChangePwd);
         o.put("askChangePwd", askChangePwd);
         o.put("msg", exception.getMessage());
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, URLEncoder.encode(o.toString(), "utf-8").replaceAll("\\+", "%20"));
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, URLEncoder.encode(GsonUtil.mapToJson(o), "utf-8").replaceAll("\\+", "%20"));
     }
 
 }

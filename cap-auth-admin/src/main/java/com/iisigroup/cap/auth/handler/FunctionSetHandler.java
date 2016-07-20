@@ -22,6 +22,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.google.gson.JsonArray;
 import com.iisigroup.cap.annotation.HandlerType;
 import com.iisigroup.cap.annotation.HandlerType.HandlerTypeEnum;
 import com.iisigroup.cap.auth.model.DefaultFunction;
@@ -29,8 +30,8 @@ import com.iisigroup.cap.auth.model.RoleFunction;
 import com.iisigroup.cap.auth.service.FunctionSetService;
 import com.iisigroup.cap.base.formatter.impl.CodeTypeFormatter;
 import com.iisigroup.cap.base.service.CodeTypeService;
-import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.component.impl.BeanGridResult;
 import com.iisigroup.cap.component.impl.MapGridResult;
@@ -47,9 +48,7 @@ import com.iisigroup.cap.security.CapSecurityContext;
 import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.cap.utils.CapString;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.iisigroup.cap.utils.GsonUtil;
 
 /**
  * <pre>
@@ -150,9 +149,9 @@ public class FunctionSetHandler extends MFormHandler {
         List<DefaultFunction> functions = functionSetService.findFunctionBySysTypeAndLevel(sysType, level);
 
         if (!CollectionUtils.isEmpty(functions)) {
-            JSONArray funcArray = new JSONArray();
+            JsonArray funcArray = new JsonArray();
             for (DefaultFunction func : functions) {
-                funcArray.add(func.toJSONObject(CapEntityUtil.getColumnName(func), null));
+                funcArray.add(GsonUtil.mapToJson(func.toJSONObject(CapEntityUtil.getColumnName(func), null)));
             }
             result.set("functions", funcArray.toString());
         }
@@ -195,7 +194,7 @@ public class FunctionSetHandler extends MFormHandler {
     public Result saveRfList(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         String code = request.get("code");
-        JSONArray roleItem = JSONArray.fromObject(request.get("roleItem"));
+        List<Object> roleItem = GsonUtil.jsonToObjectList(request.get("roleItem"));
         DefaultFunction codeItem = null;
 
         if (!CapString.isEmpty(code)) {
@@ -208,9 +207,9 @@ public class FunctionSetHandler extends MFormHandler {
         List<RoleFunction> setRole = new ArrayList<RoleFunction>();
         if (roleItem != null) {
             for (Object item : roleItem) {
-                JSONObject role = (JSONObject) item;
+                Map<String, Object> role = GsonUtil.objToMap(item);
                 RoleFunction rlf = new RoleFunction();
-                rlf.setRoleCode(role.getString("code"));
+                rlf.setRoleCode((String) role.get("code"));
                 rlf.setFuncCode(Integer.toString(codeItem.getCode()));
                 rlf.setUpdater(CapSecurityContext.getUserId());
                 rlf.setUpdateTime(CapDate.getCurrentTimestamp());
@@ -250,7 +249,7 @@ public class FunctionSetHandler extends MFormHandler {
     public Result deleteRfList(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         String code = request.get("code");
-        JSONArray roleItem = JSONArray.fromObject(request.get("roleItem"));
+        List<Object> roleItem = GsonUtil.jsonToObjectList(request.get("roleItem"));
 
         if (CapString.isEmpty(code)) {
             throw new CapMessageException(CapAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
@@ -259,8 +258,8 @@ public class FunctionSetHandler extends MFormHandler {
         List<String> delRole = new ArrayList<String>();
         if (roleItem != null) {
             for (Object item : roleItem) {
-                JSONObject role = (JSONObject) item;
-                delRole.add(role.getString("code"));
+                Map<String, Object> role = GsonUtil.objToMap(item);
+                delRole.add((String) role.get("code"));
             }
         }
         functionSetService.deleteRfList(code, delRole);

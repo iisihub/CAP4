@@ -10,7 +10,9 @@
  */
 package com.iisigroup.cap.component.impl;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.ServletResponse;
 
@@ -27,8 +29,7 @@ import com.iisigroup.cap.operation.simple.SimpleContextHolder;
 import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.cap.utils.CapWebUtil;
-
-import net.sf.json.JSONObject;
+import com.iisigroup.cap.utils.GsonUtil;
 
 /**
  * <pre>
@@ -53,7 +54,7 @@ public class DefaultErrorResult implements ErrorResult {
     /** 關閉畫面錯誤類別 */
     public static final String AJAX_CLOSE_PAGE_HANDLER_EXCEPTION = "AJAX_CLOSE_PAGE_HANDLER_EXCEPTION";
 
-    JSONObject errorMessage = new JSONObject();
+    Map<String, Object> errorMessage = new HashMap<String, Object>();
 
     String logMessage = "";
     private String contentType;
@@ -73,7 +74,7 @@ public class DefaultErrorResult implements ErrorResult {
      */
     @Override
     public String getResult() {
-        return errorMessage.toString();
+        return GsonUtil.mapToJson(errorMessage);
     }
 
     public String getLogMessage() {
@@ -117,8 +118,8 @@ public class DefaultErrorResult implements ErrorResult {
 
     @Override
     public void add(Result result) {
-        JSONObject json = JSONObject.fromObject(result);
-        this.errorMessage.putAll(json);
+        Map<String, Object> map = GsonUtil.jsonToMap(result.getResult());
+        this.errorMessage.putAll(map);
         this.logMessage = result.getLogMessage();
     }
 

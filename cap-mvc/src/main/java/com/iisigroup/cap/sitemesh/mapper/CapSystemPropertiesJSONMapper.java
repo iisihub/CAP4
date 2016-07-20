@@ -27,13 +27,12 @@ import org.slf4j.LoggerFactory;
 
 import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapString;
+import com.iisigroup.cap.utils.GsonUtil;
 import com.opensymphony.module.sitemesh.Config;
 import com.opensymphony.module.sitemesh.Decorator;
 import com.opensymphony.module.sitemesh.DecoratorMapper;
 import com.opensymphony.module.sitemesh.Page;
 import com.opensymphony.module.sitemesh.mapper.AbstractDecoratorMapper;
-
-import net.sf.json.JSONSerializer;
 
 /**
  * <pre>
@@ -77,7 +76,7 @@ public class CapSystemPropertiesJSONMapper extends AbstractDecoratorMapper {
     @Override
     public Decorator getDecorator(HttpServletRequest request, Page page) {
         if (decoratorFile == null || decoratorFile.contains(page.getProperties().get("meta.decorator"))) {
-            HashMap<String, Object> hm = new HashMap<String, Object>();
+            Map<String, Object> hm = new HashMap<String, Object>();
             if (searchKeys != null) {
                 for (String sKey : searchKeys) {
                     String val = CapString.trimNull(sysProp.get(sKey));
@@ -91,7 +90,7 @@ public class CapSystemPropertiesJSONMapper extends AbstractDecoratorMapper {
                 }
             }
             StringBuffer str = new StringBuffer("<script type=\"text/javascript\">var prop=");
-            str.append(JSONSerializer.toJSON(hm).toString()).append(";</script>");
+            str.append(GsonUtil.mapToJson(hm)).append(";</script>");
             page.addProperty(PROP_KEY, str.toString());
         }
         return super.getDecorator(request, page);

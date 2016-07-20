@@ -22,7 +22,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import net.sf.json.JSONArray;
+import com.google.gson.JsonArray;
 
 /**
  * <pre>
@@ -45,7 +45,7 @@ public class CapUserDetails implements UserDetails {
     private String userName;
     private String unitNo;
     private Map<String, String> roles;
-    private JSONArray menu;
+    private JsonArray menu;
     private Locale locale;
     private String status;
     private Map<String, Object> extraAttrib;
@@ -103,11 +103,11 @@ public class CapUserDetails implements UserDetails {
         return true;
     }
 
-    public JSONArray getMenu() {
+    public JsonArray getMenu() {
         return menu;
     }
 
-    public void setMenu(JSONArray menu) {
+    public void setMenu(JsonArray menu) {
         this.menu = menu;
     }
 

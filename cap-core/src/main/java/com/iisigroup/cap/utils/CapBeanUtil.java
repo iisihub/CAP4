@@ -23,8 +23,6 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.beanutils.ConvertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -388,7 +386,7 @@ public class CapBeanUtil {
      *            null時回傳整個 map 所串成的 JSON 物件； not null 時依指定的 keyAry 串組。
      * @return JSONObject
      */
-    public static JSONObject map2Json(Map<String, Object> map, String[] keyAry) {
+    public static String map2Json(Map<String, Object> map, String[] keyAry) {
 
         HashMap<String, Object> tmpMap = null;
 
@@ -407,7 +405,7 @@ public class CapBeanUtil {
             }
         }
 
-        return JSONObject.fromObject(tmpMap);
+        return GsonUtil.mapToJson(tmpMap);
     }
 
     public static Method findMethod(Class<?> clazz, String name, Class<?>... paramTypes) {
