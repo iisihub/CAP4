@@ -13,7 +13,9 @@ package com.iisigroup.cap.utils;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.CharEncoding;
 import org.dom4j.Document;
@@ -26,12 +28,10 @@ import org.dom4j.io.XMLWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.JsonArray;
 import com.iisigroup.cap.constants.Constants;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.exception.CapMessageException;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 /**
  * <pre>
@@ -72,13 +72,13 @@ public class CapXmlUtil {
     }
 
     /**
-     * 將XML字串轉換為JSON
+     * 將XML字串轉換為Map
      * 
      * @param xmlString
      *            xmlString
-     * @return jsonObject
+     * @return map
      */
-    public static JSONObject convertXmlStringToJson(String xmlString) {
+    public static Map<String, Object> convertXmlStringToMap(String xmlString) {
         try {
             Document document = DocumentHelper.parseText(xmlString);
             Element root = document.getRootElement();
@@ -135,34 +135,34 @@ public class CapXmlUtil {
     }
 
     @SuppressWarnings("unchecked")
-    private static JSONObject travelXML(Element el) {
-        JSONObject json = new JSONObject();
+    private static Map<String, Object> travelXML(Element el) {
+        Map<String, Object> map = new HashMap<String, Object>();
         String nodeName = el.getName();
         if (el.elements().isEmpty()) {
-            putJSONValue(json, nodeName, el.getTextTrim());
+            putValue(map, nodeName, el.getTextTrim());
         } else {
-            JSONObject json2 = new JSONObject();
+            Map<String, Object> map2 = new HashMap<String, Object>();
             for (Element el2 : (List<Element>) el.elements()) {
-                putJSONValue(json2, el2.getName(), travelXML(el2).get(el2.getName()));
+                putValue(map2, el2.getName(), travelXML(el2).get(el2.getName()));
             }
-            putJSONValue(json, nodeName, json2);
+            putValue(map, nodeName, map2);
         }
-        return json;
+        return map;
     }
 
-    private static void putJSONValue(JSONObject json, String key, Object value) {
-        if (json.containsKey(key)) {
-            Object j = json.get(key);
-            if (j instanceof JSONArray) {
-                ((JSONArray) j).add(value);
+    private static void putValue(Map<String, Object> map, String key, Object value) {
+        if (map.containsKey(key)) {
+            Object j = map.get(key);
+            if (j instanceof JsonArray) {
+                ((JsonArray) j).add(GsonUtil.objToJson(value));
             } else {
-                JSONArray ja = new JSONArray();
-                ja.add(j);
-                ja.add(value);
-                json.put(key, ja);
+                JsonArray ja = new JsonArray();
+                ja.add(GsonUtil.objToJson(j));
+                ja.add(GsonUtil.objToJson(value));
+                map.put(key, ja);
             }
         } else {
-            json.put(key, value);
+            map.put(key, value);
         }
 
     }

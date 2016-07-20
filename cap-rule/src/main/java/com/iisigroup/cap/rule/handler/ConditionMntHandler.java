@@ -52,8 +52,7 @@ import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapBeanUtil;
 import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.cap.utils.CapString;
-
-import net.sf.json.JSONObject;
+import com.iisigroup.cap.utils.GsonUtil;
 
 /**
  * <pre>
@@ -175,7 +174,7 @@ public class ConditionMntHandler extends MFormHandler {
                 delCtDtl = ctItm.getDivCtDtls();
             }
             for (int i = 0; i < ftGridData.length; i++) {
-                JSONObject jsData = JSONObject.fromObject(ftGridData[i]);
+                Map<String,Object> jsData = GsonUtil.jsonToMap(ftGridData[i]);
                 DivCtDtl ctDtl = new DivCtDtl();
                 // int j = 0;
                 // boolean haveOld = false;
@@ -192,8 +191,8 @@ public class ConditionMntHandler extends MFormHandler {
                 CapBeanUtil.map2Bean(jsData, ctDtl);
                 ctDtl.setDivCtNo(ctItm.getDivCtNo());
                 ctDtl.setDivCtSor(new BigDecimal(i + 1));
-                ctDtl.setRangeNo(jsData.optString("rangeNo"));
-                DivFtDtl ftDtl = factorMntService.findByFactorNoAndRangeNo(jsData.optString("factorNo"), jsData.optString("rangeNo"));
+                ctDtl.setRangeNo(CapString.trimNull(jsData.get("rangeNo")));
+                DivFtDtl ftDtl = factorMntService.findByFactorNoAndRangeNo(CapString.trimNull(jsData.get("factorNo")), CapString.trimNull(jsData.get("rangeNo")));
                 ctDtl.setDivFtDtl(ftDtl);
                 ctDtl.setDivCtItm(ctItm);
                 // if(haveOld){

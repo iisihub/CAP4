@@ -34,8 +34,7 @@ import com.iisigroup.cap.plugin.PluginManager;
 import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.cap.utils.CapWebUtil;
-
-import net.sf.json.JSONObject;
+import com.iisigroup.cap.utils.GsonUtil;
 
 /**
  * <pre>
@@ -94,7 +93,7 @@ public class CapHandlerServlet extends HttpServlet {
         String action = (String) req.getAttribute(ACTION);
         long st = System.currentTimeMillis();
         if (logger.isTraceEnabled()) {
-            logger.trace("Request Data: {}", JSONObject.fromObject(req.getParameterMap()).toString());
+            logger.trace("Request Data: {}", GsonUtil.objToJson(req.getParameterMap()));
         }
         Object locale = req.getSession().getAttribute(CapWebUtil.localeKey);
         if (locale != null) {
