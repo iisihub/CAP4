@@ -217,6 +217,10 @@ public class AjaxFormResult implements Result {
         return resultMap.isEmpty();
     }
 
+    public Map<String, Object> getResultMap() {
+        return resultMap;
+    }
+
     /**
      * 移除欄位
      * 
@@ -249,7 +253,7 @@ public class AjaxFormResult implements Result {
     public void setResultMap(Map<String, AjaxFormResult> m) {
         for (String key : m.keySet()) {
             AjaxFormResult form = m.get(key);
-            resultMap.put(key, form.toString());
+            resultMap.put(key, form.getResultMap());
         }
     }
 
