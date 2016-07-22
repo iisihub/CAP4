@@ -20,6 +20,7 @@ import java.util.stream.IntStream;
 import org.junit.Test;
 
 import com.ibm.icu.math.BigDecimal;
+import com.iisigroup.cap.component.impl.AjaxFormResult;
 
 /**
  * <pre>
@@ -103,9 +104,14 @@ public class GsonUtilTest {
         map3.put("a", BigDecimal.ONE.intValue());
         map3.put("b", BigDecimal.ONE.longValue());
         map3.put("c", String.valueOf(BigDecimal.ONE));
+        Map<String, Object> map4 = new HashMap<String, Object>();
+        map4.put("a", map1);
+        map4.put("b", new AjaxFormResult());
+        map4.put("c", new AjaxFormResult().set("a'", ""));
         testData.add(map1);
         testData.add(map2);
         testData.add(map3);
+        testData.add(map4);
         IntStream.range(0, testData.size()).forEach(i -> System.out.print((i == 0 ? "\n" + title + ": \n" : "\n") + "\t" + i + " => " + GsonUtil.mapToJson(testData.get(i))));
     }
 
