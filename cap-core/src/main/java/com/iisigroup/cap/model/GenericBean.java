@@ -15,16 +15,17 @@ package com.iisigroup.cap.model;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.util.ReflectionUtils;
 
-import com.google.gson.JsonArray;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.formatter.BeanFormatter;
 import com.iisigroup.cap.formatter.Formatter;
@@ -139,7 +140,7 @@ public class GenericBean {
      * @return String JsonString
      */
     public String toJSONString(String[] columns, Map<String, Formatter> reformat) {
-        JsonArray row = new JsonArray();
+        List<String> row = new ArrayList<String>();
         for (String str : columns) {
             Object val = null;
             try {
