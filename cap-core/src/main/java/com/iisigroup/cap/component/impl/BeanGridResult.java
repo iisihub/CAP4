@@ -25,7 +25,6 @@ import com.iisigroup.cap.constants.GridEnum;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.formatter.Formatter;
 import com.iisigroup.cap.model.GenericBean;
-import com.iisigroup.cap.utils.CapBeanUtil;
 import com.iisigroup.cap.utils.GsonUtil;
 
 /**
