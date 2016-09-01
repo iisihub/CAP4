@@ -7,11 +7,11 @@
 </head>
 <body>
     <script>
-          loadScript('js/sample/valid');
-        </script>
+		loadScript('js/sample/valid');
+	</script>
     <h1>ValidationEngine Demo</h1>
     <br />
-    <form onsubmit="return false;">
+    <form method="post" autocomplete="off" onsubmit="return false;">
         <div>
             <div>
                 <span>My name</span> <input id="myName" name="myName" class="validate[required, funcCall[_minSize[10]]]" type="text" />

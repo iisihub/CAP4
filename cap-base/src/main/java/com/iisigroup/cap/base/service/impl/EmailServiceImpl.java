@@ -23,6 +23,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 
 import com.iisigroup.cap.base.service.EmailService;
+import com.iisigroup.cap.utils.CapString;
 
 /**
  * <pre>
@@ -65,15 +66,15 @@ public class EmailServiceImpl implements EmailService {
             // 收件人
             mmh.setTo(sendTo);
             // 主旨
-            mmh.setSubject(subject);
+            mmh.setSubject(CapString.trimLineSeparator(subject));
             // html信件內容
             mmh.setText(sendContext, true);
 
             mailSender.send(mm);
 
-            logger.debug("send mail from:{} to {} ,{}-{}", new String[] { sendFrom, Arrays.toString(sendTo), subject, sendContext });
+            logger.debug("send mail from:{} to {} ,{}-{}", new String[] { sendFrom, Arrays.toString(sendTo), CapString.trimLineSeparator(subject), sendContext });
         } catch (MessagingException e) {
-            logger.error("send mail error from:{} to {} ,{}-{}", new String[] { sendFrom, Arrays.toString(sendTo), subject, sendContext });
+            logger.error("send mail error from:{} to {} ,{}-{}", new String[] { CapString.trimLineSeparator(sendFrom), CapString.trimLineSeparator(Arrays.toString(sendTo)), CapString.trimLineSeparator(subject), CapString.trimLineSeparator(sendContext) });
             logger.error(e.getMessage(), e);
         }
 

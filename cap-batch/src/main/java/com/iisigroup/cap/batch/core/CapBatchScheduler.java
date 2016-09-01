@@ -64,7 +64,6 @@ public class CapBatchScheduler implements CapBatchConstants {
     private final Logger logger = LoggerFactory.getLogger(CapBatchScheduler.class);
 
     private BatchJobService batchService;
-    private String hostId = LOCALHOST;
     private Scheduler scheduler;
     private JobLocator jobLocator;
     private JobLauncher jobLauncher;
@@ -174,21 +173,12 @@ public class CapBatchScheduler implements CapBatchConstants {
         this.batchService = batchService;
     }
 
-    public void setHostId(String hostId) {
-        this.hostId = hostId;
-    }
-
     public String getHostId() {
-        if (!LOCALHOST.equals(hostId)) {
-            synchronized (hostId) {
-                try {
-                    hostId = InetAddress.getLocalHost().getHostName();
-                } catch (UnknownHostException e) {
-                    hostId = LOCALHOST;
-                }
-            }
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            return LOCALHOST;
         }
-        return this.hostId;
     }
 
     public void setScheduler(Scheduler scheduler) {

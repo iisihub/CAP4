@@ -10,8 +10,8 @@
 </head>
 <body>
     <script>
-          loadScript('js/batch/jobexecution');
-        </script>
+		loadScript('js/batch/jobexecution');
+	</script>
     <div>
         <div class="btns">
             <button id="qry" type="button" class="btn1">
@@ -37,7 +37,7 @@
         </div>
         <div id="gridview"></div>
         <div id="qryDailog" class="hide" title="<spring:message code="btn.query" />">
-            <form id="qform" onsubmit="return false;">
+            <form method="post" autocomplete="off" id="qform" onsubmit="return false;">
                 <table class="row-data">
                     <tr>
                         <th><spring:message code="js.jobId">
@@ -62,7 +62,7 @@
             </form>
         </div>
         <div id="exeDetailDialog" class="hide" title="<spring:message code="btn.viewDetail" />">
-            <form id="jdform" onsubmit="return false;">
+            <form method="post" autocomplete="off" id="jdform" onsubmit="return false;">
                 <table class="row-data">
                     <tr>
                         <th><spring:message code="js.jobId">

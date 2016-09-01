@@ -13,9 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.component.impl.CapSpringMVCRequest;
 import com.iisigroup.cap.security.CapSecurityContext;
 import com.iisigroup.cap.security.model.CapUserDetails;
 import com.iisigroup.cap.utils.CapAppContext;
+import com.iisigroup.cap.utils.CapString;
 
 /**
  * <pre>
@@ -37,7 +40,13 @@ public class PageAction extends BaseActionController {
     @RequestMapping("/error")
     public ModelAndView error(Locale locale, HttpServletRequest request, HttpServletResponse response) {
         String path = request.getPathInfo();
-        ModelAndView model = new ModelAndView(path);
+        path = CapString.trimNull(path);
+        ModelAndView model = null;
+        Request ireq = getDefaultRequest();
+        if (ireq.getEscapeStringFromValue(path).length() > 0) {
+            model = new ModelAndView("/" + path.replaceAll("^/|applicationContext", ""));
+        }
+
         HttpSession session = request.getSession(false);
         response.setStatus(HttpServletResponse.SC_OK);
         final AuthenticationException ae = (session != null) ? (AuthenticationException) session.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION) : null;
@@ -50,18 +59,36 @@ public class PageAction extends BaseActionController {
                 errmsg = CapAppContext.getMessage("AccessCheck.AccessDenied", locale) + errmsg;
             }
         }
-        model.addObject("errorMessage", errmsg);
+        if (model != null) {
+            model.addObject("errorMessage", errmsg);
+        }
         return model;
     }
 
     @RequestMapping("/**")
     public ModelAndView handleRequestInternal(Locale locale, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String path = request.getPathInfo();
-        ModelAndView model = new ModelAndView(path);
+        path = CapString.trimNull(path);
+        ModelAndView model = null;
+        Request ireq = getDefaultRequest();
+        if (ireq.getEscapeStringFromValue(path).length() > 0) {
+            model = new ModelAndView("/" + path.replaceAll("^/|applicationContext", ""));
+        }
+
         CapUserDetails userDetails = CapSecurityContext.getUser();
-        if (userDetails != null) {
+        if (userDetails != null && model != null) {
             model.addObject("userDetails", userDetails);
         }
         return model;
+    }
+
+    /**
+     * Get CapDefaultRequst
+     * 
+     * @return IRequest
+     */
+    private Request getDefaultRequest() {
+        Request cr = CapAppContext.getBean("CapDefaultRequest");
+        return cr != null ? cr : new CapSpringMVCRequest();
     }
 }

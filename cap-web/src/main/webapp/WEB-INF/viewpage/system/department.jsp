@@ -10,8 +10,8 @@
 </head>
 <body>
     <script>
-          loadScript('js/system/department');
-        </script>
+		loadScript('js/system/department');
+	</script>
     <div>
         <div class="btns">
             <button id="add" type="button" class="btn1">
@@ -34,11 +34,12 @@
         <!-- dialog start-->
         <!--Start : 編輯-->
         <div id="EDIT" style="display: none">
-            <form id="JForm">
+            <form method="post" autocomplete="off" id="JForm">
                 <table class="tb2" width="99%" border="0" cellspacing="0" cellpadding="0">
                     <tbody>
                         <tr>
-                            <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="js.depcode"></spring:message></td>
+                            <td width="20%" class="hd1"><span class="color-red">＊</span>
+                            <spring:message code="js.depcode"></spring:message></td>
                             <td width="30%"><input type="text" size="4" id="code" name="code" maxlength="4" class="validate[required]" /></td>
                             <td width="20%" class="hd1"><spring:message code="js.depname"></spring:message></td>
                             <td width="30%"><input type="text" size="30" id="name" name="name" maxlength="30" /></td>
@@ -53,8 +54,9 @@
                             <td width="20%" class="hd1"><spring:message code="js.deptel"></spring:message></td>
                             <td width="30%"><input type="text" size="20" id="tel" name="tel" maxlength="20" /></td>
                             <td width="20%" class="hd1"><spring:message code="js.depstatus"></spring:message></td>
-                            <td width="30%"><input type="radio" id="status" name="status" value="Y" /> <spring:message code="js.depon"></spring:message> <input type="radio" id="status"
-                                name="status" value="N" /> <spring:message code="js.depoff"></spring:message></td>
+                            <td width="30%"><input type="radio" id="status" name="status" value="Y" />
+                            <spring:message code="js.depon"></spring:message> <input type="radio" id="status" name="status" value="N" />
+                            <spring:message code="js.depoff"></spring:message></td>
                         </tr>
                         <tr>
                             <td width="20%" class="hd1"><spring:message code="js.depaddr"></spring:message></td>

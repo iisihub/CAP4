@@ -3,12 +3,12 @@ package com.iisigroup.cap.auth.service.impl;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import com.iisigroup.cap.auth.dao.RoleDao;
 import com.iisigroup.cap.auth.dao.UserDao;
 import com.iisigroup.cap.auth.model.DefaultUser;
 import com.iisigroup.cap.security.CapSecurityContext;
-import com.iisigroup.cap.security.captcha.filter.CaptchaCaptureFilter;
 import com.iisigroup.cap.security.constants.CheckStatus;
 import com.iisigroup.cap.security.model.Role;
 import com.iisigroup.cap.security.service.AccessControlService;
@@ -65,7 +65,8 @@ public class AccessControlServiceImpl implements AccessControlService {
     }
 
     public boolean checkCaptcha() {
-        String captchaData = ((CaptchaCaptureFilter) CapAppContext.getBean("captchaCaptureFilter")).getRequest().getParameter("captcha");
+        HttpServletRequest req = CapSecurityContext.getUser().get("request");
+        String captchaData = req != null ? req.getParameter("captcha") : "";
         CheckCodeService captcha = CapAppContext.getBean("capCaptcha");
         return CheckStatus.SUCCESS.equals(captcha.valid(captchaData));
     }

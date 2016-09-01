@@ -10,8 +10,8 @@
 </head>
 <body>
     <script>
-          loadScript('js/system/sysparm');
-        </script>
+		loadScript('js/system/sysparm');
+	</script>
     <div>
         <div class="btns">
             <button id="qry" type="button" class="btn1">
@@ -32,7 +32,7 @@
         </div>
         <div id="gridview"></div>
         <div id="qryDailog" class="hide" title="<spring:message code="btn.query" />">
-            <form id="qform" onsubmit="return false;">
+            <form method="post" autocomplete="off" id="qform" onsubmit="return false;">
                 <table class="row-data">
                     <tr>
                         <th><spring:message code="js.parmId">
@@ -44,7 +44,7 @@
             </form>
         </div>
         <div id="editDialog" class="hide" title="<spring:message code="editDialog" />">
-            <form id="mform" onsubmit="return false;">
+            <form method="post" autocomplete="off" id="mform" onsubmit="return false;">
                 <table class="row-data">
                     <tr>
                         <th><spring:message code="js.parmId">

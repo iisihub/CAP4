@@ -12,11 +12,19 @@
 </head>
 <body>
     <script>
-          loadScript('js/sample/captcha');
-        </script>
+		loadScript('js/sample/captcha');
+	</script>
+
+
+
+
     <h1>Captcha Demo Chat</h1>
+
     <br />
-    <form onsubmit="return false;">
+
+
+
+    <form method="post" autocomplete="off" onsubmit="return false;">
         <input id="captcha" name="captcha" class="captcha" type="text" />
         <button id="submit">
             <spring:message code="captcha.001">
@@ -24,6 +32,9 @@
             </spring:message>
         </button>
     </form>
+
+
+
 </body>
 </body>
 </html>

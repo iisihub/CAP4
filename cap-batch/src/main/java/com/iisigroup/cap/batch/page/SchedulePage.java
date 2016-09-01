@@ -19,6 +19,7 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.iisigroup.cap.base.service.CodeTypeService;
 import com.iisigroup.cap.batch.model.BatchJob;
 import com.iisigroup.cap.batch.service.BatchJobService;
+import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.component.impl.CapSpringMVCRequest;
 import com.iisigroup.cap.mvc.action.BaseActionController;
+import com.iisigroup.cap.utils.CapAppContext;
+import com.iisigroup.cap.utils.CapFileUtils;
 
 /**
  * <pre>
@@ -53,12 +58,27 @@ public class SchedulePage extends BaseActionController {
     public ModelAndView notifyStatus(Locale locale, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String path = request.getPathInfo();
         Map<String, Map<String, String>> codes = codeTypeSrv.findByCodeTypes(new String[] { "jobExitCode", "timeZoneId", "schExeHost" }, locale.toString());
-        ModelAndView model = new ModelAndView(path);
+        ModelAndView model = null;
+        Request ireq = getDefaultRequest();
+        if (ireq.getEscapeStringFromValue(path).length() > 0) {
+            path = "/" + path.replaceAll("^/|applicationContext|WEB-INF", "");
+            model = new ModelAndView(CapFileUtils.getValidPath(FilenameUtils.getPath(path), FilenameUtils.getName(path)));
+        }
         for (Entry<String, Map<String, String>> c : codes.entrySet()) {
             model.addObject(c.getKey(), c.getValue());
         }
         List<BatchJob> jobs = batchSrv.listJobs();
         model.addObject("batchJob", jobs);
         return model;
+    }// ;
+
+    /**
+     * Get CapDefaultRequst
+     * 
+     * @return IRequest
+     */
+    private Request getDefaultRequest() {
+        Request cr = CapAppContext.getBean("CapDefaultRequest");
+        return cr != null ? cr : new CapSpringMVCRequest();
     }
 }

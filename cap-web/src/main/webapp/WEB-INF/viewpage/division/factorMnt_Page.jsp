@@ -10,8 +10,8 @@
 </head>
 <body>
     <script>
-          loadScript('js/division/factorMnt_Page');
-        </script>
+	loadScript('js/division/factorMnt_Page');
+</script>
     <!-- 	<div id="headerarea">
 		<div class="header_wrap">
 			<table width="100%" class="header" border="0" cellpadding="0"
@@ -46,8 +46,10 @@
     <div class="clear"></div>
     <!-- **********************************************內容 Start *******************************************-->
     <div class="tit2 color-black"></div>
+
     <div class="tabCtx-warp ui-widget-content" style="padding: 1em 1.4em;">
-        <form id="mform" onsubmit="return false;">
+
+        <form method="post" autocomplete="off" id="mform" onsubmit="return false;">
             <input type="text" class="hide" style="display: none" id="oid" name="oid" />
             <fieldset>
                 <legend>因子資訊</legend>
@@ -76,6 +78,7 @@
                     </tbody>
                 </table>
             </fieldset>
+
             <fieldset>
                 <legend>因子值域明細</legend>
                 <div class="funcContainer">
@@ -107,7 +110,7 @@
         </form>
         <!-- dialog start-->
         <div id="edit_dialog" title="因子值域明細" class="popup_cont" style="display: none">
-            <form id="facform" name="facform" onsubmit="return false;">
+            <form method="post" autocomplete="off" id="facform" name="facform" onsubmit="return false;">
                 <input type="hidden" id="mod_colId" name="mod_colId" />
                 <fieldset>
                     <legend>值域資訊</legend>

@@ -2,6 +2,7 @@ package com.iisigroup.cap.auth.provider;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
@@ -16,7 +17,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 import com.iisigroup.cap.auth.exception.CapAuthenticationException;
+import com.iisigroup.cap.security.CapSecurityContext;
+import com.iisigroup.cap.security.captcha.CapSecurityCaptcha;
 import com.iisigroup.cap.security.captcha.filter.CaptchaCaptureFilter;
+import com.iisigroup.cap.security.captcha.handler.CaptchaHandler;
+import com.iisigroup.cap.security.constants.CheckStatus;
 import com.iisigroup.cap.security.constants.SecConstants.PwdPolicyKeys;
 import com.iisigroup.cap.security.model.CapUserDetails;
 import com.iisigroup.cap.security.service.AccessControlService;
@@ -36,11 +41,13 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
         String username = String.valueOf(authentication.getPrincipal());
         String password = String.valueOf(authentication.getCredentials());
         logger.debug("Checking authentication for user {}", username);
-        logger.debug("userResponse: {}", captchaCaptureFilter.getUserCaptchaResponse());
+        HttpServletRequest req = CapSecurityContext.getUser().get("request");
+        String userCaptchaResponse = req != null ? req.getParameter("captcha") : "";
+        logger.debug("userResponse: {}", userCaptchaResponse);
         boolean captchaEnabled = isCaptchaEnabled();
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
             throw new CapAuthenticationException("No Username and/or Password Provided.", captchaEnabled);
-        } else if (captchaEnabled && StringUtils.isBlank(captchaCaptureFilter.getUserCaptchaResponse())) {
+        } else if (captchaEnabled && StringUtils.isBlank(userCaptchaResponse)) {
             throw new CapAuthenticationException("Captcha Response is Empty", captchaEnabled);
         } else {
             Map<String, String> policy = passwordService.getPasswordPolicy();
@@ -55,7 +62,9 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
             }
             // 驗證 captcha
             if (captchaEnabled) {
-                captchaPassed = accessControlService.checkCaptcha();
+                String cpatchaData = req != null ? req.getParameter("captcha") : "";
+                CapSecurityCaptcha captcha = CapAppContext.getBean(CaptchaHandler.DEFAULT_RENDER);
+                captchaPassed = CheckStatus.SUCCESS.equals(captcha.valid(cpatchaData));
                 logger.debug("Is captcha valid: " + captchaPassed);
             } else {
                 captchaPassed = true;
@@ -119,7 +128,8 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
         default:
             throw new CapAuthenticationException("Invalid User Status.", captchaEnabled, forceChangePwd);
         }
-        String agreeChange = captchaCaptureFilter.getRequest().getParameter("agreeChange");
+        HttpServletRequest req = CapSecurityContext.getUser().get("request");
+        String agreeChange = req != null ? req.getParameter("agreeChange") : "false";
         if (Boolean.valueOf(agreeChange)) {
             authedPwd = forceChangePassword(username, captchaEnabled, forceChangePwd, "");
         }
@@ -127,7 +137,11 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private void notifyPasswordChange(String userId, boolean captchaEnabled, boolean forceChangePwd) {
-        String ignoreNotify = captchaCaptureFilter.getRequest().getParameter("ignoreNotify");
+        HttpServletRequest req = CapSecurityContext.getUser().get("request");
+        if (req == null) {
+            return;
+        }
+        String ignoreNotify = req.getParameter("ignoreNotify");
         if (!Boolean.valueOf(ignoreNotify)) {
             int diff = passwordService.getPasswordChangeNotifyDay(userId) + 1;
             if (diff > 0) {
@@ -137,8 +151,12 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private String forceChangePassword(String username, boolean captchaEnabled, boolean forceChangePwd, String reason) {
-        String newPwd = captchaCaptureFilter.getRequest().getParameter("newPwd");
-        String confirm = captchaCaptureFilter.getRequest().getParameter("confirm");
+        HttpServletRequest req = CapSecurityContext.getUser().get("request");
+        if (req == null) {
+            return "";
+        }
+        String newPwd = req.getParameter("newPwd");
+        String confirm = req.getParameter("confirm");
         if (StringUtils.isBlank(newPwd) || StringUtils.isBlank(confirm)) {
             setForceChangePwd(username, true);
             throw new CapAuthenticationException(reason + CapAppContext.getMessage("error.010"), captchaEnabled, true);
@@ -169,7 +187,6 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     public void resetCaptchaFields() {
-        captchaCaptureFilter.setUserCaptchaResponse(null);
     }
 
     public CaptchaCaptureFilter getCaptchaCaptureFilter() {
@@ -197,7 +214,11 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private boolean isForceChangePwd(String username) {
-        HttpSession session = captchaCaptureFilter.getRequest().getSession();
+        HttpServletRequest req = CapSecurityContext.getUser().get("request");
+        if (req == null) {
+            return false;
+        }
+        HttpSession session = req.getSession();
         if (session.getAttribute("forceChangePwd-" + username) == null) {
             session.setAttribute("forceChangePwd-" + username, false);
         }
@@ -205,12 +226,20 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private void setForceChangePwd(String username, boolean forceChangePwd) {
-        HttpSession session = captchaCaptureFilter.getRequest().getSession();
+        HttpServletRequest req = CapSecurityContext.getUser().get("request");
+        if (req == null) {
+            return;
+        }
+        HttpSession session = req.getSession();
         session.setAttribute("forceChangePwd-" + username, forceChangePwd);
     }
 
     private int getWrountCount(String username) {
-        HttpSession session = captchaCaptureFilter.getRequest().getSession();
+        HttpServletRequest req = CapSecurityContext.getUser().get("request");
+        if (req == null) {
+            return -1;
+        }
+        HttpSession session = req.getSession();
         if (session.getAttribute("wrongCount-" + username) == null) {
             session.setAttribute("wrongCount-" + username, 0);
         }
@@ -218,17 +247,29 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private void setWrountCount(String username, int count) {
-        HttpSession session = captchaCaptureFilter.getRequest().getSession();
+        HttpServletRequest req = CapSecurityContext.getUser().get("request");
+        if (req == null) {
+            return;
+        }
+        HttpSession session = req.getSession();
         session.setAttribute("wrongCount-" + username, count);
     }
 
     private boolean isCaptchaEnabled() {
-        HttpSession session = captchaCaptureFilter.getRequest().getSession();
+        HttpServletRequest req = CapSecurityContext.getUser().get("request");
+        if (req == null) {
+            return false;
+        }
+        HttpSession session = req.getSession();
         return session.getAttribute("captchaEnabled") == null ? false : (Boolean) session.getAttribute("captchaEnabled");
     }
 
     private void setCaptchaEnabled(boolean captchaEnabled) {
-        HttpSession session = captchaCaptureFilter.getRequest().getSession();
+        HttpServletRequest req = CapSecurityContext.getUser().get("request");
+        if (req == null) {
+            return;
+        }
+        HttpSession session = req.getSession();
         session.setAttribute("captchaEnabled", captchaEnabled);
     }
 

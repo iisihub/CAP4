@@ -8,10 +8,10 @@
 </head>
 <body>
     <script>
-          loadScript('js/system/pwdpolicy');
-        </script>
+      loadScript('js/system/pwdpolicy');
+    </script>
     <div>
-        <form id="mform" onsubmit="return false;">
+        <form method="post" autocomplete="off" id="mform" onsubmit="return false;">
             <input type="text" id="oid" name="oid" class="hide" /><input type="text" id="mtype" name="mtype" class="hide" />
             <table class="row-data">
                 <tr>

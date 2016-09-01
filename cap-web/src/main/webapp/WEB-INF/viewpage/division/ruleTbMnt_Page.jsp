@@ -10,8 +10,8 @@
 </head>
 <body>
     <script>
-          loadScript('js/division/ruleTbMnt_Page');
-        </script>
+	loadScript('js/division/ruleTbMnt_Page');
+</script>
     <!-- 	<div id="headerarea">
 		<div class="header_wrap">
 			<table width="100%" class="header" border="0" cellpadding="0"
@@ -32,7 +32,7 @@
 			</table>
 		</div>
 	</div> -->
-    <form id="mform" onsubmit="return false;">
+    <form method="post" autocomplete="off" id="mform" onsubmit="return false;">
         <div class="button-menu funcContainer">
             <button type="button" id="save_btn">
                 <span class="ui-icon ui-icon-jcs-04"></span>儲存
@@ -50,7 +50,9 @@
         <div class="clear"></div>
         <!-- **********************************************內容 Start *******************************************-->
         <div class="tit2 color-black"></div>
+
         <div class="tabCtx-warp ui-widget-content" style="padding: 1em 1.4em;">
+
             <input type="text" class="hide" style="display: none" id="oid" name="oid" />
             <fieldset>
                 <legend>條件設定</legend>
@@ -71,15 +73,19 @@
                     </tbody>
                 </table>
             </fieldset>
+
             <fieldset>
                 <legend>規則資訊</legend>
+
                 <div class="RuleContainer">
                     <button type="button" id="addRuleBtn">
                         <span class="text-only">新增</span>
                     </button>
                 </div>
                 <div id="conditionGrid" class="capgrid" />
+
             </fieldset>
+
             <fieldset id="ruleMap" name="ruleMap">
                 <legend>規則組合</legend>
                 <div class="funcContainer">
@@ -108,6 +114,7 @@
                     </table>
                 </div>
             </fieldset>
+
             <fieldset>
                 <legend>異動記錄</legend>
                 <table class="tb2" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -126,7 +133,7 @@
     <!-- dialog start-->
     <!--Start : 新增修改值域-->
     <div id="factorVal_Dialog" title="編輯因子值域明細" class="popup_cont" style="display: none">
-        <form id="facform" onsubmit="return false;">
+        <form method="post" autocomplete="off" id="facform" onsubmit="return false;">
             <fieldset>
                 <legend>值域資訊</legend>
                 <table class="tb2" border="0" cellpadding="0" cellspacing="0" width="100%">

@@ -34,8 +34,11 @@
 </head>
 <body>
     <script>
-          loadScript('js/sample/websocket');
-        </script>
+		loadScript('js/sample/websocket');
+	</script>
+
+
+
     <style>
 body {
   padding: 20px;
@@ -62,17 +65,28 @@ body {
   color: #888
 }
 </style>
+
+
+
     <script>
-          
-        </script>
+		
+	</script>
+
+
     <h1>Netty-socketio Demo Chat</h1>
+
     <br />
+
     <div id="console" class="well"></div>
-    <form onsubmit="return false;">
+
+    <form method="post" autocomplete="off" onsubmit="return false;">
         <input id="msg" class="input-xlarge" type="text" placeholder="Type something..." />
         <button type="button" id="send" class="btn">Send</button>
         <button type="button" id="disconnect" class="btn">Disconnect</button>
     </form>
+
+
+
 </body>
 </body>
 </html>

@@ -11,8 +11,8 @@
 </head>
 <body>
     <script>
-          loadScript('js/batch/schedule');
-        </script>
+		loadScript('js/batch/schedule');
+	</script>
     <div>
         <div class="btns">
             <button id="qry" type="button" class="btn1">
@@ -33,7 +33,7 @@
         </div>
         <div id="gridview"></div>
         <div id="qryDailog" class="hide" title="<spring:message code="btn.query" />">
-            <form id="qform" onsubmit="return false;">
+            <form method="post" autocomplete="off" id="qform" onsubmit="return false;">
                 <table class="row-data">
                     <tr>
                         <th><spring:message code="js.schId">
@@ -45,7 +45,7 @@
             </form>
         </div>
         <div id="editDialog" class="hide" title="<spring:message code="jobs.editDialog" />">
-            <form id="mform" onsubmit="return false;">
+            <form method="post" autocomplete="off" id="mform" onsubmit="return false;">
                 <table class="row-data">
                     <tr>
                         <th><spring:message code="js.schId">
@@ -74,8 +74,9 @@
                         <th><spring:message code="js.isenable">
                                 <!--是否啟用-->
                             </spring:message></th>
-                        <td><label><input type="radio" id="isEnabled" name="isEnabled" value="Y" /> <spring:message code="js.yes" /></label> <label><input type="radio" id="isEnabled"
-                                name="isEnabled" value="N" checked="checked" /> <spring:message code="js.no" /></label></td>
+                        <td><label><input type="radio" id="isEnabled" name="isEnabled" value="Y" />
+                            <spring:message code="js.yes" /></label> <label><input type="radio" id="isEnabled" name="isEnabled" value="N" checked="checked" />
+                            <spring:message code="js.no" /></label></td>
                     </tr>
                     <tr>
                         <th><spring:message code="sch.exeHost">
@@ -103,8 +104,9 @@
                         <th><spring:message code="js.schType">
                                 <!--類別-->
                             </spring:message></th>
-                        <td><label><input type="radio" id="schType" name="schType" value="C" checked="checked" /> <spring:message code="sch.schType.C" /></label> <label><input
-                                type="radio" id="schType" name="schType" value="T" /> <spring:message code="sch.schType.T" /></label></td>
+                        <td><label><input type="radio" id="schType" name="schType" value="C" checked="checked" />
+                            <spring:message code="sch.schType.C" /></label> <label><input type="radio" id="schType" name="schType" value="T" />
+                            <spring:message code="sch.schType.T" /></label></td>
                     </tr>
                     <tr class="schTypeC show">
                         <th><spring:message code="sch.cronExpression">
@@ -141,15 +143,17 @@
                         <th><spring:message code="sch.isNotify">
                                 <!--e-mail通知-->
                             </spring:message></th>
-                        <td><label><input type="radio" id="isNotify" name="isNotify" value="Y" /> <spring:message code="js.yes" /></label> <label><input type="radio" id="isNotify"
-                                name="isNotify" value="N" checked="checked" /> <spring:message code="js.no" /></label></td>
+                        <td><label><input type="radio" id="isNotify" name="isNotify" value="Y" />
+                            <spring:message code="js.yes" /></label> <label><input type="radio" id="isNotify" name="isNotify" value="N" checked="checked" />
+                            <spring:message code="js.no" /></label></td>
                     </tr>
                     <tr class="notify hide">
                         <th><spring:message code="js.sch.jobExitCode">
                                 <!--JOB執行結果-->
                             </spring:message></th>
                         <td><c:forEach items="${jobExitCode}" var="st">
-                                <label><input type="checkbox" id="notifyStatus" name="notifyStatus" value="<c:out value="${st.key}"/>" /> <c:out value="${st.value}" /></label>
+                                <label><input type="checkbox" id="notifyStatus" name="notifyStatus" value="<c:out value="${st.key}"/>" />
+                                <c:out value="${st.value}" /></label>
                             </c:forEach></td>
                     </tr>
                     <tr class="notify hide">

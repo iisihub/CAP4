@@ -10,8 +10,8 @@
 </head>
 <body>
     <script>
-          loadScript('js/system/errorCode');
-        </script>
+		loadScript('js/system/errorCode');
+	</script>
     <div>
         <div class="btns">
             <button id="qry" type="button" class="btn1">
@@ -39,7 +39,7 @@
         <!-- dialog start-->
         <!--Start : 查詢-->
         <div id="SEARCH" style="display: none">
-            <form id="searchForm">
+            <form method="post" autocomplete="off" id="searchForm">
                 <table class="tb2" width="99%" border="0" cellspacing="0" cellpadding="0" id="searchTable">
                     <tbody>
                         <tr>
@@ -64,13 +64,15 @@
         </div>
         <!--Start : 編輯-->
         <div id="EDIT" style="display: none">
-            <form id="JForm">
+            <form method="post" autocomplete="off" id="JForm">
                 <table class="tb2" width="99%" border="0" cellspacing="0" cellpadding="0">
                     <tbody>
                         <tr>
-                            <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="js.code"></spring:message></td>
+                            <td width="20%" class="hd1"><span class="color-red">＊</span>
+                            <spring:message code="js.code"></spring:message></td>
                             <td width="30%"><input type="text" size="20" id="code" name="code" maxlength="20" class="validate[required]" /></td>
-                            <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="js.locale"></spring:message></td>
+                            <td width="20%" class="hd1"><span class="color-red">＊</span>
+                            <spring:message code="js.locale"></spring:message></td>
                             <td width="30%"><select id="locale" name="locale" combokey="lang" space="true" class="validate[required]"></select></td>
                         </tr>
                         <tr>
@@ -81,7 +83,8 @@
                                 <select id="sysId" name="sysId" combokey="subsystem" space="true" class="validate[required]"></select>
                             </td>
                              -->
-                            <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="js.severity"></spring:message></td>
+                            <td width="20%" class="hd1"><span class="color-red">＊</span>
+                            <spring:message code="js.severity"></spring:message></td>
                             <td width="30%"><select id="severity" name="severity">
                                     <option value="INFO">INFO</option>
                                     <option value="WARN">WARN</option>
@@ -89,7 +92,8 @@
                             </select></td>
                         </tr>
                         <tr>
-                            <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="js.message"></spring:message></td>
+                            <td width="20%" class="hd1"><span class="color-red">＊</span>
+                            <spring:message code="js.message"></spring:message></td>
                             <td colspan="3"><textarea type="text" rows="5" cols="50" id="message" name="message" maxlength="512" class="validate[required]"></textarea></td>
                         </tr>
                         <tr>

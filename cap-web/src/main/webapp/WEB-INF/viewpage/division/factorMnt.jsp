@@ -10,10 +10,10 @@
 </head>
 <body>
     <script>
-          loadScript('js/division/factorMnt');
-        </script>
+		loadScript('js/division/factorMnt');
+	</script>
     <div>
-        <form id="tabForm" name="tabForm">
+        <form method="post" autocomplete="off" id="tabForm" name="tabForm">
             <div class="btns" colspan="4" style="text-align: right">
                 <button id="qry" type="button" class="btn1">
                     <spring:message code="btn.query">

@@ -10,8 +10,8 @@
 </head>
 <body>
     <script>
-          loadScript('js/batch/jobs');
-        </script>
+		loadScript('js/batch/jobs');
+	</script>
     <div>
         <div class="btns">
             <button id="qry" type="button" class="btn1">
@@ -42,7 +42,7 @@
         </div>
         <div id="gridview"></div>
         <div id="qryDailog" class="hide" title="<spring:message code="btn.query" />">
-            <form id="qform" onsubmit="return false;">
+            <form method="post" autocomplete="off" id="qform" onsubmit="return false;">
                 <table class="row-data">
                     <tr>
                         <th><spring:message code="js.jobId">
@@ -54,7 +54,7 @@
             </form>
         </div>
         <div id="editDialog" class="hide" title="<spring:message code="jobs.editDialog" />">
-            <form id="mform" onsubmit="return false;">
+            <form method="post" autocomplete="off" id="mform" onsubmit="return false;">
                 <table class="row-data">
                     <tr>
                         <th><spring:message code="js.jobId">
@@ -78,7 +78,7 @@
             </form>
         </div>
         <div id="exeDailog" class="hide" title="<spring:message code="btn.jobExecute" />">
-            <form id="exeform" onsubmit="return false;">
+            <form method="post" autocomplete="off" id="exeform" onsubmit="return false;">
                 <table class="row-data">
                     <tr>
                         <th><spring:message code="js.jobId">
@@ -89,7 +89,8 @@
                     <tr>
                         <th><spring:message code="label.jobParameter">
                                 <!--排程參數-->
-                            </spring:message><br /> <br /></th>
+                            </spring:message><br />
+                        <br /></th>
                         <td><textarea id="jobParams" name="jobParams" cols="50" rows="4" maxlength="1000" class="validate[funcCall[maxUTF8[1000]]]"></textarea>
                             <div class="memo">
                                 keyA=valueA<br />keyB=valueB

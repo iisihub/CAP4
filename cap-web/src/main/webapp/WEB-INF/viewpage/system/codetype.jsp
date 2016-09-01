@@ -10,10 +10,10 @@
 </head>
 <body>
     <script>
-          loadScript('js/system/codetype');
-        </script>
+		loadScript('js/system/codetype');
+	</script>
     <div>
-        <form id="mform" onsubmit="return false;">
+        <form method="post" autocomplete="off" id="mform" onsubmit="return false;">
             <!--<fieldset class="row">
                 -->
             <input type="text" id="oid" name="oid" class="hide" /><input type="text" id="mtype" name="mtype" class="hide" />

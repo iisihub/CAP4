@@ -18,6 +18,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 
 /**
  * <pre>
@@ -135,15 +136,18 @@ public class CapSerialization {
         }
         ByteArrayInputStream bais = null;
         ObjectInputStream ois = null;
+        ValidatingObjectInputStream vois = null;
         try {
             bais = compress ? new ByteArrayInputStream(decompress(in)) : new ByteArrayInputStream(in);
 
             ois = new ObjectInputStream(bais);
-            Object o = ois.readObject();
+            vois = new ValidatingObjectInputStream(ois);
+            Object o = vois.accept("*").readObject();
             return o;
         } catch (Exception e) {
             e.getMessage();
         } finally {
+            IOUtils.closeQuietly(vois);
             IOUtils.closeQuietly(ois);
             IOUtils.closeQuietly(bais);
         }

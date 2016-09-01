@@ -15,11 +15,11 @@ $.extend(Properties || {}, {
     rowList : []
   },
   custLoadPageInit : function(isSubPage) {
-    //for captcha start
+    // for captcha start
     this.find(".captcha").each(function() {
       var dom = $(this);
       var img = $("<img />", {
-        src : url("captcha.png?cc=" + parseInt(Math.random() * 1000)),
+        src : url("captcha.png?cc=" + API.getTimestamp()),
         css : {
           height : 24,
           weight : 60
@@ -27,7 +27,7 @@ $.extend(Properties || {}, {
       });
       dom.bind("refresh", function() {
         dom.val("");
-        img.attr("src", url("captcha.png?cc=" + parseInt(Math.random() * 1000)));
+        img.attr("src", url("captcha.png?cc=" + API.getTimestamp()));
       });
       var refresh = $("<img />", {
         src : url("static/images/refresh.png"),
@@ -41,7 +41,7 @@ $.extend(Properties || {}, {
       });
       dom.after(refresh).after(img);
     });
-    //for captcha end
+    // for captcha end
   },
   timeOut : 'TIME_OUT',
   remindTimeout : false

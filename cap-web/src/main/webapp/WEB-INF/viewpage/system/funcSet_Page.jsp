@@ -10,8 +10,8 @@
 </head>
 <body>
     <script>
-          loadScript('js/system/funcSet_Page');
-        </script>
+		loadScript('js/system/funcSet_Page');
+	</script>
     <div class="button-menu funcContainer">
         <button type="button" id="save_btn">
             <spring:message code="btn.save"></spring:message>
@@ -25,7 +25,7 @@
     <div class="clear"></div>
     <!--Start : 編輯-->
     <div id="EDIT">
-        <form id="JForm">
+        <form method="post" autocomplete="off" id="JForm">
             <fieldset>
                 <legend>
                     <spring:message code="func"></spring:message>
@@ -33,29 +33,37 @@
                 <table class="tb2" width="99%" border="0" cellspacing="0" cellpadding="0">
                     <tbody>
                         <tr>
-                            <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="sysType"></spring:message></td>
+                            <td width="20%" class="hd1"><span class="color-red">＊</span>
+                            <spring:message code="sysType"></spring:message></td>
                             <td width="30%"><select id="sysType" name="sysType" combokey="authSysId" combotype="2" class="validate[required]"></select> <select id="sysCode" combokey="sysType"
                                 class="hide"></select></td>
-                            <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="js.funclevel"></spring:message></td>
+                            <td width="20%" class="hd1"><span class="color-red">＊</span>
+                            <spring:message code="js.funclevel"></spring:message></td>
                             <td width="30%"><select id="level" name="level" combokey="funcLevel" combotype="2" class="validate[required]"></select></td>
                         </tr>
                         <tr>
-                            <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="js.funccode"></spring:message></td>
+                            <td width="20%" class="hd1"><span class="color-red">＊</span>
+                            <spring:message code="js.funccode"></spring:message></td>
                             <td width="30%"><span id="FUNC"></span><input type="text" size="6" id="FUNCCODE" name="FUNCCODE" maxlength="4" class="validate[required]" /><input type="text"
                                 id="code" name="code" class="hide" /></td>
-                            <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="js.funcname"></spring:message></td>
+                            <td width="20%" class="hd1"><span class="color-red">＊</span>
+                            <spring:message code="js.funcname"></spring:message></td>
                             <td width="30%"><input type="text" size="15" id="name" name="name" maxlength="162" class="validate[required]" /></td>
                         </tr>
                         <tr>
-                            <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="parent"></spring:message></td>
+                            <td width="20%" class="hd1"><span class="color-red">＊</span>
+                            <spring:message code="parent"></spring:message></td>
                             <td><select id="parent" name="parent" class="validate[required]"></select></td>
-                            <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="js.funcsequence"></spring:message></td>
+                            <td width="20%" class="hd1"><span class="color-red">＊</span>
+                            <spring:message code="js.funcsequence"></spring:message></td>
                             <td><input type="text" id="sequence" name="sequence" size="5" maxlength="5" class="validate[required] number"></td>
                         </tr>
                         <tr>
-                            <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="funcstatus"></spring:message></td>
-                            <td colspan="3"><input type="radio" id="status" name="status" class="validate[required]" value="1" /> <spring:message code="on"></spring:message> <input type="radio"
-                                id="status" name="status" class="validate[required]" value="0" /> <spring:message code="off"></spring:message></td>
+                            <td width="20%" class="hd1"><span class="color-red">＊</span>
+                            <spring:message code="funcstatus"></spring:message></td>
+                            <td colspan="3"><input type="radio" id="status" name="status" class="validate[required]" value="1" />
+                            <spring:message code="on"></spring:message> <input type="radio" id="status" name="status" class="validate[required]" value="0" />
+                            <spring:message code="off"></spring:message></td>
                             <!-- <td width="20%" class="hd1">
 	                            	<span class="color-red">＊</span><spring:message code="autoFlag"></spring:message></td>
 	                            <td>
@@ -95,7 +103,7 @@
         </form>
     </div>
     <div id="editRole" style="display: none">
-        <form id="mform">
+        <form method="post" autocomplete="off" id="mform">
             <div id="gridviewRole"></div>
         </form>
     </div>

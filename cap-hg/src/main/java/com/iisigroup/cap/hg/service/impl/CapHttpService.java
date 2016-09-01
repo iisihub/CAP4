@@ -200,21 +200,40 @@ public class CapHttpService extends AbstractHGservice {
         logger.debug("Send Host spand time1: " + (System.currentTimeMillis() - st) + "ms");
         httpStatus = httpResponse.getStatusLine().getStatusCode();
 
-        HttpEntity entity = httpResponse.getEntity();
+        HttpEntity entity = null;
 
-        if (entity != null) {
-            InputStream instream = entity.getContent();
-            try {
+        InputStream instream = entity.getContent();
+        try {
+            entity = httpResponse.getEntity();
+            if (entity != null) {
+
                 responseData = IOUtils.toByteArray(instream);
 
                 // responseData = StringUtils.join(IOUtils.readLines(instream,
                 // defaultEncode).toArray());
-
-            } catch (RuntimeException ex) {
-                httpPost.abort();
-                throw ex;
-            } finally {
+            }
+        } catch (RuntimeException ex) {
+            httpPost.abort();
+            throw ex;
+        } finally {
+            try {
                 instream.close();
+            } catch (IOException e) {
+            }
+
+            if (entity != null) {
+                try {
+                    entity.getContent().close();
+                    entity = null;
+                } catch (IOException ex) {
+                }
+            }
+            if (httpResponse != null) {
+                try {
+                    httpResponse.getEntity().getContent();
+                    httpResponse = null;
+                } catch (IOException ex) {
+                }
             }
 
             httpClient.getConnectionManager().shutdown();

@@ -10,8 +10,8 @@
 </head>
 <body>
     <script>
-          loadScript('js/division/conditionMnt_Page');
-        </script>
+	loadScript('js/division/conditionMnt_Page');
+</script>
     <!-- 	<div id="headerarea">
 		<div class="header_wrap">
 			<table width="100%" class="header" border="0" cellpadding="0"
@@ -46,8 +46,9 @@
     <div class="clear"></div>
     <!-- **********************************************內容 Start *******************************************-->
     <div class="tit2 color-black"></div>
+
     <div class="tabCtx-warp ui-widget-content" style="padding: 1em 1.4em;">
-        <form id="mform" onsubmit="return false;">
+        <form method="post" autocomplete="off" id="mform" onsubmit="return false;">
             <input type="text" class="hide" style="display: none" id="oid" name="oid" />
             <fieldset>
                 <legend>條件設定</legend>
@@ -68,6 +69,7 @@
                     </tbody>
                 </table>
             </fieldset>
+
             <fieldset>
                 <legend>條件內容資訊</legend>
                 <button id="add_btn" type="button">
@@ -90,6 +92,7 @@
                         </tr>
                     </tbody>
                 </table>
+
                 <div class="funcContainer">
                     <button id="del_btn" type="button">
                         <span class="text-only">刪除</span>
@@ -131,10 +134,11 @@
                 </tbody>
             </table>
         </fieldset>
+
         <!-- dialog start-->
         <!--Start : 新增修改值域-->
         <div id="factorVal_Dialog" title="編輯因子值域明細" class="popup_cont" style="display: none">
-            <form id="facform" onsubmit="return false;">
+            <form method="post" autocomplete="off" id="facform" onsubmit="return false;">
                 <fieldset>
                     <legend>值域資訊</legend>
                     <table class="tb2" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -215,6 +219,7 @@
         <!-- dialog end-->
         <!-- dialog start-->
         <!--Start : 啟動停用-->
+
         <!-- dialog end-->
     </div>
     <!-- **********************************************內容 end *******************************************-->
