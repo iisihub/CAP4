@@ -48,7 +48,7 @@ public class CapUserDetails implements UserDetails {
     private JSONArray menu;
     private Locale locale;
     private String status;
-    private Map<String, Object> extraAttrib;
+    private Map<String, Object> extraAttrib = new HashMap<String, Object>();
 
     private Collection<GrantedAuthority> authorities;
 
@@ -64,7 +64,9 @@ public class CapUserDetails implements UserDetails {
         this.roles.putAll(roles);
         this.locale = user.getLocale();
         this.status = user.getStatus();
-        this.extraAttrib = new HashMap<String, Object>();
+        if (this.extraAttrib == null) {
+            this.extraAttrib = new HashMap<String, Object>();
+        }
         setAuthorities(roles);
     }
 
