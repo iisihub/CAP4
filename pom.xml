@@ -25,6 +25,12 @@
                 <groupId>com.iisigroup.cap</groupId>
                 <artifactId>cap-core</artifactId>
                 <version>${project.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.ibm.icu</groupId>
+                        <artifactId>icu4j</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.iisigroup.cap</groupId>
