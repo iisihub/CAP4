@@ -3,7 +3,7 @@
     <parent>
         <artifactId>cap</artifactId>
         <groupId>com.iisigroup.cap</groupId>
-        <version>4.0.0b</version>
+        <version>4.0.0b-abc-1609201540</version>
     </parent>
     <artifactId>cap-batch</artifactId>
     <properties>
