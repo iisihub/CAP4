@@ -3,7 +3,8 @@ require.config({
   paths : {
     'json3' : 'lib/js/json3.min',
     'socketio' : 'lib/js/socket.io',
-    'jquery' : 'lib/js/jquery/jquery-1.10.2',
+    'jquery' : 'http://code.jquery.com/jquery-1.11.3.js',
+    'jquery-migrate-1' : 'http://code.jquery.com/jquery-migrate-1.4.1.js',
     'jquery-ui' : 'lib/js/jquery/ui/js/jquery-ui-1.10.4.custom.min',
     'jqgrid-i18n' : 'lib/js/jquery/plugin/jquery.jqGrid-4.5.4/js/i18n/grid.locale-tw',
     'jqgrid' : 'lib/js/jquery/plugin/jquery.jqGrid-4.5.4/js/jquery.jqGrid.min',
@@ -30,7 +31,8 @@ require.config({
     'sceditor' : [ 'jquery' ],
     'ifvisible' : [ 'jquery' ],
     'timer' : [ 'jquery' ],
-    'fullcalendar' : [ 'jquery' ]
+    'fullcalendar' : [ 'jquery' ],
+    'jquery-migrate-1' : [ 'jquery' ]
   }
 });
 
