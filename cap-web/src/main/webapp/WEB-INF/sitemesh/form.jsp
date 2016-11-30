@@ -5,8 +5,10 @@
  | Follow us on twitter: @springfuse
  | Template pack-mvc-3-sd:src/main/webapp/WEB-INF/sitemesh/minimal.p.vm.jsp
 --%>
-<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%><html>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
 <head>
 <link rel="stylesheet" href="../../static/css/main.css" />
 <link rel="stylesheet" href="../../static/css/form.css" />
