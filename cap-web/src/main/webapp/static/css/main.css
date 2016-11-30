@@ -1,76 +1,357 @@
 @charset "UTF-8";
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+/*
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom. */
+html {
+  font-family: sans-serif;
+  /* 1 */
+  -ms-text-size-adjust: 100%;
+  /* 2 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */
+}
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong,
-  sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption,
-  footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+/*
+ * Remove default margin. */
+body {
   margin: 0;
-  padding: 0;
-  border: 0;
-  font: inherit;
-  font-size: 100%;
+}
+
+/* HTML5 display definitions
+ * ========================================================================== */
+/*
+ * Correct `block` display not defined for any HTML5 element in IE 8/9.
+ * Correct `block` display not defined for `details` or `summary` in IE 10/11
+ * and Firefox.
+ * Correct `block` display not defined for `main` in IE 11. */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block;
+}
+
+/*
+ * 1. Correct `inline-block` display not defined in IE 8/9.
+ * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera. */
+audio, canvas, progress, video {
+  display: inline-block;
+  /* 1 */
+  vertical-align: baseline;
+  /* 2 */
+}
+
+/*
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices. */
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+/*
+ * Address `[hidden]` styling not present in IE 8/9/10.
+ * Hide the `template` element in IE 8/9/11, Safari, and Firefox < 22. */
+[hidden], template {
+  display: none;
+}
+
+/* Links
+ * ========================================================================== */
+/*
+ * Remove the gray background color from active links in IE 10. */
+a {
+  background-color: transparent;
+}
+a:active, a:hover {
+  outline: 0;
+}
+
+/*
+ * Improve readability when focused and also mouse hovered in all browsers. */
+/* Text-level semantics
+ * ========================================================================== */
+/*
+ * Address styling not present in IE 8/9/10/11, Safari, and Chrome. */
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+
+/*
+ * Address style set to `bolder` in Firefox 4+, Safari, and Chrome. */
+b, strong {
+  font-weight: bold;
+}
+
+/*
+ * Address styling not present in Safari and Chrome. */
+dfn {
+  font-style: italic;
+}
+
+/*
+ * Address variable `h1` font-size and margin within `section` and `article`
+ * contexts in Firefox 4+, Safari, and Chrome. */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+/*
+ * Address styling not present in IE 8/9. */
+mark {
+  background: yellow;
+  color: black;
+}
+
+/*
+ * Address inconsistent and variable font size in all browsers. */
+small {
+  font-size: 80%;
+}
+
+/*
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers. */
+sub {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
   vertical-align: baseline;
 }
 
-html {
-  line-height: 1;
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+/* Embedded content
+ * ========================================================================== */
+/*
+ * Remove border when inside `a` element in IE 8/9/10. */
+img {
+  border: 0;
+}
+
+/*
+ * Correct overflow not hidden in IE 9/10/11. */
+svg:not(:root) {
+  overflow: hidden;
+}
+
+/* Grouping content
+ * ========================================================================== */
+/*
+ * Address margin not present in IE 8/9 and Safari. */
+figure {
+  margin: 1em 40px;
+}
+
+/*
+ * Address differences between Firefox and other browsers. */
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+
+/*
+ * Contain overflow in all browsers. */
+pre {
+  overflow: auto;
+}
+
+/*
+ * Address odd `em`-unit font size rendering in all browsers. */
+code, kbd, pre, samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+/* Forms
+ * ========================================================================== */
+/*
+ * Known limitation: by default, Chrome and Safari on OS X allow very limited
+ * styling of `select`, unless a `border` property is set. */
+/*
+ * 1. Correct color not being inherited.
+ *    Known issue: affects color of disabled elements.
+ * 2. Correct font properties not being inherited.
+ * 3. Address margins set differently in Firefox 4+, Safari, and Chrome. */
+button, input, optgroup, select, textarea {
+  color: inherit;
+  /* 1 */
+  font: inherit;
+  /* 2 */
+  margin: 0;
+  /* 3 */
+}
+
+/*
+ * Address `overflow` set to `hidden` in IE 8/9/10/11. */
+button {
+  overflow: visible;
+  text-transform: none;
+}
+
+/*
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
+ * Correct `select` style inheritance in Firefox. */
+select {
+  text-transform: none;
+}
+
+/*
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others. */
+button, html input[type="button"] {
+  -webkit-appearance: button;
+  /* 2 */
+  cursor: pointer;
+  /* 3 */
+}
+
+input[type="reset"], input[type="submit"] {
+  -webkit-appearance: button;
+  /* 2 */
+  cursor: pointer;
+  /* 3 */
+}
+
+/*
+ * Re-set default cursor for disabled elements. */
+button[disabled], html input[disabled] {
+  cursor: default;
+}
+
+/*
+ * Remove inner padding and border in Firefox 4+. */
+button::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+input {
+  line-height: normal;
+}
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+input[type="checkbox"], input[type="radio"] {
+  box-sizing: border-box;
+  /* 1 */
+  padding: 0;
+  /* 2 */
+}
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+input[type="search"] {
+  -webkit-appearance: textfield;
+  /* 1 */
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  /* 2 */
+  box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet. */
+/*
+ * It's recommended that you don't attempt to style these elements.
+ * Firefox's implementation doesn't respect box-sizing, padding, or width.
+ *
+ * 1. Address box sizing set to `content-box` in IE 8/9/10.
+ * 2. Remove excess padding in IE 8/9/10. */
+/*
+ * Fix the cursor style for Chrome's increment/decrement buttons. For certain
+ * `font-size` values of the `input`, it causes the cursor style of the
+ * decrement button to change from `default` to `text`. */
+/*
+ * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari and Chrome
+ *    (include `-moz` to future-proof). */
+/*
+ * Remove inner padding and search cancel button in Safari and Chrome on OS X.
+ * Safari (but not Chrome) clips the cancel button when the search input has
+ * padding (and `textfield` appearance). */
+/*
+ * Define consistent border, margin, and padding. */
+fieldset {
+  border: 1px solid silver;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+
+/*
+ * 1. Correct `color` not being inherited in IE 8/9/10/11.
+ * 2. Remove padding so people aren't caught out if they zero out fieldsets. */
+legend {
+  border: 0;
+  /* 1 */
+  padding: 0;
+  /* 2 */
+}
+
+/*
+ * Remove default vertical scrollbar in IE 8/9/10/11. */
+textarea {
+  overflow: auto;
+}
+
+/*
+ * Don't inherit the `font-weight` (applied by a rule above).
+ * NOTE: the default cannot safely be changed in Chrome and Safari on OS X. */
+optgroup {
+  font-weight: bold;
+}
+
+/* Tables
+ * ========================================================================== */
+/*
+ * Remove most spacing between table cells. */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td, th {
+  padding: 0;
 }
 
 ol, ul {
   list-style: none;
 }
 
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-caption, th, td {
-  text-align: left;
-  font-weight: normal;
-  vertical-align: middle;
-}
-
-q, blockquote {
-  quotes: none;
-}
-
-q:before, q:after, blockquote:before, blockquote:after {
-  content: "";
-  content: none;
-}
-
-a img {
-  border: none;
-}
-
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
-  display: block;
-}
-
-a {
-  cursor: pointer;
-}
-
-/*!
- * jQuery UI CSS Framework 1.10.4
- * http://jqueryui.com
- *
- * Copyright 2014 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/category/theming/
- */
-
+/*! jQuery UI - v1.10.4 - 2014-01-22
+ ** http://jqueryui.com
+ ** Includes: jquery.ui.core.css, jquery.ui.resizable.css, jquery.ui.selectable.css, jquery.ui.accordion.css, jquery.ui.autocomplete.css, jquery.ui.button.css, jquery.ui.datepicker.css, jquery.ui.dialog.css, jquery.ui.menu.css, jquery.ui.progressbar.css, jquery.ui.slider.css, jquery.ui.spinner.css, jquery.ui.tabs.css, jquery.ui.tooltip.css, jquery.ui.theme.css
+ ** To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Trebuchet%20MS%2CTahoma%2CVerdana%2CArial%2Csans-serif&fwDefault=bold&fsDefault=1.1em&cornerRadius=4px&bgColorHeader=f6a828&bgTextureHeader=gloss_wave&bgImgOpacityHeader=35&borderColorHeader=e78f08&fcHeader=ffffff&iconColorHeader=ffffff&bgColorContent=eeeeee&bgTextureContent=highlight_soft&bgImgOpacityContent=100&borderColorContent=dddddd&fcContent=333333&iconColorContent=222222&bgColorDefault=f6f6f6&bgTextureDefault=glass&bgImgOpacityDefault=100&borderColorDefault=cccccc&fcDefault=1c94c4&iconColorDefault=ef8c08&bgColorHover=fdf5ce&bgTextureHover=glass&bgImgOpacityHover=100&borderColorHover=fbcb09&fcHover=c77405&iconColorHover=ef8c08&bgColorActive=ffffff&bgTextureActive=glass&bgImgOpacityActive=65&borderColorActive=fbd850&fcActive=eb8f00&iconColorActive=ef8c08&bgColorHighlight=ffe45c&bgTextureHighlight=highlight_soft&bgImgOpacityHighlight=75&borderColorHighlight=fed22f&fcHighlight=363636&iconColorHighlight=228ef1&bgColorError=b81900&bgTextureError=diagonals_thick&bgImgOpacityError=18&borderColorError=cd0a0a&fcError=ffffff&iconColorError=ffd27a&bgColorOverlay=666666&bgTextureOverlay=diagonals_thick&bgImgOpacityOverlay=20&opacityOverlay=50&bgColorShadow=000000&bgTextureShadow=flat&bgImgOpacityShadow=10&opacityShadow=20&thicknessShadow=5px&offsetTopShadow=-5px&offsetLeftShadow=-5px&cornerRadiusShadow=5px
+ ** Copyright 2014 jQuery Foundation and other contributors; Licensed MIT */
 /* Layout helpers
-----------------------------------*/
+ *---------------------------------- */
 .ui-helper-hidden {
   display: none;
 }
 
 .ui-helper-hidden-accessible {
   border: 0;
-  clip: rect(0, 0, 0, 0);
+  clip: rect(0 0 0 0);
   height: 1px;
   margin: -1px;
   overflow: hidden;
@@ -90,18 +371,20 @@ a {
   list-style: none;
 }
 
-.ui-helper-clearfix:before, .ui-helper-clearfix:after {
+.ui-helper-clearfix {
+  min-height: 0;
+  /* support: IE7 */
+}
+.ui-helper-clearfix:before {
   content: "";
   display: table;
   border-collapse: collapse;
 }
-
 .ui-helper-clearfix:after {
+  content: "";
+  display: table;
+  border-collapse: collapse;
   clear: both;
-}
-
-.ui-helper-clearfix {
-  min-height: 0; /* support: IE7 */
 }
 
 .ui-helper-zfix {
@@ -111,22 +394,21 @@ a {
   left: 0;
   position: absolute;
   opacity: 0;
-  filter: Alpha(Opacity = 0);
+  filter: Alpha(Opacity=0);
 }
 
 .ui-front {
-  z-index: 1000 !important;
+  z-index: 100;
 }
 
 /* Interaction Cues
-----------------------------------*/
+ *---------------------------------- */
 .ui-state-disabled {
   cursor: default !important;
 }
 
 /* Icons
-----------------------------------*/
-
+ *---------------------------------- */
 /* states and images */
 .ui-icon {
   display: block;
@@ -136,8 +418,7 @@ a {
 }
 
 /* Misc visuals
-----------------------------------*/
-
+ *---------------------------------- */
 /* Overlays */
 .ui-widget-overlay {
   position: fixed;
@@ -147,59 +428,775 @@ a {
   height: 100%;
 }
 
-/*
- * jQuery UI CSS Framework 1.8.16
- *
- * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
- *
- * http://docs.jquery.com/UI/Theming/API
- *
- * To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Arial,sans-serif&fwDefault=bold&fsDefault=1.1em&cornerRadius=6px&bgColorHeader=cc0000&bgTextureHeader=14_loop.png&bgImgOpacityHeader=15&borderColorHeader=e3a1a1&fcHeader=ffffff&iconColorHeader=ffffff&bgColorContent=ffffff&bgTextureContent=01_flat.png&bgImgOpacityContent=75&borderColorContent=eeeeee&fcContent=080808&iconColorContent=cc0000&bgColorDefault=eeeeee&bgTextureDefault=15_carbon_fiber.png&bgImgOpacityDefault=100&borderColorDefault=d8dcdf&fcDefault=004276&iconColorDefault=cc0000&bgColorHover=f6f6f6&bgTextureHover=04_highlight_hard.png&bgImgOpacityHover=100&borderColorHover=cdd5da&fcHover=111111&iconColorHover=cc0000&bgColorActive=ffffff&bgTextureActive=01_flat.png&bgImgOpacityActive=65&borderColorActive=eeeeee&fcActive=cc0000&iconColorActive=cc0000&bgColorHighlight=fbf8ee&bgTextureHighlight=11_white_lines.png&bgImgOpacityHighlight=55&borderColorHighlight=fcd3a1&fcHighlight=444444&iconColorHighlight=004276&bgColorError=f3d8d8&bgTextureError=08_diagonals_thick.png&bgImgOpacityError=75&borderColorError=cc0000&fcError=2e2e2e&iconColorError=cc0000&bgColorOverlay=a6a6a6&bgTextureOverlay=09_dots_small.png&bgImgOpacityOverlay=65&opacityOverlay=40&bgColorShadow=333333&bgTextureShadow=01_flat.png&bgImgOpacityShadow=0&opacityShadow=10&thicknessShadow=8px&offsetTopShadow=-8px&offsetLeftShadow=-8px&cornerRadiusShadow=8px
- */
-/* Component containers
-----------------------------------*/
-.ui-widget {
-  font-family: Arial, sans-serif;
-  font-size: 1.1em;
+.ui-resizable {
+  position: relative;
 }
 
+.ui-resizable-handle {
+  position: absolute;
+  font-size: 0.1px;
+  display: block;
+}
+
+.ui-resizable-disabled .ui-resizable-handle, .ui-resizable-autohide .ui-resizable-handle {
+  display: none;
+}
+
+.ui-resizable-n {
+  cursor: n-resize;
+  height: 7px;
+  width: 100%;
+  top: -5px;
+  left: 0;
+}
+
+.ui-resizable-s {
+  cursor: s-resize;
+  height: 7px;
+  width: 100%;
+  bottom: -5px;
+  left: 0;
+}
+
+.ui-resizable-e {
+  cursor: e-resize;
+  width: 7px;
+  right: -5px;
+  top: 0;
+  height: 100%;
+}
+
+.ui-resizable-w {
+  cursor: w-resize;
+  width: 7px;
+  left: -5px;
+  top: 0;
+  height: 100%;
+}
+
+.ui-resizable-se {
+  cursor: se-resize;
+  width: 12px;
+  height: 12px;
+  right: 1px;
+  bottom: 1px;
+}
+
+.ui-resizable-sw {
+  cursor: sw-resize;
+  width: 9px;
+  height: 9px;
+  left: -5px;
+  bottom: -5px;
+}
+
+.ui-resizable-nw {
+  cursor: nw-resize;
+  width: 9px;
+  height: 9px;
+  left: -5px;
+  top: -5px;
+}
+
+.ui-resizable-ne {
+  cursor: ne-resize;
+  width: 9px;
+  height: 9px;
+  right: -5px;
+  top: -5px;
+}
+
+.ui-selectable-helper {
+  position: absolute;
+  z-index: 100;
+  border: 1px dotted black;
+}
+
+.ui-accordion .ui-accordion-header {
+  display: block;
+  cursor: pointer;
+  position: relative;
+  margin-top: 2px;
+  padding: 0.5em 0.5em 0.5em 0.7em;
+  min-height: 0;
+  /* support: IE7 */
+}
+.ui-accordion .ui-accordion-icons {
+  padding-left: 2.2em;
+}
+.ui-accordion .ui-accordion-noicons {
+  padding-left: 0.7em;
+}
+.ui-accordion .ui-accordion-icons .ui-accordion-icons {
+  padding-left: 2.2em;
+}
+.ui-accordion .ui-accordion-header .ui-accordion-header-icon {
+  position: absolute;
+  left: 0.5em;
+  top: 50%;
+  margin-top: -8px;
+}
+.ui-accordion .ui-accordion-content {
+  padding: 1em 2.2em;
+  border-top: 0;
+  overflow: auto;
+}
+
+.ui-autocomplete {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: default;
+}
+
+.ui-button {
+  display: inline-block;
+  position: relative;
+  padding: 0;
+  line-height: normal;
+  margin-right: 0.1em;
+  cursor: pointer;
+  vertical-align: middle;
+  text-align: center;
+  overflow: visible;
+  /* removes extra width in IE */
+  text-decoration: none;
+}
+.ui-button:link, .ui-button:visited, .ui-button:hover, .ui-button:active {
+  text-decoration: none;
+}
+
+/* to make room for the icon, a width needs to be set here */
+.ui-button-icon-only {
+  width: 2.2em;
+}
+
+/* button elements seem to need a little more width */
+button.ui-button-icon-only {
+  width: 2.4em;
+}
+
+.ui-button-icons-only {
+  width: 3.4em;
+}
+
+button.ui-button-icons-only {
+  width: 3.7em;
+}
+
+/* button text element */
+.ui-button .ui-button-text {
+  display: block;
+  line-height: normal;
+}
+
+.ui-button-text-only .ui-button-text {
+  padding: 0.4em 1em;
+}
+
+.ui-button-icon-only .ui-button-text, .ui-button-icons-only .ui-button-text {
+  padding: 0.4em;
+  text-indent: -9999999px;
+}
+
+.ui-button-text-icon-primary .ui-button-text, .ui-button-text-icons .ui-button-text {
+  padding: 0.4em 1em 0.4em 2.1em;
+}
+
+.ui-button-text-icon-secondary .ui-button-text {
+  padding: 0.4em 2.1em 0.4em 1em;
+}
+
+.ui-button-text-icons .ui-button-text {
+  padding: 0.4em 2.1em 0.4em 1em;
+  padding-left: 2.1em;
+  padding-right: 2.1em;
+}
+
+/* no icon support for input elements, provide padding by default */
+input.ui-button {
+  padding: 0.4em 1em;
+}
+
+/* button icon element(s) */
+.ui-button-icon-only .ui-icon, .ui-button-text-icon-primary .ui-icon, .ui-button-text-icon-secondary .ui-icon, .ui-button-text-icons .ui-icon, .ui-button-icons-only .ui-icon {
+  position: absolute;
+  top: 50%;
+  margin-top: -8px;
+}
+
+.ui-button-icon-only .ui-icon {
+  left: 50%;
+  margin-left: -8px;
+}
+
+.ui-button-text-icon-primary .ui-button-icon-primary, .ui-button-text-icons .ui-button-icon-primary, .ui-button-icons-only .ui-button-icon-primary {
+  left: 0.5em;
+}
+
+.ui-button-text-icon-secondary .ui-button-icon-secondary, .ui-button-text-icons .ui-button-icon-secondary, .ui-button-icons-only .ui-button-icon-secondary {
+  right: 0.5em;
+}
+
+/* button sets */
+.ui-buttonset {
+  margin-right: 7px;
+}
+.ui-buttonset .ui-button {
+  margin-left: 0;
+  margin-right: -0.3em;
+}
+
+/* workarounds */
+/* reset extra padding in Firefox, see h5bp.com/l */
+input.ui-button::-moz-focus-inner, button.ui-button::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+.ui-datepicker {
+  width: 17em;
+  padding: 0.2em 0.2em 0;
+  display: none;
+}
+.ui-datepicker .ui-datepicker-header {
+  position: relative;
+  padding: 0.2em 0;
+}
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
+  position: absolute;
+  top: 2px;
+  width: 1.8em;
+  height: 1.8em;
+}
+.ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover {
+  top: 1px;
+}
+.ui-datepicker .ui-datepicker-prev {
+  left: 2px;
+}
+.ui-datepicker .ui-datepicker-next {
+  right: 2px;
+}
+.ui-datepicker .ui-datepicker-prev-hover {
+  left: 1px;
+}
+.ui-datepicker .ui-datepicker-next-hover {
+  right: 1px;
+}
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span {
+  display: block;
+  position: absolute;
+  left: 50%;
+  margin-left: -8px;
+  top: 50%;
+  margin-top: -8px;
+}
+.ui-datepicker .ui-datepicker-title {
+  margin: 0 2.3em;
+  line-height: 1.8em;
+  text-align: center;
+}
+.ui-datepicker .ui-datepicker-title select {
+  font-size: 1em;
+  margin: 1px 0;
+}
+.ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+  width: 49%;
+}
+.ui-datepicker table {
+  width: 100%;
+  font-size: 0.9em;
+  border-collapse: collapse;
+  margin: 0 0 0.4em;
+}
+.ui-datepicker th {
+  padding: 0.7em 0.3em;
+  text-align: center;
+  font-weight: bold;
+  border: 0;
+}
+.ui-datepicker td {
+  border: 0;
+  padding: 1px;
+}
+.ui-datepicker td span, .ui-datepicker td a {
+  display: block;
+  padding: 0.2em;
+  text-align: right;
+  text-decoration: none;
+}
+.ui-datepicker .ui-datepicker-buttonpane {
+  background-image: none;
+  margin: 0.7em 0 0 0;
+  padding: 0 0.2em;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+.ui-datepicker .ui-datepicker-buttonpane button {
+  float: right;
+  margin: 0.5em 0.2em 0.4em;
+  cursor: pointer;
+  padding: 0.2em 0.6em 0.3em 0.6em;
+  width: auto;
+  overflow: visible;
+}
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
+  float: left;
+}
+.ui-datepicker.ui-datepicker-multi {
+  width: auto;
+}
+
+/* with multiple calendars */
+.ui-datepicker-multi .ui-datepicker-group {
+  float: left;
+}
+.ui-datepicker-multi .ui-datepicker-group table {
+  width: 95%;
+  margin: 0 auto 0.4em;
+}
+
+.ui-datepicker-multi-2 .ui-datepicker-group {
+  width: 50%;
+}
+
+.ui-datepicker-multi-3 .ui-datepicker-group {
+  width: 33.3%;
+}
+
+.ui-datepicker-multi-4 .ui-datepicker-group {
+  width: 25%;
+}
+
+.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header, .ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header {
+  border-left-width: 0;
+}
+.ui-datepicker-multi .ui-datepicker-buttonpane {
+  clear: left;
+}
+
+.ui-datepicker-row-break {
+  clear: both;
+  width: 100%;
+  font-size: 0;
+}
+
+/* RTL support */
+.ui-datepicker-rtl {
+  direction: rtl;
+}
+.ui-datepicker-rtl .ui-datepicker-prev {
+  right: 2px;
+  left: auto;
+}
+.ui-datepicker-rtl .ui-datepicker-next {
+  left: 2px;
+  right: auto;
+}
+.ui-datepicker-rtl .ui-datepicker-prev:hover {
+  right: 1px;
+  left: auto;
+}
+.ui-datepicker-rtl .ui-datepicker-next:hover {
+  left: 1px;
+  right: auto;
+}
+.ui-datepicker-rtl .ui-datepicker-buttonpane {
+  clear: right;
+}
+.ui-datepicker-rtl .ui-datepicker-buttonpane button {
+  float: left;
+}
+.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current {
+  float: right;
+}
+.ui-datepicker-rtl .ui-datepicker-group {
+  float: right;
+}
+.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header, .ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {
+  border-right-width: 0;
+  border-left-width: 1px;
+}
+
+.ui-dialog {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0.2em;
+  outline: 0;
+}
+.ui-dialog .ui-dialog-titlebar {
+  padding: 0.4em 1em;
+  position: relative;
+}
+.ui-dialog .ui-dialog-title {
+  float: left;
+  margin: 0.1em 0;
+  white-space: nowrap;
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ui-dialog .ui-dialog-titlebar-close {
+  position: absolute;
+  right: 0.3em;
+  top: 50%;
+  width: 20px;
+  margin: -10px 0 0 0;
+  padding: 1px;
+  height: 20px;
+}
+.ui-dialog .ui-dialog-content {
+  position: relative;
+  border: 0;
+  padding: 0.5em 1em;
+  background: none;
+  overflow: auto;
+}
+.ui-dialog .ui-dialog-buttonpane {
+  text-align: left;
+  border-width: 1px 0 0 0;
+  background-image: none;
+  margin-top: 0.5em;
+  padding: 0.3em 1em 0.5em 0.4em;
+}
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+  float: right;
+}
+.ui-dialog .ui-dialog-buttonpane button {
+  margin: 0.5em 0.4em 0.5em 0;
+  cursor: pointer;
+}
+.ui-dialog .ui-resizable-se {
+  width: 12px;
+  height: 12px;
+  right: -5px;
+  bottom: -5px;
+  background-position: 16px 16px;
+}
+
+.ui-draggable .ui-dialog-titlebar {
+  cursor: move;
+}
+
+.ui-menu {
+  list-style: none;
+  padding: 2px;
+  margin: 0;
+  display: block;
+  outline: none;
+}
+.ui-menu .ui-menu {
+  margin-top: -3px;
+  position: absolute;
+}
+.ui-menu .ui-menu-item {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  /* support: IE10, see #8844 */
+  list-style-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
+}
+.ui-menu .ui-menu-divider {
+  margin: 5px -2px 5px -2px;
+  height: 0;
+  font-size: 0;
+  line-height: 0;
+  border-width: 1px 0 0 0;
+}
+.ui-menu .ui-menu-item a {
+  text-decoration: none;
+  display: block;
+  padding: 2px 0.4em;
+  line-height: 1.5;
+  min-height: 0;
+  /* support: IE7 */
+  font-weight: normal;
+}
+.ui-menu .ui-menu-item a.ui-state-focus, .ui-menu .ui-menu-item a.ui-state-active {
+  font-weight: normal;
+  margin: -1px;
+}
+.ui-menu .ui-state-disabled {
+  font-weight: normal;
+  margin: 0.4em 0 0.2em;
+  line-height: 1.5;
+}
+.ui-menu .ui-state-disabled a {
+  cursor: default;
+}
+
+/* icon support */
+.ui-menu-icons {
+  position: relative;
+}
+.ui-menu-icons .ui-menu-item a {
+  position: relative;
+  padding-left: 2em;
+}
+
+/* left-aligned */
+.ui-menu .ui-icon {
+  position: absolute;
+  top: 0.2em;
+  left: 0.2em;
+}
+.ui-menu .ui-menu-icon {
+  position: static;
+  float: right;
+}
+
+/* right-aligned */
+.ui-progressbar {
+  height: 2em;
+  text-align: left;
+  overflow: hidden;
+}
+.ui-progressbar .ui-progressbar-value {
+  margin: -1px;
+  height: 100%;
+}
+.ui-progressbar .ui-progressbar-overlay {
+  background: url("images/animated-overlay.gif");
+  height: 100%;
+  filter: alpha(opacity=25);
+  opacity: 0.25;
+}
+
+.ui-progressbar-indeterminate .ui-progressbar-value {
+  background-image: none;
+}
+
+.ui-slider {
+  position: relative;
+  text-align: left;
+}
+.ui-slider .ui-slider-handle {
+  position: absolute;
+  z-index: 2;
+  width: 1.2em;
+  height: 1.2em;
+  cursor: default;
+}
+.ui-slider .ui-slider-range {
+  position: absolute;
+  z-index: 1;
+  font-size: 0.7em;
+  display: block;
+  border: 0;
+  background-position: 0 0;
+}
+.ui-slider.ui-state-disabled .ui-slider-handle, .ui-slider.ui-state-disabled .ui-slider-range {
+  filter: inherit;
+}
+
+/* For IE8 - See #6727 */
+.ui-slider-horizontal {
+  height: 0.8em;
+}
+.ui-slider-horizontal .ui-slider-handle {
+  top: -0.3em;
+  margin-left: -0.6em;
+}
+.ui-slider-horizontal .ui-slider-range {
+  top: 0;
+  height: 100%;
+}
+.ui-slider-horizontal .ui-slider-range-min {
+  left: 0;
+}
+.ui-slider-horizontal .ui-slider-range-max {
+  right: 0;
+}
+
+.ui-slider-vertical {
+  width: 0.8em;
+  height: 100px;
+}
+.ui-slider-vertical .ui-slider-handle {
+  left: -0.3em;
+  margin-left: 0;
+  margin-bottom: -0.6em;
+}
+.ui-slider-vertical .ui-slider-range {
+  left: 0;
+  width: 100%;
+}
+.ui-slider-vertical .ui-slider-range-min {
+  bottom: 0;
+}
+.ui-slider-vertical .ui-slider-range-max {
+  top: 0;
+}
+
+.ui-spinner {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.ui-spinner-input {
+  border: none;
+  background: none;
+  color: inherit;
+  padding: 0;
+  margin: 0.2em 0;
+  vertical-align: middle;
+  margin-left: 0.4em;
+  margin-right: 22px;
+}
+
+.ui-spinner-button {
+  width: 16px;
+  height: 50%;
+  font-size: 0.5em;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  position: absolute;
+  cursor: default;
+  display: block;
+  overflow: hidden;
+  right: 0;
+}
+
+/* more specificity required here to override default borders */
+.ui-spinner a.ui-spinner-button {
+  border-top: none;
+  border-bottom: none;
+  border-right: none;
+}
+.ui-spinner .ui-icon {
+  position: absolute;
+  margin-top: -8px;
+  top: 50%;
+  left: 0;
+}
+
+/* vertically center icon */
+.ui-spinner-up {
+  top: 0;
+}
+
+.ui-spinner-down {
+  bottom: 0;
+}
+
+/* TR overrides */
+.ui-spinner .ui-icon-triangle-1-s {
+  /* need to fix icons sprite */
+  background-position: -65px -16px;
+}
+
+.ui-tabs {
+  position: relative;
+  /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+  padding: 0.2em;
+}
+.ui-tabs .ui-tabs-nav {
+  margin: 0;
+  padding: 0.2em 0.2em 0;
+}
+.ui-tabs .ui-tabs-nav li {
+  list-style: none;
+  float: left;
+  position: relative;
+  top: 0;
+  margin: 1px 0.2em 0 0;
+  border-bottom-width: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+  float: left;
+  padding: 0.5em 1em;
+  text-decoration: none;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+  margin-bottom: -1px;
+  padding-bottom: 1px;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
+  cursor: text;
+}
+.ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
+  cursor: text;
+}
+
+.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
+  cursor: pointer;
+}
+
+.ui-tabs .ui-tabs-panel {
+  display: block;
+  border-width: 0;
+  padding: 1em 1.4em;
+  background: none;
+}
+
+.ui-tooltip {
+  padding: 8px;
+  position: absolute;
+  z-index: 9999;
+  max-width: 300px;
+  -webkit-box-shadow: 0 0 5px #aaaaaa;
+  box-shadow: 0 0 5px #aaaaaa;
+}
+
+body .ui-tooltip {
+  border-width: 2px;
+}
+
+/* Component containers
+ *---------------------------------- */
+.ui-widget {
+  font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
+  font-size: 1.1em;
+}
 .ui-widget .ui-widget {
   font-size: 1em;
 }
-
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
-  font-family: Arial, sans-serif;
+  font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
   font-size: 1em;
 }
 
 .ui-widget-content {
   border: 1px solid #eeeeee;
-  background: white url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
+  background: white;
   color: #080808;
 }
-
 .ui-widget-content a {
   color: #080808;
 }
 
 .ui-widget-header {
   border: 1px solid #e3a1a1;
-  background: #cc0000 url(images/ui-bg_loop_15_cc0000_21x21.png) 50% 50% repeat;
-  color: #ffffff;
+  background: #cc0000 url(images/ui-bg_loop_15_cc0000_21x21.png) 50% 50% repeat-x;
+  color: white;
   font-weight: bold;
 }
-
 .ui-widget-header a {
-  color: #ffffff;
+  color: white;
 }
 
 /* Interaction states
-----------------------------------*/
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+ *---------------------------------- */
+.ui-state-default, .ui-widget-content .ui-state-default {
   border: 1px solid #d8dcdf;
   background: #eeeeee;
+  font-weight: bold;
+  color: #004276;
+}
+
+.ui-widget-header .ui-state-default {
+  border: 1px solid #cc0000;
+  background: #cc0000;
   font-weight: bold;
   color: #004276;
 }
@@ -208,7 +1205,6 @@ a {
   color: #004276;
   text-decoration: none;
 }
-
 .ui-state-default a:link, .ui-state-default a:visited {
   color: #004276;
   text-decoration: none;
@@ -216,7 +1212,7 @@ a {
 
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
   border: 1px solid #cdd5da;
-  background: #f6f6f6 url(images/ui-bg_highlight-hard_100_f6f6f6_1x100.png) 50% 50% repeat-x;
+  background: #f6f6f6 url(images/ui-bg_glass_100_f6f6f6_1x400.png) 50% 50% repeat-x;
   font-weight: bold;
   color: #111111;
 }
@@ -225,15 +1221,23 @@ a {
   color: #111111;
   text-decoration: none;
 }
-
-.ui-state-hover a:hover {
+.ui-state-hover a:hover, .ui-state-hover a:link, .ui-state-hover a:visited {
   color: #111111;
+  text-decoration: none;
+}
+
+.ui-state-focus a {
+  color: #c77405;
+  text-decoration: none;
+}
+.ui-state-focus a:hover, .ui-state-focus a:link, .ui-state-focus a:visited {
+  color: #c77405;
   text-decoration: none;
 }
 
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
   border: 1px solid #eeeeee;
-  background: white url(images/ui-bg_flat_65_ffffff_40x100.png) 50% 50% repeat-x;
+  background: white url(images/ui-bg_glass_100_f6f6f6_1x400.png) 50% 50% repeat-x;
   font-weight: bold;
   color: #cc0000;
 }
@@ -242,21 +1246,16 @@ a {
   color: #cc0000;
   text-decoration: none;
 }
-
 .ui-state-active a:link, .ui-state-active a:visited {
   color: #cc0000;
   text-decoration: none;
 }
 
-.ui-widget :active {
-  outline: none;
-}
-
 /* Interaction Cues
-----------------------------------*/
+ *---------------------------------- */
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
   border: 1px solid #fcd3a1;
-  background: #fbf8ee url(images/ui-bg_white-lines_55_fbf8ee_40x100.png) 50% 50% repeat;
+  background: #fbf8ee url(images/ui-bg_white-lines_55_fbf8ee_40x100.png) 50% top repeat-x;
   color: #444444;
 }
 
@@ -279,19 +1278,24 @@ a {
 }
 
 .ui-priority-secondary, .ui-widget-content .ui-priority-secondary, .ui-widget-header .ui-priority-secondary {
-  opacity: .7;
-  filter: Alpha(Opacity = 70);
+  opacity: 0.7;
+  filter: Alpha(Opacity=70);
   font-weight: normal;
 }
 
 .ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled {
-  opacity: .35;
-  filter: Alpha(Opacity = 35);
+  opacity: 0.35;
+  filter: Alpha(Opacity=35);
   background-image: none;
 }
 
+.ui-state-disabled .ui-icon {
+  filter: Alpha(Opacity=35);
+  /* For IE8 - See #6059 */
+}
+
 /* Icons
-----------------------------------*/
+ *---------------------------------- */
 /* states and images */
 .ui-icon {
   width: 16px;
@@ -320,6 +1324,10 @@ a {
 }
 
 /* positioning */
+.ui-icon-blank {
+  background-position: 16px 16px;
+}
+
 .ui-icon-carat-1-n {
   background-position: 0 0;
 }
@@ -824,11 +1832,11 @@ a {
   background-position: -80px -144px;
 }
 
-.ui-icon-radio-off {
+.ui-icon-radio-on {
   background-position: -96px -144px;
 }
 
-.ui-icon-radio-on {
+.ui-icon-radio-off {
   background-position: -112px -144px;
 }
 
@@ -1014,878 +2022,65 @@ a {
 }
 
 /* Misc visuals
-----------------------------------*/
+ *---------------------------------- */
 /* Corner radius */
 .ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
-  -moz-border-radius-topleft: 6px;
-  -webkit-border-top-left-radius: 6px;
-  -khtml-border-top-left-radius: 6px;
-  border-top-left-radius: 6px;
+  border-top-left-radius: 4px;
 }
 
 .ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
-  -moz-border-radius-topright: 6px;
-  -webkit-border-top-right-radius: 6px;
-  -khtml-border-top-right-radius: 6px;
-  border-top-right-radius: 6px;
+  border-top-right-radius: 4px;
 }
 
 .ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
-  -moz-border-radius-bottomleft: 6px;
-  -webkit-border-bottom-left-radius: 6px;
-  -khtml-border-bottom-left-radius: 6px;
-  border-bottom-left-radius: 6px;
+  border-bottom-left-radius: 4px;
 }
 
 .ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
-  -moz-border-radius-bottomright: 6px;
-  -webkit-border-bottom-right-radius: 6px;
-  -khtml-border-bottom-right-radius: 6px;
-  border-bottom-right-radius: 6px;
+  border-bottom-right-radius: 4px;
 }
 
 /* Overlays */
 .ui-widget-overlay {
   background: #a6a6a6 url(images/ui-bg_dots-small_65_a6a6a6_2x2.png) 50% 50% repeat;
-  opacity: .40;
-  filter: Alpha(Opacity = 40);
+  opacity: 0.4;
+  filter: Alpha(Opacity=40);
 }
 
 .ui-widget-shadow {
   margin: -8px 0 0 -8px;
   padding: 8px;
   background: #333333 url(images/ui-bg_flat_0_333333_40x100.png) 50% 50% repeat-x;
-  opacity: .10;
-  filter: Alpha(Opacity = 10);
+  opacity: 0.1;
+  filter: Alpha(Opacity=10);
   -moz-border-radius: 8px;
   -khtml-border-radius: 8px;
   -webkit-border-radius: 8px;
   border-radius: 8px;
 }
 
-/*!
- * jQuery UI Resizable 1.10.4
- * http://jqueryui.com
- *
- * Copyright 2014 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-.ui-resizable {
-  position: relative;
-}
-
-.ui-resizable-handle {
-  position: absolute;
-  font-size: 0.1px;
-  display: block;
-}
-
-.ui-resizable-disabled .ui-resizable-handle, .ui-resizable-autohide .ui-resizable-handle {
-  display: none;
-}
-
-.ui-resizable-n {
-  cursor: n-resize;
-  height: 7px;
-  width: 100%;
-  top: -5px;
-  left: 0;
-}
-
-.ui-resizable-s {
-  cursor: s-resize;
-  height: 7px;
-  width: 100%;
-  bottom: -5px;
-  left: 0;
-}
-
-.ui-resizable-e {
-  cursor: e-resize;
-  width: 7px;
-  right: -5px;
-  top: 0;
-  height: 100%;
-}
-
-.ui-resizable-w {
-  cursor: w-resize;
-  width: 7px;
-  left: -5px;
-  top: 0;
-  height: 100%;
-}
-
-.ui-resizable-se {
-  cursor: se-resize;
-  width: 12px;
-  height: 12px;
-  right: 1px;
-  bottom: 1px;
-}
-
-.ui-resizable-sw {
-  cursor: sw-resize;
-  width: 9px;
-  height: 9px;
-  left: -5px;
-  bottom: -5px;
-}
-
-.ui-resizable-nw {
-  cursor: nw-resize;
-  width: 9px;
-  height: 9px;
-  left: -5px;
-  top: -5px;
-}
-
-.ui-resizable-ne {
-  cursor: ne-resize;
-  width: 9px;
-  height: 9px;
-  right: -5px;
-  top: -5px;
-}
-
-/*!
- * jQuery UI Selectable 1.10.4
- * http://jqueryui.com
- *
- * Copyright 2014 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-.ui-selectable-helper {
-  position: absolute;
-  z-index: 100;
-  border: 1px dotted black;
-}
-
-/*!
- * jQuery UI Accordion 1.10.4
- * http://jqueryui.com
- *
- * Copyright 2014 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/accordion/#theming
- */
-.ui-accordion .ui-accordion-header {
-  display: block;
-  cursor: pointer;
-  position: relative;
-  margin-top: 2px;
-  padding: .5em .5em .5em .7em;
-  min-height: 0; /* support: IE7 */
-}
-
-.ui-accordion .ui-accordion-icons {
-  padding-left: 2.2em;
-}
-
-.ui-accordion .ui-accordion-noicons {
-  padding-left: .7em;
-}
-
-.ui-accordion .ui-accordion-icons .ui-accordion-icons {
-  padding-left: 2.2em;
-}
-
-.ui-accordion .ui-accordion-header .ui-accordion-header-icon {
-  position: absolute;
-  left: .5em;
-  top: 50%;
-  margin-top: -8px;
-}
-
-.ui-accordion .ui-accordion-content {
-  padding: 1em 2.2em;
-  border-top: 0;
-  overflow: auto;
-}
-
-/*!
- * jQuery UI Autocomplete 1.10.4
- * http://jqueryui.com
- *
- * Copyright 2014 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/autocomplete/#theming
- */
-.ui-autocomplete {
-  position: absolute;
-  top: 0;
-  left: 0;
-  cursor: default;
-}
-
-/* workarounds */
-* html .ui-autocomplete {
-  width: 1px;
-}
-
-/* without this, the menu expands to 100% in IE6 */
-/*
- * jQuery UI Menu 1.8.16
- *
- * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
- *
- * http://docs.jquery.com/UI/Menu#theming
- */
-.ui-menu {
-  list-style: none;
-  padding: 2px;
-  margin: 0;
-  display: block;
-  float: left;
-}
-
-.ui-menu .ui-menu {
-  margin-top: -3px;
-}
-
-.ui-menu .ui-menu-item {
-  margin: 0;
-  padding: 0;
-  zoom: 1;
-  float: left;
-  clear: left;
-  width: 100%;
-}
-
-.ui-menu .ui-menu-item a {
-  text-decoration: none;
-  display: block;
-  padding: .2em .4em;
-  line-height: 1.5;
-  zoom: 1;
-}
-
-.ui-menu .ui-menu-item a.ui-state-hover, .ui-menu .ui-menu-item a.ui-state-active {
-  font-weight: normal;
-  margin: -1px;
-}
-
-/*!
- * jQuery UI Button 1.10.4
- * http://jqueryui.com
- *
- * Copyright 2014 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/button/#theming
- */
-.ui-button {
-  display: inline-block;
-  position: relative;
-  padding: 0;
-  line-height: normal;
-  margin-right: .1em;
-  cursor: pointer;
-  vertical-align: middle;
-  text-align: center;
-  overflow: visible; /* removes extra width in IE */
-}
-
-.ui-button, .ui-button:link, .ui-button:visited, .ui-button:hover, .ui-button:active {
-  text-decoration: none;
-}
-/* to make room for the icon, a width needs to be set here */
-.ui-button-icon-only {
-  width: 2.2em;
-}
-/* button elements seem to need a little more width */
-button.ui-button-icon-only {
-  width: 2.4em;
-}
-
-.ui-button-icons-only {
-  width: 3.4em;
-}
-
-button.ui-button-icons-only {
-  width: 3.7em;
-}
-
-/* button text element */
-.ui-button .ui-button-text {
-  display: block;
-  line-height: normal;
-}
-
-.ui-button-text-only .ui-button-text {
-  padding: .4em 1em;
-}
-
-.ui-button-icon-only .ui-button-text, .ui-button-icons-only .ui-button-text {
-  padding: .4em;
-  text-indent: -9999999px;
-}
-
-.ui-button-text-icon-primary .ui-button-text, .ui-button-text-icons .ui-button-text {
-  padding: .4em 1em .4em 2.1em;
-}
-
-.ui-button-text-icon-secondary .ui-button-text, .ui-button-text-icons .ui-button-text {
-  padding: .4em 2.1em .4em 1em;
-}
-
-.ui-button-text-icons .ui-button-text {
-  padding-left: 2.1em;
-  padding-right: 2.1em;
-}
-/* no icon support for input elements, provide padding by default */
-input.ui-button {
-  padding: .4em 1em;
-}
-
-/* button icon element(s) */
-.ui-button-icon-only .ui-icon, .ui-button-text-icon-primary .ui-icon, .ui-button-text-icon-secondary .ui-icon, .ui-button-text-icons .ui-icon, .ui-button-icons-only .ui-icon {
-  position: absolute;
-  top: 50%;
-  margin-top: -8px;
-}
-
-.ui-button-icon-only .ui-icon {
-  left: 50%;
-  margin-left: -8px;
-}
-
-.ui-button-text-icon-primary .ui-button-icon-primary, .ui-button-text-icons .ui-button-icon-primary, .ui-button-icons-only .ui-button-icon-primary {
-  left: .5em;
-}
-
-.ui-button-text-icon-secondary .ui-button-icon-secondary, .ui-button-text-icons .ui-button-icon-secondary, .ui-button-icons-only .ui-button-icon-secondary {
-  right: .5em;
-}
-
-/* button sets */
-.ui-buttonset {
-  margin-right: 7px;
-}
-
-.ui-buttonset .ui-button {
-  margin-left: 0;
-  margin-right: -.3em;
-}
-
-/* workarounds */
-/* reset extra padding in Firefox, see h5bp.com/l */
-input.ui-button::-moz-focus-inner, button.ui-button::-moz-focus-inner {
-  border: 0;
-  padding: 0;
-}
-
-/* reset extra padding in Firefox */
-/*
- * jQuery UI Dialog 1.10.4
- *
- * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
- *
- * http://docs.jquery.com/UI/Dialog#theming
- */
-ui-dialog {
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: .2em;
-  outline: 0;
-}
-
-.ui-dialog .ui-dialog-titlebar {
-  padding: .4em 1em;
-  position: relative;
-}
-
-.ui-dialog .ui-dialog-title {
-  float: left;
-  margin: .1em 0;
-  white-space: nowrap;
-  width: 90%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ui-dialog .ui-dialog-titlebar-close {
-  position: absolute;
-  right: .3em;
-  top: 50%;
-  width: 20px;
-  margin: -10px 0 0 0;
-  padding: 1px;
-  height: 20px;
-}
-
-.ui-dialog .ui-dialog-content {
-  position: relative;
-  border: 0;
-  padding: .5em 1em;
-  background: none;
-  overflow: auto;
-}
-
-.ui-dialog .ui-dialog-buttonpane {
-  text-align: left;
-  border-width: 1px 0 0 0;
-  background-image: none;
-  margin-top: .5em;
-  padding: .3em 1em .5em .4em;
-}
-
-.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
-  float: right;
-}
-
-.ui-dialog .ui-dialog-buttonpane button {
-  margin: .5em .4em .5em 0;
-  cursor: pointer;
-}
-
-.ui-dialog .ui-resizable-se {
-  width: 14px;
-  height: 14px;
-  right: 3px;
-  bottom: 3px;
-}
-
-.ui-draggable .ui-dialog-titlebar {
-  cursor: move;
-}
-
-/*!
- * jQuery UI Slider 1.10.4
- * http://jqueryui.com
- *
- * Copyright 2014 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/slider/#theming
- */
-.ui-slider {
-  position: relative;
-  text-align: left;
-}
-
-.ui-slider .ui-slider-handle {
-  position: absolute;
-  z-index: 2;
-  width: 1.2em;
-  height: 1.2em;
-  cursor: default;
-}
-
-.ui-slider .ui-slider-range {
-  position: absolute;
-  z-index: 1;
-  font-size: .7em;
-  display: block;
-  border: 0;
-  background-position: 0 0;
-}
-
-/* For IE8 - See #6727 */
-.ui-slider.ui-state-disabled .ui-slider-handle, .ui-slider.ui-state-disabled .ui-slider-range {
-  filter: inherit;
-}
-
-.ui-slider-horizontal {
-  height: .8em;
-}
-
-.ui-slider-horizontal .ui-slider-handle {
-  top: -.3em;
-  margin-left: -.6em;
-}
-
-.ui-slider-horizontal .ui-slider-range {
-  top: 0;
-  height: 100%;
-}
-
-.ui-slider-horizontal .ui-slider-range-min {
-  left: 0;
-}
-
-.ui-slider-horizontal .ui-slider-range-max {
-  right: 0;
-}
-
-.ui-slider-vertical {
-  width: .8em;
-  height: 100px;
-}
-
-.ui-slider-vertical .ui-slider-handle {
-  left: -.3em;
-  margin-left: 0;
-  margin-bottom: -.6em;
-}
-
-.ui-slider-vertical .ui-slider-range {
-  left: 0;
-  width: 100%;
-}
-
-.ui-slider-vertical .ui-slider-range-min {
-  bottom: 0;
-}
-
-.ui-slider-vertical .ui-slider-range-max {
-  top: 0;
-}
-/*!
- * jQuery UI Tabs 1.10.4
- * http://jqueryui.com
- *
- * Copyright 2014 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/tabs/#theming
- */
-.ui-tabs {
-  position: relative; /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
-  padding: .2em;
-}
-
-.ui-tabs .ui-tabs-nav {
-  margin: 0;
-  padding: .2em .2em 0;
-}
-
-.ui-tabs .ui-tabs-nav li {
-  list-style: none;
-  float: left;
-  position: relative;
-  top: 0;
-  margin: 1px .2em 0 0;
-  border-bottom-width: 0;
-  padding: 0;
-  white-space: nowrap;
-}
-
-.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
-  float: left;
-  padding: .5em 1em;
-  text-decoration: none;
-}
-
-.ui-tabs .ui-tabs-nav li.ui-tabs-active {
-  margin-bottom: -1px;
-  padding-bottom: 1px;
-}
-
-.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor, .ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
-  cursor: text;
-}
-
-.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
-  cursor: pointer;
-}
-
-.ui-tabs .ui-tabs-panel {
-  display: block;
-  border-width: 0;
-  padding: 1em 1.4em;
-  background: none;
-}
-
-/* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
-/* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
-/*!
- * jQuery UI Datepicker 1.10.4
- * http://jqueryui.com
- *
- * Copyright 2014 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/datepicker/#theming
- */
-.ui-datepicker {
-  width: 17em;
-  padding: .2em .2em 0;
-  display: none;
-}
-
-.ui-datepicker .ui-datepicker-header {
-  position: relative;
-  padding: .2em 0;
-}
-
-.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
-  position: absolute;
-  top: 2px;
-  width: 1.8em;
-  height: 1.8em;
-}
-
-.ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover {
-  top: 1px;
-}
-
-.ui-datepicker .ui-datepicker-prev {
-  left: 2px;
-}
-
-.ui-datepicker .ui-datepicker-next {
-  right: 2px;
-}
-
-.ui-datepicker .ui-datepicker-prev-hover {
-  left: 1px;
-}
-
-.ui-datepicker .ui-datepicker-next-hover {
-  right: 1px;
-}
-
-.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span {
-  display: block;
-  position: absolute;
-  left: 50%;
-  margin-left: -8px;
-  top: 50%;
-  margin-top: -8px;
-}
-
-.ui-datepicker .ui-datepicker-title {
-  margin: 0 2.3em;
-  line-height: 1.8em;
-  text-align: center;
-}
-
-.ui-datepicker .ui-datepicker-title select {
-  font-size: 1em;
-  margin: 1px 0;
-}
-
-.ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
-  width: 49%;
-}
-
-.ui-datepicker table {
-  width: 100%;
-  font-size: .9em;
-  border-collapse: collapse;
-  margin: 0 0 .4em;
-}
-
-.ui-datepicker th {
-  padding: .7em .3em;
-  text-align: center;
-  font-weight: bold;
-  border: 0;
-}
-
-.ui-datepicker td {
-  border: 0;
-  padding: 1px;
-}
-
-.ui-datepicker td span, .ui-datepicker td a {
-  display: block;
-  padding: .2em;
-  text-align: right;
-  text-decoration: none;
-}
-
-.ui-datepicker .ui-datepicker-buttonpane {
-  background-image: none;
-  margin: .7em 0 0 0;
-  padding: 0 .2em;
-  border-left: 0;
-  border-right: 0;
-  border-bottom: 0;
-}
-
-.ui-datepicker .ui-datepicker-buttonpane button {
-  float: right;
-  margin: .5em .2em .4em;
-  cursor: pointer;
-  padding: .2em .6em .3em .6em;
-  width: auto;
-  overflow: visible;
-}
-
-.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
-  float: left;
-}
-
-/* with multiple calendars */
-.ui-datepicker.ui-datepicker-multi {
-  width: auto;
-}
-
-.ui-datepicker-multi .ui-datepicker-group {
-  float: left;
-}
-
-.ui-datepicker-multi .ui-datepicker-group table {
-  width: 95%;
-  margin: 0 auto .4em;
-}
-
-.ui-datepicker-multi-2 .ui-datepicker-group {
-  width: 50%;
-}
-
-.ui-datepicker-multi-3 .ui-datepicker-group {
-  width: 33.3%;
-}
-
-.ui-datepicker-multi-4 .ui-datepicker-group {
-  width: 25%;
-}
-
-.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header, .ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header {
-  border-left-width: 0;
-}
-
-.ui-datepicker-multi .ui-datepicker-buttonpane {
-  clear: left;
-}
-
-.ui-datepicker-row-break {
-  clear: both;
-  width: 100%;
-  font-size: 0;
-}
-
-/* RTL support */
-.ui-datepicker-rtl {
-  direction: rtl;
-}
-
-.ui-datepicker-rtl .ui-datepicker-prev {
-  right: 2px;
-  left: auto;
-}
-
-.ui-datepicker-rtl .ui-datepicker-next {
-  left: 2px;
-  right: auto;
-}
-
-.ui-datepicker-rtl .ui-datepicker-prev:hover {
-  right: 1px;
-  left: auto;
-}
-
-.ui-datepicker-rtl .ui-datepicker-next:hover {
-  left: 1px;
-  right: auto;
-}
-
-.ui-datepicker-rtl .ui-datepicker-buttonpane {
-  clear: right;
-}
-
-.ui-datepicker-rtl .ui-datepicker-buttonpane button {
-  float: left;
-}
-
-.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current, .ui-datepicker-rtl .ui-datepicker-group {
-  float: right;
-}
-
-.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header, .ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {
-  border-right-width: 0;
-  border-left-width: 1px;
-}
-
-/* IE6 IFRAME FIX (taken from datepicker 1.5.3 */
-.ui-datepicker-cover {
-  display: none;
-  /*sorry for IE5*/
-  display /**/: block;
-  /*sorry for IE5*/
-  position: absolute;
-  /*must have*/
-  z-index: -1;
-  /*must have*/
-  filter: mask();
-  /*must have*/
-  top: -4px;
-  /*must have*/
-  left: -4px;
-  /*must have*/
-  width: 200px;
-  /*must have*/
-  height: 200px;
-  /*must have*/
-}
-
-/*!
- * jQuery UI Progressbar 1.10.4
- * http://jqueryui.com
- *
- * Copyright 2014 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/progressbar/#theming
- */
-.ui-progressbar {
-  height: 2em;
-  text-align: left;
-  overflow: hidden;
-}
-
-.ui-progressbar .ui-progressbar-value {
-  margin: -1px;
-  height: 100%;
-}
-
-.ui-progressbar .ui-progressbar-overlay {
-  background: url("images/animated-overlay.gif");
-  height: 100%;
-  filter: alpha(opacity = 25);
-  opacity: 0.25;
-}
-
-.ui-progressbar-indeterminate .ui-progressbar-value {
-  background-image: none;
-}
-
-/*Grid*/
+/*Grid */
 .ui-jqgrid {
   position: relative;
-  font-size: 11px;
 }
-
 .ui-jqgrid .ui-jqgrid-view {
   position: relative;
-  left: 0px;
-  top: 0px;
-  padding: .0em;
+  left: 0;
+  top: 0;
+  padding: 0;
+  font-size: 11px;
 }
-
 .ui-jqgrid .ui-jqgrid-titlebar {
-  padding: .3em .2em .2em .3em;
+  padding: 0.3em 0.2em 0.2em 0.3em;
   position: relative;
-  border-left: 0px none;
-  border-right: 0px none;
-  border-top: 0px none;
+  border-left: 0 none;
+  border-right: 0 none;
+  border-top: 0 none;
 }
-
 .ui-jqgrid .ui-jqgrid-title {
   float: left;
-  margin: .1em 0 .2em;
+  margin: 0.1em 0 0.2em;
 }
-
 .ui-jqgrid .ui-jqgrid-titlebar-close {
   position: absolute;
   top: 50%;
@@ -1893,64 +2088,58 @@ ui-dialog {
   margin: -10px 0 0 0;
   padding: 1px;
   height: 18px;
+  cursor: pointer;
 }
-
 .ui-jqgrid .ui-jqgrid-titlebar-close span {
   display: block;
   margin: 1px;
 }
-
 .ui-jqgrid .ui-jqgrid-titlebar-close:hover {
   padding: 0;
 }
-
 .ui-jqgrid .ui-jqgrid-hdiv {
   position: relative;
-  margin: 0em;
-  padding: 0em;
+  margin: 0;
+  padding: 0;
   overflow-x: hidden;
-  border-left: 0px none !important;
-  border-top: 0px none !important;
-  border-right: 0px none !important;
+  border-left: 0 none !important;
+  border-top: 0 none !important;
+  border-right: 0 none !important;
 }
-
 .ui-jqgrid .ui-jqgrid-hbox {
   float: left;
   padding-right: 20px;
 }
-
 .ui-jqgrid .ui-jqgrid-htable {
   table-layout: fixed;
-  margin: 0em;
+  margin: 0;
 }
-
 .ui-jqgrid .ui-jqgrid-htable th {
   height: 22px;
   padding: 0 2px 0 2px;
 }
-
 .ui-jqgrid .ui-jqgrid-htable th div {
   overflow: hidden;
   position: relative;
   height: 17px;
 }
 
-/* caption*/
-/* header*/
+/* caption */
+/* header */
 .ui-th-column, .ui-jqgrid .ui-jqgrid-htable th.ui-th-column {
   overflow: hidden;
   white-space: nowrap;
   text-align: center;
-  border-top: 0px none;
-  border-bottom: 0px none;
+  border-top: 0 none;
+  border-bottom: 0 none;
 }
 
 .ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
-  border-left: 0px none;
+  border-left: 0 none;
 }
 
 .ui-th-rtl, .ui-jqgrid .ui-jqgrid-htable th.ui-th-rtl {
-  border-right: 0px none;
+  border-right: 0 none;
 }
 
 .ui-first-th-ltr {
@@ -1966,7 +2155,6 @@ ui-dialog {
   zoom: 1;
   height: 17px;
 }
-
 .ui-jqgrid .ui-jqgrid-resize {
   height: 20px !important;
   position: relative;
@@ -1974,39 +2162,32 @@ ui-dialog {
   display: inline;
   overflow: hidden;
 }
-
 .ui-jqgrid .ui-grid-ico-sort {
   overflow: hidden;
   position: absolute;
   display: inline;
   cursor: pointer !important;
 }
-
 .ui-jqgrid .ui-icon-asc {
   margin-top: -3px;
   height: 12px;
 }
-
 .ui-jqgrid .ui-icon-desc {
   margin-top: 3px;
   height: 12px;
 }
-
 .ui-jqgrid .ui-i-asc {
-  margin-top: 0px;
+  margin-top: 0;
   height: 16px;
 }
-
 .ui-jqgrid .ui-i-desc {
-  margin-top: 0px;
+  margin-top: 0;
   margin-left: 13px;
   height: 16px;
 }
-
 .ui-jqgrid .ui-jqgrid-sortable {
   cursor: pointer;
 }
-
 .ui-jqgrid tr.ui-search-toolbar th {
   border-top-width: 1px !important;
   border-top-color: inherit !important;
@@ -2014,28 +2195,25 @@ ui-dialog {
 }
 
 tr.ui-search-toolbar input, tr.ui-search-toolbar select {
-  margin: 1px 0px 0px 0px;
+  margin: 1px 0 0 0;
 }
 
 /* body */
 .ui-jqgrid .ui-jqgrid-bdiv {
   position: relative;
-  margin: 0em;
+  margin: 0;
   padding: 0;
   overflow: auto;
   text-align: left;
 }
-
 .ui-jqgrid .ui-jqgrid-btable {
   table-layout: fixed;
-  margin: 0em;
+  margin: 0;
   outline-style: none;
 }
-
 .ui-jqgrid tr.jqgrow, .ui-jqgrid tr.jqgroup {
   outline-style: none;
 }
-
 .ui-jqgrid tr.jqgrow td {
   font-weight: normal;
   overflow: hidden;
@@ -2046,13 +2224,11 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   border-bottom-color: inherit;
   border-bottom-style: solid;
 }
-
 .ui-jqgrid tr.jqgfirstrow td {
   padding: 0 2px 0 2px;
   border-right-width: 1px;
   border-right-style: solid;
 }
-
 .ui-jqgrid tr.jqgroup td {
   font-weight: normal;
   overflow: hidden;
@@ -2063,7 +2239,6 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   border-bottom-color: inherit;
   border-bottom-style: solid;
 }
-
 .ui-jqgrid tr.jqfoot td {
   font-weight: bold;
   overflow: hidden;
@@ -2074,31 +2249,27 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   border-bottom-color: inherit;
   border-bottom-style: solid;
 }
-
 .ui-jqgrid tr.ui-row-ltr td {
   text-align: left;
   border-right-width: 1px;
   border-right-color: inherit;
   border-right-style: solid;
 }
-
 .ui-jqgrid tr.ui-row-rtl td {
   text-align: right;
   border-left-width: 1px;
   border-left-color: inherit;
   border-left-style: solid;
 }
-
 .ui-jqgrid td.jqgrid-rownum {
   padding: 0 2px 0 2px;
-  margin: 0px;
-  border: 0px none;
+  margin: 0;
+  border: 0 none;
 }
-
 .ui-jqgrid .ui-jqgrid-resize-mark {
   width: 2px;
   left: 0;
-  background-color: #777;
+  background-color: #777777;
   cursor: e-resize;
   cursor: col-resize;
   position: absolute;
@@ -2107,23 +2278,21 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   overflow: hidden;
   display: none;
   border: 0 none;
+  z-index: 99999;
 }
-
 .ui-jqgrid .ui-jqgrid-sdiv {
   position: relative;
-  margin: 0em;
-  padding: 0em;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
-  border-left: 0px none !important;
-  border-top: 0px none !important;
-  border-right: 0px none !important;
+  border-left: 0 none !important;
+  border-top: 0 none !important;
+  border-right: 0 none !important;
 }
-
 .ui-jqgrid .ui-jqgrid-ftable {
   table-layout: fixed;
-  margin-bottom: 0em;
+  margin-bottom: 0;
 }
-
 .ui-jqgrid tr.footrow td {
   font-weight: bold;
   overflow: hidden;
@@ -2134,150 +2303,136 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   border-top-color: inherit;
   border-top-style: solid;
 }
-
 .ui-jqgrid tr.footrow-ltr td {
   text-align: left;
   border-right-width: 1px;
   border-right-color: inherit;
   border-right-style: solid;
 }
-
 .ui-jqgrid tr.footrow-rtl td {
   text-align: right;
   border-left-width: 1px;
   border-left-color: inherit;
   border-left-style: solid;
 }
-
 .ui-jqgrid .ui-jqgrid-pager {
-  border-left: 0px none !important;
-  border-right: 0px none !important;
-  border-bottom: 0px none !important;
-  margin: 0px !important;
-  padding: 0px !important;
+  border-left: 0 none !important;
+  border-right: 0 none !important;
+  border-bottom: 0 none !important;
+  margin: 0 !important;
+  padding: 0 !important;
   position: relative;
   height: 25px;
   white-space: nowrap;
   overflow: hidden;
+  font-size: 11px;
 }
-
 .ui-jqgrid .ui-pager-control {
   position: relative;
 }
-
 .ui-jqgrid .ui-pg-table {
   position: relative;
   padding-bottom: 2px;
   width: auto;
-  margin: 0em;
+  margin: 0;
 }
-
 .ui-jqgrid .ui-pg-table td {
   font-weight: normal;
   vertical-align: middle;
   padding: 1px;
 }
-
 .ui-jqgrid .ui-pg-button {
   height: 19px !important;
 }
-
 .ui-jqgrid .ui-pg-button span {
   display: block;
   margin: 1px;
   float: left;
 }
-
 .ui-jqgrid .ui-pg-button:hover {
-  padding: 0px;
+  padding: 0;
 }
-
 .ui-jqgrid .ui-state-disabled:hover {
   padding: 1px;
 }
-
 .ui-jqgrid .ui-pg-input {
   height: 13px;
-  font-size: .8em;
-  margin: 0em;
+  font-size: 0.8em;
+  margin: 0;
 }
-
 .ui-jqgrid .ui-pg-selbox {
-  font-size: .8em;
+  font-size: 0.8em;
   line-height: 18px;
   display: block;
   height: 18px;
-  margin: 0em;
+  margin: 0;
 }
-
 .ui-jqgrid .ui-separator {
   height: 18px;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
+  border-left: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
   margin: 1px;
   float: right;
 }
-
 .ui-jqgrid .ui-paging-info {
   font-weight: normal;
   height: 19px;
   margin-top: 3px;
   margin-right: 4px;
 }
-
 .ui-jqgrid .ui-jqgrid-pager .ui-pg-div {
   padding: 1px 0;
   float: left;
-  list-style-image: none;
-  list-style-position: outside;
-  list-style-type: none;
   position: relative;
 }
-
 .ui-jqgrid .ui-jqgrid-pager .ui-pg-button {
   cursor: pointer;
 }
-
 .ui-jqgrid .ui-jqgrid-pager .ui-pg-div span.ui-icon {
   float: left;
   margin: 0 2px;
 }
-
 .ui-jqgrid td input, .ui-jqgrid td select .ui-jqgrid td textarea {
-  margin: 0em;
+  margin: 0;
 }
-
 .ui-jqgrid td textarea {
   width: auto;
   height: auto;
 }
-
 .ui-jqgrid .ui-jqgrid-toppager {
-  border-left: 0px none !important;
-  border-right: 0px none !important;
-  border-top: 0px none !important;
-  margin: 0px !important;
-  padding: 0px !important;
+  border-left: 0 none !important;
+  border-right: 0 none !important;
+  border-top: 0 none !important;
+  margin: 0 !important;
+  padding: 0 !important;
   position: relative;
   height: 25px !important;
   white-space: nowrap;
   overflow: hidden;
 }
-
+.ui-jqgrid .ui-jqgrid-toppager .ui-pg-div {
+  padding: 1px 0;
+  float: left;
+  position: relative;
+}
+.ui-jqgrid .ui-jqgrid-toppager .ui-pg-button {
+  cursor: pointer;
+}
+.ui-jqgrid .ui-jqgrid-toppager .ui-pg-div span.ui-icon {
+  float: left;
+  margin: 0 2px;
+}
 .ui-jqgrid .ui-jqgrid-btable .ui-sgcollapsed span {
   display: block;
 }
-
 .ui-jqgrid .ui-subgrid {
-  margin: 0em;
-  padding: 0em;
+  margin: 0;
+  padding: 0;
   width: 100%;
 }
-
 .ui-jqgrid .ui-subgrid table {
   table-layout: fixed;
 }
-
 .ui-jqgrid .ui-subgrid tr.ui-subtblcell td {
   height: 18px;
   border-right-width: 1px;
@@ -2287,19 +2442,15 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   border-bottom-color: inherit;
   border-bottom-style: solid;
 }
-
 .ui-jqgrid .ui-subgrid td.subgrid-data {
-  border-top: 0px none !important;
+  border-top: 0 none !important;
 }
-
 .ui-jqgrid .ui-subgrid td.subgrid-cell {
-  border-width: 0px 0px 1px 0px;
+  border-width: 0 0 1px 0;
 }
-
 .ui-jqgrid .ui-th-subgrid {
   height: 20px;
 }
-
 .ui-jqgrid .loading {
   position: absolute;
   top: 45%;
@@ -2312,36 +2463,35 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   font-weight: bold;
   display: none;
   border-width: 2px !important;
+  font-size: 11px;
 }
-
 .ui-jqgrid .jqgrid-overlay {
   display: none;
   z-index: 100;
 }
 
 /* footer */
-/* Pager*/
-/*subgrid*/
+/* Pager */
+/*subgrid */
 /* loading */
 * html .jqgrid-overlay {
-  width: expression(this.parentNode.offsetWidth + 'px');
-  height: expression(this.parentNode.offsetHeight + 'px');
+  width: expression(this.parentNode.offsetWidth+'px');
+  height: expression(this.parentNode.offsetHeight+'px');
 }
-
 * .jqgrid-overlay iframe {
   position: absolute;
   top: 0;
   left: 0;
   z-index: -1;
-  width: expression(this.parentNode.offsetWidth + 'px');
-  height: expression(this.parentNode.offsetHeight + 'px');
+  width: expression(this.parentNode.offsetWidth+'px');
+  height: expression(this.parentNode.offsetHeight+'px');
 }
 
 /* end loading div */
 /* toolbar */
 .ui-jqgrid .ui-userdata {
-  border-left: 0px none;
-  border-right: 0px none;
+  border-left: 0 none;
+  border-right: 0 none;
   height: 21px;
   overflow: hidden;
 }
@@ -2351,20 +2501,17 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   display: none;
   width: 300px;
   position: absolute;
-  padding: .2em;
+  padding: 0.2em;
   font-size: 11px;
   overflow: visible;
 }
-
 .ui-jqdialog .ui-jqdialog-titlebar {
-  padding: .3em .2em;
+  padding: 0.3em 0.2em;
   position: relative;
 }
-
 .ui-jqdialog .ui-jqdialog-title {
-  margin: .1em 0 .2em;
+  margin: 0.1em 0 0.2em;
 }
-
 .ui-jqdialog .ui-jqdialog-titlebar-close {
   position: absolute;
   top: 50%;
@@ -2372,33 +2519,31 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   margin: -10px 0 0 0;
   padding: 1px;
   height: 18px;
+  cursor: pointer;
 }
-
 .ui-jqdialog .ui-jqdialog-titlebar-close span {
   display: block;
   margin: 1px;
 }
-
 .ui-jqdialog .ui-jqdialog-titlebar-close:hover, .ui-jqdialog .ui-jqdialog-titlebar-close:focus {
   padding: 0;
 }
 
 .ui-jqdialog-content {
   border: 0;
-  padding: .3em .2em;
+  padding: 0.3em 0.2em;
   background: none;
   height: auto;
 }
 
 .ui-jqdialog .ui-jqdialog-content {
   border: 0;
-  padding: .3em .2em;
+  padding: 0.3em 0.2em;
   background: none;
   height: auto;
 }
-
 .ui-jqdialog .ui-jqconfirm {
-  padding: .4em 1em;
+  padding: 0.4em 1em;
   border-width: 3px;
   position: absolute;
   bottom: 10px;
@@ -2409,69 +2554,69 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   width: 220px;
   text-align: center;
 }
-
-/* end Modal window*/
-/* Form edit */
-.ui-jqdialog-content .FormGrid {
-  margin: 0px;
+.ui-jqdialog > .ui-resizable-se {
+  bottom: -3px;
+  right: -3px;
 }
 
+.ui-jqgrid > .ui-resizable-se {
+  bottom: -3px;
+  right: -3px;
+}
+
+/* end Modal window */
+/* Form edit */
+.ui-jqdialog-content .FormGrid {
+  margin: 0;
+}
 .ui-jqdialog-content .EditTable, .ui-jqdialog-content .DelTable {
   width: 100%;
-  margin-bottom: 0em;
+  margin-bottom: 0;
 }
 
 .EditTable td input, .EditTable td select {
-  margin: 0em;
+  margin: 0;
 }
-
 .EditTable td textarea {
-  margin: 0em;
+  margin: 0;
   width: auto;
   height: auto;
 }
 
 .ui-jqdialog-content td.EditButton {
   text-align: right;
-  border-top: 0px none;
-  border-left: 0px none;
-  border-right: 0px none;
+  border-top: 0 none;
+  border-left: 0 none;
+  border-right: 0 none;
   padding-bottom: 5px;
   padding-top: 5px;
 }
-
 .ui-jqdialog-content td.navButton {
   text-align: center;
-  border-left: 0px none;
-  border-top: 0px none;
-  border-right: 0px none;
+  border-left: 0 none;
+  border-top: 0 none;
+  border-right: 0 none;
   padding-bottom: 5px;
   padding-top: 5px;
 }
-
-.ui-jqdialog-content input.FormElement {
-  padding: .3em;
+.ui-jqdialog-content input.FormElement, .ui-jqdialog-content select.FormElement {
+  padding: 0.3em;
 }
-
 .ui-jqdialog-content .data-line {
-  padding-top: .1em;
-  border: 0px none;
+  padding-top: 0.1em;
+  border: 0 none;
 }
-
 .ui-jqdialog-content .CaptionTD {
-  text-align: left;
   vertical-align: middle;
-  border: 0px none;
+  border: 0 none;
   padding: 2px;
   white-space: nowrap;
 }
-
 .ui-jqdialog-content .DataTD {
   padding: 2px;
-  border: 0px none;
+  border: 0 none;
   vertical-align: top;
 }
-
 .ui-jqdialog-content .form-view-data {
   white-space: pre;
 }
@@ -2479,7 +2624,7 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
 .fm-button {
   display: inline-block;
   margin: 0 4px 0 0;
-  padding: .4em .5em;
+  padding: 0.4em 0.5em;
   text-decoration: none !important;
   cursor: pointer;
   position: relative;
@@ -2497,7 +2642,7 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
 
 .fm-button-icon-left .ui-icon {
   right: auto;
-  left: .2em;
+  left: 0.2em;
   margin-left: 0;
   position: absolute;
   top: 50%;
@@ -2506,7 +2651,7 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
 
 .fm-button-icon-right .ui-icon {
   left: auto;
-  right: .2em;
+  right: 0.2em;
   margin-left: 0;
   position: absolute;
   top: 50%;
@@ -2521,10 +2666,15 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
 }
 
 /* End Eorm edit */
-/*.ui-jqgrid .edit-cell {}*/
+/*.ui-jqgrid .edit-cell {} */
 .ui-jqgrid .selected-row, div.ui-jqgrid .selected-row td {
   font-style: normal;
-  border-left: 0px none;
+  border-left: 0 none;
+}
+
+/* inline edit actions button */
+.ui-inline-del.ui-state-hover span, .ui-inline-edit.ui-state-hover span, .ui-inline-save.ui-state-hover span, .ui-inline-cancel.ui-state-hover span {
+  margin: -1px;
 }
 
 /* Tree Grid */
@@ -2535,14 +2685,12 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   white-space: nowrap;
   overflow: hidden;
 }
-
 .ui-jqgrid .tree-minus, .ui-jqgrid .tree-plus, .ui-jqgrid .tree-leaf {
   position: absolute;
   height: 18px;
   width: 18px;
   overflow: hidden;
 }
-
 .ui-jqgrid .treeclick {
   cursor: pointer;
 }
@@ -2553,8 +2701,8 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   top: 0;
   left: 0;
   z-index: -1;
-  width: expression(this.parentNode.offsetWidth + 'px');
-  height: expression(this.parentNode.offsetHeight + 'px');
+  width: expression(this.parentNode.offsetWidth+'px');
+  height: expression(this.parentNode.offsetHeight+'px');
 }
 
 .ui-jqgrid-dnd tr td {
@@ -2567,50 +2715,67 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
 /* RTL Support */
 .ui-jqgrid .ui-jqgrid-title-rtl {
   float: right;
-  margin: .1em 0 .2em;
+  margin: 0.1em 0 0.2em;
 }
-
 .ui-jqgrid .ui-jqgrid-hbox-rtl {
   float: right;
   padding-left: 20px;
 }
-
 .ui-jqgrid .ui-jqgrid-resize-ltr {
   float: right;
-  margin: -2px -2px -2px 0px;
+  margin: -2px -2px -2px 0;
 }
-
 .ui-jqgrid .ui-jqgrid-resize-rtl {
   float: left;
-  margin: -2px 0px -1px -3px;
+  margin: -2px 0 -1px -3px;
 }
-
 .ui-jqgrid .ui-sort-rtl {
-  left: 0px;
+  left: 0;
 }
-
 .ui-jqgrid .tree-wrap-ltr {
   float: left;
 }
-
 .ui-jqgrid .tree-wrap-rtl {
   float: right;
 }
-
 .ui-jqgrid .ui-ellipsis {
   text-overflow: ellipsis;
-  -moz-binding: url("ellipsis-xbl.xml#ellipsis");
+}
+
+/* Toolbar Search Menu */
+.ui-search-menu {
+  position: absolute;
+  padding: 2px 5px;
+}
+
+.ui-jqgrid .ui-search-table {
+  padding: 0px 0px;
+  border: 0px none;
+  height: 20px;
+  width: 100%;
+}
+.ui-jqgrid .ui-search-table .ui-search-oper {
+  width: 20px;
+}
+
+a.g-menu-item, a.soptclass, a.clearsearchclass {
+  cursor: pointer;
+}
+
+.ui-jqgrid .ui-search-table .ui-search-input > input, .ui-jqgrid .ui-search-table .ui-search-input > select {
+  display: block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* Z-INDEX */
 .formError {
   z-index: 990;
 }
-
 .formError .formErrorContent {
   z-index: 991;
 }
-
 .formError .formErrorArrow {
   z-index: 996;
 }
@@ -2618,11 +2783,9 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
 .ui-dialog .formError {
   z-index: 5000;
 }
-
 .ui-dialog .formError .formErrorContent {
   z-index: 5001;
 }
-
 .ui-dialog .formError .formErrorArrow {
   z-index: 5006;
 }
@@ -2640,7 +2803,6 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   cursor: pointer;
   text-align: left;
 }
-
 .formError.inline {
   position: relative;
   top: 0;
@@ -2651,7 +2813,7 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
 .ajaxSubmit {
   padding: 20px;
   background: #55ea55;
-  border: 1px solid #999;
+  border: 1px solid #999999;
   display: none;
 }
 
@@ -2659,21 +2821,20 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   width: 100%;
   background: #ee0101;
   position: relative;
-  color: #fff;
+  color: white;
   min-width: 120px;
   font-size: 11px;
-  border: 2px solid #ddd;
-  box-shadow: 0 0 6px #000;
-  -moz-box-shadow: 0 0 6px #000;
-  -webkit-box-shadow: 0 0 6px #000;
-  -o-box-shadow: 0 0 6px #000;
+  border: 2px solid #dddddd;
+  box-shadow: 0 0 6px black;
+  -moz-box-shadow: 0 0 6px black;
+  -webkit-box-shadow: 0 0 6px black;
+  -o-box-shadow: 0 0 6px black;
   padding: 4px 10px 4px 10px;
   border-radius: 6px;
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
   -o-border-radius: 6px;
 }
-
 .formError.inline .formErrorContent {
   box-shadow: none;
   -moz-box-shadow: none;
@@ -2686,21 +2847,13 @@ tr.ui-search-toolbar input, tr.ui-search-toolbar select {
   -o-border-radius: 0;
 }
 
-.input-success {
-  background-color: #FFF;
-}
-
-.input-error {
-  background-color: #FF7F50;
-}
-
 .greenPopup .formErrorContent {
   background: #33be40;
 }
 
 .blackPopup .formErrorContent {
   background: #393939;
-  color: #FFF;
+  color: white;
 }
 
 .formError .formErrorArrow {
@@ -2721,14 +2874,13 @@ body[dir='rtl'] .formError .formErrorArrow, body.rtl .formError .formErrorArrow 
   margin: 0px 0 0 12px;
   top: 2px;
 }
-
 .formError .formErrorArrow div {
-  border-left: 2px solid #ddd;
-  border-right: 2px solid #ddd;
-  box-shadow: 0 2px 3px #444;
-  -moz-box-shadow: 0 2px 3px #444;
-  -webkit-box-shadow: 0 2px 3px #444;
-  -o-box-shadow: 0 2px 3px #444;
+  border-left: 2px solid #dddddd;
+  border-right: 2px solid #dddddd;
+  box-shadow: 0 2px 3px #444444;
+  -moz-box-shadow: 0 2px 3px #444444;
+  -webkit-box-shadow: 0 2px 3px #444444;
+  -o-box-shadow: 0 2px 3px #444444;
   font-size: 0px;
   height: 1px;
   background: #ee0101;
@@ -2737,7 +2889,6 @@ body[dir='rtl'] .formError .formErrorArrow, body.rtl .formError .formErrorArrow 
   font-size: 0;
   display: block;
 }
-
 .formError .formErrorArrowBottom div {
   box-shadow: none;
   -moz-box-shadow: none;
@@ -2751,56 +2902,47 @@ body[dir='rtl'] .formError .formErrorArrow, body.rtl .formError .formErrorArrow 
 
 .blackPopup .formErrorArrow div {
   background: #393939;
-  color: #FFF;
+  color: white;
 }
 
 .formError .formErrorArrow .line10 {
   width: 15px;
   border: none;
 }
-
 .formError .formErrorArrow .line9 {
   width: 13px;
   border: none;
 }
-
 .formError .formErrorArrow .line8 {
   width: 11px;
 }
-
 .formError .formErrorArrow .line7 {
   width: 9px;
 }
-
 .formError .formErrorArrow .line6 {
   width: 7px;
 }
-
 .formError .formErrorArrow .line5 {
   width: 5px;
 }
-
 .formError .formErrorArrow .line4 {
   width: 3px;
 }
-
 .formError .formErrorArrow .line3 {
   width: 1px;
-  border-left: 2px solid #ddd;
-  border-right: 2px solid #ddd;
-  border-bottom: 0 solid #ddd;
+  border-left: 2px solid #dddddd;
+  border-right: 2px solid #dddddd;
+  border-bottom: 0 solid #dddddd;
 }
-
 .formError .formErrorArrow .line2 {
   width: 3px;
   border: none;
-  background: #ddd;
+  background: #dddddd;
 }
-
 .formError .formErrorArrow .line1 {
   width: 1px;
   border: none;
-  background: #ddd;
+  background: #dddddd;
 }
 
 body {
@@ -2825,7 +2967,6 @@ input {
   height: 20px;
   border: #CCCCCC 1px solid;
 }
-
 input[disabled] {
   background-color: #FFF;
   border: 0px;
@@ -2851,6 +2992,9 @@ nav.top {
 
 .ui-datepicker {
   font-size: 14px;
+}
+.ui-datepicker .ui-datepicker-title {
+  color: #080808;
 }
 
 /** override jqeury ui css start **/
@@ -2879,7 +3023,6 @@ table.row-data {
   margin: 5px 0px 5px;
   padding: 3px;
 }
-
 table.row-data tr th {
   border: #AAA 1px solid;
   padding: 5px 10px 5px 0px;
@@ -2887,17 +3030,14 @@ table.row-data tr th {
   width: 30%;
   background-color: #fafafa;
 }
-
 table.row-data.column-4 th {
   width: 20%;
 }
-
 table.row-data tr {
   border: #AAA 1px solid;
   padding: 5px 10px 5px 0px;
   text-align: right;
 }
-
 table.row-data tr td {
   border: #AAA 1px solid;
   padding: 3px 10px;
@@ -2929,35 +3069,29 @@ nav.top {
   margin: 0;
   padding: 0;
 }
-
 nav ul {
   margin: 0px;
   padding: 0px;
   float: left;
 }
-
 nav.top ul {
   margin: auto;
   list-style-type: none;
 }
-
 nav.top ul.block {
   height: 35px;
   width: 278px;
 }
-
 nav.top ul.navmenu {
   position: absolute;
   /*right: 0px;*/
 }
-
 nav.top ul.navmenu li {
   float: left;
   margin-right: 2px;
   text-align: center;
   width: 150px;
 }
-
 nav.top ul.navmenu li a {
   background: none repeat scroll 0 0 #6F6F6F;
   border: 1px solid #656565;
@@ -2971,13 +3105,11 @@ nav.top ul.navmenu li a {
   text-align: center;
   text-decoration: none;
 }
-
 nav.top ul.navmenu li a:hover {
   background: none repeat scroll 0 0 #C90915;
   border-color: #B90000;
   text-decoration: none;
 }
-
 nav.top ul.navmenu li a.select {
   background: none repeat scroll 0 0 #FFFFFF;
   border: medium none;
@@ -2986,18 +3118,15 @@ nav.top ul.navmenu li a.select {
   margin-top: 0;
   padding: 9px 1px 13px;
 }
-
 nav.top ul.navmenu li ul {
   display: none;
 }
-
 nav.top ul.navmenu li:hover ul {
   display: block;
   position: absolute;
   top: 30px;
   left: 0;
 }
-
 nav.top ul.navmenu li:hover ul li a {
   display: block;
   color: #ffffff;
@@ -3021,27 +3150,22 @@ nav.top ul.navmenu li:hover ul li a {
   background-image: url(../pic/buttonBackground.jpg);
   border: 0px;
 }
-
 .menu .button.select, .menu .button:hover {
   color: #0000C7;
   font-weight: bold;
 }
-
 .menu .button.select, .menu .button a {
   color: #000000;
   text-decoration: none;
 }
-
 .menu .button.select, .menu .button a:hover, .menu .button.select, .menu .button:hover a, .menu .button.select, .menu .button a:hover {
   color: #0000C7;
   font-weight: bold;
 }
-
 .menu .button.select {
   color: #0000C7;
   font-weight: bold;
 }
-
 .menu .button.select a {
   color: #0000C7;
   font-weight: bold;
@@ -3059,20 +3183,17 @@ nav.sub {
   padding-bottom: 10px;
   padding-top: 30px;
 }
-
 nav.sub ol {
   border-top: 1px solid #D5D5D5;
   list-style: none outside none;
   margin: 0;
   padding: 0;
 }
-
 nav.sub li {
   background: none repeat scroll 0 0 #C90915;
   border-bottom: 1px solid #D5D5D5;
   padding-left: 4px;
 }
-
 nav.sub li a {
   background: none repeat scroll 0 0 #FFFFFF;
   color: #717171;
@@ -3081,20 +3202,20 @@ nav.sub li a {
   text-decoration: none;
   cursor: pointer;
 }
-
-nav.sub li a:hover, nav.sub li a.selected {
+nav.sub li a:hover {
   background: none repeat scroll 0 0 #C90915;
   color: #FFFFFF;
   text-decoration: none;
 }
-
 nav.sub li a.selected {
+  background: none repeat scroll 0 0 #C90915;
+  color: #FFFFFF;
+  text-decoration: none;
   background: none repeat scroll 0 0 #454545;
   color: #FFFFFF;
   margin-left: -4px;
   padding-left: 14px;
 }
-
 nav.sub ul {
   background: none repeat scroll 0 0 #454545;
   border-bottom: 0px solid #454545;
@@ -3104,64 +3225,45 @@ nav.sub ul {
   padding: 0 0 0 4px;
   width: 100%;
 }
-
 nav.sub ul li {
   background: none repeat scroll 0 0 #DDDDDD;
   border-bottom: 1px dotted #ADADAD;
   padding: 0 0 0 4px;
 }
-
 nav.sub ul li.last {
   border-bottom: medium none;
 }
-
 nav.sub ul li a {
   background: none repeat scroll 0 0 #F4F4F4;
   color: #454545;
   display: block;
   padding: 9px 0 9px 25px;
 }
-
 nav.sub ul li a:hover {
   background: none repeat scroll 0 0 #DDDDDD;
   color: #000000;
 }
-
 nav.sub ul li a.selected {
   background: none repeat scroll 0 0 #717171;
   color: #FFFFFF;
   padding: 9px 0 9px 29px;
 }
-
 nav.sub ul ul {
   background: none repeat scroll 0 0 #717171;
   padding-right: 4px;
 }
-
-nav.sub ul ul li {
-  
-}
-
 nav.sub ul ul li a {
   line-height: 1.45em;
   margin-right: -4px;
   padding-left: 20px;
   padding-right: 10px;
 }
-/*
-nav.sub ul ul li a:hover {
-    background: none repeat scroll 0 0 #FFFFFF;
-    color: #C90915;
-    margin-left: -4px;
-}
-*/
-/*content*/
+
+/*右边的DIV*/
 article {
   width: 740px;
   float: left;
   padding-left: 10px;
-  border-left: 1px solid #D5D5D5;
-  min-height: 440px;
 }
 
 .main {
@@ -3174,11 +3276,9 @@ header {
   width: 100%;
   height: 70px;
 }
-
 header div {
   padding-top: 15px;
 }
-
 header .logo {
   left: 20px;
   position: absolute;
@@ -3205,13 +3305,11 @@ header li a:hover {
   color: #CC0000;
   text-decoration: none;
 }
-
 header ol, header ul {
   list-style: none outside none;
   margin: 0;
   padding: 0;
 }
-
 header ol {
   background: none repeat scroll 0 0 #F5F5F5;
   border: 1px solid #DDDDDD;
@@ -3224,44 +3322,47 @@ header ol {
   width: 100px;
   z-index: 999;
 }
-
 header ol li {
   font-size: 11px;
   padding: 5px 0;
 }
-
 header ol li a {
   color: #000000;
 }
-
 header ol li.lang {
   background: url("../images/icon-right.png") no-repeat scroll 83px center transparent;
   font-weight: 900;
   margin-bottom: 6px;
   padding: 2px 0;
 }
-
 header ol li.lang a {
   color: #6E6E6E;
 }
-
 header ul {
   padding-top: 68px;
 }
-
 header ul li {
   background: url("../images/icon-head.png") no-repeat scroll right center transparent;
   float: right;
   padding-right: 19px;
 }
-
 header ul li.last {
   background: none repeat scroll 0 0 transparent;
   padding: 0;
 }
-
 header ul li a {
   color: #434343;
+}
+header div.user-info {
+  font-size: 12px;
+  padding: 2px 8px !important;
+  float: right;
+  position: absolute;
+  right: 20px;
+  top: 8px;
+}
+header div.user-info div {
+  padding-top: 0px !important;
 }
 
 /* footer */
@@ -3278,12 +3379,10 @@ footer {
   height: 460px;
   position: absolute;
 }
-
 .bg-around.right {
   background: url(../images/bg-right.png) left top no-repeat;
   right: -10px;
 }
-
 .bg-around.left {
   background: url(../images/bg-left.png) right top no-repeat;
   left: -10px;
@@ -3303,28 +3402,23 @@ footer {
 .r-grid .ui-jqgrid-title {
   line-height: 25px;
 }
-
 .r-grid .ui-jqgrid {
   font-size: 12px;
 }
-
 .r-grid .ui-jqgrid-view tr {
   height: 25px;
 }
-
 .r-grid .ui-th-div-ie {
   line-height: 20px;
 }
-
 .r-grid .ui-state-default, .r-grid .ui-widget-content .ui-state-default, .r-grid .ui-widget-header .ui-state-default {
+  border: 1px solid #d8dcdf;
   background: url("../images/centercontent_tr001.jpg");
   background-repeat: repeat-x;
 }
-
 .r-grid .ui-jqgrid tr.ui-row-ltr td, .r-grid .ui-jqgrid tr.jqgrow td {
   border-color: #CCC;
 }
-
 .r-grid .ui-jqgrid tr.ui-row-ltr.ui-state-hover td, .r-grid .ui-jqgrid tr.jqgrow.ui-state-hover td {
   font-weight: bolder;
 }
@@ -3335,7 +3429,7 @@ footer {
 
 /** button **/
 .btn1, .ui-dialog-buttonset .ui-button {
-  background: url("../images/sprite.png") repeat-x scroll 0 0 transparent !important;;
+  background: url("../images/button001.jpg") scroll center center no-repeat !important;
 }
 
 .btn1.ui-button-text-only .ui-button-text, .ui-dialog-buttonset button.ui-button-text-only .ui-button-text {
@@ -3344,10 +3438,9 @@ footer {
 }
 
 .btn1.ui-button, .ui-dialog-buttonset button.ui-button {
-  min-width: 65px;
-  min-height: 25px;
+  width: 65px;
+  height: 24px;
   line-height: 24px;
-  padding: 4px 8px;
   display: inline-block;
   vertical-align: middle;
   text-align: center;
@@ -3365,7 +3458,6 @@ footer {
   padding: 0px;
   background: #fafafa;
 }
-
 .ui-dialog .ui-dialog-buttonpane {
   border: 0px;
   background: #fafafa;
@@ -3375,7 +3467,6 @@ footer {
   background: #005BA1;
   border: 1px solid #005BA1;
 }
-
 .defDialogCss .ui-state-hover {
   background: #f6f6f6 url(images/ui-bg_highlight-hard_100_f6f6f6_1x100.png) 50% 50% repeat-x;
   border: 1px solid #cdd5da;
@@ -3383,13 +3474,35 @@ footer {
 
 .errorDialogCss .ui-dialog-titlebar {
   background: #CC0000;
-  border: 1px solid #E3A1A1;
+  border: 1px solid #CC0000;
 }
 
 .text-red {
-  color: red
+  color: red;
 }
 
 .text-breakAll {
-  word-break: break-all
+  word-break: break-all;
+}
+
+/* IE6 IFRAME FIX (taken from datepicker 1.5.3 */
+.ui-datepicker-cover {
+  display: none;
+  /*sorry for IE5*/
+  display/**/: block;
+  /*sorry for IE5*/
+  position: absolute;
+  /*must have*/
+  z-index: -1;
+  /*must have*/
+  filter: mask();
+  /*must have*/
+  top: -4px;
+  /*must have*/
+  left: -4px;
+  /*must have*/
+  width: 200px;
+  /*must have*/
+  height: 200px;
+  /*must have*/
 }
