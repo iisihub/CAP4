@@ -3,7 +3,6 @@
   paths : {
     'json3' : 'lib/js/json3.min',
     'jquery' : 'lib/js/jquery/jquery-1.11.3',
-    'jquery-migrate-1' : 'lib/js/jquery/jquery-migrate-1.4.1',
     'jquery-ui' : 'lib/js/jquery/ui/js/jquery-ui-1.10.4.custom.min',
     'jqgrid-i18n' : 'lib/js/jquery/plugin/jquery.jqGrid-4.5.4/js/i18n/grid.locale-tw',
     'jqgrid' : 'lib/js/jquery/plugin/jquery.jqGrid-4.5.4/js/jquery.jqGrid.min',
