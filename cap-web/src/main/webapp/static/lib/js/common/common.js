@@ -104,7 +104,7 @@ $.holdReady(true);
     $.startBlockUI && $.startBlockUI();
   });
   // 所有動作均等待i18n 完成後再動作
-  window.i18n.load("def", {async: true}).done(
+  window.i18n.load("def", {async: false}).done(
       function() {
         // common js 初始化開始
         (function($) {
@@ -760,8 +760,8 @@ $.holdReady(true);
                 });
               }
             });
-            $(document).bind("ajaxStart", $.startBlockUI);
-            $(document).bind("ajaxStop", $.unblockUI);
+            $(document).on("ajaxStart", $.startBlockUI);
+            $(document).on("ajaxStop", $.unblockUI);
           }
 
           // 檔案上傳動作
@@ -1297,7 +1297,7 @@ $.holdReady(true);
                 if (s.attr("addNew") == 'true') {
                   !ops.match("'>" + i18n.def.newData + "</option>") && (ops += ("<option value='" + i18n.def.newData + "'>" + i18n.def.newData + "</option>"));
                   if (!s.data('bindChanged'))
-                    s.bind('change', function() {
+                    s.on('change', function() {
                       var value = $(this).val();
                       if (value == i18n.def.newData) {
                         CommonAPI.includeID({
@@ -1398,7 +1398,7 @@ $.holdReady(true);
                   return;
                 else {
                   if (common.valid) {
-                    $cthis.bind("blur.comm", common.valid);
+                    $cthis.on("blur.comm", common.valid);
                   }
                   for ( var attr in common) {
                     switch (attr) {
@@ -1424,7 +1424,7 @@ $.holdReady(true);
                 // 放入padding
                 // 功能
               }).end().filter("input[padding]").each(function() {
-                $(this).bind("blur.fill", function() {
+                $(this).on("blur.fill", function() {
                   var $fthis = $(this);
                   if ($fthis.val().length) {
                     $fthis.val(API.fillString($fthis.val(), parseInt($fthis.attr("padding"), 10), $fthis.attr("paddingright") == "true", $fthis.attr("paddinchar") || "0"));
@@ -1439,11 +1439,11 @@ $.holdReady(true);
                   window.name = "mainPage";
                 }
 
-                $(document).bind("ajaxStop", function() {
+                $(document).on("ajaxStop", function() {
                   // $.unblockUI();
-                }).bind("ajaxComplete", function(event, xhr, settings) {
-                }).bind("ajaxSuccess", function(event, xhr) {
-                }).bind("ajaxError", function(event, xhr, ajaxOptions, thrownError) {
+                }).on("ajaxComplete", function(event, xhr, settings) {
+                }).on("ajaxSuccess", function(event, xhr) {
+                }).on("ajaxError", function(event, xhr, ajaxOptions, thrownError) {
                 });
               }
               $_this.find(".tabs").tabs();
