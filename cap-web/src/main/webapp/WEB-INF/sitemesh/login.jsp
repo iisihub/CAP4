@@ -1,4 +1,5 @@
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
+<!DOCTYPE html>
 <html>
 <head>
 <link rel="stylesheet" href="../static/css/main.css" />
