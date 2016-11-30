@@ -2,8 +2,11 @@
 
   paths : {
     'json3' : 'lib/js/json3.min',
-    'jquery' : 'lib/js/jquery/jquery-1.11.3',
-    'jquery-ui' : 'lib/js/jquery/ui/js/jquery-ui-1.10.4.custom.min',
+    'jquery' : 'lib/js/jquery/jquery-3.0.0',
+//    'jquery' : 'lib/js/jquery/jquery-3.1.1.slim',
+//    'jquery' : 'lib/js/jquery/jquery-3.1.1.slim.min',
+    'jquery-migrate-3' : 'lib/js/jquery/jquery-migrate-3.0.0',
+    'jquery-ui' : 'lib/js/jquery/ui/js/jquery-ui-1.12.1.min',
     'jqgrid-i18n' : 'lib/js/jquery/plugin/jquery.jqGrid-4.5.4/js/i18n/grid.locale-tw',
     'jqgrid' : 'lib/js/jquery/plugin/jquery.jqGrid-4.5.4/js/jquery.jqGrid.min',
     'validate-i18n' : 'lib/js/jquery/plugin/formValidator/languages/jquery.validationEngine-zh_TW',
