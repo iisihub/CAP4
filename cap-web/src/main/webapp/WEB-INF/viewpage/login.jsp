@@ -9,8 +9,8 @@
 </head>
 <body>
     <script>
-          loadScript('js/login');
-        </script>
+      loadScript('js/login');
+    </script>
     <div id="shadow">
         <div id="content">
             <div id="location">

@@ -2,6 +2,7 @@ package com.iisigroup.cap.auth.provider;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
@@ -223,7 +224,11 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private boolean isCaptchaEnabled() {
-        HttpSession session = captchaCaptureFilter.getRequest().getSession();
+        HttpServletRequest req = captchaCaptureFilter.getRequest();
+        if (req == null) {
+            return false;
+        }
+        HttpSession session = req.getSession();
         return session.getAttribute("captchaEnabled") == null ? false : (Boolean) session.getAttribute("captchaEnabled");
     }
 
