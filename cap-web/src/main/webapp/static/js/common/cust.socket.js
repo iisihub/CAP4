@@ -35,7 +35,7 @@
 
         socket.on('popUpEvent', function(data) {
           var _idd = $("#remindDialog");
-          if (!_idd.size()) {
+          if (!_idd.length) {
             var message = "".concat("<br/>" + i18n.def['remind.startDate'] + data.startTime + "<br/>").concat(i18n.def['remind.endDate'] + data.endTime + "<br/>").concat(
                 i18n.def['remind.content'] + data.content);
             _idd = $(

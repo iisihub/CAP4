@@ -58,7 +58,7 @@ $(document).ready(
           if ($this.attr("url")) {
             router.to($(this).attr("url"));
           } else {
-            if ($this.siblings("ul").size()) {
+            if ($this.siblings("ul").length) {
               var sel = $this.siblings("ul");
               sel.is(":visible") ? sel.hide().parent("li").children("a").removeClass('clicked').children("span").removeClass('icon-5').addClass('icon-1') : sel.show().parent("li").children("a")
                   .addClass('clicked').children("span").removeClass('icon-1').addClass('icon-5');
@@ -93,7 +93,7 @@ $(document).ready(
           loadsub : function(folder) {
             var tlink = navTop.find("a").removeClass("select").filter("a[url=" + folder + "]").addClass("select");
             var smenu = tlink.data("smenu");
-            if (navSub.find('a').size()) {
+            if (navSub.find('a').length) {
               navSub.animate({
                 opacity : 0.01
               }, 200, _f);
@@ -169,7 +169,6 @@ $(document).ready(
                   if (filter(topSmenu[m].child, target)) {
                     return true;
                   }
-                  ;
                 }
               }
               return false;
@@ -302,7 +301,6 @@ $(document).ready(
           // $(".ui-dialog-content").dialog("close");
         });
       }
-      ;
 
       window.i18n.load("messages").done(function() {
         $.extend(Properties, {

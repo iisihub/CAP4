@@ -181,7 +181,7 @@
                             <!-- Window -->
                             <!-- <executable>C:\Program Files (x86)\nodejs\node</executable> -->
                             <arguments>
-                                <argument>${basedir}/src/main/webapp/static/requirejs/2.1.2/r.js</argument>
+                                <argument>${basedir}/src/main/webapp/static/requirejs/2.3.2/r.js</argument>
                                 <argument>-o</argument>
                                 <argument>${basedir}/src/main/webapp/static/build.js</argument>
                                 <argument>name=main</argument>
