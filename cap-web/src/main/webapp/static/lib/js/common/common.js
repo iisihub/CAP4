@@ -273,7 +273,7 @@ $.holdReady(true);
               },
               /**
                * 產生對話框
-               * 
+               *
                * @param {Object}
                *          settings
                * @param {String}
@@ -353,7 +353,7 @@ $.holdReady(true);
               },
               /**
                * 產生提示對話框
-               * 
+               *
                * @param {String}
                *          title title
                * @param {Object}
@@ -388,7 +388,7 @@ $.holdReady(true);
 
               /**
                * 產生提示對話框(預設與showPopMessage同 提供給予各專案replace使用)
-               * 
+               *
                * @param {String}
                *          title title
                * @param {Object}
@@ -402,7 +402,7 @@ $.holdReady(true);
 
               /**
                * 產生提示對話框(預設與showPopMessage同 提供給予各專案replace使用)
-               * 
+               *
                * @param {String}
                *          title title
                * @param {Object}
@@ -425,7 +425,7 @@ $.holdReady(true);
 
               /**
                * ajax 動作完成後錯誤訊息顯示方式(預設與showPopMessage同 提供給予各專案replace使用)
-               * 
+               *
                * @param {String}
                *          msg
                */
@@ -435,7 +435,7 @@ $.holdReady(true);
 
               /**
                * ajax 動作完成後通知訊息顯示方式(預設與showPopMessage同 提供給予各專案replace使用)
-               * 
+               *
                * @param {String}
                *          msg
                */
@@ -452,7 +452,7 @@ $.holdReady(true);
 
               /**
                * 補滿字串
-               * 
+               *
                * @param {string}
                *          data 轉入資料
                * @param {integer}
@@ -472,7 +472,7 @@ $.holdReady(true);
                 return data;
               },
               /**
-               * 
+               *
                * @param {String}
                *          id
                * @param {String}
@@ -489,7 +489,7 @@ $.holdReady(true);
               },
               /**
                * 建立i18n or key為變數之 JSON
-               * 
+               *
                * @param {Object}
                *          array
                */
@@ -555,7 +555,7 @@ $.holdReady(true);
               },
               /**
                * 於後端取得下拉選單資料
-               * 
+               *
                * @param {Array ||
                *          String} updatekeys reutrn {JSON} comboList
                */
@@ -677,7 +677,7 @@ $.holdReady(true);
                   data.ERROR_NOTIFY_MESSAGE && s.successError && s.successError(data, status);
                 },
                 error : function(xhr, status, e) {
-                  
+
                   if (!xhr || !status){
                     return;
                   }
@@ -1039,7 +1039,7 @@ $.holdReady(true);
             },
             /**
              * 將JSON內值放入 selector 所選之subitem(input,radio,checkbox,textarea,div,span)
-             * 
+             *
              * @param {JSON}
              *          json
              */
@@ -1086,7 +1086,7 @@ $.holdReady(true);
                             })(), true);
                           }
                           if (item.attr('submitbytext') == 'true') {
-                            item.find("option[showvalue='" + value + "']").attr("selected", true);
+                            item.find("option[showvalue='" + value + "']").prop("selected", true);
                           } else {
                             item.val(value);
                           }
@@ -1136,7 +1136,7 @@ $.holdReady(true);
 
             /**
              * 將dom內之輸入欄位轉成Json
-             * 
+             *
              * @param {boolean}
              *          noHide 無需Hidden 欄位 預設為 false (全取)
              */
@@ -1207,7 +1207,7 @@ $.holdReady(true);
             },
             /**
              * 設定 Selector's subitem readonly 狀態
-             * 
+             *
              * @param {boolean}
              *          b 預設為 true (readOnly)
              * @param {String}
@@ -1222,7 +1222,7 @@ $.holdReady(true);
             },
             /**
              * 設定欄位Readonly 狀態
-             * 
+             *
              * @param {boolean}
              *          f 預設為 true (readOnly)
              */
@@ -1253,7 +1253,7 @@ $.holdReady(true);
             },
             /**
              * 動態新增Select 選單
-             * 
+             *
              * @param {JSON}
              *          options
              * @param {boolean}
@@ -1331,7 +1331,7 @@ $.holdReady(true);
 
             /**
              * 移除options (多個 or 單一 選項)
-             * 
+             *
              * @param {Array ||
              *          string} options
              */
