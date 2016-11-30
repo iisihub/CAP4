@@ -122,10 +122,10 @@
     //                logSwitch.call(this);
     //            });
     //        }
-    //        
+    //
     //        $(document).bind('keydown', function(e){
-    //            if (e.ctrlKey && e.keyCode == 192) 
-    //                $("#logAction").toggle();
+    //            if (e.ctrlKey && e.keyCode == 192)
+    //                $("#logAction").toggle();//deprecated
     //        });
   });
 })(jQuery);
