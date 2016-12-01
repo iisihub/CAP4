@@ -10,7 +10,7 @@
   var baseUrl = "../../static";
 </script>
 <script src="../../static/requirejs/2.3.2/require.min.js"></script>
-<script src="../../static/main.js?cache=201611301633"></script>
+<script src="../../static/main.js?cache=201612011239"></script>
 <decorator:getProperty property="reqJSON" default="" />
 <decorator:head />
 </head>

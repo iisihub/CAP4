@@ -302,7 +302,7 @@ $(document).ready(
         });
       }
 
-      window.i18n.load("messages").done(function() {
+      window.i18n.load("messages", {async: true}).done(function() {
         $.extend(Properties, {
           myCustMessages : {
             custom_error_messages : {
