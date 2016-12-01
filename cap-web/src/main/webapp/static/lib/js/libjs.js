@@ -7,7 +7,7 @@ require.config({
 //    'jquery' : 'lib/js/jquery/jquery-3.1.1.slim',
 //    'jquery' : 'lib/js/jquery/jquery-3.1.1.slim.min',
     'jquery-migrate-3' : 'lib/js/jquery/jquery-migrate-3.0.0',
-    'jquery-ui' : 'lib/js/jquery/ui/js/jquery-ui-1.12.1.min',
+    'jquery-ui' : 'lib/js/jquery/ui/js/jquery-ui-1.12.1',
     'jqgrid-i18n' : 'lib/js/jquery/plugin/jquery.jqGrid-4.5.4/js/i18n/grid.locale-tw',
     'jqgrid' : 'lib/js/jquery/plugin/jquery.jqGrid-4.5.4/js/jquery.jqGrid.min',
     'validate-i18n' : 'lib/js/jquery/plugin/formValidator/languages/jquery.validationEngine-zh_TW',
