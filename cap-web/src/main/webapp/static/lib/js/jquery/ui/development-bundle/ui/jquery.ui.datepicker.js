@@ -197,7 +197,7 @@ $.extend(Datepicker.prototype, {
 			input[isRTL ? "before" : "after"](inst.append);
 		}
 
-		input.unbind("focus", this._showDatepicker);
+		input.off("focus", this._showDatepicker);
 
 		if (inst.trigger) {
 			inst.trigger.remove();
@@ -892,7 +892,7 @@ $.extend(Datepicker.prototype, {
 
 	/* Tidy up after a dialog display. */
 	_tidyDialog: function(inst) {
-		inst.dpDiv.removeClass(this._dialogClass).unbind(".ui-datepicker-calendar");
+		inst.dpDiv.removeClass(this._dialogClass).off(".ui-datepicker-calendar");
 	},
 
 	/* Close date picker if clicked elsewhere. */

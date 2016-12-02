@@ -32,7 +32,7 @@
  *                  dataUrl: a url that will return the html select for this field, this url will only be called once for this field
  *                  dataValues: the possible values for this field in the form [ { text: 'Data Display Text', value: 'data_actual_value' }, { ... } ]
  *                  dataInit: a function that you can use to initialize the data field. this function is passed the jQuery-fied data element
- *                  dataEvents: list of events to apply to the data element. uses $("#id").bind(type, [data], fn) to bind events to data element
+ *                  dataEvents: list of events to apply to the data element. uses $("#id").on(type, [data], fn) to bind events to data element
  *              *** JSON of this object could look like this: ***
  *               var fields = [
  *                 {
@@ -49,7 +49,7 @@
  *                     { ... }
  *                   ],
  *                   dataInit: function(jElem) { jElem.datepicker(options); },
- *                   dataEvents: [ // these are the same options that you pass to $("#id").bind(type, [data], fn)
+ *                   dataEvents: [ // these are the same options that you pass to $("#id").on(type, [data], fn)
  *                     { type: 'click', data: { i: 7 }, fn: function(e) { console.log(e.data.i); } },
  *                     { type: 'keypress', fn: function(e) { console.log('keypress'); } }
  *                   ]
@@ -193,9 +193,9 @@ jQuery.fn.searchFilter = function(fields, options) {
                 if (jElem[0] != null) {
                     jQuery.each(events, function() {
                         if (this.data != null)
-                            jElem.bind(this.type, this.data, this.fn);
+                            jElem.on(this.type, this.data, this.fn);
                         else
-                            jElem.bind(this.type, this.fn);
+                            jElem.on(this.type, this.fn);
                     });
                 }
             }
@@ -406,7 +406,7 @@ jQuery.fn.searchFilter = function(fields, options) {
                 if (opts.datepickerFix === true && jQuery.fn.datepicker !== undefined) { // using $.data to associate data with document elements is Not Good
                     row.find(".hasDatepicker").each(function() {
                         var settings = jQuery.data(this, "datepicker").settings;
-                        newRow.find("#" + this.id).unbind().removeAttr("id").removeClass("hasDatepicker").datepicker(settings);
+                        newRow.find("#" + this.id).off().removeAttr("id").removeClass("hasDatepicker").datepicker(settings);
                     });
                 }
                 newRow.find("select[name='field']").change(function(event){event.stopPropagation();} );
@@ -463,7 +463,7 @@ jQuery.fn.searchFilter = function(fields, options) {
                 if (opts.datepickerFix === true && jQuery.fn.datepicker !== undefined) { // using $.data to associate data with document elements is Not Good
                     row.find(".hasDatepicker").each(function() {
                         var settings = jQuery.data(this, "datepicker").settings;
-                        newRow.find("#" + this.id).unbind().removeAttr("id").removeClass("hasDatepicker").datepicker(settings);
+                        newRow.find("#" + this.id).off().removeAttr("id").removeClass("hasDatepicker").datepicker(settings);
                     });
                 }
                 newRow.find("select[name='field']").change(function(event){event.stopPropagation();});

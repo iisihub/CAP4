@@ -378,7 +378,7 @@ $.ui.ddmanager = {
 
 	},
 	dragStop: function( draggable, event ) {
-		draggable.element.parentsUntil( "body" ).unbind( "scroll.droppable" );
+		draggable.element.parentsUntil( "body" ).off( "scroll.droppable" );
 		//Call prepareOffsets one final time since IE does not fire return scroll events when overflow was caused by drag (see #5003)
 		if( !draggable.options.refreshPositions ) {
 			$.ui.ddmanager.prepareOffsets( draggable, event );

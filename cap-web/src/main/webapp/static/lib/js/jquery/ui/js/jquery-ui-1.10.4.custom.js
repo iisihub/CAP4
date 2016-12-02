@@ -257,7 +257,7 @@ $.fn.extend({
 	},
 
 	enableSelection: function() {
-		return this.unbind( ".ui-disableSelection" );
+		return this.off( ".ui-disableSelection" );
 	}
 });
 
@@ -571,7 +571,7 @@ $.Widget.prototype = {
 		// we can probably remove the unbind calls in 2.0
 		// all event bindings should go through this._on()
 		this.element
-			.unbind( this.eventNamespace )
+			.off( this.eventNamespace )
 			// 1.9 BC for #7810
 			// TODO remove dual storage
 			.removeData( this.widgetName )
@@ -580,14 +580,14 @@ $.Widget.prototype = {
 			// http://bugs.jquery.com/ticket/9413
 			.removeData( $.camelCase( this.widgetFullName ) );
 		this.widget()
-			.unbind( this.eventNamespace )
+			.off( this.eventNamespace )
 			.removeAttr( "aria-disabled" )
 			.removeClass(
 				this.widgetFullName + "-disabled " +
 				"ui-state-disabled" );
 
 		// clean up events and states
-		this.bindings.unbind( this.eventNamespace );
+		this.bindings.off( this.eventNamespace );
 		this.hoverable.removeClass( "ui-state-hover" );
 		this.focusable.removeClass( "ui-state-focus" );
 	},
@@ -721,7 +721,7 @@ $.Widget.prototype = {
 
 	_off: function( element, eventName ) {
 		eventName = (eventName || "").split( " " ).join( this.eventNamespace + " " ) + this.eventNamespace;
-		element.unbind( eventName ).undelegate( eventName );
+		element.off( eventName ).undelegate( eventName );
 	},
 
 	_delay: function( handler, delay ) {
@@ -859,11 +859,11 @@ $.widget("ui.mouse", {
 	// TODO: make sure destroying one instance of mouse doesn't mess with
 	// other instances of mouse
 	_mouseDestroy: function() {
-		this.element.unbind("."+this.widgetName);
+		this.element.off("."+this.widgetName);
 		if ( this._mouseMoveDelegate ) {
 			$(document)
-				.unbind("mousemove."+this.widgetName, this._mouseMoveDelegate)
-				.unbind("mouseup."+this.widgetName, this._mouseUpDelegate);
+				.off("mousemove."+this.widgetName, this._mouseMoveDelegate)
+				.off("mouseup."+this.widgetName, this._mouseUpDelegate);
 		}
 	},
 
@@ -944,8 +944,8 @@ $.widget("ui.mouse", {
 
 	_mouseUp: function(event) {
 		$(document)
-			.unbind("mousemove."+this.widgetName, this._mouseMoveDelegate)
-			.unbind("mouseup."+this.widgetName, this._mouseUpDelegate);
+			.off("mousemove."+this.widgetName, this._mouseMoveDelegate)
+			.off("mouseup."+this.widgetName, this._mouseUpDelegate);
 
 		if (this._mouseStarted) {
 			this._mouseStarted = false;
@@ -2778,7 +2778,7 @@ $.ui.ddmanager = {
 
 	},
 	dragStop: function( draggable, event ) {
-		draggable.element.parentsUntil( "body" ).unbind( "scroll.droppable" );
+		draggable.element.parentsUntil( "body" ).off( "scroll.droppable" );
 		//Call prepareOffsets one final time since IE does not fire return scroll events when overflow was caused by drag (see #5003)
 		if( !draggable.options.refreshPositions ) {
 			$.ui.ddmanager.prepareOffsets( draggable, event );
@@ -3001,7 +3001,7 @@ $.widget("ui.resizable", $.ui.mouse, {
 		var wrapper,
 			_destroy = function(exp) {
 				$(exp).removeClass("ui-resizable ui-resizable-disabled ui-resizable-resizing")
-					.removeData("resizable").removeData("ui-resizable").unbind(".resizable").find(".ui-resizable-handle").remove();
+					.removeData("resizable").removeData("ui-resizable").off(".resizable").find(".ui-resizable-handle").remove();
 			};
 
 		//TODO: Unwrap at same DOM position
@@ -6475,7 +6475,7 @@ $.widget( "ui.button", {
 	},
 	_create: function() {
 		this.element.closest( "form" )
-			.unbind( "reset" + this.eventNamespace )
+			.off( "reset" + this.eventNamespace )
 			.bind( "reset" + this.eventNamespace, formResetHandler );
 
 		if ( typeof this.options.disabled !== "boolean" ) {
@@ -6999,7 +6999,7 @@ $.extend(Datepicker.prototype, {
 			input[isRTL ? "before" : "after"](inst.append);
 		}
 
-		input.unbind("focus", this._showDatepicker);
+		input.off("focus", this._showDatepicker);
 
 		if (inst.trigger) {
 			inst.trigger.remove();
@@ -7694,7 +7694,7 @@ $.extend(Datepicker.prototype, {
 
 	/* Tidy up after a dialog display. */
 	_tidyDialog: function(inst) {
-		inst.dpDiv.removeClass(this._dialogClass).unbind(".ui-datepicker-calendar");
+		inst.dpDiv.removeClass(this._dialogClass).off(".ui-datepicker-calendar");
 	},
 
 	/* Close date picker if clicked elsewhere. */
@@ -9581,7 +9581,7 @@ $.widget( "ui.dialog", {
 			$.ui.dialog.overlayInstances--;
 
 			if ( !$.ui.dialog.overlayInstances ) {
-				this.document.unbind( "focusin.dialog" );
+				this.document.off( "focusin.dialog" );
 			}
 			this.overlay.remove();
 			this.overlay = null;

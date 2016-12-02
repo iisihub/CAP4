@@ -69,9 +69,9 @@ $.jgrid.extend({
 			var grid = this.grid;
 			grid.emptyRows.call(this, true, true); // this work quick enough and reduce the size of memory leaks if we have someone
 
-			$(document).unbind("mouseup.jqGrid" + this.p.id ); 
-			$(grid.hDiv).unbind("mousemove"); // TODO add namespace
-			$(this).unbind();
+			$(document).off("mouseup.jqGrid" + this.p.id ); 
+			$(grid.hDiv).off("mousemove"); // TODO add namespace
+			$(this).off();
 
 			grid.dragEnd = null;
 			grid.dragMove = null;
@@ -637,7 +637,7 @@ $.jgrid.extend({
 			thead = $("table.ui-jqgrid-htable thead", grid.hDiv), cm = $t.p.colModel, hc;
 			if(!grid) { return; }
 
-			$(this).unbind('.setGroupHeaders');
+			$(this).off('.setGroupHeaders');
 			$tr = $("<tr>", {role: "rowheader"}).addClass("ui-jqgrid-labels");
 			headers = grid.headers;
 			for (i = 0, l = headers.length; i < l; i++) {
@@ -798,7 +798,7 @@ $.jgrid.extend({
 			}
 
 			$firstRow = $theadInTable.find("tr.jqg-first-row-header");
-			$(ts).bind('jqGridResizeStop.setGroupHeaders', function (e, nw, idx) {
+			$(ts).on('jqGridResizeStop.setGroupHeaders', function (e, nw, idx) {
 				$firstRow.find('th').eq(idx).width(nw);
 			});
 		});				
@@ -882,14 +882,14 @@ $.jgrid.extend({
 				.mousemove(function (e) {
 					if($t.grid.resizing){ $t.grid.dragMove(e);return false; }
 				});
-				$($t).bind('jqGridResizeStop.setFrozenColumns', function (e, w, index) {
+				$($t).on('jqGridResizeStop.setFrozenColumns', function (e, w, index) {
 					var rhth = $(".ui-jqgrid-htable",$t.grid.fhDiv);
 					$("th:eq("+index+")",rhth).width( w ); 
 					var btd = $(".ui-jqgrid-btable",$t.grid.fbDiv);
 					$("tr:first td:eq("+index+")",btd).width( w ); 
 				});
 				// sorting stuff
-				$($t).bind('jqGridSortCol.setFrozenColumns', function (e, index, idxcol) {
+				$($t).on('jqGridSortCol.setFrozenColumns', function (e, index, idxcol) {
 
 					var previousSelectedTh = $("tr.ui-jqgrid-labels:last th:eq("+$t.p.lastsort+")",$t.grid.fhDiv), newSelectedTh = $("tr.ui-jqgrid-labels:last th:eq("+idxcol+")",$t.grid.fhDiv);
 
@@ -912,9 +912,9 @@ $.jgrid.extend({
 					$($t.grid.fbDiv).scrollTop($(this).scrollTop());
 				});
 				if($t.p.hoverrows === true) {
-					$("#"+$.jgrid.jqID($t.p.id)).unbind('mouseover').unbind('mouseout');
+					$("#"+$.jgrid.jqID($t.p.id)).off('mouseover').off('mouseout');
 				}
-				$($t).bind('jqGridAfterGridComplete.setFrozenColumns', function () {
+				$($t).on('jqGridAfterGridComplete.setFrozenColumns', function () {
 					$("#"+$.jgrid.jqID($t.p.id)+"_frozen").remove();
 					$($t.grid.fbDiv).height($($t.grid.bDiv).height()-16);
 					var btbl = $("#"+$.jgrid.jqID($t.p.id)).clone(true);
@@ -951,15 +951,15 @@ $.jgrid.extend({
 				$($t.grid.fhDiv).remove();
 				$($t.grid.fbDiv).remove();
 				$t.grid.fhDiv = null; $t.grid.fbDiv=null;
-				$(this).unbind('.setFrozenColumns');
+				$(this).off('.setFrozenColumns');
 				if($t.p.hoverrows === true) {
 					var ptr;
-					$("#"+$.jgrid.jqID($t.p.id)).bind('mouseover',function(e) {
+					$("#"+$.jgrid.jqID($t.p.id)).on('mouseover',function(e) {
 						ptr = $(e.target).closest("tr.jqgrow");
 						if($(ptr).attr("class") !== "ui-subgrid") {
 						$(ptr).addClass("ui-state-hover");
 					}
-					}).bind('mouseout',function(e) {
+					}).on('mouseout',function(e) {
 						ptr = $(e.target).closest("tr.jqgrow");
 						$(ptr).removeClass("ui-state-hover");
 					});
