@@ -58,7 +58,7 @@
         },
 
         unmousewheel: function(fn) {
-            return this.unbind("mousewheel", fn);
+            return this.off("mousewheel", fn);
         }
     });
 
