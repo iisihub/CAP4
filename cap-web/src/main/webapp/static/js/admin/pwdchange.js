@@ -1,14 +1,13 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     $('#change').click(function() {
       $.ajax({
         url : url("usershandler/changePassword"),
-        data : $('#mform').serializeData(),
-        success : function() {
-          API.showMessage('', i18n.pwdchange.changePwdOk, function() {
-            $('#mform').reset();
-          });
-        }
+        data : $('#mform').serializeData()
+      }).done(function() {
+        API.showMessage('', i18n.pwdchange.changePwdOk, function() {
+          $('#mform').reset();
+        });
       });
     });
     $('#clear').click(function() {

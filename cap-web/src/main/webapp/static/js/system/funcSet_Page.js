@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var $form = $("#JForm");
     var code = reqJSON.pgmCode;
     var isNew = code ? false : true;
@@ -16,25 +16,24 @@ pageInit(function() {
         data : {
           sysType : $form.find('#sysType').val(),
           level : $form.find('#level').val() - 1
-        },
-        success : function(responseData) {
-          var items = {};
-          if ($form.find('#level').val() == '1') {
-            items['0'] = i18n['funcSet_Page']['level0'];
-          } else if (responseData.functions.length > 0) {
-            var size = responseData.functions.length;
-            for (var i = 0; i < size; i++) {
-              var data = responseData.functions[i];
-              items[data.code] = data.name;
-            }
-            data = responseData.functions[0];
-          } else {
-            items[''] = i18n['funcSet_Page']['nooption'];
+        }
+      }).done(function(responseData) {
+        var items = {};
+        if ($form.find('#level').val() == '1') {
+          items['0'] = i18n['funcSet_Page']['level0'];
+        } else if (responseData.functions.length > 0) {
+          var size = responseData.functions.length;
+          for (var i = 0; i < size; i++) {
+            var data = responseData.functions[i];
+            items[data.code] = data.name;
           }
-          $form.find('#parent').setOptions(items);
-          value && $form.find('select[name=parent]').val(value);
-        }// close success function
-      });
+          data = responseData.functions[0];
+        } else {
+          items[''] = i18n['funcSet_Page']['nooption'];
+        }
+        $form.find('#parent').setOptions(items);
+        value && $form.find('select[name=parent]').val(value);
+      });// close success function
     }
     var grid = $form.find("#gridview").jqGrid({
       url : url('functionsethandler/queryRole'),

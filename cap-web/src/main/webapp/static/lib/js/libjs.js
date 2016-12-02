@@ -3,13 +3,10 @@ require.config({
   paths : {
     'json3' : 'lib/js/json3.min',
     'socketio' : 'lib/js/socket.io',
-    'jquery' : 'lib/js/jquery/jquery-3.0.0',
-    // 'jquery' : 'lib/js/jquery/jquery-3.1.1',
-    // 'jquery' : 'lib/js/jquery/jquery-3.1.1.min',
-    'jquery-migrate-3' : 'lib/js/jquery/jquery-migrate-3.0.0',
+    'jquery' : 'lib/js/jquery/jquery-3.1.1.min',
     'jquery-ui' : 'lib/js/jquery/ui/js/jquery-ui-1.12.1.fix.deprecated',
     'jqgrid-i18n' : 'lib/js/jquery/plugin/jquery.jqGrid-4.5.4/js/i18n/grid.locale-tw',
-    'jqgrid' : 'lib/js/jquery/plugin/jquery.jqGrid-4.5.4/js/jquery.jqGrid.min',
+    'jqgrid' : 'lib/js/jquery/plugin/jquery.jqGrid-4.5.4/js/jquery.jqGrid.fix.deprecated',
     'validate-i18n' : 'lib/js/jquery/plugin/formValidator/languages/jquery.validationEngine-zh_TW',
     'validate' : 'lib/js/jquery/plugin/formValidator/jquery.validationEngine',
     'fileupload' : 'lib/js/jquery/plugin/ajaxfileupload/ajaxfileupload',
@@ -22,7 +19,6 @@ require.config({
     'fullcalendar' : 'lib/js/calendar/fullcalendar'
   },
   shim : {
-    'jquery-migrate-3' : [ 'jquery' ],
     'blockui' : [ 'jquery' ],
     'jquery-ui' : [ 'jquery' ],
     'jqgrid-i18n' : [ 'jquery' ],
@@ -39,7 +35,7 @@ require.config({
 });
 
 define('libjs', [ 'json3', 'socketio', 'jquery', 'blockui', 'jquery-ui', 'jqgrid-i18n', 'jqgrid', 'validate-i18n', 'validate', 'fileupload', 'underscore', 'backbone', 'sceditor', 'ifvisible',
-    'timer', 'fullcalendar', 'jquery-migrate-3'], function() {
+    'timer', 'fullcalendar'], function() {
   window.ifvisible = require.s.contexts._.defined.ifvisible;
   // $.holdReady(true); // enable at common.js
   logDebug('lib init');

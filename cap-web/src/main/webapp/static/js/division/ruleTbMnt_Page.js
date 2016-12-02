@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var mform = $("#mform");
     var _mainOid = reqJSON.mainOid;
     var _divRlNo = reqJSON.divRlNo;
@@ -96,16 +96,15 @@ pageInit(function() {
       data : {
         mainOid : _mainOid,
         divRlNo : _divRlNo,
-      },
-      success : function(d) {
-        mform.injectData(d);
-        ruleMapGrid.jqGrid('setGridParam', {
-          postData : {
-            divRlNo : mform.find("#divRlNo").val()
-          }
-        });
-        ruleMapGrid.trigger("reloadGrid");
       }
+    }).done(function(d) {
+      mform.injectData(d);
+      ruleMapGrid.jqGrid('setGridParam', {
+        postData : {
+          divRlNo : mform.find("#divRlNo").val()
+        }
+      });
+      ruleMapGrid.trigger("reloadGrid");
     });
 
     // 新增條件的因子列表中的一筆資料
@@ -226,9 +225,7 @@ pageInit(function() {
       /** 儲存 連後端儲存 */
       $.ajax({
         url : url("ruleTbMnthandler/saveRuleTbDtl"),
-        data : datas,
-        success : function() {
-        }
+        data : datas
       });
     });
 
@@ -251,10 +248,9 @@ pageInit(function() {
           divRlNo : _divRlNo,
           oid : _mainOid,
         },
-        ajaxTimeOut : 60000 * 1000 * 3, // timeOut: 180
-        success : function(d) {
-          d.tMsg && CommonAPI.showPopMessage(d.tMsg);
-        }
+        ajaxTimeOut : 60000 * 1000 * 3 // timeOut: 180
+      }).done(function(d) {
+        d.tMsg && CommonAPI.showPopMessage(d.tMsg);
       });
     });
   });

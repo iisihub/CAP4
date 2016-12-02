@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var mform = $("#mform");
     var grid = $("#gridview").jqGrid({
       url : url('departmenthandler/query'),
@@ -97,14 +97,13 @@ pageInit(function() {
                 url : url('departmenthandler/save'),
                 data : $.extend($form.serializeData(), {
                   oid : oid
-                }),
-                success : function(responseData) {
-                  if (responseData.exist) {
-                    edit.dialog('close');
-                    API.showMessage(i18n.def['data.exists']);
-                  } else {
-                    grid.trigger("reloadGrid");
-                  }
+                })
+              }).done(function(responseData) {
+                if (responseData.exist) {
+                  edit.dialog('close');
+                  API.showMessage(i18n.def['data.exists']);
+                } else {
+                  grid.trigger("reloadGrid");
                 }
               });
             }
@@ -134,10 +133,9 @@ pageInit(function() {
               url : url('departmenthandler/delete'),
               data : {
                 oid : rowObject.oid
-              },
-              success : function(responseData) {
-                grid.trigger("reloadGrid");
               }
+            }).done(function(responseData) {
+              grid.trigger("reloadGrid");
             });
           }
         });

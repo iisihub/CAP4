@@ -1,6 +1,5 @@
 (function($) {
-  $(document).ready(
-      function() {
+  $(function() {
         "use strict";
 
         window.socket = io.connect('http://' + window.location.hostname + ':9092');
@@ -11,10 +10,9 @@
             url : url('sockethandler/initSession'),
             data : {
               socketId : socket.socket.sessionid
-            },
-            success : function(responseData) {
-              logDebug("Client has binded to the server!");
             }
+          }).done(function(responseData) {
+            logDebug("Client has binded to the server!");
           });
           logDebug("SocketId = " + socket.socket.sessionid);
         });
@@ -26,7 +24,7 @@
           ilog.notify(message);
         });
 
-        $("#msgContainer").on('click', ".cal", function(event) {
+        $("#msgContainer").find(".cal").on('click', function(event) {
           CommonAPI.formSubmit({
             url : './common/calendar',
             target : "_blank"

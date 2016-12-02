@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var grid, mform = $("#mform");
     grid = $("#gridview").jqGrid({
       url : url('codetypehandler/query'),
@@ -61,10 +61,9 @@ pageInit(function() {
           url : url("codetypehandler/modify"),
           data : $.extend(mform.serializeData(), {
             type : "A"
-          }),
-          success : function() {
-            grid.trigger("reloadGrid");
-          }
+          })
+        }).done(function() {
+          grid.trigger("reloadGrid");
         });
       });
     });
@@ -76,10 +75,9 @@ pageInit(function() {
             url : url("codetypehandler/modify"),
             data : $.extend(mform.serializeData(), {
               type : "M"
-            }),
-            success : function() {
-              grid.trigger("reloadGrid");
-            }
+            })
+          }).done(function() {
+            grid.trigger("reloadGrid");
           });
         });
       } else {
@@ -94,10 +92,9 @@ pageInit(function() {
             url : url("codetypehandler/delete"),
             data : {
               oid : $("#oid").val()
-            },
-            success : function() {
-              grid.trigger("reloadGrid");
             }
+          }).done(function() {
+            grid.trigger("reloadGrid");
           });
         });
       } else {
