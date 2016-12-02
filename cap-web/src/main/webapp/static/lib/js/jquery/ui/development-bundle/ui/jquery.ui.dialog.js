@@ -760,7 +760,7 @@ $.widget( "ui.dialog", {
 			$.ui.dialog.overlayInstances--;
 
 			if ( !$.ui.dialog.overlayInstances ) {
-				this.document.unbind( "focusin.dialog" );
+				this.document.off( "focusin.dialog" );
 			}
 			this.overlay.remove();
 			this.overlay = null;

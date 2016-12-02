@@ -1547,6 +1547,6 @@ $.holdReady(true);
     });
     // 所有動作均等待i18n 完成後再動作
     window.i18n.load("def", {
-        async: true
+        async: false
     }).done(commonjsInit);
 })(jQuery, window);
