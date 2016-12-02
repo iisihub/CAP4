@@ -1,5 +1,4 @@
-$(document).ready(
-    function() {
+$(function() {
 
       // var date = new Date();
       // var d = date.getDate();
@@ -37,20 +36,19 @@ $(document).ready(
             data : {
               start : start.getTime(),
               end : end.getTime()
-            },
-            success : function(data) {
-              var events = [];
-              var items = data.events;
-              for (item in items) {
-                events.push({
-                  title : items[item]['content'],
-                  start : Math.round(items[item]['startDate']["time"] / 1000),
-                  end : Math.round(items[item]['endDate']["time"] / 1000),
-                  allDay : false
-                });
-              }
-              callback(events);
             }
+          }).done(function(data) {
+            var events = [];
+            var items = data.events;
+            for (item in items) {
+              events.push({
+                title : items[item]['content'],
+                start : Math.round(items[item]['startDate']["time"] / 1000),
+                end : Math.round(items[item]['endDate']["time"] / 1000),
+                allDay : false
+              });
+            }
+            callback(events);
           });
         },
         selectable : true,

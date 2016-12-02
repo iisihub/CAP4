@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var form = $("form");
 
     form.validationEngine('attach', $.extend({

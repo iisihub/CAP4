@@ -3,3 +3,7 @@
 @import "../module/ui.jqgrid.scss";
 @import "../module/validationEngine.jquery.scss";
 @import "../module/base.scss";
+
+.btn1.ui-button, .ui-dialog-buttonset button.ui-button {
+  line-height: 0px !important;
+}

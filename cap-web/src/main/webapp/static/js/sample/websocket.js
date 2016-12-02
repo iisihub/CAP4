@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     "use strict";
 
     var userName = 'user' + Math.floor((Math.random() * 1000) + 1);

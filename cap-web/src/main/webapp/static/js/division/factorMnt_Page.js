@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     // debugger;
     var _mainOid = reqJSON.mainOid;
     var _factorNo = reqJSON.factorNo;
@@ -61,16 +61,15 @@ pageInit(function() {
       data : {
         mainOid : _mainOid,
         factorNo : _factorNo,
-      },
-      success : function(json) {
-        mform.injectData(json);
-        ftDtlGrid.jqGrid('setGridParam', {
-          postData : {
-            factorNo : mform.find("#factorNo").val()
-          }
-        });
-        ftDtlGrid.trigger("reloadGrid");
       }
+    }).done(function(json) {
+      mform.injectData(json);
+      ftDtlGrid.jqGrid('setGridParam', {
+        postData : {
+          factorNo : mform.find("#factorNo").val()
+        }
+      });
+      ftDtlGrid.trigger("reloadGrid");
     });
 
     mform.find("#mod_btn").click(function() {
@@ -120,16 +119,15 @@ pageInit(function() {
       /** 儲存 連後端儲存 */
       $.ajax({
         url : url("factorMnthandler/saveFactorDtl"),
-        data : datas,
-        success : function(json) {
-          // ftDtlGrid.jqGrid('setGridParam', {
-          // postData: {
-          // factorNo:mform.find("#factorNo").val()
-          // }
-          // });
-          // ftDtlGrid.trigger("reloadGrid");
-          // CommonAPI.showPopMessage("儲存因子資料完成");
-        }
+        data : datas
+      }).done(function(json) {
+        // ftDtlGrid.jqGrid('setGridParam', {
+        // postData: {
+        // factorNo:mform.find("#factorNo").val()
+        // }
+        // });
+        // ftDtlGrid.trigger("reloadGrid");
+        // CommonAPI.showPopMessage("儲存因子資料完成");
       });
     });
 

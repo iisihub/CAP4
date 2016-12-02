@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
   $("#loadcodetype").click(function() {
     router.to($("#page").val());
   });

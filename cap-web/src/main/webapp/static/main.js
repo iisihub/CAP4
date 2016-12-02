@@ -1,8 +1,7 @@
 var logDebug = function() {
   if (window.console) {
-    console.log(arguments);
+    console.log(arguments.length > 0 ? arguments[0] : arguments);
   }
-
 };
 var baseUrl = baseUrl || '../static';
 require.config({
@@ -24,14 +23,14 @@ require.config({
 });
 
 require([ 'libjs', 'common.properties', 'cust-properties', 'capjs', 'cust-common' ], function() {
-  logDebug("cust js init");
+  console.debug("cust js init");
 });
 
 // global method
 window.loadScript = function(url) {
   require([ 'cust-common' ], function() {
     require([ url ], function(pageJs) {
-      logDebug(url + ' loaded!');
+      logDebug(url + ' loaded');
       pageJs && pageJs.init();
     })
   });

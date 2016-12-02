@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var mform = $("#mform");
     var _mainOid = reqJSON.mainOid;
     var _factorNo = reqJSON.factorNo;
@@ -12,16 +12,15 @@ pageInit(function() {
       data : {
         mainOid : _mainOid,
         factorNo : _factorNo,
-      },
-      success : function(d) {
-        mform.injectData(d);
-        cndtDtlGrid.jqGrid('setGridParam', {
-          postData : {
-            divCtNo : mform.find("#divCtNo").val()
-          }
-        });
-        cndtDtlGrid.trigger("reloadGrid");
       }
+    }).done(function(d) {
+      mform.injectData(d);
+      cndtDtlGrid.jqGrid('setGridParam', {
+        postData : {
+          divCtNo : mform.find("#divCtNo").val()
+        }
+      });
+      cndtDtlGrid.trigger("reloadGrid");
     });
 
     var divFtSel = mform.find("#divFtSel");
@@ -30,10 +29,9 @@ pageInit(function() {
       data : {
       // mainOid: _mainOid,
       // factorNo: _factorNo,
-      },
-      success : function(d) {
-        divFtSel.setOptions(d);
       }
+    }).done(function(d) {
+      divFtSel.setOptions(d);
     });
     divFtSel.change(function() {
       ftRsGrid.jqGrid('setGridParam', {
@@ -254,9 +252,7 @@ pageInit(function() {
       /**儲存 連後端儲存*/
       $.ajax({
         url : url("conditionMnthandler/saveConditionDtl"),
-        data : datas,
-        success : function() {
-        }
+        data : datas
       });
     });
   });

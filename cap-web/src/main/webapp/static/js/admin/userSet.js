@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var grid, mform = $("#mform"), qform = $('#qform');
     grid = $("#gridview").jqGrid({
       url : url('usersethandler/query'),
@@ -156,11 +156,10 @@ pageInit(function() {
             url : url("usersethandler/" + aDialog.data('type')),
             data : $.extend(mform.serializeData(), {
               roleCodes : grid2.getSelRowDatas('code')
-            }),
-            success : function() {
-              grid.trigger("reloadGrid");
-              aDialog.dialog('close');
-            }
+            })
+          }).done(function() {
+            grid.trigger("reloadGrid");
+            aDialog.dialog('close');
           });
         }
       }, {
@@ -238,10 +237,9 @@ pageInit(function() {
             url : url("usersethandler/" + action),
             data : {
               oids : grid.getSelRowDatas('oid')
-            },
-            success : function() {
-              grid.trigger("reloadGrid");
             }
+          }).done(function() {
+            grid.trigger("reloadGrid");
           });
         });
       } else {
