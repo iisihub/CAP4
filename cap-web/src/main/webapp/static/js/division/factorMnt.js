@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var mform = $("#mform");
     var grid = $("#gridview").jqGrid({
       // handler : 'factorMnthandler',
@@ -84,11 +84,10 @@ pageInit(function() {
           data : {
             oid : selrow.oid
           },
-          url : url("factorMnthandler/delete"),
-          success : function() {
-            CommonAPI.showPopMessage("因子資料" + _factNo + "刪除完成");
-            grid.trigger("reloadGrid");
-          }
+          url : url("factorMnthandler/delete")
+        }).done(function() {
+          CommonAPI.showPopMessage("因子資料" + _factNo + "刪除完成");
+          grid.trigger("reloadGrid");
         });
       } else {
         CommonAPI.showErrorMessage("請先選擇要修改的資料");
@@ -100,10 +99,9 @@ pageInit(function() {
         data : {
           ftItmNos : [ 1, 2, 3, 4 ]
         },
-        url : url("factorMnthandler/insertTestCases"),
-        success : function() {
-          CommonAPI.showPopMessage(" test insert action");
-        }
+        url : url("factorMnthandler/insertTestCases")
+      }).done(function() {
+        CommonAPI.showPopMessage(" test insert action");
       });
     });
   });

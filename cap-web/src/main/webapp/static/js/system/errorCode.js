@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var mform = $("#mform");
     var grid = $("#gridview").jqGrid({
       url : url('errorCodehandler/query'),
@@ -106,14 +106,13 @@ pageInit(function() {
                 url : url('errorCodehandler/save'),
                 data : $.extend($form.serializeData(), {
                   oid : oid
-                }),
-                success : function(responseData) {
-                  edit.dialog('close');
-                  if (responseData.exist) {
-                    API.showMessage(i18n.def['data.exists']);
-                  } else {
-                    grid.trigger("reloadGrid");
-                  }
+                })
+              }).done(function(responseData) {
+                edit.dialog('close');
+                if (responseData.exist) {
+                  API.showMessage(i18n.def['data.exists']);
+                } else {
+                  grid.trigger("reloadGrid");
                 }
               });
             }
@@ -177,10 +176,9 @@ pageInit(function() {
               url : url('errorCodehandler/delete'),
               data : {
                 oid : rowObject.oid
-              },
-              success : function(responseData) {
-                grid.trigger("reloadGrid");
               }
+            }).done(function(responseData) {
+              grid.trigger("reloadGrid");
             });
           }
         });

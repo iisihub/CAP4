@@ -40,9 +40,8 @@ var menu = {
 }
 
 // init
-$(document).ready(
-    function() {
-      logDebug("cust common ready init");
+$(function() {
+      console.debug("cust common ready init");
       var navTop = $("nav.top"), navSub = $("nav.sub ol");
       function render(res) {
         var _menu = res.child, ul = $("nav.top ul.navmenu");
@@ -158,6 +157,8 @@ $(document).ready(
               navSub.find('.selected').parents(".menu_sub").siblings("a").click();
             }
 
+            // FIXME by sk
+            console.debug('API : '+ API);
             API.loadPage(folder + '/' + page);
 
             function filter(topSmenu, target) {
@@ -243,12 +244,11 @@ $(document).ready(
             asyn : true,
             data : {
               isContinues : dxx.isContinues
-            },
-            success : function(d) {
-              if (d.errorPage) {
-                window.setCloseConfirm(false);
-                window.location = d.errorPage;
-              }
+            }
+          }).done(function(d) {
+            if (d.errorPage) {
+              window.setCloseConfirm(false);
+              window.location = d.errorPage;
             }
           });
         };
@@ -288,12 +288,11 @@ $(document).ready(
           $.ajax({
             url : url('checktimeouthandler/check'),
             asyn : true,
-            data : {},
-            success : function(d) {
-              if (d.errorPage) {
-                window.setCloseConfirm(false);
-                window.location = d.errorPage;
-              }
+            data : {}
+          }).done(function(d) {
+            if (d.errorPage) {
+              window.setCloseConfirm(false);
+              window.location = d.errorPage;
             }
           });
         });

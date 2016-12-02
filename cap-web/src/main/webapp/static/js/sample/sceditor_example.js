@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     $("textarea#tt").sceditor({
       plugins : 'xhtml',
       /* toolbar : 'image|source', */

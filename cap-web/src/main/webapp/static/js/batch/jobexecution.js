@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var grid = $("#gridview").jqGrid({
       url : url('batchshandler/executinsQuery'),
       localFirst : true,
@@ -106,15 +106,14 @@ pageInit(function() {
           url : url("batchshandler/executionStop"),
           data : {
             jobExeId : ret.JOB_EXECUTION_ID
-          },
-          success : function(je) {
-            grid.jqGrid('setGridParam', {
-              postData : {
-                jobExeId : ret.JOB_EXECUTION_ID
-              }
-            });
-            grid.trigger("reloadGrid");
           }
+        }).done(function(je) {
+          grid.jqGrid('setGridParam', {
+            postData : {
+              jobExeId : ret.JOB_EXECUTION_ID
+            }
+          });
+          grid.trigger("reloadGrid");
         });
       } else {
         API.showErrorMessage(i18n.def.grid_selector);
@@ -127,15 +126,14 @@ pageInit(function() {
           data : {
             jobId : ret.JOB_NAME,
             jobInsId : ret.JOB_INSTANCE_ID
-          },
-          success : function(je) {
-            grid.jqGrid('setGridParam', {
-              postData : {
-                jobInsId : ret.JOB_INSTANCE_ID
-              }
-            });
-            grid.trigger("reloadGrid");
           }
+        }).done(function(je) {
+          grid.jqGrid('setGridParam', {
+            postData : {
+              jobInsId : ret.JOB_INSTANCE_ID
+            }
+          });
+          grid.trigger("reloadGrid");
         });
       } else {
         API.showErrorMessage(i18n.def.grid_selector);
@@ -164,10 +162,9 @@ pageInit(function() {
         data : {
           jobExeId : eid,
           jobInstId : instId
-        },
-        success : function(je) {
-          exeDetail.find("#jdform").injectData(je);
         }
+      }).done(function(je) {
+        exeDetail.find("#jdform").injectData(je);
       });
       jdgrid.jqGrid('setGridParam', {
         postData : {

@@ -2,13 +2,10 @@
 
   paths : {
     'json3' : 'lib/js/json3.min',
-    'jquery' : 'lib/js/jquery/jquery-3.0.0',
-    // 'jquery' : 'lib/js/jquery/jquery-3.1.1',
-    // 'jquery' : 'lib/js/jquery/jquery-3.1.1.min',
-    'jquery-migrate-3' : 'lib/js/jquery/jquery-migrate-3.0.0',
+    'jquery' : 'lib/js/jquery/jquery-3.1.1.min',
     'jquery-ui' : 'lib/js/jquery/ui/js/jquery-ui-1.12.1.fix.deprecated',
     'jqgrid-i18n' : 'lib/js/jquery/plugin/jquery.jqGrid-4.5.4/js/i18n/grid.locale-tw',
-    'jqgrid' : 'lib/js/jquery/plugin/jquery.jqGrid-4.5.4/js/jquery.jqGrid.min',
+    'jqgrid' : 'lib/js/jquery/plugin/jquery.jqGrid-4.5.4/js/jquery.jqGrid.fix.deprecated',
     'validate-i18n' : 'lib/js/jquery/plugin/formValidator/languages/jquery.validationEngine-zh_TW',
     'validate' : 'lib/js/jquery/plugin/formValidator/jquery.validationEngine',
     'fileupload' : 'lib/js/jquery/plugin/ajaxfileupload/ajaxfileupload',

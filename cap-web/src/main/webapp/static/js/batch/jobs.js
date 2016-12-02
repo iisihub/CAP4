@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var grid = $("#gridview").jqGrid({
       url : url('batchshandler/jobQuery'),
       sortname : 'jobId',
@@ -52,16 +52,15 @@ pageInit(function() {
         value : function() {
           eDialog.find("#mform").validationEngine('validate') && $.ajax({
             url : url("batchshandler/jobModify"),
-            data : eDialog.find("#mform").serializeData(),
-            success : function() {
-              grid.jqGrid('setGridParam', {
-                postData : {
-                  jobId : eDialog.find("#jobId").val()
-                }
-              });
-              grid.trigger("reloadGrid");
-              eDialog.dialog('close');
-            }
+            data : eDialog.find("#mform").serializeData()
+          }).done(function() {
+            grid.jqGrid('setGridParam', {
+              postData : {
+                jobId : eDialog.find("#jobId").val()
+              }
+            });
+            grid.trigger("reloadGrid");
+            eDialog.dialog('close');
           });
         }
       }, {
@@ -105,11 +104,10 @@ pageInit(function() {
             data : {
               jobId : exeDialog.find("#exeJobId").text(),
               jobParams : exeDialog.find("#jobParams").val()
-            },
-            success : function() {
-              exeDialog.dialog('close');
-              CommonAPI.showMessage(i18n['jobs']['msg.job.callrun']);
             }
+          }).done(function() {
+            exeDialog.dialog('close');
+            CommonAPI.showMessage(i18n['jobs']['msg.job.callrun']);
           });
         }
       }, {
@@ -129,10 +127,9 @@ pageInit(function() {
             url : url("batchshandler/jobDelete"),
             data : {
               jobId : ret.jobId
-            },
-            success : function() {
-              grid.trigger("reloadGrid");
             }
+          }).done(function() {
+            grid.trigger("reloadGrid");
           });
         });
       } else {
@@ -148,10 +145,9 @@ pageInit(function() {
             url : url("batchshandler/jobLoad"),
             data : {
               jobId : ret.jobId
-            },
-            success : function() {
-              grid.trigger("reloadGrid");
             }
+          }).done(function() {
+            grid.trigger("reloadGrid");
           });
         });
       } else {
@@ -171,10 +167,9 @@ pageInit(function() {
         url : url("batchshandler/jobGetParam"),
         data : {
           jobId : exeDialog.find("#exeJobId").val()
-        },
-        success : function(r) {
-          exeDialog.find("#jobParams").val(r.jobParams);
         }
+      }).done(function(r) {
+        exeDialog.find("#jobParams").val(r.jobParams);
       });
     });
   });

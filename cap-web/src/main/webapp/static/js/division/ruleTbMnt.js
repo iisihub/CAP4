@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var mform = $("#mform");
     var grid = $("#gridview").jqGrid({
       url : url("ruleTbMnthandler/queryRuleItmByDivRlNo"),
@@ -88,10 +88,9 @@ pageInit(function() {
           data : {
             oid : selrow.oid
           },
-          url : url("ruleTbMnthandler/delete"),
-          success : function() {
-            grid.trigger("reloadGrid");
-          }
+          url : url("ruleTbMnthandler/delete")
+        }).done(function() {
+          grid.trigger("reloadGrid");
         });
       } else {
         CommonAPI.showErrorMessage("請先選擇要修改的資料");
