@@ -16,7 +16,7 @@ $.extend(Properties || {}, {
   },
   custLoadPageInit : function(isSubPage) {
     //for captcha start
-    console.debug('cust load page init');
+//    console.debug('cust load page init');
     this.find(".captcha").each(function() {
       var dom = $(this);
       var img = $("<img />", {
