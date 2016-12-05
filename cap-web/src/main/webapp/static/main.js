@@ -8,6 +8,7 @@ require.config({
   urlArgs : 'cache=' + new Date().getTime(),
   baseUrl : baseUrl,
   paths : {
+    'jquery-ui' : 'lib/js/jquery/ui/js/jquery-ui-1.12.1.fix.deprecated',
     'libjs' : 'lib/js/libjs', // third party lib
     'capjs' : 'lib/js/capjs', // cap lib
     'common.properties' : 'lib/js/common/common.properties',
@@ -17,12 +18,12 @@ require.config({
   shim : {
     'cust-properties' : [ 'libjs', 'common.properties' ],
     'capjs' : [ 'libjs', 'cust-properties' ],
-    'cust-common' : [ 'libjs', 'common.properties', 'capjs' ]
+    'cust-common' : [ 'jquery-ui', 'libjs', 'common.properties', 'capjs' ]
   // 客制化lib 載入設定
   }
 });
 
-require([ 'libjs', 'common.properties', 'cust-properties', 'capjs', 'cust-common' ], function() {
+require([ 'jquery-ui', 'libjs', 'common.properties', 'cust-properties', 'capjs', 'cust-common' ], function() {
   console.debug("cust js init");
 });
 
