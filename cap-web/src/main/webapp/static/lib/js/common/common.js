@@ -483,7 +483,7 @@ $.holdReady(true);
                 }
             });
 
-            console.debug('common js init');
+//            console.debug('common js init');
 
             // add String method
             $.extend(String.prototype, {
@@ -1296,7 +1296,7 @@ $.holdReady(true);
                 icombos: {},
                 // 畫面初始化method
                 loadPageInit: function(isSubPage) {
-                    console.debug('load page init');
+//                    console.debug('load page init');
                     var $_this = $(this);
                     $_this.find("[commonitem],input[padding]").filter("[commonitem]").each(function() {
                         var $cthis = $(this),
@@ -1518,7 +1518,7 @@ $.holdReady(true);
                         }
                     }).done(function(res) {
                       // FIXME by sk
-                      console.debug('i18n.set('+ f + ', res);');
+//                      console.debug('i18n.set('+ f + ', res);');
                         i18n.set(f.match("\\w+$")[0], res);
                         // i18n.set(f, res);
                     });

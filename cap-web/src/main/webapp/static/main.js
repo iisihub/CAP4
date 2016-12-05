@@ -24,7 +24,7 @@ require.config({
 });
 
 require([ 'jquery-ui', 'libjs', 'common.properties', 'cust-properties', 'capjs', 'cust-common' ], function() {
-  console.debug("cust js init");
+//  console.debug("cust js init");
 });
 
 // global method

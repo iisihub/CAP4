@@ -41,7 +41,7 @@ var menu = {
 
 // init
 $(function() {
-      console.debug("cust common ready init");
+//      console.debug("cust common ready init");
       var navTop = $("nav.top"), navSub = $("nav.sub ol");
       function render(res) {
         var _menu = res.child, ul = $("nav.top ul.navmenu");
@@ -158,7 +158,7 @@ $(function() {
             }
 
             // FIXME by sk
-            console.debug('API : '+ API);
+//            console.debug('API : '+ API);
             API && API.loadPage(folder + '/' + page);
 
             function filter(topSmenu, target) {
