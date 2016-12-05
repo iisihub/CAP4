@@ -2,7 +2,7 @@ pageInit(function() {
     $(function() {
         // FIXME by sk
         console.debug('window.setCloseConfirm : '+ window.setCloseConfirm);
-        // window.setCloseConfirm(false);
+        window.setCloseConfirm && window.setCloseConfirm(false);
         var agreeChange = false;
         function login(ignoreNotify) {
             $.ajax({

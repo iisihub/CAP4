@@ -1457,14 +1457,16 @@ $.holdReady(true);
         traditional: true
     });
 
-    _jQuery.datepicker.setDefaults({
-        dateFormat: 'yy-mm-dd',
-        buttonImageOnly: true,
-        showButtonPanel: true,
-        changeMonth: true,
-        changeYear: true,
-        buttonImage: baseUrl + '/images/icon_date.png',
-        showOn: 'both'
+    require(['jquery-ui'], function(jqueryui) {
+        _jQuery.datepicker && _jQuery.datepicker.setDefaults({
+            dateFormat: 'yy-mm-dd',
+            buttonImageOnly: true,
+            showButtonPanel: true,
+            changeMonth: true,
+            changeYear: true,
+            buttonImage: baseUrl + '/images/icon_date.png',
+            showOn: 'both'
+        });
     });
 
     $.extend(window, {
@@ -1547,6 +1549,6 @@ $.holdReady(true);
     });
     // 所有動作均等待i18n 完成後再動作
     window.i18n.load("def", {
-        async: false
+        async: true
     }).done(commonjsInit);
 })(jQuery, window);
