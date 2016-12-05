@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <title><decorator:title default="CapWebMVC" /></title>
-<link rel="stylesheet" href="../static/css/main.css?cache=201612021838" />
+<link rel="stylesheet" href="../static/css/main.css?cache=201612051455" />
 <link rel="stylesheet" href="../static/css/menu.css" />
 <link rel="stylesheet" href="../static/lib/css/common.message.css" />
 <!-- common.message (iLog) -->
@@ -18,7 +18,7 @@
   var baseUrl = "../static";
 </script>
 <script src="../static/requirejs/2.3.2/require.min.js"></script>
-<script src="../static/main.js?cache=201612021838"></script>
+<script src="../static/main.js?cache=201612051455"></script>
 <decorator:getProperty property="prop" default="" />
 <decorator:head />
 </head>
