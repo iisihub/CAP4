@@ -1,12 +1,12 @@
-/* 
+/*
  * GsonUtilTest.java
- * 
- * Copyright (c) 2016 International Integrated System, Inc. 
+ *
+ * Copyright (c) 2016 International Integrated System, Inc.
  * All Rights Reserved.
- * 
+ *
  * Licensed Materials - Property of International Integrated System, Inc.
- * 
- * This software is confidential and proprietary information of 
+ *
+ * This software is confidential and proprietary information of
  * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
 package com.iisigroup.cap.utils;
@@ -19,14 +19,14 @@ import java.util.stream.IntStream;
 
 import org.junit.Test;
 
-import com.ibm.icu.math.BigDecimal;
+import java.math.BigDecimal;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 
 /**
  * <pre>
  * TestCase for GsonUtil
  * </pre>
- * 
+ *
  * @since 2016年7月20日
  * @author Sunkist
  * @version
