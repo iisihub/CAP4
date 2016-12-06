@@ -27,6 +27,12 @@
         <dependency>
             <groupId>com.iisigroup.cap</groupId>
             <artifactId>cap-batch</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.freemarker</groupId>
+                    <artifactId>freemarker</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.iisigroup.cap</groupId>
