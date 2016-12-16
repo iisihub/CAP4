@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var mform = $("#mform");
     var grid = $("#gridview").jqGrid({
       url : url("remindhandler/query"),
@@ -64,10 +64,9 @@ pageInit(function() {
               url : url("remindhandler/delete"),
               data : {
                 oid : rowObject.oid
-              },
-              success : function(responseData) {
-                grid.trigger("reloadGrid");
               }
+            }).done(function(responseData) {
+              grid.trigger("reloadGrid");
             });
           }
         });

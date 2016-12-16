@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var oid = reqJSON.oid;
     var $form = $("#EDIT").find("form");
     var grid = $("#gridview").jqGrid({
@@ -41,11 +41,10 @@ pageInit(function() {
         url : url("remindhandler/queryForm"),
         data : {
           oid : oid
-        },
-        success : function(json) {
-          $form.injectData(json);
-          grid.trigger("reloadGrid");
         }
+      }).done(function(json) {
+        $form.injectData(json);
+        grid.trigger("reloadGrid");
       });
     }
     if (reqJSON.fromCal) {
@@ -67,17 +66,16 @@ pageInit(function() {
             url : url("remindhandler/saveDetail"),
             data : $.extend(form.serializeData(), {
               pid : oid
-            }),
-            success : function(rtn) {
-              grid.jqGrid('setGridParam', {
-                postData : {
-                  oid : oid
-                }
-              });
-              grid.trigger("reloadGrid");
-              dDialog.dialog('close');
-              API.showMessage(i18n.def['addSuccess']);
-            }
+            })
+          }).done(function(rtn) {
+            grid.jqGrid('setGridParam', {
+              postData : {
+                oid : oid
+              }
+            });
+            grid.trigger("reloadGrid");
+            dDialog.dialog('close');
+            API.showMessage(i18n.def['addSuccess']);
           });
         }
       }, {
@@ -113,17 +111,16 @@ pageInit(function() {
         for ( var item in ret) {
           oids.push(ret[item].oid);
         }
-        ;
+
         API.showConfirmMessage(i18n.def['del.confrim'], function(b) {
           if (b) {
             $.ajax({
               url : url("remindhandler/deleteDetail"),
               data : {
                 oids : oids
-              },
-              success : function(responseData) {
-                grid.trigger("reloadGrid");
               }
+            }).done(function(responseData) {
+              grid.trigger("reloadGrid");
             });
           }
         });
@@ -135,19 +132,18 @@ pageInit(function() {
     var save = function(action) {
       $form.validationEngine('validate') && $.ajax({
         url : url("remindhandler/save"),
-        data : $form.serializeData(),
-        success : function(rtn) {
-          $form.injectData({
-            oid : rtn.oid
-          });
-          window.name = oid = reqJSON.oid = rtn.oid;
-          if (reqJSON.fromCal) {
-            window.opener.$('#calendar').fullCalendar('refetchEvents');
-          } else {
-            API.triggerOpener();
-          }
-          API.showMessage(i18n.def['saveSuccess'], action && action.done && action.done());
+        data : $form.serializeData()
+      }).done(function(rtn) {
+        $form.injectData({
+          oid : rtn.oid
+        });
+        window.name = oid = reqJSON.oid = rtn.oid;
+        if (reqJSON.fromCal) {
+          window.opener.$('#calendar').fullCalendar('refetchEvents');
+        } else {
+          API.triggerOpener();
         }
+        API.showMessage(i18n.def['saveSuccess'], action && action.done && action.done());
       });
     }
   });

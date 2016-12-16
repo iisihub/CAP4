@@ -34,7 +34,7 @@ import com.iisigroup.cap.utils.CapString;
  * <p>
  * MessageBundleScriptCreator.
  * </p>
- * 
+ *
  * @author iristu
  * @version
  *          <ul>
@@ -54,7 +54,7 @@ public class MessageBundleScriptCreator {
 
     /**
      * 將properties轉成json格式
-     * 
+     *
      * @param i18nPath
      *            i18nPath
      * @return String
@@ -66,7 +66,7 @@ public class MessageBundleScriptCreator {
 
     /**
      * 將properties轉成json格式
-     * 
+     *
      * @param i18nPath
      *            i18nPath
      * @param filterList
@@ -80,7 +80,7 @@ public class MessageBundleScriptCreator {
 
     /**
      * 將properties轉成json格式
-     * 
+     *
      * @param props
      *            properties
      * @param filterList
@@ -108,7 +108,7 @@ public class MessageBundleScriptCreator {
 
     /**
      * 將properties轉成json格式
-     * 
+     *
      * @param i18nKeyName
      *            i18n key name
      * @param props
@@ -121,7 +121,7 @@ public class MessageBundleScriptCreator {
 
     /**
      * 將properties轉成json格式
-     * 
+     *
      * @param i18nKeyName
      *            i18n key name
      * @param props
@@ -143,7 +143,7 @@ public class MessageBundleScriptCreator {
 
     /**
      * 將properties轉成json格式
-     * 
+     *
      * @param i18nPath
      *            i18n Path
      * @return String
@@ -154,7 +154,7 @@ public class MessageBundleScriptCreator {
 
     /**
      * 將properties轉成json格式
-     * 
+     *
      * @param i18nPath
      *            i18n Path
      * @param filterList
@@ -167,7 +167,7 @@ public class MessageBundleScriptCreator {
 
     /**
      * 讀取 i18n 檔案
-     * 
+     *
      * @param i18nPath
      *            i18nPath
      * @return Properties
@@ -210,7 +210,7 @@ public class MessageBundleScriptCreator {
 
     /**
      * 產生 filter 比對表示式
-     * 
+     *
      * @param filterList
      *            filter list
      * @return String

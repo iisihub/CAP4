@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var grid = $("#gridview").jqGrid({
       url : url('batchshandler/schQuery'),
       sortname : 'schId',
@@ -39,11 +39,10 @@ pageInit(function() {
           url : url("batchshandler/schDetail"),
           data : {
             schId : ret.schId
-          },
-          success : function(r) {
-            eDialog.find("#schId").readOnly(true);
-            eDialog.dialog('open').find("#mform").injectData(r);
           }
+        }).done(function(r) {
+          eDialog.find("#schId").readOnly(true);
+          eDialog.dialog('open').find("#mform").injectData(r);
         });
       }
     });
@@ -66,16 +65,15 @@ pageInit(function() {
         value : function() {
           eDialog.find("#mform").validationEngine('validate') && $.ajax({
             url : url("batchshandler/schModify"),
-            data : eDialog.find("#mform").serializeData(),
-            success : function() {
-              eDialog.dialog('close');
-              grid.jqGrid('setGridParam', {
-                postData : {
-                  jobId : eDialog.find("#schId").val()
-                }
-              });
-              grid.trigger("reloadGrid");
-            }
+            data : eDialog.find("#mform").serializeData()
+          }).done(function() {
+            eDialog.dialog('close');
+            grid.jqGrid('setGridParam', {
+              postData : {
+                jobId : eDialog.find("#schId").val()
+              }
+            });
+            grid.trigger("reloadGrid");
           });
         }
       }, {
@@ -118,10 +116,9 @@ pageInit(function() {
             url : url("batchshandler/schDelete"),
             data : {
               schId : ret.schId
-            },
-            success : function() {
-              grid.trigger("reloadGrid");
             }
+          }).done(function() {
+            grid.trigger("reloadGrid");
           });
         });
       } else {

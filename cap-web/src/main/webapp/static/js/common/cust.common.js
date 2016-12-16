@@ -40,9 +40,8 @@ var menu = {
 }
 
 // init
-$(document).ready(
-    function() {
-      logDebug("cust common ready init");
+$(function() {
+//      console.debug("cust common ready init");
       var navTop = $("nav.top"), navSub = $("nav.sub ol");
       function render(res) {
         var _menu = res.child, ul = $("nav.top ul.navmenu");
@@ -58,7 +57,7 @@ $(document).ready(
           if ($this.attr("url")) {
             router.to($(this).attr("url"));
           } else {
-            if ($this.siblings("ul").size()) {
+            if ($this.siblings("ul").length) {
               var sel = $this.siblings("ul");
               sel.is(":visible") ? sel.hide().parent("li").children("a").removeClass('clicked').children("span").removeClass('icon-5').addClass('icon-1') : sel.show().parent("li").children("a")
                   .addClass('clicked').children("span").removeClass('icon-1').addClass('icon-5');
@@ -93,7 +92,7 @@ $(document).ready(
           loadsub : function(folder) {
             var tlink = navTop.find("a").removeClass("select").filter("a[url=" + folder + "]").addClass("select");
             var smenu = tlink.data("smenu");
-            if (navSub.find('a').size()) {
+            if (navSub.find('a').length) {
               navSub.animate({
                 opacity : 0.01
               }, 200, _f);
@@ -158,7 +157,9 @@ $(document).ready(
               navSub.find('.selected').parents(".menu_sub").siblings("a").click();
             }
 
-            API.loadPage(folder + '/' + page);
+            // FIXME by sk
+//            console.debug('API : '+ API);
+            API && API.loadPage(folder + '/' + page);
 
             function filter(topSmenu, target) {
               for ( var m in topSmenu) {
@@ -169,7 +170,6 @@ $(document).ready(
                   if (filter(topSmenu[m].child, target)) {
                     return true;
                   }
-                  ;
                 }
               }
               return false;
@@ -201,22 +201,25 @@ $(document).ready(
         }
         return false;
       });
-      $.datepicker._gotoTodayOriginal = $.datepicker._gotoToday;
-      $.datepicker._gotoToday = function(id) {
-        // now, call the original handler
-        $.datepicker._gotoTodayOriginal.apply(this, [ id ]);
-        // invoke selectDate to select the current date and close datepicker.
-        var target = $(id), inst = this._getInst(target[0]);
-        var dateStr = (dateStr != null ? dateStr : this._formatDate(inst));
-        inst.input.val(dateStr);
-      };
-      $.datepicker.setDefaults({
-        onChangeMonthYear : function(year, month, inst) {
-          var ym = API.getToday().substr(0, 7), changeYm = year + "-" + (month < 10 ? "0" : "") + month;
-          if (ym !== changeYm) {
-            $(this).datepicker('setDate', changeYm + '-1');
+
+      require(['jquery-ui'], function(jqueryui) {
+        $.datepicker._gotoTodayOriginal = $.datepicker._gotoToday;
+        $.datepicker._gotoToday = function(id) {
+          // now, call the original handler
+          $.datepicker._gotoTodayOriginal.apply(this, [ id ]);
+          // invoke selectDate to select the current date and close datepicker.
+          var target = $(id), inst = this._getInst(target[0]);
+          var dateStr = (dateStr != null ? dateStr : this._formatDate(inst));
+          inst.input.val(dateStr);
+        };
+        $.datepicker.setDefaults && $.datepicker.setDefaults({
+          onChangeMonthYear : function(year, month, inst) {
+            var ym = API.getToday().substr(0, 7), changeYm = year + "-" + (month < 10 ? "0" : "") + month;
+            if (ym !== changeYm) {
+              $(this).datepicker('setDate', changeYm + '-1');
+            }
           }
-        }
+        });
       });
 
       /* timeout controls */
@@ -244,12 +247,11 @@ $(document).ready(
             asyn : true,
             data : {
               isContinues : dxx.isContinues
-            },
-            success : function(d) {
-              if (d.errorPage) {
-                window.setCloseConfirm(false);
-                window.location = d.errorPage;
-              }
+            }
+          }).done(function(d) {
+            if (d.errorPage) {
+              window.setCloseConfirm(false);
+              window.location = d.errorPage;
             }
           });
         };
@@ -289,12 +291,11 @@ $(document).ready(
           $.ajax({
             url : url('checktimeouthandler/check'),
             asyn : true,
-            data : {},
-            success : function(d) {
-              if (d.errorPage) {
-                window.setCloseConfirm(false);
-                window.location = d.errorPage;
-              }
+            data : {}
+          }).done(function(d) {
+            if (d.errorPage) {
+              window.setCloseConfirm(false);
+              window.location = d.errorPage;
             }
           });
         });
@@ -302,9 +303,8 @@ $(document).ready(
           // $(".ui-dialog-content").dialog("close");
         });
       }
-      ;
 
-      window.i18n.load("messages").done(function() {
+      window.i18n.load("messages", {async: true}).done(function() {
         $.extend(Properties, {
           myCustMessages : {
             custom_error_messages : {

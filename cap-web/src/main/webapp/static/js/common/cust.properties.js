@@ -16,18 +16,19 @@ $.extend(Properties || {}, {
   },
   custLoadPageInit : function(isSubPage) {
     //for captcha start
+//    console.debug('cust load page init');
     this.find(".captcha").each(function() {
       var dom = $(this);
       var img = $("<img />", {
-        src : url("captcha.png?cc=" + parseInt(Math.random() * 1000)),
+        src : url("captcha.png?cc=" + new Date().getTime()),
         css : {
           height : 24,
           weight : 60
         }
       });
-      dom.bind("refresh", function() {
+      dom.on("refresh", function() {
         dom.val("");
-        img.attr("src", url("captcha.png?cc=" + parseInt(Math.random() * 1000)));
+        img.attr("src", url("captcha.png?cc=" + new Date().getTime()));
       });
       var refresh = $("<img />", {
         src : url("static/images/refresh.png"),
