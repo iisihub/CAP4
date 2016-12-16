@@ -3,7 +3,7 @@
     <parent>
         <artifactId>cap</artifactId>
         <groupId>com.iisigroup.cap</groupId>
-        <version>4.0.0b</version>
+        <version>4.0.0b-netch-201612161500</version>
     </parent>
     <artifactId>cap-web</artifactId>
     <packaging>war</packaging>
@@ -132,7 +132,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <configuration>
                     <webAppConfig>
-                        <extraClasspath>target/cap-web-4.0.0b/WEB-INF/classes</extraClasspath>
+                        <extraClasspath>target/cap-web-${project.version}/WEB-INF/classes</extraClasspath>
                     </webAppConfig>
                     <contextPath>/cap-web</contextPath>
                     <stopKey>foo</stopKey>
