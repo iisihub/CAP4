@@ -1541,14 +1541,15 @@ $.holdReady(true);
             }
         };
         // load default i18n Data
+        i18n.set('def', {"sure": "確定","cancel": "取消","sessionTimeout": "您的登入己經過期\n請重新登入","confirmTitle": "提示","close": "關閉","timeout": "伺服器連線逾時，請稍後再試。","connectError": "伺服器連線失敗，請稍後再試，或檢查網路連線是否正常。","loading": "遠端系統《連線中》，請稍待","fileUploading": "檔案讀取中請耐心等候…","fileUploadSuccess": "檔案上傳完成!","fileSelect": "請先選擇檔案","newData": "新增","fileSelError": "請確認檔案類型,副檔名為","fileUploadError": "檔案讀取失敗，請重新上傳","selectOption": "選項","comboSpace": ""});
     })(_jQuery);
 
     require(['blockui'], function(blockui) {
         $.blockUI.showBG = true;
         $.startBlockUI && $.startBlockUI();
     });
-    // 所有動作均等待i18n 完成後再動作
-    window.i18n.load("def", {
-        async: true
-    }).done(commonjsInit);
+    // 非同步載入伺服器上的 i18n
+    window.i18n.load("def", {async: true});
+    // 所有動作改以載入 default i18n 完成後再動作
+    commonjsInit();
 })(jQuery, window);
