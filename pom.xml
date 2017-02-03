@@ -9,7 +9,7 @@
         <spring.version>4.3.0.RELEASE</spring.version>
         <spring-security.version>4.1.0.RELEASE</spring-security.version>
         <localRepositoryPath>src/localRepos</localRepositoryPath>
-        <hibernate.version>5.2.0.Final</hibernate.version>
+        <hibernate.version>5.1.3.Final</hibernate.version>
         <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
         <bean.validation.version>1.1.0.Final</bean.validation.version>
     </properties>
@@ -129,8 +129,8 @@
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>3.5.1</version>
                         <configuration>
-                            <source>1.8</source>
-                            <target>1.8</target>
+                            <source>1.7</source>
+                            <target>1.7</target>
                             <encoding>UTF-8</encoding>
                         </configuration>
                     </plugin>
@@ -151,8 +151,8 @@
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>3.5.1</version>
                         <configuration>
-                            <source>1.8</source>
-                            <target>1.8</target>
+                            <source>1.7</source>
+                            <target>1.7</target>
                             <encoding>UTF-8</encoding>
                         </configuration>
                     </plugin>
