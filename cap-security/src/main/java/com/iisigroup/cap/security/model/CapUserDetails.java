@@ -173,4 +173,14 @@ public class CapUserDetails implements UserDetails {
         this.extraAttrib = extraAttrib;
     }
 
+    // TODO Mark by sk
+    // public Map<String, Object> put(String k, Object v) {
+    // this.extraAttrib.put(k, v);
+    // return extraAttrib;
+    // }
+    // @SuppressWarnings("unchecked")
+    // public <T> T get(String k) {
+    // return (T) this.extraAttrib.get(k);
+    // }
+
 }
