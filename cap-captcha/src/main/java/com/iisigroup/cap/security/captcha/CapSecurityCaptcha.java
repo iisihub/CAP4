@@ -9,6 +9,10 @@ import com.iisigroup.cap.utils.CapString;
 
 import nl.captcha.Captcha;
 import nl.captcha.Captcha.Builder;
+import nl.captcha.audio.AudioCaptcha;
+import nl.captcha.audio.Sample;
+import nl.captcha.audio.producer.RandomNumberVoiceProducer;
+import nl.captcha.audio.producer.VoiceProducer;
 import nl.captcha.backgrounds.BackgroundProducer;
 import nl.captcha.gimpy.GimpyRenderer;
 import nl.captcha.noise.NoiseProducer;
@@ -33,6 +37,7 @@ public class CapSecurityCaptcha implements CheckCodeService {
     private int width;
     private boolean border;
     private Captcha captcha;
+    private AudioCaptcha audioCaptcha;
     private WordRenderer wordRenderer;
     private List<Object> producers;
     private TextProducer textProducer;
@@ -111,8 +116,11 @@ public class CapSecurityCaptcha implements CheckCodeService {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T createCheckCode() {
-        return (T) crateImage();
+    public <T> T createCheckCode(boolean isImage) {
+        if (isImage) {
+            return (T) crateImage();
+        }
+        return (T) createAudio();
     }
 
     public BufferedImage crateImage() {
@@ -143,6 +151,17 @@ public class CapSecurityCaptcha implements CheckCodeService {
         return captcha.build().getImage();
     }
 
+    public Sample createAudio() {
+
+        VoiceProducer vProd = new RandomNumberVoiceProducer(); // by default
+
+        AudioCaptcha ac = new AudioCaptcha.Builder().addAnswer().addVoice(vProd).addNoise().build(); // Required
+
+        this.audioCaptcha = ac;
+
+        return ac.getChallenge();
+    }
+
     public CheckStatus valid(String answer) {
         CheckStatus status = CheckStatus.FAIL;
         if (this.captcha != null && !CapString.isEmpty(answer)) {
@@ -153,6 +172,17 @@ public class CapSecurityCaptcha implements CheckCodeService {
             }
         }
         this.captcha = null;
+
+        if (CheckStatus.SUCCESS.equals(status)) {
+            return status;
+        }
+
+        // or audio check
+        if (this.audioCaptcha != null && !CapString.isEmpty(answer)) {
+            status = this.audioCaptcha.isCorrect(answer.toLowerCase()) ? CheckStatus.SUCCESS : CheckStatus.FAIL;
+        }
+        this.audioCaptcha = null;
+
         return status;
     }
 

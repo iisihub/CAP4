@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.iisigroup.cap.security.CapSecurityContext;
+
 public class CaptchaCaptureFilter extends OncePerRequestFilter {
 
     private final Logger logger = LoggerFactory.getLogger(CaptchaCaptureFilter.class);
@@ -24,9 +26,12 @@ public class CaptchaCaptureFilter extends OncePerRequestFilter {
         // Assign values only when user has submitted a Captcha value.
         // Without this condition the values will be reset due to redirection
         // and CaptchaVerifierFilter will enter an infinite loop
-        if (req.getParameter("captcha") != null) {
-            request = req;
-            userCaptchaResponse = req.getParameter("captcha");
+
+        synchronized (req) {
+            if (req.getParameter("captcha") != null) {
+                CapSecurityContext.getUser().put("request", req);
+            }
+            logger.debug("userResponse: " + req.getParameter("captcha"));
         }
 
         logger.debug("userResponse: " + userCaptchaResponse);
