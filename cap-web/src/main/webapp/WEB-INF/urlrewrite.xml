@@ -20,15 +20,25 @@
     <rule match-type="regex">
         <note>redirect handler</note>
         <from>/i18njs</from>
-        <set name="Expires" type="response-header">5 days</set>
+        <set name="Cache-Control" type="response-header">no-cache, no-store, max-age=0</set>
+        <set name="Expires" type="response-header">0</set>
         <to>/basehandler/queryJsI18N</to>
     </rule>
     <!-- forward captcha.png -->
     <rule match-type="regex">
         <note>redirect handler</note>
         <from>/captcha.png</from>
-        <set name="Expires" type="response-header">5 days</set>
-        <to>/captchahandler/doWork</to>
+        <set name="Cache-Control" type="response-header">no-cache, no-store, max-age=0</set>
+        <set name="Expires" type="response-header">0</set>
+        <to>/captchahandler/img</to>
+    </rule>
+    <!-- forward audio.wav -->
+    <rule match-type="regex">
+        <note>redirect handler</note>
+        <from>/audio.wav</from>
+        <set name="Cache-Control" type="response-header">no-cache, no-store, max-age=0</set>
+        <set name="Expires" type="response-header">0</set>
+        <to>/captchahandler/audio</to>
     </rule>
     <!-- api mode -->
     <rule match-type="regex">
