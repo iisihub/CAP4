@@ -92,7 +92,7 @@ public class CodeTypeServiceImpl implements CodeTypeService {
             String type = c.getCodeType();
             AjaxFormResult sm = m.get(type);
             if (sm == null) {
-                sm = new AjaxFormResult();
+                sm = new AjaxFormResult(true);
             }
             sm.set(c.getCodeValue(), c.getCodeDesc());
             m.put(type, sm);
