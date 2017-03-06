@@ -13,6 +13,7 @@ package com.iisigroup.cap.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -95,8 +96,15 @@ public class GsonUtilTest {
         String title = "[" + count++ + "]" + "testMapToJson";
         List<Map<String, Object>> testData = new ArrayList<Map<String, Object>>();
         Map<String, Object> map1 = new HashMap<String, Object>();
-        map1.put("a", "1");
-        map1.put("b", "2");
+        map1.put("L1", "2");
+        map1.put("L2", "3");
+        map1.put("R1", "1");
+        map1.put("R2", "4");
+        Map<String, Object> map1sorted = new LinkedHashMap<String, Object>();
+        map1sorted.put("L1", "2");
+        map1sorted.put("L2", "3");
+        map1sorted.put("R1", "1");
+        map1sorted.put("R2", "4");
         Map<String, Object> map2 = new HashMap<String, Object>();
         map2.put("a", 1);
         map2.put("b", 2);
@@ -109,6 +117,7 @@ public class GsonUtilTest {
         map4.put("b", new AjaxFormResult());
         map4.put("c", new AjaxFormResult().set("a'", ""));
         testData.add(map1);
+        testData.add(map1sorted);
         testData.add(map2);
         testData.add(map3);
         testData.add(map4);
