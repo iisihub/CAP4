@@ -37,6 +37,7 @@ import com.iisigroup.cap.utils.CapString;
  * @version
  *          <ul>
  *          <li>2011/11/23,rodeschen,new
+ *          <li>2017/3/8,sk,update for data in array
  *          </ul>
  */
 @SuppressWarnings("serial")
@@ -74,6 +75,10 @@ public class CapSpringMVCRequest extends HashMap<String, Object> implements Requ
         while (fids.hasMoreElements()) {
             String field = (String) fids.nextElement();
             String[] value = req.getParameterValues(field);
+            if (value.length == 1) {
+                hm.put(field, value[0]);
+                continue;
+            }
             hm.put(field, value);
         }
         return hm;
