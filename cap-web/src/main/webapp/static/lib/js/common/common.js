@@ -924,7 +924,7 @@ $.holdReady(true);
                     } else {
                         return;
                     }
-                    return this.__validationEngine(method);
+                    return this.__validationEngine.apply(this, arguments);
                 },
                 /**
                  * form reset
