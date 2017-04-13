@@ -742,6 +742,7 @@ $.holdReady(true);
             }
 
             // add jQuery prototype method
+            require([ 'jquery-ui' ], function(jqueryui) {
             $.fn.extend({
                 // 增加val 行為
                 __val: jQuery.fn.val,
@@ -1289,6 +1290,7 @@ $.holdReady(true);
                         }
                     }
                 }
+            });
             });
 
             $.extend(window, {
