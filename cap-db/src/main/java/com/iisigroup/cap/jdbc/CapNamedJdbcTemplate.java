@@ -427,6 +427,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, getSourceSql(sqlId, args, startRow, fetchSize));
+        params.put(CapJdbcConstants.SQL_PAGING_SOURCE_ORDER, CapJdbcConstants.SQL_PAGING_DUMMY_ORDER_BY);
         StringBuffer sql = new StringBuffer().append(CapCommonUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_QUERY), params, sqltemp.getParserContext()));
         sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));
         if (args == null) {
@@ -451,6 +452,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, getSourceSql(sqlId, args, startRow, fetchSize));
+        params.put(CapJdbcConstants.SQL_PAGING_SOURCE_ORDER, CapJdbcConstants.SQL_PAGING_DUMMY_ORDER_BY);
         StringBuffer sql = new StringBuffer().append(CapCommonUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_TOTAL_PAGE), params, sqlp.getParserContext()));
         sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));
         if (logger.isTraceEnabled()) {
@@ -496,10 +498,14 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         }
         String sqlRow = sql.toString();
         // 準備查詢list sql
-        sourceSql.append(provider.generateOrderCause());
+        // sourceSql.append(provider.generateOrderCause());
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, sourceSql.toString());
+        String orderBy = search.hasOrderBy() ? provider.generateOrderCause() : CapJdbcConstants.SQL_PAGING_DUMMY_ORDER_BY;
+        params.put(CapJdbcConstants.SQL_PAGING_SOURCE_ORDER, orderBy);
         sql = new StringBuffer().append(CapCommonUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_QUERY), params, sqlp.getParserContext()));
         sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));
+        // 此處的 order by 是組完分頁 sql 後，再做一次 order by，因為子查詢中的 order by 不會反映在最後的查詢結果
+        sql.append(provider.generateOrderCause());
         if (logger.isTraceEnabled()) {
             logger.trace(new StringBuffer("\n\t").append(CapDbUtil.convertToSQLCommand(sql.toString(), provider.getParams())).toString());
         }
@@ -529,10 +535,14 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         }
         String sqlRow = sql.toString();
         // 準備查詢list sql
-        sourceSql.append(provider.generateOrderCause());
+        // sourceSql.append(provider.generateOrderCause());
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, sourceSql.toString());
+        String orderBy = search.hasOrderBy() ? provider.generateOrderCause() : CapJdbcConstants.SQL_PAGING_DUMMY_ORDER_BY;
+        params.put(CapJdbcConstants.SQL_PAGING_SOURCE_ORDER, orderBy);
         sql = new StringBuffer().append(CapCommonUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_QUERY), params, sqlp.getParserContext()));
         sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));
+        // 此處的 order by 是組完分頁 sql 後，再做一次 order by，因為子查詢中的 order by 不會反映在最後的查詢結果
+        sql.append(provider.generateOrderCause());
         if (logger.isTraceEnabled()) {
             logger.trace(new StringBuffer("\n\t").append(CapDbUtil.convertToSQLCommand(sql.toString(), provider.getParams())).toString());
         }

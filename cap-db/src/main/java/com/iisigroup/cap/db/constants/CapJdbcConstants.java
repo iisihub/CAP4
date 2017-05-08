@@ -13,7 +13,7 @@ package com.iisigroup.cap.db.constants;
 
 /**
  * <pre>
- * TODO Write a short description on the purpose of the program
+ * Constants for JDBC Template
  * </pre>
  * 
  * @since 2012/9/19
@@ -33,4 +33,7 @@ public interface CapJdbcConstants {
 
     String SQL_PAGING_SOURCE_SQL = "sourceSQL";
 
+    String SQL_PAGING_SOURCE_ORDER = "sourceOrder";
+
+    String SQL_PAGING_DUMMY_ORDER_BY = "order by TempColumn";
 }
