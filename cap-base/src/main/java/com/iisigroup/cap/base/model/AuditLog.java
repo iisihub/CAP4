@@ -36,12 +36,12 @@ import com.iisigroup.cap.model.GenericBean;
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "AUDIT_LOG", uniqueConstraints = @UniqueConstraint(columnNames = "id"))
+@Table(name = "AUDIT_LOG", uniqueConstraints = @UniqueConstraint(columnNames = "oid"))
 public class AuditLog extends GenericBean implements DataObject {
     /** unique id */
     @Id
     @Column(length = 32, nullable = false)
-    private String id;
+    private String oid;
 
     /** 使用者SSOID */
     @Column(name = "user_id", length = 20)
@@ -56,8 +56,8 @@ public class AuditLog extends GenericBean implements DataObject {
     private String functionId;
 
     /** 新增/修改/刪除/查詢/匯出/匯入 */
-    @Column(length = 20)
-    private String action;
+    @Column(name = "action_type", length = 20)
+    private String actionType;
 
     /** 執行時間 */
     @Column(name = "execute_date")
@@ -68,11 +68,11 @@ public class AuditLog extends GenericBean implements DataObject {
     private String remark;
 
     public String getId() {
-        return id;
+        return oid;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.oid = id;
     }
 
     public String getUserId() {
@@ -100,11 +100,11 @@ public class AuditLog extends GenericBean implements DataObject {
     }
 
     public String getAction() {
-        return action;
+        return actionType;
     }
 
     public void setAction(String action) {
-        this.action = action;
+        this.actionType = action;
     }
 
     public Timestamp getExecuteDate() {
@@ -124,11 +124,11 @@ public class AuditLog extends GenericBean implements DataObject {
     }
 
     public String getOid() {
-        return id;
+        return oid;
     }
 
     public void setOid(String oid) {
-        this.id = oid;
+        this.oid = oid;
     }
 
 }

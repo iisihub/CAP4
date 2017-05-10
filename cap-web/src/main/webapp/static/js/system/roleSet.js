@@ -38,7 +38,7 @@ pageInit(function() {
         }
       }, {
         header : i18n['roleSet']['roledesc'],//"停用原因
-        name : 'desc',
+        name : 'description',
         align : "center",
         width : 15,
         sortable : true

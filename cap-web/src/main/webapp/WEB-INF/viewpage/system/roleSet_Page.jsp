@@ -45,7 +45,7 @@
                             <td><input type="radio" id="status" name="status" checked class="validate[required]" value="0" /> <spring:message code="on"></spring:message> <input type="radio"
                                 id="status" name="status" class="validate[required]" value="1" /> <spring:message code="off"></spring:message></td>
                             <td width="20%" class="hd1"><spring:message code="desc"></spring:message></td>
-                            <td colspan="3"><input type="text" id="desc" name="desc" size="60" maxlength="40" /></td>
+                            <td colspan="3"><input type="text" id="description" name="description" size="60" maxlength="40" /></td>
                         </tr>
                     </tbody>
                 </table>

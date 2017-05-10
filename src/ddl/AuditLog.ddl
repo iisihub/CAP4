@@ -4,14 +4,14 @@
 --=====================================
 --DROP TABLE AUDIT_LOG
 CREATE TABLE AUDIT_LOG (
-    id             VARCHAR(32) NOT NULL,
+    oid            VARCHAR(32) NOT NULL,
     user_id        VARCHAR(20),
     ip_address     VARCHAR(50),
     function_id    VARCHAR(20),
-    action         VARCHAR(20),
+    action_type    VARCHAR(20),
     execute_date   DATETIME,
     remark         VARCHAR(50),
-    CONSTRAINT P_AUDIT_LOG PRIMARY KEY (id)
+    CONSTRAINT P_AUDIT_LOG PRIMARY KEY (oid)
 );
 
 COMMENT ON TABLE AUDIT_LOG IS '使用軌跡表格';
