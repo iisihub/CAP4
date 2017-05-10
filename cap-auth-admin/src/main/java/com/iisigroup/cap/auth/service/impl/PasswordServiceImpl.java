@@ -64,7 +64,7 @@ public class PasswordServiceImpl implements PasswordService {
         // pwd history validate
         DefaultUser user = userDao.findByCode(userId);
         if (user != null) {
-            List<PwdLog> list = userPwdHistoryDao.findByUserCode(user.getOid(), maxHistory);
+            List<PwdLog> list = userPwdHistoryDao.findByUserCode(user.getCode(), maxHistory);
             int i = 0;
             PasswordEncoder passwordEncoder = new StandardPasswordEncoder(userId);
             for (PwdLog h : list) {
