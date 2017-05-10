@@ -68,7 +68,7 @@ public class DefaultFunction extends GenericBean implements Function, DataObject
 
     /** DESC **/
     @Column
-    private String desc;
+    private String description;
 
     /** 是否啟用 **/
     @Column
@@ -161,12 +161,12 @@ public class DefaultFunction extends GenericBean implements Function, DataObject
         this.path = path;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getUpdater() {
