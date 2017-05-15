@@ -44,4 +44,19 @@ window.pageInit = function(settings) {
       } : settings;
     });
   }
+  //add PagInit control checkTimeout
+  if (Properties.remindTimeout) {
+	window.CCPAGENO = 'newcrd' + parseInt(Math.random() * 1000, 10);
+	  $.ajax({
+		url : url('checktimeouthandler/checkTO'),
+		type : 'post',
+	    data : {
+		  CCPAGENO : window.CCPAGENO
+		},
+		success : function(res) {
+	  }
+	});
+  }
+}
+
 }

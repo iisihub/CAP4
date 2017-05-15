@@ -226,13 +226,16 @@ $(function() {
       // Do idle process
       var idleDuration = 10;
       try {
-        idleDuration = prop && prop[Properties.timeOut];
+		idleDuration = prop && prop[Properties.timeOut];
+		if(idleDuration==''||parseInt(idleDuration)<1){
+			idleDuration = 10;
+		}
       } catch (e) {
         logDebug("Can't find prop");
       }
 
       // 計數器減差(這裡是分鐘)
-      var gapTime = 1;
+      var gapTime = 0.9;
       if (Properties.remindTimeout) {
         // #Cola235 增加切換頁reset timer
         // 計數器(這裡是毫秒)
@@ -240,49 +243,61 @@ $(function() {
         logDebug("set timer time::" + timecount);
         var t1merConfirm = [];
         var timer2 = null;
-        // TIMER FUNC1
-        var cccheckMethod = function(dxx) {
-          $.ajax({
-            url : url('checktimeouthandler/check'),
-            asyn : true,
-            data : {
-              isContinues : dxx.isContinues
-            }
-          }).done(function(d) {
-            if (d.errorPage) {
-              window.setCloseConfirm(false);
-              window.location = d.errorPage;
-            }
-          });
-        };
-        // TIMER FUNC2
+    	var pathname = window.location.pathname;
+    	//記錄各分頁自己的pageNo(session TOCM使用)
+    	debugger;
+    	window.CCPAGENO = "";
+    	var cccheckMethod = function(dxx){
+    		$.ajax({
+    			url:url('checktimeouthandler/checkTO'),
+    			async:true,
+    			data:{isCntnu:dxx.isCntnu, CCPAGENO:window.CCPAGENO},
+    			success:function(d){
+    				//有errorPage,表示要導頁處理
+    				if(d.errorPage){
+    					window.setCloseConfirm(false);
+    					window.location = d.errorPage;
+    				}else if(d.SHOW_REMIND==='true'){
+	                   if (!/(timeout)$|(error)$|(cancelPage)$/i.test(pathname)) {
+	                      timer2 = $.timer(gapTime * 60 * 1000, function() {
+	                          //超過時間沒給確認動作,就當做取消交易
+	                          cccheckMethod({
+	                              isCntnu: false
+	                          });
+	                      }, false);
+	                      API.showConfirmMessage("您已閒置一段時間，請問是否繼續作業?", function(data) {
+	                          if(data){
+	                              timer2.stop();
+	                              cccheckMethod({
+	                                  isCntnu: true
+	                              });
+	                              //按了之後,要重新倒數
+	                              takeTimerReset();
+	                          }else{
+	                              timer2.stop();
+	                              cccheckMethod({
+	                                  isCntnu: false
+	                              });
+	                          }
+	                      });
+	                   }
+    				}
+    			}
+    		});
+    	};
+
+        if (!/(timeout)$|(login)$|(error)$|(cancelPage)$/i.test(pathname)) {
+            window.timer = $.timer(timecount, function() {
+                //每xx分鐘上server問是否要提示繼續交易
+                cccheckMethod({
+                    CCPAGENO: pathname
+                });
+            }, false);
+        }
         var takeTimerReset = function() {
-          timer.reset(timecount);
+            timer.reset(timecount);
         };
-        window.timer = $.timer(timecount, function() {
-          var pathname = window.location.pathname;
-          if (!/(timeout)$|(error)$/i.test(pathname)) {
-            if (t1merConfirm != undefined && t1merConfirm[0] && t1merConfirm[0].hidden == false) {
-              // DO NOTTHING
-            } else {
-              timer2 = $.timer(gapTime * 60 * 1000, function() {
-                // 超過時間沒給確認動作,就當做取消交易
-                cccheckMethod({
-                  isContinues : false
-                });
-              }, false);
-              t1merConfirm = CommonAPI.showConfirmMessage('您已閒置，請問是否繼續申請作業?', function(data) {
-                timer2.stop();
-                cccheckMethod({
-                  isContinues : data
-                });
-                // 按了之後,要重新倒數
-                t1merConfirm = [];
-                takeTimerReset();
-              });
-            }
-          }
-        }, false);
+        
         // IDLE留著，當user沒看到confirm pop，時間到了idle還是要導倒timeout?
         ifvisible && ifvisible.setIdleDuration(idleDuration * 60);// minute*60
         // logDebug("idleDuration is ::: " + idleDuration);
