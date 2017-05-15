@@ -4,6 +4,14 @@ $.extend(Properties || {}, {
     closeConfirm : true,
     closeWindowMsg : '重新載入後資料將會消失!!\nReload the page data will be lost!!',
     onunload : function() {
+		$.ajax({
+			url : url('checktimeouthandler/checkClosePage'),
+			type : 'post',
+			async :false,
+			data: {CCPAGENO: window.CCPAGENO},
+			success : function(d){
+			}
+		});
     }
   },
   contextName : "/cap-web/",
@@ -70,5 +78,6 @@ $.extend(Properties || {}, {
     //for captcha end
   },
   timeOut : 'TIME_OUT',
+  // Control Client Timeout
   remindTimeout : false
 });
