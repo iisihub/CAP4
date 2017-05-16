@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
+import com.google.gson.JsonObject;
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.utils.CapDate;
@@ -47,7 +48,6 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
-import net.sf.json.JSONObject;
 
 /**
  * <pre>
@@ -151,7 +151,7 @@ public abstract class AbstractReportExcelService implements ReportService {
                         int y = pos[1];
                         if (value instanceof List) {
                             // grid data
-                            JSONObject offset = (JSONObject) reportData.get(key + OFFSET_SUFFIX);
+                            JsonObject offset = (JsonObject) reportData.get(key + OFFSET_SUFFIX);
                             List<Map<String, Object>> l = (List<Map<String, Object>>) value;
                             for (Map<String, Object> m : l) {
                                 for (Entry<String, Object> e : m.entrySet()) {
@@ -164,7 +164,7 @@ public abstract class AbstractReportExcelService implements ReportService {
                                                 cellVal = e.getValue().toString();
                                             }
                                         }
-                                        Label label = new Label(x + offset.getInt(e.getKey()), y, cellVal, timesString);
+                                        Label label = new Label(x + offset.get(e.getKey()).getAsInt(), y, cellVal, timesString);
                                         sheet.addCell(label);
                                     }
                                 }
