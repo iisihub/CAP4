@@ -245,7 +245,6 @@ $(function() {
         var timer2 = null;
         var pathname = window.location.pathname;
         //記錄各分頁自己的pageNo(session TOCM使用)
-        debugger;
         window.CCPAGENO = "";
         var cccheckMethod = function(dxx) {
           $.ajax({
