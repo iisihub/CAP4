@@ -226,10 +226,10 @@ $(function() {
       // Do idle process
       var idleDuration = 10;
       try {
-		idleDuration = prop && prop[Properties.timeOut];
-		if(idleDuration==''||parseInt(idleDuration)<1){
-			idleDuration = 10;
-		}
+        idleDuration = prop && prop[Properties.timeOut];
+        if (idleDuration == '' || parseInt(idleDuration) < 1) {
+          idleDuration = 10;
+        }
       } catch (e) {
         logDebug("Can't find prop");
       }
@@ -243,61 +243,64 @@ $(function() {
         logDebug("set timer time::" + timecount);
         var t1merConfirm = [];
         var timer2 = null;
-    	var pathname = window.location.pathname;
-    	//記錄各分頁自己的pageNo(session TOCM使用)
-    	debugger;
-    	window.CCPAGENO = "";
-    	var cccheckMethod = function(dxx){
-    		$.ajax({
-    			url:url('checktimeouthandler/checkTO'),
-    			async:true,
-    			data:{isCntnu:dxx.isCntnu, CCPAGENO:window.CCPAGENO},
-    			success:function(d){
-    				//有errorPage,表示要導頁處理
-    				if(d.errorPage){
-    					window.setCloseConfirm(false);
-    					window.location = d.errorPage;
-    				}else if(d.SHOW_REMIND==='true'){
-	                   if (!/(timeout)$|(error)$|(cancelPage)$/i.test(pathname)) {
-	                      timer2 = $.timer(gapTime * 60 * 1000, function() {
-	                          //超過時間沒給確認動作,就當做取消交易
-	                          cccheckMethod({
-	                              isCntnu: false
-	                          });
-	                      }, false);
-	                      API.showConfirmMessage("您已閒置一段時間，請問是否繼續作業?", function(data) {
-	                          if(data){
-	                              timer2.stop();
-	                              cccheckMethod({
-	                                  isCntnu: true
-	                              });
-	                              //按了之後,要重新倒數
-	                              takeTimerReset();
-	                          }else{
-	                              timer2.stop();
-	                              cccheckMethod({
-	                                  isCntnu: false
-	                              });
-	                          }
-	                      });
-	                   }
-    				}
-    			}
-    		});
-    	};
+        var pathname = window.location.pathname;
+        //記錄各分頁自己的pageNo(session TOCM使用)
+        debugger;
+        window.CCPAGENO = "";
+        var cccheckMethod = function(dxx) {
+          $.ajax({
+            url : url('checktimeouthandler/checkTO'),
+            async : true,
+            data : {
+              isCntnu : dxx.isCntnu,
+              CCPAGENO : window.CCPAGENO
+            },
+            success : function(d) {
+              //有errorPage,表示要導頁處理
+              if (d.errorPage) {
+                window.setCloseConfirm(false);
+                window.location = d.errorPage;
+              } else if (d.SHOW_REMIND === 'true') {
+                if (!/(timeout)$|(error)$|(cancelPage)$/i.test(pathname)) {
+                  timer2 = $.timer(gapTime * 60 * 1000, function() {
+                    //超過時間沒給確認動作,就當做取消交易
+                    cccheckMethod({
+                      isCntnu : false
+                    });
+                  }, false);
+                  API.showConfirmMessage("您已閒置一段時間，請問是否繼續作業?", function(data) {
+                    if (data) {
+                      timer2.stop();
+                      cccheckMethod({
+                        isCntnu : true
+                      });
+                      //按了之後,要重新倒數
+                      takeTimerReset();
+                    } else {
+                      timer2.stop();
+                      cccheckMethod({
+                        isCntnu : false
+                      });
+                    }
+                  });
+                }
+              }
+            }
+          });
+        };
 
         if (!/(timeout)$|(login)$|(error)$|(cancelPage)$/i.test(pathname)) {
-            window.timer = $.timer(timecount, function() {
-                //每xx分鐘上server問是否要提示繼續交易
-                cccheckMethod({
-                    CCPAGENO: pathname
-                });
-            }, false);
+          window.timer = $.timer(timecount, function() {
+            //每xx分鐘上server問是否要提示繼續交易
+            cccheckMethod({
+              CCPAGENO : pathname
+            });
+          }, false);
         }
         var takeTimerReset = function() {
-            timer.reset(timecount);
+          timer.reset(timecount);
         };
-        
+
         // IDLE留著，當user沒看到confirm pop，時間到了idle還是要導倒timeout?
         ifvisible && ifvisible.setIdleDuration(idleDuration * 60);// minute*60
         // logDebug("idleDuration is ::: " + idleDuration);
