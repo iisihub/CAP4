@@ -743,6 +743,45 @@ $.holdReady(true);
 
             // add jQuery prototype method
             require([ 'jquery-ui' ], function(jqueryui) {
+              $.fn.extend({
+                __dialog: $.fn.dialog,
+                dialog: function(arg1, arg2, arg3) {
+                    if (typeof arg1 !== "string") {
+                        var $this = this;
+                        $this.find('form').each(function() {
+                            // $(this).validate();
+                            $(this).validationEngine('validate');
+                        });
+                        var _o = arg1 && arg1.open;
+                        arg1 = $.extend({
+                            dialogClass: this.attr("id") + "_-dialog",
+                            bgiframe: true,
+                            autoOpen: false,
+                            modal: true,
+                            maxWidth: 600,
+                            // width:
+                            // 'auto',
+                            minWidth: 350
+                                // minWidth: 350
+                        }, arg1, {
+                            open: function() {
+                                _o && _o.apply(this, arguments);
+                            }
+                        });
+                        var ndialog = this.__dialog(arg1, arg2, arg3);
+                        var dialogs;
+                        (dialogs = $("." + this.attr("id") + "_-dialog")).each(function(index, element) {
+                            ((dialogs.length - 1) == index) ? (ndialog = $(element)) : ($(element).empty().remove());
+                        });
+                        $("div[id='" + this.attr("id") + "'],span[id='" + this.attr("id") + "']").each(function() {
+                            $(this).is(".ui-dialog-content") || $(this).empty().remove();
+                        });
+                        return ndialog.find('.ui-dialog-content');
+                    }
+                    return this.__dialog(arg1, arg2, arg3);
+                }
+              });
+            });
             $.fn.extend({
                 // 增加val 行為
                 __val: jQuery.fn.val,
@@ -874,43 +913,6 @@ $.holdReady(true);
                     });
 
                     return this;
-                },
-
-                __dialog: $.fn.dialog,
-                dialog: function(arg1, arg2, arg3) {
-                    if (typeof arg1 !== "string") {
-                        var $this = this;
-                        $this.find('form').each(function() {
-                            // $(this).validate();
-                            $(this).validationEngine('validate');
-                        });
-                        var _o = arg1 && arg1.open;
-                        arg1 = $.extend({
-                            dialogClass: this.attr("id") + "_-dialog",
-                            bgiframe: true,
-                            autoOpen: false,
-                            modal: true,
-                            maxWidth: 600,
-                            // width:
-                            // 'auto',
-                            minWidth: 350
-                                // minWidth: 350
-                        }, arg1, {
-                            open: function() {
-                                _o && _o.apply(this, arguments);
-                            }
-                        });
-                        var ndialog = this.__dialog(arg1, arg2, arg3);
-                        var dialogs;
-                        (dialogs = $("." + this.attr("id") + "_-dialog")).each(function(index, element) {
-                            ((dialogs.length - 1) == index) ? (ndialog = $(element)) : ($(element).empty().remove());
-                        });
-                        $("div[id='" + this.attr("id") + "'],span[id='" + this.attr("id") + "']").each(function() {
-                            $(this).is(".ui-dialog-content") || $(this).empty().remove();
-                        });
-                        return ndialog.find('.ui-dialog-content');
-                    }
-                    return this.__dialog(arg1, arg2, arg3);
                 },
                 /**
                  * reverse field validate return value
@@ -1290,7 +1292,6 @@ $.holdReady(true);
                         }
                     }
                 }
-            });
             });
 
             $.extend(window, {
