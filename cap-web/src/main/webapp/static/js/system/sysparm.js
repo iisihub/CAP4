@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var mform = $("#mform");
     var grid = $("#gridview").jqGrid({
       url : url('sysparmhandler/query'),
@@ -47,10 +47,9 @@ pageInit(function() {
           var mform = eDialog.find("#mform");
           mform.validationEngine('validate') && $.ajax({
             url : url("sysparmhandler/modify"),
-            data : mform.serializeData(),
-            success : function() {
-              grid.trigger("reloadGrid");
-            }
+            data : mform.serializeData()
+          }).done(function() {
+            grid.trigger("reloadGrid");
           });
         }
       }, {
@@ -94,10 +93,9 @@ pageInit(function() {
             url : url("sysparmhandler/delete"),
             data : {
               parmId : ret.parmId
-            },
-            success : function() {
-              grid.trigger("reloadGrid");
             }
+          }).done(function() {
+            grid.trigger("reloadGrid");
           });
         });
       } else {

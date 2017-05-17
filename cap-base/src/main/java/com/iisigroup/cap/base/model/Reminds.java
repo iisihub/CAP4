@@ -48,27 +48,28 @@ public class Reminds extends GenericBean implements DataObject {
 
     /** id */
     @Id
-    @Column(length = 32, nullable = false)
+    @Column(length = 32, nullable = false, columnDefinition="CHAR")
     private String oid;
     /** pid */
-    @Column(length = 32, nullable = false)
+    @Column(length = 32, nullable = false, columnDefinition="CHAR")
     private String pid;
     /** 對象號碼 */
     @Column(length = 10)
     private String scopePid;
     /** 提醒方式 */
-    @Column(length = 1)
+    @Column(length = 1, columnDefinition="CHAR")
     private String styleTyp;
     /** 顏色 */
-    @Column(length = 1)
+    @Column(length = 1, columnDefinition="CHAR")
     private String styleClr;
     /** 數值 */
     @Column(precision = 5)
     private BigDecimal style;
     /** 單位 */
+    @Column(columnDefinition="INTEGER")
     private BigDecimal unit;
     /** 是否完成 */
-    @Column(length = 1)
+    @Column(length = 1, columnDefinition="CHAR")
     private String ynFlag;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)

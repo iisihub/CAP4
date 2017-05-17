@@ -26,8 +26,8 @@ import com.iisigroup.cap.auth.model.DefaultRole;
 import com.iisigroup.cap.auth.model.RoleFunction;
 import com.iisigroup.cap.auth.model.UserRole;
 import com.iisigroup.cap.auth.service.RoleSetService;
-import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.component.impl.BeanGridResult;
 import com.iisigroup.cap.component.impl.MapGridResult;
@@ -46,9 +46,7 @@ import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapBeanUtil;
 import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.cap.utils.CapString;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.iisigroup.cap.utils.GsonUtil;
 
 /**
  * <pre>
@@ -214,7 +212,7 @@ public class RoleSetHandler extends MFormHandler {
     public Result saveUrList(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         String code = request.get("code");
-        JSONArray users = JSONArray.fromObject(request.get("users"));
+        List<Object> users = GsonUtil.jsonToObjectList(request.get("users"));
         DefaultRole role = null;
 
         if (!CapString.isEmpty(code)) {
@@ -227,9 +225,9 @@ public class RoleSetHandler extends MFormHandler {
         List<UserRole> list = new ArrayList<UserRole>();
         if (users != null) {
             for (Object item : users) {
-                JSONObject user = (JSONObject) item;
+                Map<String, Object> user = GsonUtil.objToMap(item);
                 UserRole userRole = new UserRole();
-                userRole.setUserCode(user.getString("code"));
+                userRole.setUserCode((String) user.get("code"));
                 userRole.setRoleCode(role.getCode());
                 userRole.setUpdater(CapSecurityContext.getUserId());
                 userRole.setUpdateTime(CapDate.getCurrentTimestamp());
@@ -252,7 +250,7 @@ public class RoleSetHandler extends MFormHandler {
     public Result saveRfList(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         String code = request.get("code");
-        JSONArray funcItem = JSONArray.fromObject(request.get("funcItem"));
+        List<Object> funcItem = GsonUtil.jsonToObjectList(request.get("funcItem"));
         DefaultRole role = null;
 
         if (!CapString.isEmpty(code)) {
@@ -265,10 +263,10 @@ public class RoleSetHandler extends MFormHandler {
         List<RoleFunction> list = new ArrayList<RoleFunction>();
         if (funcItem != null) {
             for (Object item : funcItem) {
-                JSONObject func = (JSONObject) item;
+                Map<String, Object> func = GsonUtil.objToMap(item);
                 RoleFunction roleFunc = new RoleFunction();
                 roleFunc.setRoleCode(role.getCode());
-                roleFunc.setFuncCode(func.getString("code"));
+                roleFunc.setFuncCode((String) func.get("code"));
                 roleFunc.setUpdater(CapSecurityContext.getUserId());
                 roleFunc.setUpdateTime(CapDate.getCurrentTimestamp());
                 list.add(roleFunc);
@@ -308,7 +306,7 @@ public class RoleSetHandler extends MFormHandler {
     public Result deleteUrList(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         String code = request.get("code");
-        JSONArray users = JSONArray.fromObject(request.get("users"));
+        List<Object> users = GsonUtil.jsonToObjectList(request.get("users"));
 
         if (CapString.isEmpty(code)) {
             throw new CapMessageException(CapAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
@@ -317,8 +315,8 @@ public class RoleSetHandler extends MFormHandler {
         List<String> delUsr = new ArrayList<String>();
         if (users != null) {
             for (Object item : users) {
-                JSONObject usr = (JSONObject) item;
-                delUsr.add(usr.getString("code"));
+                Map<String, Object> usr = GsonUtil.objToMap(item);
+                delUsr.add((String) usr.get("code"));
             }
         }
         roleSetService.deleteUrList(code, delUsr);
@@ -337,7 +335,7 @@ public class RoleSetHandler extends MFormHandler {
     public Result deleteRfList(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         String code = request.get("code");
-        JSONArray funcItem = JSONArray.fromObject(request.get("funcItem"));
+        List<Object> funcItem = GsonUtil.jsonToObjectList(request.get("funcItem"));
 
         if (CapString.isEmpty(code)) {
             throw new CapMessageException(CapAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
@@ -346,8 +344,8 @@ public class RoleSetHandler extends MFormHandler {
         List<String> delFunc = new ArrayList<String>();
         if (funcItem != null) {
             for (Object item : funcItem) {
-                JSONObject usr = (JSONObject) item;
-                delFunc.add(usr.getString("code"));
+                Map<String, Object> usr = GsonUtil.objToMap(item);
+                delFunc.add((String) usr.get("code"));
             }
         }
         roleSetService.deleteRfList(code, delFunc);

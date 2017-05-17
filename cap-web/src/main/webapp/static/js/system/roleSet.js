@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var mform = $("#mform");
     var grid = $("#gridview").jqGrid({
       url : url('rolesethandler/query'),
@@ -38,7 +38,7 @@ pageInit(function() {
         }
       }, {
         header : i18n['roleSet']['roledesc'],//"停用原因
-        name : 'desc',
+        name : 'description',
         align : "center",
         width : 15,
         sortable : true
@@ -82,10 +82,9 @@ pageInit(function() {
               url : url('rolesethandler/delete'),
               data : {
                 code : rowObject.code
-              },
-              success : function(responseData) {
-                grid.trigger("reloadGrid");
               }
+            }).done(function(responseData) {
+              grid.trigger("reloadGrid");
             });
           }
         });

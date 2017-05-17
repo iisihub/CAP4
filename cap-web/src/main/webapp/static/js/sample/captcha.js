@@ -1,15 +1,16 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     "use strict";
     $("#submit").click(function() {
       $.ajax({
-        url : url('samplehandler/checkCaptcha'),
+        url : url('captchahandler/checkCaptcha'),
         data : {
-          captcha : $("#captcha").val()
-        },
-        complete : function() {
-          $("#captcha").trigger("refresh");
+          // captcha : $("#captcha").val(),
+          audioCaptcha : $("#audioCaptcha").val()
         }
+      }).always(function() {
+        // $("#captcha").trigger("refresh");
+        $("#audioCaptcha").trigger("refresh");
       });
     });
 

@@ -9,8 +9,8 @@
 </head>
 <body>
     <script>
-          loadScript('js/login');
-        </script>
+      loadScript('js/login');
+    </script>
     <div id="shadow">
         <div id="content">
             <div id="location">
@@ -27,21 +27,21 @@
                     <table class="row">
                         <tr>
                             <th width="30%" style="text-align: right; padding: 5px;">帳號</th>
-                            <td><input type="text" id="j_username" name="j_username" /></td>
+                            <td><input type="text" id="j_username" name="j_username" maxlength="10" class="validate[required,maxSize[10]]"/></td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 5px;">密碼</th>
-                            <td><input type="password" id="j_password" name="j_password" /></td>
+                            <td><input type="password" id="j_password" name="j_password" maxlength="50" class="validate[required,maxSize[50]]" /></td>
                         </tr>
                     </table>
                     <table id="pwdchgArea" class="row hide">
                         <tr>
                             <th width="30%" style="text-align: right; padding: 5px;">新密碼</th>
-                            <td><input type="password" id="newPwd" name="newPwd" maxlength="48" class="validate[required,funcCall[maxUTF8[48]]]" /></td>
+                            <td><input type="password" id="newPwd" name="newPwd" maxlength="50" class="validate[required,maxSize[50]]" /></td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 5px;">密碼確認</th>
-                            <td><input type="password" id="confirm" name="confirm" maxlength="48" class="validate[funcCall[maxUTF8[48]]]" /></td>
+                            <td><input type="password" id="confirm" name="confirm" maxlength="50" class="validate[required,maxSize[50]]" /></td>
                         </tr>
                     </table>
                     <table id="captchaArea" class="row hide">

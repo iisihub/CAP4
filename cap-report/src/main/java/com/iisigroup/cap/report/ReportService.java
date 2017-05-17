@@ -38,7 +38,7 @@ public interface ReportService {
      * @return report data
      * @throws CapException
      */
-    Map<String, Object> excute(Request request);
+    Map<String, Object> execute(Request request);
 
     /**
      * 報表產生的共同進入方法，帶入reportParameter，產生ByteArray的報表檔案。

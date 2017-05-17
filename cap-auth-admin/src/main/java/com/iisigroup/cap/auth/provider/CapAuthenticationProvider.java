@@ -2,6 +2,7 @@ package com.iisigroup.cap.auth.provider;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
@@ -43,6 +44,9 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
         } else if (captchaEnabled && StringUtils.isBlank(captchaCaptureFilter.getUserCaptchaResponse())) {
             throw new CapAuthenticationException("Captcha Response is Empty", captchaEnabled);
         } else {
+
+            customValidInput1(username, password);
+
             Map<String, String> policy = passwordService.getPasswordPolicy();
             boolean captchaPassed = true;
             boolean forceChangePwd = isForceChangePwd(username);
@@ -91,6 +95,37 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
                 resetCaptchaFields();
                 throw new CapAuthenticationException("Invalid Captcha.", captchaEnabled, forceChangePwd);
             }
+        }
+    }
+
+    /**
+     * Check length or something.
+     * 
+     * @param username
+     *            String
+     * @param password
+     *            String
+     */
+    private void customValidInput1(String username, String password) {
+        final int usernameMaxLength = 10;
+        final int passwordMaxLength = 50;
+        if (username.length() > usernameMaxLength || password.length() > passwordMaxLength) {
+            throw new CapAuthenticationException(CapAppContext.getMessage("login.checkLength"));
+        }
+    }
+
+    /**
+     * Check length or something for force change password.
+     * 
+     * @param newPwd
+     *            String
+     * @param confirm
+     *            String
+     */
+    private void customValidInput2(String newPwd, String confirm) {
+        final int passwordMaxLength = 50;
+        if (newPwd.length() > passwordMaxLength || confirm.length() > passwordMaxLength) {
+            throw new CapAuthenticationException(CapAppContext.getMessage("login.checkLength"));
         }
     }
 
@@ -143,6 +178,9 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
             setForceChangePwd(username, true);
             throw new CapAuthenticationException(reason + CapAppContext.getMessage("error.010"), captchaEnabled, true);
         } else {
+
+            customValidInput2(newPwd, confirm);
+
             // set new password
             try {
                 passwordService.checkPasswordRule(username, newPwd, confirm, true);
@@ -223,7 +261,11 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private boolean isCaptchaEnabled() {
-        HttpSession session = captchaCaptureFilter.getRequest().getSession();
+        HttpServletRequest req = captchaCaptureFilter.getRequest();
+        if (req == null) {
+            return false;
+        }
+        HttpSession session = req.getSession();
         return session.getAttribute("captchaEnabled") == null ? false : (Boolean) session.getAttribute("captchaEnabled");
     }
 

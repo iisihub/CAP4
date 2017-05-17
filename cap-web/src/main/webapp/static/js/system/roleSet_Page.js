@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var $form = $("#JForm");
     var code = reqJSON.code;
     var isNew = code ? false : true;

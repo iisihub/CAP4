@@ -69,7 +69,7 @@
                         </tr>
                         <tr>
                             <td width="20%" class="hd1"><spring:message code="desc"></spring:message></td>
-                            <td colspan="3"><input type="text" size="80" id="desc" name="desc" maxlength="108" /></td>
+                            <td colspan="3"><input type="text" size="80" id="description" name="description" maxlength="108" /></td>
                         </tr>
                     </tbody>
                 </table>

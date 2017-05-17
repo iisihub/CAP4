@@ -114,7 +114,7 @@
     showAll : 'Show All'
   };
 
-  $(document).ready(function() {
+  $(function() {
     init();
     //        $("<div id='logAction' style='display:none'></div>").appendTo(parent).append(createButton('log_debug'));
     //        function createButton(type){
@@ -122,10 +122,10 @@
     //                logSwitch.call(this);
     //            });
     //        }
-    //        
-    //        $(document).bind('keydown', function(e){
-    //            if (e.ctrlKey && e.keyCode == 192) 
-    //                $("#logAction").toggle();
+    //
+    //        $(document).bind('keydown', function(e){//deprecated bind instead of $.fn.on()
+    //            if (e.ctrlKey && e.keyCode == 192)
+    //                $("#logAction").toggle();//deprecated
     //        });
   });
 })(jQuery);

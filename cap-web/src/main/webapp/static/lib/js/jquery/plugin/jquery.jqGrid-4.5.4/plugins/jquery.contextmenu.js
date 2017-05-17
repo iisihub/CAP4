@@ -54,7 +54,7 @@
                .hide()
                .css({position:'absolute', zIndex:'500'})
                .appendTo('body')
-               .bind('click', function(e) {
+               .on('click', function(e) {
                  e.stopPropagation();
                });
     }
@@ -79,7 +79,7 @@
     });
 
     var index = hash.length - 1;
-    $(this).bind('contextmenu', function(e) {
+    $(this).on('contextmenu', function(e) {
       // Check if onContextMenu() defined
       var bShowContext = (!!hash[index].onContextMenu) ? hash[index].onContextMenu(e) : true;
 	  currentTarget = e.target;
@@ -112,7 +112,7 @@
     if (!!cur.onShowMenu) menu = cur.onShowMenu(e, menu);
 
     $.each(cur.bindings, function(id, func) {
-      $('#'+id, menu).bind('click', function() {
+      $('#'+id, menu).on('click', function() {
         hide();
         func(trigger, currentTarget);
       });

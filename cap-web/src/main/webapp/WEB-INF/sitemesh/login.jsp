@@ -1,4 +1,5 @@
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
+<!DOCTYPE html>
 <html>
 <head>
 <link rel="stylesheet" href="../static/css/main.css" />
@@ -14,7 +15,7 @@
   var baseUrl = "../static";
 </script>
 <title><decorator:title default="CapWebMVC" /></title>
-<script src="../static/requirejs/2.0.6/require.min.js"></script>
+<script src="../static/requirejs/2.3.2/require.min.js"></script>
 <script src="../static/main.js"></script>
 <decorator:getProperty property="reqJSON" default="" />
 <decorator:getProperty property="i18n" default="" />

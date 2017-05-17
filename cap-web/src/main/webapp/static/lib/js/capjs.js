@@ -7,11 +7,11 @@ require.config({
   },
   shim : {
     'commonjs' : [ 'libjs' ], //, 'common.properties'],
-    'common.message' : [ 'libjs' ],
+    'common.message' : [ 'commonjs' ],
     'common.jqgrid' : [ 'commonjs' ]
   }
 });
 
-define('capjs', [ 'libjs', 'commonjs', 'common.jqgrid', 'common.message' ], function(capjs) {
+define('capjs', [ 'libjs', 'commonjs', 'common.jqgrid'/*, 'common.message'*/ ], function(capjs) {
   logDebug("cap js init");
 });

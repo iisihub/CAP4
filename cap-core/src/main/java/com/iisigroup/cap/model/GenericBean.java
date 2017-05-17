@@ -15,8 +15,11 @@ package com.iisigroup.cap.model;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -30,9 +33,7 @@ import com.iisigroup.cap.formatter.impl.ADDateFormatter;
 import com.iisigroup.cap.formatter.impl.ADDateTimeFormatter;
 import com.iisigroup.cap.utils.CapBeanUtil;
 import com.iisigroup.cap.utils.CapString;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.iisigroup.cap.utils.GsonUtil;
 
 /**
  * <p>
@@ -139,7 +140,7 @@ public class GenericBean {
      * @return String JsonString
      */
     public String toJSONString(String[] columns, Map<String, Formatter> reformat) {
-        JSONArray row = new JSONArray();
+        List<String> row = new ArrayList<String>();
         for (String str : columns) {
             Object val = null;
             try {
@@ -167,7 +168,7 @@ public class GenericBean {
                 throw new CapException(e.getMessage(), e, getClass());
             }
         }
-        return row.toString();
+        return GsonUtil.objToJson(row);
     }
 
     /**
@@ -177,10 +178,10 @@ public class GenericBean {
      *            顯示欄位
      * @param reformat
      *            Map<String, IFormatter>
-     * @return String JsonString
+     * @return a Map of Json
      */
-    public JSONObject toJSONObject(String[] columns, Map<String, Formatter> reformat) {
-        JSONObject json = new JSONObject();
+    public Map<String, Object> toJSONObject(String[] columns, Map<String, Formatter> reformat) {
+        Map<String, Object> map = new HashMap<String, Object>();
         if (columns == null) {
             Field[] cols = CapBeanUtil.getField(this.getClass(), true);// this.getClass().getDeclaredFields();
             columns = new String[cols.length];
@@ -208,12 +209,12 @@ public class GenericBean {
                 } else if (val instanceof Date || val instanceof Calendar) {
                     val = new ADDateFormatter().reformat(val);
                 }
-                json.element(str, val);
+                map.put(str, val);
             } catch (Exception e) {
                 throw new CapException(e.getMessage(), e, getClass());
             }
         }
-        return json;
+        return map;
     }
 
     /**

@@ -1,141 +1,40 @@
 ;
 $.holdReady(true);
 (function(_jQuery, window) {
-    var msie = /MSIE/.test(navigator.userAgent);
-    var msie7  = /MSIE 7.0/.test(navigator.userAgent);
-    _jQuery.ajaxSettings.traditional = true;
-    _jQuery.ajaxSetup({
-        jsonp : null,
-        jsonpCallback : null,
-        cache : false,
-        dataType : 'json',
-        type : "POST",
-        data : {
-            _isAjax : true
-        },
-        timeout : Properties.ajaxTimeOut
-    });
 
-    _jQuery.datepicker.setDefaults({
-        dateFormat : 'yy-mm-dd',
-        buttonImageOnly : true,
-        showButtonPanel : true,
-        changeMonth : true,
-        changeYear : true,
-        buttonImage : baseUrl + '/images/icon_date.png',
-        showOn : 'both'
-    });
-
-    $.extend(window, {
-        router : {
-            set : function(settings) {
-                if (settings) {
-                    Backbone.history && Backbone.history.stop();
-                    var AppRouter = Backbone.Router.extend(settings);
-                    window._router = new AppRouter;
-                    window._router.on('all', function() {
-                        router.params = {};
-                        if (router._params) {
-                            router.params = router._params;
-                        }
-                        router._params = {};
-                    });
-                    Backbone.history.start();
-                }
-            },
-            to : function(path, params) {
-                router._params = params;
-                if (path && window._router)
-                    window._router.navigate(path, {
-                        trigger : true
-                    });
-                else
-                    throw "no router";
-            },
-            params : {}
-        },
-
-        url : function(path) {
-            return Properties.contextName + path;
-        }
-    });
-    // i18n plugin
-    (function($) {
-        var s = {
-            url : url("i18njs")
-        };
-        window['i18n'] = {
-            keys : [],
-            load : function(f, st) {
-                return $.ajax($.extend({
-                    async : st && st.async || false,
-                    cache : false,
-                    dataType : 'json',
-                    data : {
-                        f : f,
-                        _ : Math.random()
-                    },
-                    success : function(res) {
-                        i18n.set(f.match("\\w+$")[0], res);
-                        // i18n.set(f, res);
-                    }
-                }, s));
-            },
-            set : function(key, jsonValue) {
-                $.extend(window['i18n'][key] = (function(value) {
-                    return function(key, values) {
-                        var msg = value[key];
-                        msg && values && $.each(values, function(i, v) {
-                            msg = msg.replace(new RegExp("\\{" + i + "\\}", "g"), v);
-                        });
-                        return msg;
-                    };
-                })(jsonValue), jsonValue);
-                i18n.keys.push(key);
-            },
-
-            setup : function(settings) {
-                s = $.extend(true, s, settings);
-            }
-        };
-        // load default i18n Data
-    })(_jQuery);
-
-    // 所有動作均等待i18n 完成後再動作
-  window.i18n.load("def").done(
-      function() {
+    var commonjsInit = function() {
         // common js 初始化開始
         (function($) {
             // global function
             $.extend(window, {
                 // logger
-                logDebug : function() {
+                logDebug: function() {
                     if (window.console) {
-                        console.log(arguments);
+                        console.log(arguments.length > 0 ? arguments[0] : arguments);
                     }
                 },
 
                 // windows close confirm
-                closeConfirm : Properties.window.closeConfirm,
-                closeWindowMsg : Properties.window.closeWindowMsg,
-                pageChangeMsg : false,
-                setCloseWindowMsg : function(msg) {
+                closeConfirm: Properties.window.closeConfirm,
+                closeWindowMsg: Properties.window.closeWindowMsg,
+                pageChangeMsg: false,
+                setCloseWindowMsg: function(msg) {
                     this.closeWindowMsg = msg;
                 },
-                setCloseConfirm : function(f) {
+                setCloseConfirm: function(f) {
                     window.closeConfirm = f;
                 },
-                getCloseConfirm : function() {
+                getCloseConfirm: function() {
                     return window.closeConfirm;
                 },
-                onbeforeunload : function() {
+                onbeforeunload: function() {
                     if (getCloseConfirm())
                         return this.closeWindowMsg;
                 },
                 // 關閉視窗或重新整理後的動作
-                onunload : Properties.window.onunload,
-                realclosefunc : window.close,
-                close : function() {
+                onunload: Properties.window.onunload,
+                realclosefunc: window.close,
+                close: function() {
                     window.closeConfirm = false;
                     if (msie) {
                         var win = window.open("", "_top", "", "true");
@@ -144,25 +43,25 @@ $.holdReady(true);
                     }
                     window.realclosefunc();
                 },
-                setPageChangeMsg : function(message) {
+                setPageChangeMsg: function(message) {
                     window.pageChangeMsg = message;
                 },
-                getPageChangeMsg : function() {
+                getPageChangeMsg: function() {
                     return window.pageChangeMsg;
                 },
 
                 // error function
-                checkFormErrorAndRequired : function(form) {
-                    if (form.find(".data-error,.item-data-error").size()) {
+                checkFormErrorAndRequired: function(form) {
+                    if (form.find(".data-error,.item-data-error").length) {
                         return false;
                     }
-//                    if (!form.valid()) {
+                    // if (!form.valid()) {
                     if (!form.validationEngine('validate')) {
                         return false;
                     }
                     return true;
                 },
-                errorCheck : (function() {
+                errorCheck: (function() {
                     var _errorCheck = function(xhr, action) {
                         var json, res = true;
                         try {
@@ -174,7 +73,7 @@ $.holdReady(true);
                         }
                         // ilog.debug(json);
                         for (var rule in errorCheck.rule) {
-                            res && json[rule] && ( res = errorCheck.rule[rule](xhr, action, json));
+                            res && json[rule] && (res = errorCheck.rule[rule](xhr, action, json));
                         }
 
                         if (res && xhr.status && xhr.status != '200' || xhr.status == 0) {
@@ -188,7 +87,7 @@ $.holdReady(true);
                     };
 
                     _errorCheck.rule = {
-                        AJAX_CLOSE_PAGE_HANDLER_EXCEPTION : function(xhr, action, json) {
+                        AJAX_CLOSE_PAGE_HANDLER_EXCEPTION: function(xhr, action, json) {
                             // ilog.debug(json.AJAX_CLOSE_PAGE_HANDLER_EXCEPTION);
                             // ilog.debug(encodeURIComponent(json.AJAX_CLOSE_PAGE_HANDLER_EXCEPTION));
                             API.showErrorMessage(json.AJAX_CLOSE_PAGE_HANDLER_EXCEPTION, function() {
@@ -202,7 +101,7 @@ $.holdReady(true);
                             // Properties.innerPageFrameId));
                             return false;
                         },
-                        AJAX_MESSAGE_HANDLER_EXCEPTION : function(xhr, action, json) {
+                        AJAX_MESSAGE_HANDLER_EXCEPTION: function(xhr, action, json) {
                             // ilog.debug(json.AJAX_MESSAGE_HANDLER_EXCEPTION);
                             // CommonAPI.showPopMessage(json.AJAX_MESSAGE_HANDLER_EXCEPTION,
                             // action
@@ -210,23 +109,22 @@ $.holdReady(true);
                             API.showErrorMessage(json.AJAX_MESSAGE_HANDLER_EXCEPTION);
                             return false;
                         },
-                        AJAX_HANDLER_EXCEPTION : function(xhr, action, json) {
+                        AJAX_HANDLER_EXCEPTION: function(xhr, action, json) {
                             try {
                                 ilog.debug(xhr.status + " : " + xhr.statusText + ", " + json.AJAX_HANDLER_EXCEPTION);
-                            } catch (e) {
-                            }
+                            } catch (e) {}
                             API.showErrorMessage(xhr.status + " : " + xhr.statusText + ", " + json.AJAX_HANDLER_EXCEPTION);
                             // ilog.server(json.AJAX_HANDLER_EXCEPTION);
                             return false;
                         },
-                        AJAX_HANDLER_TIMEOUT : function(xhr, action, json) {
+                        AJAX_HANDLER_TIMEOUT: function(xhr, action, json) {
                             // ilog.server(json.AJAX_HANDLER_TIMEOUT);
                             window.setCloseConfirm(false);
                             alert(i18n.def.sessionTimeout);
                             window.location = window.location.href.replace(/#$/, '');
                             return false;
                         },
-                        AJAX_SESSION_EXPIRE_EXCEPTION : function(xhr, action, json) {
+                        AJAX_SESSION_EXPIRE_EXCEPTION: function(xhr, action, json) {
                             window.setCloseConfirm(false);
                             API.showErrorMessage(json.AJAX_SESSION_EXPIRE_EXCEPTION, function() {
                                 window.location = window.location.href.replace(/#$/, '');
@@ -238,7 +136,7 @@ $.holdReady(true);
                     return _errorCheck;
                 })(),
 
-                getErrorMessage : function(xhr) {
+                getErrorMessage: function(xhr) {
                     var json;
                     try {
                         json = JSON.parse(xhr.responseText);
@@ -262,22 +160,22 @@ $.holdReady(true);
                     return "";
                 },
 
-                CommonAPI : {
+                CommonAPI: {
                     /**
                      * 判斷是否為 JSON Object
                      */
-                    isJSON : function(obj) {
+                    isJSON: function(obj) {
                         return typeof obj == "object" && obj.constructor == Object;
                     },
                     /**
                      * 產生對話框
                      *
                      * @param {Object}
-                     *            settings
+                     *          settings
                      * @param {String}
-                     *            action
+                     *          action
                      */
-                    _showConfirmMessage : function(settings, action) {
+                    _showConfirmMessage: function(settings, action) {
                         settings = settings || {};
                         var dialogId = settings.id || "iConfirmDialog";
                         if (action && action === 'close') {
@@ -286,15 +184,15 @@ $.holdReady(true);
                             $('#' + dialogId).dialog('close');
                         } else {
                             var s = $.extend({
-                                title : i18n.def.confirmTitle,
-                                closeName : i18n.def.cancel,
-                                closeBtnAction : null
+                                title: i18n.def.confirmTitle,
+                                closeName: i18n.def.cancel,
+                                closeBtnAction: null
 
                             }, settings);
                             var cDialog = $('#' + s.id);
-                  cDialog = ((cDialog.size()) ? cDialog : $(
-                      "<div style='iConfirmDialog' id='" + dialogId + "' title='" + s.title + "'><span id='" + dialogId + "Message' style='max-width:600px;display:block'>" + s.message
-                          + "</span></div>").appendTo("body"));
+                            cDialog = ((cDialog.length) ? cDialog : $(
+                                "<div style='iConfirmDialog' id='" + dialogId + "' title='" + s.title + "'><span id='" + dialogId + "Message' style='max-width:600px;display:block'>" + s.message +
+                                "</span></div>").appendTo("body"));
                             var defaultButton = {};
                             defaultButton[s.closeName] = function() {
                                 cDialog.dialog('close');
@@ -302,17 +200,17 @@ $.holdReady(true);
                             var tmpClose = s.close || $.noop;
                             delete s['close'];
                             cDialog.dialog($.extend({
-                                bgiframe : false,
-                                autoOpen : false,
-                                modal : true,
-                                maxWidth : msie7 ? 600 : null
+                                bgiframe: false,
+                                autoOpen: false,
+                                modal: true,
+                                maxWidth: msie7 ? 600 : null
                             }, $.extend(s, {
-                                close : function() {
+                                close: function() {
                                     tmpClose();
-                                    $.isFunction(cDialog.dialog())?cDialog.dialog('destroy'):cDialog.dialog().dialog('destroy');
+                                    $.isFunction(cDialog.dialog()) ? cDialog.dialog('destroy') : cDialog.dialog().dialog('destroy');
                                 }
                             }), {
-                                buttons : $.extend(s.buttons, s.noClose === true && {} || defaultButton)
+                                buttons: $.extend(s.buttons, s.noClose === true && {} || defaultButton)
                             }));
                             cDialog.dialog('open');
                             msie7 && cDialog.dialog('option', 'width', cDialog.find('#' + dialogId + 'Message').width());
@@ -320,8 +218,8 @@ $.holdReady(true);
                             return cDialog;
                         }
                     },
-                    showConfirmMessage : function(title, message, action, cls) {
-                        var randomID = "sysCMessage" + parseInt(Math.random() * 1000, 10);
+                    showConfirmMessage: function(title, message, action, cls) {
+                        var randomID = "sysCMessage" + new Date().getTime();
                         action = $.isFunction(message) ? message : action;
                         var closeBtn = {};
                         var dfd = $.Deferred();
@@ -337,15 +235,15 @@ $.holdReady(true);
                         };
 
                         return CommonAPI._showConfirmMessage({
-                            dialogClass : cls || 'defDialogCss',
-                            id : randomID,
-                            closeName : i18n.def.close,
-                            title : message && !$.isFunction(message) ? title : i18n.def.confirmTitle,
-                            message : message && !$.isFunction(message) ? message : title,
+                            dialogClass: cls || 'defDialogCss',
+                            id: randomID,
+                            closeName: i18n.def.close,
+                            title: message && !$.isFunction(message) ? title : i18n.def.confirmTitle,
+                            message: message && !$.isFunction(message) ? message : title,
                             // buttons:
                             // closeBtn,
-                            buttons : closeBtn,
-                            noClose : true
+                            buttons: closeBtn,
+                            noClose: true
                         });
 
                     },
@@ -353,16 +251,14 @@ $.holdReady(true);
                      * 產生提示對話框
                      *
                      * @param {String}
-                     *            title title
+                     *          title title
                      * @param {Object}
-                     *            message
-                     *            message
+                     *          message message
                      * @param {Object}
-                     *            action
-                     *            關閉對話框後動作
+                     *          action 關閉對話框後動作
                      */
-                    showPopMessage : function(title, message, action, cls) {
-                        var randomID = "sysMessage" + parseInt(Math.random() * 1000, 10);
+                    showPopMessage: function(title, message, action, cls) {
+                        var randomID = "sysMessage" + new Date().getTime();
                         // var closeBtn = {};
                         // closeBtn[i18n.def.close]
                         // = function(){
@@ -371,14 +267,14 @@ $.holdReady(true);
                         // };
 
                         return CommonAPI._showConfirmMessage({
-                            dialogClass : cls || 'defDialogCss',
-                            id : randomID,
-                            closeName : i18n.def.close,
-                            title : message && !$.isFunction(message) ? title : i18n.def.confirmTitle,
-                            message : message && !$.isFunction(message) ? message : title,
+                            dialogClass: cls || 'defDialogCss',
+                            id: randomID,
+                            closeName: i18n.def.close,
+                            title: message && !$.isFunction(message) ? title : i18n.def.confirmTitle,
+                            message: message && !$.isFunction(message) ? message : title,
                             // buttons:
                             // closeBtn,
-                            close : function() {
+                            close: function() {
                                 $("#" + randomID).remove();
                                 action && action();
                                 $.isFunction(message || "") && message();
@@ -387,76 +283,66 @@ $.holdReady(true);
                     },
 
                     /**
-                     * 產生提示對話框(預設與showPopMessage同
-                     * 提供給予各專案replace使用)
+                     * 產生提示對話框(預設與showPopMessage同 提供給予各專案replace使用)
                      *
                      * @param {String}
-                     *            title title
+                     *          title title
                      * @param {Object}
-                     *            message
-                     *            message
+                     *          message message
                      * @param {Object}
-                     *            action
-                     *            關閉對話框後動作
+                     *          action 關閉對話框後動作
                      */
-                    showMessage : function(title, message, action) {
+                    showMessage: function(title, message, action) {
                         return API.showPopMessage(title, message, action);
                     },
 
                     /**
-                     * 產生提示對話框(預設與showPopMessage同
-                     * 提供給予各專案replace使用)
+                     * 產生提示對話框(預設與showPopMessage同 提供給予各專案replace使用)
                      *
                      * @param {String}
-                     *            title title
+                     *          title title
                      * @param {Object}
-                     *            message
-                     *            message
+                     *          message message
                      * @param {Object}
-                     *            action
-                     *            關閉對話框後動作
+                     *          action 關閉對話框後動作
                      */
-                    showErrorMessage : function(title, message, action) {
+                    showErrorMessage: function(title, message, action) {
                         return API.showPopMessage(title, message, action, "xxxxxxx");
                     },
 
                     /**
                      * get Today(yyyy-MM-dd)
                      */
-                    getToday : function() {
+                    getToday: function() {
                         var tDate = new Date();
                         return tDate.getFullYear() + "-" + (tDate.getMonth() < 9 ? "0" : "") + (tDate.getMonth() + 1) + "-" + (tDate.getDate() < 10 ? "0" : "") + tDate.getDate();
 
                     },
 
                     /**
-                     * ajax
-                     * 動作完成後錯誤訊息顯示方式(預設與showPopMessage同
-                     * 提供給予各專案replace使用)
+                     * ajax 動作完成後錯誤訊息顯示方式(預設與showPopMessage同 提供給予各專案replace使用)
                      *
                      * @param {String}
-                     *            msg
+                     *          msg
                      */
-                    ajaxErrorMessage : function(msg) {
+                    ajaxErrorMessage: function(msg) {
                         CommonAPI.showPopMessage(msg);
                     },
 
                     /**
-                     * ajax
-                     * 動作完成後通知訊息顯示方式(預設與showPopMessage同
-                     * 提供給予各專案replace使用)
+                     * ajax 動作完成後通知訊息顯示方式(預設與showPopMessage同 提供給予各專案replace使用)
                      *
                      * @param {String}
-                     *            msg
+                     *          msg
                      */
-                    ajaxNotifyMessage : function(msg) {
+                    ajaxNotifyMessage: function(msg) {
                         CommonAPI.showPopMessage(msg);
                     },
 
                     /**
                      * 清除訊息
                      */
-                    clearMessage : function() {
+                    clearMessage: function() {
 
                     },
 
@@ -464,16 +350,15 @@ $.holdReady(true);
                      * 補滿字串
                      *
                      * @param {string}
-                     *            data 轉入資料
+                     *          data 轉入資料
                      * @param {integer}
-                     *            length 長度
+                     *          length 長度
                      * @param {boolean}
-                     *            rightAlign
-                     *            是否補字串後方
+                     *          rightAlign 是否補字串後方
                      * @param {char}
-                     *            ch 補足字元
+                     *          ch 補足字元
                      */
-                    fillString : function(data, length, rightAlign, ch) {
+                    fillString: function(data, length, rightAlign, ch) {
                         var inlength = data.length;
                         if (inlength >= length)
                             return data;
@@ -485,11 +370,11 @@ $.holdReady(true);
                     /**
                      *
                      * @param {String}
-                     *            id
+                     *          id
                      * @param {String}
-                     *            action
+                     *          action
                      */
-                    triggerOpener : function(id, action) {
+                    triggerOpener: function(id, action) {
                         id = id || 'gridview';
                         action = action || 'reloadGrid';
                         try {
@@ -502,50 +387,52 @@ $.holdReady(true);
                      * 建立i18n or key為變數之 JSON
                      *
                      * @param {Object}
-                     *            array
+                     *          array
                      */
-                    createJSON : function(array) {
+                    createJSON: function(array) {
                         var json = {};
                         for (var data in array) {
                             json[array[data].key] = array[data].value;
                         }
                         return json;
                     },
-                    loadPage : function(href, fn) {
-                        $.blockUI.showBG = true;
-                        $.startBlockUI && $.startBlockUI();
-                        var section = $("article");
-                        section.animate({
-                            opacity : 0.01
-                        }, 500, (function(loadHref) {
-                            return function() {
-                                section.html("404");
-                                section.load(loadHref, function() {
-                                    section.animate({
-                                        opacity : 1
-                                    }, 800);
-                                    fn && fn();
-                                });
-                                $.blockUI.showBG = false;
-                            };
-                        })(href));
+                    loadPage: function(href, fn) {
+                        require(['blockui'], function(blockui) {
+                            $.blockUI.showBG = true;
+                            $.startBlockUI && $.startBlockUI();
+                            var section = $("article");
+                            section.animate({
+                                opacity: 0.01
+                            }, 500, (function(loadHref) {
+                                return function() {
+                                    section.html("404");
+                                    section.load(loadHref, function() {
+                                        section.animate({
+                                            opacity: 1
+                                        }, 800);
+                                        fn && fn();
+                                    });
+                                    $.blockUI.showBG = false;
+                                };
+                            })(href));
+                        });
                     },
-                    formSubmit : function(settings) {
+                    formSubmit: function(settings) {
                         settings = $.extend(true, {
-                            data : {},
-                            type : 'POST',
-                            url : "",
-                            target : "_self"
+                            data: {},
+                            type: 'POST',
+                            url: "",
+                            target: "_self"
                         }, settings || {});
                         var obj = $('<form />');
                         $('body').append(obj);
                         obj.attr({
-                            css : {
-                                display : "none"
+                            css: {
+                                display: "none"
                             },
-                            action : settings.url,
-                            target : settings.target,
-                            method : settings.type
+                            action: settings.url,
+                            target: settings.target,
+                            method: settings.type
                         });
                         for (var key in settings.data) {
                             if (settings.data[key]) {
@@ -566,31 +453,28 @@ $.holdReady(true);
                      * 於後端取得下拉選單資料
                      *
                      * @param {Array ||
-                     *            String}
-                     *            updatekeys
-                     *            reutrn {JSON}
-                     *            comboList
+                     *          String} updatekeys reutrn {JSON} comboList
                      */
-                    loadCombos : function(updateKeys, comboaction) {
+                    loadCombos: function(updateKeys, comboaction) {
                         if (updateKeys === "")
                             return {};
-                        var nkeys = ( typeof updateKeys === 'string') ? [updateKeys] : updateKeys, ukeys = [];
+                        var nkeys = (typeof updateKeys === 'string') ? [updateKeys] : updateKeys,
+                            ukeys = [];
                         for (var key in nkeys) {
                             if (!icombos[nkeys[key]])
                                 ukeys.push(nkeys[key]);
                         }
                         (ukeys.length || (comboaction && comboaction.length)) && (function() {
                             $.ajax({
-                                type : 'post',
-                                async : false,
-                                url : url(Properties.ComboBoxHandler),
-                                data : {
-                                    keys : ukeys || [],
-                                    akeys : comboaction || []
-                                },
-                                success : function(json) {
-                                    $.extend(icombos, json);
+                                type: 'post',
+                                async: false,
+                                url: url(Properties.ComboBoxHandler),
+                                data: {
+                                    keys: ukeys || [],
+                                    akeys: comboaction || []
                                 }
+                            }).done(function(json) {
+                                $.extend(icombos, json);
                             });
                         })();
 
@@ -599,22 +483,24 @@ $.holdReady(true);
                 }
             });
 
+//            console.debug('common js init');
+
             // add String method
             $.extend(String.prototype, {
                 // 計算有幾個全型字、中文字... 或英數字混雜
-                countLength : function(type) {
+                countLength: function(type) {
                     var c = this.match(/[^ -~]/g);
-                    if (type == 'B') {// big5
+                    if (type == 'B') { // big5
                         // +2
-                        return this.length + ( c ? c.length : 0);
-                    } else {// 預設UTF-8 +3
-                        return this.length + ( c ? c.length * 2 : 0);
+                        return this.length + (c ? c.length : 0);
+                    } else { // 預設UTF-8 +3
+                        return this.length + (c ? c.length * 2 : 0);
                     }
                 },
 
                 /* 半型字符範圍：33-126;全型字符範圍：65281-65374:對應關係是相差：65248;全型空格：12288;半型空格：32* */
                 // 轉全型
-                toFull : function() {
+                toFull: function() {
                     var result = "";
                     var str = $.trim(this);
                     for (var i = 0; i < str.length; i++) {
@@ -626,7 +512,7 @@ $.holdReady(true);
                     return result;
                 },
                 // 轉半型
-                toHalf : function() {
+                toHalf: function() {
                     var result = "";
                     var str = $.trim(this);
                     for (var i = 0; i < str.length; i++) {
@@ -641,19 +527,19 @@ $.holdReady(true);
 
             // add jQuery static method
             $.extend({
-                emptyFunction : function() {
+                emptyFunction: function() {
                     return true;
                 },
-                emptyJSON : {},
-                __ajax : $.ajax,
-                ajax : function(s) {
+                emptyJSON: {},
+                __ajax: $.ajax,
+                ajax: function(settings) {
                     s = $.extend({
-                        handler : "",
-                        action : "",
-                        formId : "",
-                        noHide : false,
-                        target : null
-                    }, s);
+                        handler: "",
+                        action: "",
+                        formId: "",
+                        noHide: false,
+                        target: null
+                    }, settings);
 
                     if (s.formId) {
                         var form = $("#" + s.formId);
@@ -670,59 +556,66 @@ $.holdReady(true);
                     // 移除page 以防server side 無法抓取正確值
                     // if(window.responseJSON) delete
                     // responseJSON.page;
-                    return $.__ajax($.extend({
-                        dataType : "json",
-                        cache : false,
-                        type : 'post'
-                    }, s, {
-                        success : function(data, status) {
-                            // 如有錯誤通知訊息則顯示於畫面上
-                            // ilog.debug(data);
-                            if (data.ERROR_NOTIFY_MESSAGE) {
-                                API.ajaxErrorMessage(data.ERROR_NOTIFY_MESSAGE);
-                            }
-                            // 如有通知訊息則顯示於畫面上
-                            else if (data.NOTIFY_MESSAGE) {
-                                API.ajaxNotifyMessage(data.NOTIFY_MESSAGE);
-                            }
-                            s.success && s.success(data, status);
-                            data.ERROR_NOTIFY_MESSAGE && s.successError && s.successError(data, status);
-                        },
-                        error : function(xhr, status, e) {
-                            s.error && s.error(xhr, status, e);
-
-                            var statusText = "";
-                            try {
-                                statusText = xhr.statusText;
-                            } catch (e) {
-                            }
-                            if (statusText == 'timeout') {
-                                // request
-                                // timeout
-                                API.showErrorMessage(i18n.def.timeout);
-                            } else if (!xhr.status && statusText) {
-                                API.showErrorMessage(i18n.def.connectError + "-「" + statusText + "」");
-                            } else if (xhr.responseText) {
-                                errorCheck(xhr);
-                            } else if (xhr.status == 0 || xhr.status && xhr.status != '200') {
-                                API.showErrorMessage("http error code: 「" + xhr.status + "」");
-                            }
-                        },
-                        data : $.extend({}, window.responseJSON ? responseJSON : {}, {
-                            _pa : s.handler || '',
-                            formAction : s.action || ''
+                    s = $.extend({
+                        dataType: "json",
+                        cache: false,
+                        type: 'post'
+                    }, settings, {
+                        data: $.extend({}, window.responseJSON ? responseJSON : {}, {
+                            _pa: s.handler || '',
+                            formAction: s.action || ''
                         }, s.data)
-                    }));
+                    });
+                    return $.__ajax(s).done(function(data, status) {
+                        // 如有錯誤通知訊息則顯示於畫面上
+                        // ilog.debug(data);
+                        if (data.ERROR_NOTIFY_MESSAGE) {
+                            API.ajaxErrorMessage(data.ERROR_NOTIFY_MESSAGE);
+                        }
+                        // 如有通知訊息則顯示於畫面上
+                        else if (data.NOTIFY_MESSAGE) {
+                            API.ajaxNotifyMessage(data.NOTIFY_MESSAGE);
+                        }
+                        settings.success && settings.success(data, status);
+                        data.ERROR_NOTIFY_MESSAGE && s.successError && s.successError(data, status);
+                    }).fail(function(xhr, status, e) {
+
+                        if (!xhr || !status) {
+                            return;
+                        }
+                        settings.error && settings.error(xhr, status, e);
+
+                        var statusText = "";
+                        try {
+                            statusText = xhr.statusText;
+                        } catch (e) {}
+                        if (statusText == 'timeout') {
+                            // request
+                            // timeout
+                            API.showErrorMessage(i18n.def.timeout);
+                        } else if (!xhr.status && statusText) {
+                            API.showErrorMessage(i18n.def.connectError + "-「" + statusText + "」");
+                        } else if (xhr.responseText) {
+                            errorCheck(xhr);
+                        } else if (xhr.status == 0 || xhr.status && xhr.status != '200') {
+                            API.showErrorMessage("http error code: 「" + xhr.status + "」");
+                        }
+                    }).always(function() {
+                        require(['blockui'], function(blockui) {
+                            $.blockUI.showBG = false;
+                            $.unblockUI();
+                        });
+                    });
                 },
 
                 // 檔案下載動作
-                capFileDownload : function(s) {
+                capFileDownload: function(s) {
                     CommonAPI.formSubmit({
-                        url : s.url,
-                        type : 'post',
-                        target : "_blank",
-                        encode : true,
-                        data : s.data || {}
+                        url: s.url,
+                        type: 'post',
+                        target: "_blank",
+                        encode: true,
+                        data: s.data || {}
                     });
                 }
             });
@@ -731,54 +624,55 @@ $.holdReady(true);
             if ($.blockUI) {
                 $.blockUI.showBG = true;
                 $.extend({
-                    startBlockUI : function(event, xhr) {
+                    startBlockUI: function(event, xhr) {
                         $.blockUI({
-                            fadeIn : 0,
-                            fadeOut : 0,
-                            message : i18n.def.loading + '   <img src="' + url("static/images/ajax-loader.gif") + '" style="width: 16px;hight:11px;"/>',
-                            css : {
-                                'z-index' : 10010,
-                                top : '0',
-                                left : '40%',
-                                backgroundColor : '#E0ECFF',
-                                border : '#000 1px solid',
-                                '-webkit-border-radius' : '5px',
-                                '-moz-border-radius' : '5px',
+                            fadeIn: 0,
+                            fadeOut: 0,
+                            message: i18n.def.loading + '   <img src="' + url("static/images/ajax-loader.gif") + '" style="width: 16px;hight:11px;"/>',
+                            css: {
+                                'z-index': 10010,
+                                top: '0',
+                                left: '40%',
+                                backgroundColor: '#E0ECFF',
+                                border: '#000 1px solid',
+                                '-webkit-border-radius': '5px',
+                                '-moz-border-radius': '5px',
                                 // opacity: .85,
-                                'font-size' : '0.8em',
-                                padding : '2px',
-                                fontWeight : 'bolder',
-                                height : '18px',
-                                width : '20%',
-                                color : '#000',
-                                cursor : 'default'
+                                'font-size': '0.8em',
+                                padding: '2px',
+                                fontWeight: 'bolder',
+                                height: '18px',
+                                width: '20%',
+                                color: '#000',
+                                cursor: 'default'
                             },
-                            overlayCSS : {
-                                'z-index' : 10010,
-                                backgroundColor : '#CCC',
-                                opacity : $.blockUI.showBG ? 0.3 : 0,
-                                cursor : 'default'
+                            overlayCSS: {
+                                'z-index': 10010,
+                                backgroundColor: '#CCC',
+                                opacity: $.blockUI.showBG ? 0.3 : 0,
+                                cursor: 'default'
                             }
                         });
                     }
                 });
-                $(document).bind("ajaxStart", $.startBlockUI);
-                $(document).bind("ajaxStop", $.unblockUI);
+                $(document).on("ajaxStart", $.startBlockUI);
+                $(document).on("ajaxStop", $.unblockUI);
             }
 
             // 檔案上傳動作
             if ($.ajaxFileUpload) {
                 $.extend({
-                    capFileUpload : function(setting) {
+                    capFileUpload: function(setting) {
                         var s = $.extend({
-                            uploadMsg : i18n.def.fileUploading,
-                            successMsg : i18n.def.fileUploadSuccess
+                            uploadMsg: i18n.def.fileUploading,
+                            successMsg: i18n.def.fileUploadSuccess
                         }, setting, {
-                        	// iframe = true for ie error access denied
-                  url : setting.url + (/[?]/.test(setting.url) ? "&" : "?") + ("iframe=true&limitSize=" + (setting.limitSize || 3145728))
-                      + (setting.fileEncoding && ("&fileEncoding=" + setting.fileEncoding) || "")
+                            // iframe = true for ie error access denied
+                            url: setting.url + (/[?]/.test(setting.url) ? "&" : "?") + ("iframe=true&limitSize=" + (setting.limitSize || 3145728)) +
+                                (setting.fileEncoding && ("&fileEncoding=" + setting.fileEncoding) || "")
                         });
-                        var telm = $("#" + s.fileElementId), val = telm.val();
+                        var telm = $("#" + s.fileElementId),
+                            val = telm.val();
 
                         if (!val.length) {
                             CommonAPI.showErrorMessage(i18n.def.fileSelect);
@@ -798,22 +692,22 @@ $.holdReady(true);
                             }
                         }
                         var uploadMsg = CommonAPI.showMessage(s.uploadMsg);
-                        //remove settings action , all action to complete monitor
+                        // remove settings action , all action to complete monitor
                         var temp = {
-                            successMsg : s.successMsg,
-                            success : s.success,
-                            error : s.error,
-                            complete : s.complete
+                            successMsg: s.successMsg,
+                            success: s.success,
+                            error: s.error,
+                            complete: s.complete
                         }
 
-                        $.ajaxFileUpload($.extend({}, s , {
-                            successMsg : null,
-                            success : null,
-                            error : null,
-                            complete : null
+                        $.ajaxFileUpload($.extend({}, s, {
+                            successMsg: null,
+                            success: null,
+                            error: null,
+                            complete: null
                         }, {
-                            secureuri : false,
-                            complete : function(xhr, status) {
+                            secureuri: false,
+                            complete: function(xhr, status) {
                                 uploadMsg.dialog('close');
                                 try {
                                     var json = JSON.parse(xhr.responseText);
@@ -833,14 +727,14 @@ $.holdReady(true);
                                 $.post(url(Properties.fileUploadSuccessHandler));
 
                             },
-                            error : function(data, status, e) {
-                                $.isFunction(uploadMsg) && uploadMsg.dialog('close');
-                                CommonAPI.showErrorMessage(i18n.def.fileUploadError);
-                            }
-//                            ,
-//                            data : $.extend(s.data || {}, {
-//                                iframe : true  // ie error access denied
-//                            })
+                            error: function(data, status, e) {
+                                    $.isFunction(uploadMsg) && uploadMsg.dialog('close');
+                                    CommonAPI.showErrorMessage(i18n.def.fileUploadError);
+                                }
+                                // ,
+                                // data : $.extend(s.data || {}, {
+                                // iframe : true // ie error access denied
+                                // })
                         }));
 
                     }
@@ -848,24 +742,63 @@ $.holdReady(true);
             }
 
             // add jQuery prototype method
+            require([ 'jquery-ui' ], function(jqueryui) {
+              $.fn.extend({
+                __dialog: $.fn.dialog,
+                dialog: function(arg1, arg2, arg3) {
+                    if (typeof arg1 !== "string") {
+                        var $this = this;
+                        $this.find('form').each(function() {
+                            // $(this).validate();
+                            $(this).validationEngine('validate');
+                        });
+                        var _o = arg1 && arg1.open;
+                        arg1 = $.extend({
+                            dialogClass: this.attr("id") + "_-dialog",
+                            bgiframe: true,
+                            autoOpen: false,
+                            modal: true,
+                            maxWidth: 600,
+                            // width:
+                            // 'auto',
+                            minWidth: 350
+                                // minWidth: 350
+                        }, arg1, {
+                            open: function() {
+                                _o && _o.apply(this, arguments);
+                            }
+                        });
+                        var ndialog = this.__dialog(arg1, arg2, arg3);
+                        var dialogs;
+                        (dialogs = $("." + this.attr("id") + "_-dialog")).each(function(index, element) {
+                            ((dialogs.length - 1) == index) ? (ndialog = $(element)) : ($(element).empty().remove());
+                        });
+                        $("div[id='" + this.attr("id") + "'],span[id='" + this.attr("id") + "']").each(function() {
+                            $(this).is(".ui-dialog-content") || $(this).empty().remove();
+                        });
+                        return ndialog.find('.ui-dialog-content');
+                    }
+                    return this.__dialog(arg1, arg2, arg3);
+                }
+              });
+            });
             $.fn.extend({
                 // 增加val 行為
-                __val : jQuery.fn.val,
-                val : function(value) {
+                __val: jQuery.fn.val,
+                val: function(value) {
                     var res = (this.data("maskRule") && this.data("realValue")) ? this.data("realValue") : (this.is("span,div") ? this.text() : this.__val());
                     if (value != undefined) {
-                this.data("realValue", value)[(this.is("span,div") ? "text" : "__val")](value);
+                        this.data("realValue", value)[(this.is("span,div") ? "text" : "__val")](value);
                         if (this.data("maskRule") && this.data("isChange") !== true) {
                             this.data("isChange", true).trigger("change").data("isChange", false).trigger("mask");
                         }
-                        ;
                         res = this;
                     }
                     return res;
                 },
-                ____load : $.fn.load,
-                load : function(url, params, callback) {
-                    if ( typeof url !== "string" && this.___load) {
+                ____load: $.fn.load,
+                load: function(url, params, callback) {
+                    if (typeof url !== "string" && this.___load) {
                         return this.___load.apply(this, arguments);
                     }
 
@@ -877,7 +810,8 @@ $.holdReady(true);
                     if ($.isFunction(url)) {
                         return this;
                     }
-                    var selector, type, response, self = this, off = url.indexOf(" ");
+                    var selector, type, response, self = this,
+                        off = url.indexOf(" ");
 
                     if (off >= 0) {
                         selector = url.slice(off, url.length);
@@ -900,7 +834,7 @@ $.holdReady(true);
                     var self = this;
                     // Request the remote document
                     $.ajax({
-                        url : url,
+                        url: url,
 
                         // if "type"
                         // variable is
@@ -908,18 +842,18 @@ $.holdReady(true);
                         // then "GET"
                         // method will
                         // be used
-                        type : type,
-                        dataType : "html",
-                        data : params,
-                        context : self,
-                        converters : {
-                            "text html" : function(s) {
+                        type: type,
+                        dataType: "html",
+                        data: params,
+                        context: self,
+                        converters: {
+                            "text html": function(s) {
                                 var t = s.match(/<title>(?!<>)(.*)<\/title>/);
                                 t && t[1] && (document.title = Properties.title + ' - ' + t[1]);
-                                return "<script type=\"text/javascript\">$(document).ready(function(){loadPageInit.call($(\"#" + self.attr("id") + "\"), true);})</script>" + s;
+                                return "<script type=\"text/javascript\">$(function(){loadPageInit.call($(\"#" + self.attr("id") + "\"), true);})</script>" + s;
                             }
                         },
-                        complete : function(jqXHR, status) {
+                        complete: function(jqXHR, status) {
                             if (callback) {
                                 self.each(callback, response || [jqXHR.responseText, status, jqXHR]);
                             }
@@ -935,117 +869,81 @@ $.holdReady(true);
                         // See if a
                         // selector was
                         // specified
-                        self.html( selector ? // Create
-                        // a
-                        // dummy
-                        // div
-                        // to
-                        // hold
-                        // the
-                        // results
-                        $("<div>")
-                        // inject
-                        // the
-                        // contents
-                        // of
-                        // the
-                        // document
-                        // in,
-                        // removing
-                        // the
-                        // scripts
-                        // to
-                        // avoid
-                        // any
-                        // 'Permission
-                        // Denied'
-                        // errors
-                        // in
-                        // IE
-                        .append(responseText.replace(rscript, ""))
-                        // Locate
-                        // the
-                        // specified
-                        // elements
-                        .find(selector) : // If
-                        // not,
-                        // just
-                        // inject
-                        // the
-                        // full
-                        // result
-                        responseText);
+                        self.html(selector ? // Create
+                            // a
+                            // dummy
+                            // div
+                            // to
+                            // hold
+                            // the
+                            // results
+                            $("<div>")
+                            // inject
+                            // the
+                            // contents
+                            // of
+                            // the
+                            // document
+                            // in,
+                            // removing
+                            // the
+                            // scripts
+                            // to
+                            // avoid
+                            // any
+                            // 'Permission
+                            // Denied'
+                            // errors
+                            // in
+                            // IE
+                            .append(responseText.replace(rscript, ""))
+                            // Locate
+                            // the
+                            // specified
+                            // elements
+                            .find(selector) : // If
+                            // not,
+                            // just
+                            // inject
+                            // the
+                            // full
+                            // result
+                            responseText);
 
                     });
 
                     return this;
                 },
-
-                __dialog : $.fn.dialog,
-                dialog : function(arg1, arg2, arg3) {
-                    if ( typeof arg1 !== "string") {
-                        var $this = this;
-                        $this.find('form').each(function() {
-                            // $(this).validate();
-                            $(this).validationEngine('validate');
-                        });
-                        var _o = arg1 && arg1.open;
-                        arg1 = $.extend({
-                            dialogClass : this.attr("id") + "_-dialog",
-                            bgiframe : true,
-                            autoOpen : false,
-                            modal : true,
-                            maxWidth : 600,
-                            // width:
-                            // 'auto',
-                            minWidth : 350
-                            // minWidth: 350
-                        }, arg1, {
-                            open : function() {
-                                _o && _o.apply(this, arguments);
-                            }
-                        });
-                        var ndialog = this.__dialog(arg1, arg2, arg3);
-                        var dialogs;
-                        ( dialogs = $("." + this.attr("id") + "_-dialog")).each(function(index, element) {
-                            ((dialogs.size() - 1) == index) ? ( ndialog = $(element)) : ($(element).empty().remove());
-                        });
-                        $("div[id='" + this.attr("id") + "'],span[id='" + this.attr("id") + "']").each(function() {
-                            $(this).is(".ui-dialog-content") || $(this).empty().remove();
-                        });
-                        return ndialog.find('.ui-dialog-content');
-                    }
-                    return this.__dialog(arg1, arg2, arg3);
-                },
                 /**
                  * reverse field validate return value
                  */
-                __validationEngine : $.fn.validationEngine,
-                validationEngine : function(method) {
-                	if(method=='validate'){
-                		if(!this.is('form')){
-                			return !this.__validationEngine(method);
-                		}
-                	}
-                	return this.__validationEngine(method);
+                __validationEngine: $.fn.validationEngine,
+                validationEngine: function(method) {
+                    if (method == 'validate') {
+                        if (!this.is('form')) {
+                            return !this.__validationEngine(method);
+                        }
+                    } else {
+                        return;
+                    }
+                    return this.__validationEngine.apply(this, arguments);
                 },
                 /**
                  * form reset
                  */
-                reset : function() {
+                reset: function() {
                     $(this).find("input:text,.field").filter(".field").val("").end().end().each(function() {
                         this.reset();
                     });
                     return this;
                 },
                 /**
-                 * 將JSON內值放入 selector
-                 * 所選之subitem(input,radio,checkbox,textarea,div,span)
+                 * 將JSON內值放入 selector 所選之subitem(input,radio,checkbox,textarea,div,span)
                  *
                  * @param {JSON}
-                 *            json
+                 *          json
                  */
-                injectData : function(rjson) {
+                injectData: function(rjson) {
                     var json = $.extend({}, rjson);
                     var obj = $(this);
                     $(["input", "select", "textarea", "span[id]", "div[id]"]).each(function(i, v) {
@@ -1057,7 +955,7 @@ $.holdReady(true);
                                 try {
                                     var value = json[jid];
                                     value = (value == null ? "" : value);
-                      switch ((item.attr("type") || "").toLowerCase()) {
+                                    switch ((item.attr("type") || "").toLowerCase()) {
                                         case "text":
                                         case "hidden":
                                         case "password":
@@ -1074,7 +972,7 @@ $.holdReady(true);
                                                     _cbs.filter("[value='" + json[jid][_i] + "']").trigger('click').prop("checked", true);
                                                 }
                                             } else {
-                                            	obj.find("input[name='" + jid + "']").prop('checked', false).filter("[value='" + json[jid] + "']").trigger('click').prop("checked", true);
+                                                obj.find("input[name='" + jid + "']").prop('checked', false).filter("[value='" + json[jid] + "']").trigger('click').prop("checked", true);
                                             }
                                             break;
                                         default:
@@ -1088,7 +986,7 @@ $.holdReady(true);
                                                     })(), true);
                                                 }
                                                 if (item.attr('submitbytext') == 'true') {
-                                                    item.find("option[showvalue='" + value + "']").attr("selected", true);
+                                                    item.find("option[showvalue='" + value + "']").prop("selected", true);
                                                 } else {
                                                     item.val(value);
                                                 }
@@ -1096,7 +994,7 @@ $.holdReady(true);
                                                 if (iTagName.toLowerCase() == "form") {
                                                     item.setData(value);
                                                 } else {
-                            item[(iTagName.match(/(textarea|div|span)/)) ? 'val' : 'html'](value);
+                                                    item[(iTagName.match(/(textarea|div|span)/)) ? 'val' : 'html'](value);
                                                 }
                                             }
                                     }
@@ -1111,11 +1009,11 @@ $.holdReady(true);
                         var value = json[jid];
                         // 當整個html上無此欄位時,才自動產生隱藏欄位
                         try {
-                  var hItem = obj.find("#" + jid);
-                            if (!hItem.size()) {
+                            var hItem = obj.find("#" + jid);
+                            if (!hItem.length) {
                                 obj.append($("<input type='hidden' id='" + jid + "'" + " name='" + jid + "'" + " value='" + value + "'" + " />"));
                             } else {
-                    switch ((hItem.attr("type") || "").toLowerCase()) {
+                                switch ((hItem.attr("type") || "").toLowerCase()) {
                                     case "text":
                                     case "hidden":
                                     case "password":
@@ -1126,7 +1024,7 @@ $.holdReady(true);
                                         break;
                                     default:
                                         var iTagName = hItem[0].nodeName.toLowerCase();
-                      hItem[(iTagName.match(/(textarea|div|span|select)/)) ? 'val' : 'html'](value);
+                                        hItem[(iTagName.match(/(textarea|div|span|select)/)) ? 'val' : 'html'](value);
                                 }
                             }
                         } catch (e2) {
@@ -1140,20 +1038,20 @@ $.holdReady(true);
                  * 將dom內之輸入欄位轉成Json
                  *
                  * @param {boolean}
-                 *            noHide 無需Hidden 欄位 預設為
-                 *            false (全取)
+                 *          noHide 無需Hidden 欄位 預設為 false (全取)
                  */
-                serializeData : function(noHide) {
-                    var result = {}, self = $(this);
+                serializeData: function(noHide) {
+                    var result = {},
+                        self = $(this);
                     $(["input", "select", "textarea", "span.field"]).each(function(i, v) {
                         self.find(v).filter(function() {
                             return !!!noHide || !$(this).is(":hidden");
                         }).each(function() {
                             var $this = $(this);
                             $this.each(function() {
-                    switch (this.nodeName.toLowerCase()) {
+                                switch (this.nodeName.toLowerCase()) {
                                     case 'input':
-                      switch (this.type.toLowerCase()) {
+                                        switch (this.type.toLowerCase()) {
                                             case "text":
                                             case "hidden":
                                             case "password":
@@ -1212,11 +1110,11 @@ $.holdReady(true);
                  * 設定 Selector's subitem readonly 狀態
                  *
                  * @param {boolean}
-                 *            b 預設為 true (readOnly)
+                 *          b 預設為 true (readOnly)
                  * @param {String}
-                 *            jquerySelector
+                 *          jquerySelector
                  */
-                readOnlyChilds : function(b, excludeSelector) {
+                readOnlyChilds: function(b, excludeSelector) {
                     b = (b == undefined) ? true : b;
                     $(this).find("input,select,textarea,button").not(excludeSelector || "").each(function() {
                         $(this).readOnly(b);
@@ -1227,17 +1125,17 @@ $.holdReady(true);
                  * 設定欄位Readonly 狀態
                  *
                  * @param {boolean}
-                 *            f 預設為 true (readOnly)
+                 *          f 預設為 true (readOnly)
                  */
-                readOnly : function(b) {
+                readOnly: function(b) {
                     b = (b == undefined) ? true : b;
                     var $this = $(this);
                     $this.each(function() {
-                switch (this.nodeName.toLowerCase()) {
+                        switch (this.nodeName.toLowerCase()) {
                             case 'input':
-                  switch (this.type.toLowerCase()) {
+                                switch (this.type.toLowerCase()) {
                                     case 'text':
-                                        ($(this).is('.date') || $(this).is('.date2')) && ( b ? $(this).datepicker('destroy') : $(this).datepicker());
+                                        ($(this).is('.date') || $(this).is('.date2')) && (b ? $(this).datepicker('destroy') : $(this).datepicker());
                                         this.readOnly = b;
                                         break;
                                     default:
@@ -1258,27 +1156,29 @@ $.holdReady(true);
                  * 動態新增Select 選單
                  *
                  * @param {JSON}
-                 *            options
+                 *          options
                  * @param {boolean}
-                 *            append
+                 *          append
                  */
-                setOptions : function(options, append) {
+                setOptions: function(options, append) {
                     return !this[0] ? $(this) : this[0].nodeName.toLowerCase() != 'select' ? $(this) : (function(o, a) {
                         var okey = "";
-                        if ( typeof o === "string") {
+                        if (typeof o === "string") {
                             okey = o;
-                  o = CommonAPI.loadCombos(o)[o];
+                            o = CommonAPI.loadCombos(o)[o];
                         }
-                        var to = {}, s = $(this), defalutValue = s.attr("defaultValue") || "", ops = ""/*
-                         * (s.attr("space") ==
-                         * "true" &&
-                         * (!s.find('option').size() ||
-                         * !append)) ? "<option
-                         * value=''></option>" : ""
-                         */, type = s.attr("comboType");
+                        var to = {},
+                            s = $(this),
+                            defalutValue = s.attr("defaultValue") || "",
+                            ops = ""
+                            /*
+                             * (s.attr("space") == "true" && (!s.find('option').length || !append)) ? "<option value=''></option>" : ""
+                             */
+                            ,
+                            type = s.attr("comboType");
                         if (append) {
                             o = $.extend(s.data('realOptions') || {}, o);
-                  options && (delete options[i18n.def.newData]);
+                            options && (delete options[i18n.def.newData]);
                         } else {
                             s.empty();
                         }
@@ -1304,18 +1204,18 @@ $.holdReady(true);
                         if (s.attr("addNew") == 'true') {
                             !ops.match("'>" + i18n.def.newData + "</option>") && (ops += ("<option value='" + i18n.def.newData + "'>" + i18n.def.newData + "</option>"));
                             if (!s.data('bindChanged'))
-                                s.bind('change', function() {
+                                s.on('change', function() {
                                     var value = $(this).val();
                                     if (value == i18n.def.newData) {
                                         CommonAPI.includeID({
-                                            needCancel : true,
-                                            checkType : s.attr("addCheckType") || "",
-                                            title : i18n.def.newData + (s.attr("addTitle") || i18n.def.selectOption),
-                                            subtitle : s.attr("addTitle") || i18n.def.selectOption,
-                                            buttonName : i18n.def.sure,
-                                            buttonAction : function() {
-//                                                if ($("#searchForm").valid()) {
-                                            	if ($("#searchForm").validationEngine('validate')) {
+                                            needCancel: true,
+                                            checkType: s.attr("addCheckType") || "",
+                                            title: i18n.def.newData + (s.attr("addTitle") || i18n.def.selectOption),
+                                            subtitle: s.attr("addTitle") || i18n.def.selectOption,
+                                            buttonName: i18n.def.sure,
+                                            buttonAction: function() {
+                                                // if ($("#searchForm").valid()) {
+                                                if ($("#searchForm").validationEngine('validate')) {
                                                     var options = s.data("viewOptions") || {};
                                                     options[$("#sseid").val()] = $("#sseid").val();
                                                     delete options[i18n.def.newData];
@@ -1328,11 +1228,11 @@ $.holdReady(true);
                                     }
                                 }).data('bindChanged', true);
                         }
-                return s
-                    .html(
-                        ops = ((s.attr("space") != undefined && s.attr("space") != 'false' ? ("<option value=''>" + (s.attr("space") == "true" ? i18n.def.comboSpace : s.attr("space")) + "</option>")
-                            : "") + ops)).find('option[value="' + defalutValue + '"]').prop('selected', true).end().data('realOptions', o || {}).data('viewOptions', to || {}).attr("list",
-                        okey || s.attr("list"));
+                        return s
+                            .html(
+                                ops = ((s.attr("space") != undefined && s.attr("space") != 'false' ? ("<option value=''>" + (s.attr("space") == "true" ? i18n.def.comboSpace : s.attr("space")) + "</option>") :
+                                    "") + ops)).find('option[value="' + defalutValue + '"]').prop('selected', true).end().data('realOptions', o || {}).data('viewOptions', to || {}).attr("list",
+                                okey || s.attr("list"));
                     }).call(this, options, append);
                 },
 
@@ -1340,11 +1240,11 @@ $.holdReady(true);
                  * 移除options (多個 or 單一 選項)
                  *
                  * @param {Array ||
-                 *            string} options
+                 *          string} options
                  */
-                removeOptions : function(options) {
+                removeOptions: function(options) {
                     return !this[0] ? $(this) : this[0].nodeName.toLowerCase() != 'select' ? $(this) : (function(o) {
-                        if ( typeof o === "string") {
+                        if (typeof o === "string") {
                             o = [o];
                         }
                         var $this = $(this);
@@ -1356,19 +1256,20 @@ $.holdReady(true);
                     }).call(this, options);
                 },
                 // ajax queue
-                _ajaxQueueContent : [],
-                _ajaxQueueStatus : false,
-                ajaxQueue : function(s) {
+                _ajaxQueueContent: [],
+                _ajaxQueueStatus: false,
+                ajaxQueue: function(s) {
                     if (s.constructor == Array) {
                         (function(tses) {
                             (function ajaxStart(ts) {
                                 if (ts) {
-                                    $.ajax($.extend({}, ts, {
-                                        success : function(data, textStatus, XMLHttpRequest) {
+                                    var ss = $.extend({}, ts, {
+                                        sucess: function(data, textStatus, XMLHttpRequest) {
                                             ts.success && ts.success(data, textStatus, XMLHttpRequest);
                                             ajaxStart(tses.shift());
                                         }
-                                    }));
+                                    });
+                                    $.ajax(ss).done(ss.sucess);
                                 }
                             })(tses.shift());
                         })(s);
@@ -1379,7 +1280,7 @@ $.holdReady(true);
                                 if (ts) {
                                     $._ajaxQueueStatus = true;
                                     $.ajax($.extend({}, ts, {
-                                        complete : function(xhr, status) {
+                                        complete: function(xhr, status) {
                                             ts.complete && ts.complete(xhr, status);
                                             ajaxStart($._ajaxQueueContent.shift());
                                         }
@@ -1395,17 +1296,19 @@ $.holdReady(true);
 
             $.extend(window, {
                 // 下拉選單暫存變數
-                icombos : {},
+                icombos: {},
                 // 畫面初始化method
-                loadPageInit : function(isSubPage) {
+                loadPageInit: function(isSubPage) {
+//                    console.debug('load page init');
                     var $_this = $(this);
                     $_this.find("[commonitem],input[padding]").filter("[commonitem]").each(function() {
-                        var $cthis = $(this), common = Properties.commonItem && Properties.commonItem[$cthis.attr("commonitem")];
+                        var $cthis = $(this),
+                            common = Properties.commonItem && Properties.commonItem[$cthis.attr("commonitem")];
                         if (!common)
                             return;
                         else {
                             if (common.valid) {
-                                $cthis.bind("blur.comm", common.valid);
+                                $cthis.on("blur.comm", common.valid);
                             }
                             for (var attr in common) {
                                 switch (attr) {
@@ -1431,7 +1334,7 @@ $.holdReady(true);
                         // 放入padding
                         // 功能
                     }).end().filter("input[padding]").each(function() {
-                        $(this).bind("blur.fill", function() {
+                        $(this).on("blur.fill", function() {
                             var $fthis = $(this);
                             if ($fthis.val().length) {
                                 $fthis.val(API.fillString($fthis.val(), parseInt($fthis.attr("padding"), 10), $fthis.attr("paddingright") == "true", $fthis.attr("paddinchar") || "0"));
@@ -1446,12 +1349,9 @@ $.holdReady(true);
                             window.name = "mainPage";
                         }
 
-                        $(document).bind("ajaxStop", function() {
+                        $(document).on("ajaxStop", function() {
                             // $.unblockUI();
-                        }).bind("ajaxComplete", function(event, xhr, settings) {
-                        }).bind("ajaxSuccess", function(event, xhr) {
-                        }).bind("ajaxError", function(event, xhr, ajaxOptions, thrownError) {
-                        });
+                        }).on("ajaxComplete", function(event, xhr, settings) {}).on("ajaxSuccess", function(event, xhr) {}).on("ajaxError", function(event, xhr, ajaxOptions, thrownError) {});
                     }
                     $_this.find(".tabs").tabs();
                     // 設定可輸欄位才可選日期
@@ -1462,15 +1362,16 @@ $.holdReady(true);
 
                     $_this.find("form").each(function() {
                         $(this).validationEngine({
-                            validationEventTrigger : 'blur',
-                            scroll : false
+                            validationEventTrigger: 'blur',
+                            scroll: false
                         });
                     });
-                    var combos, combokeys = [], comboaction = [];
-                    ( combos = $_this.find('select[comboKey],select[comboaction]')).each(function() {
+                    var combos, combokeys = [],
+                        comboaction = [];
+                    (combos = $_this.find('select[comboKey],select[comboaction]')).each(function() {
                         var key = null;
-                        ( key = $(this).attr("comboKey")) && combokeys.push(key);
-                        ( key = $(this).attr("comboaction")) && comboaction.push(key);
+                        (key = $(this).attr("comboKey")) && combokeys.push(key);
+                        (key = $(this).attr("comboaction")) && comboaction.push(key);
                     });
                     API.loadCombos(combokeys, comboaction);
                     combos.each(function() {
@@ -1483,14 +1384,15 @@ $.holdReady(true);
             });
             /** valid */
             $.extend(window, {
-                contCodeCheck : function(field, rules, i, options) {
+                contCodeCheck: function(field, rules, i, options) {
                     field.val((field.val() || "").toUpperCase());
                     if (!/^UCN[0-9]{11}$/.test(field.val())) {
                         return i18n.def['valid.contcCodeNbr'];
                     }
                 },
-                betweenDate : function(field, rules, i, options) {
-                    var st = $("#" + rules[i + 2]), et = $("#" + rules[i + 3]);
+                betweenDate: function(field, rules, i, options) {
+                    var st = $("#" + rules[i + 2]),
+                        et = $("#" + rules[i + 3]);
                     if (st.val() && et.val()) {
                         if (rules[i + 4] === '0' && !(et.val() >= st.val())) {
                             return i18n.def['valid.dateBetweenEq'];
@@ -1499,25 +1401,26 @@ $.holdReady(true);
                         }
                     }
                 },
-                betweenAge : function(field, rules, i, options) {
-                    var bd = $("#" + rules[i + 2]), sd = $("#" + rules[i + 3]);
+                betweenAge: function(field, rules, i, options) {
+                    var bd = $("#" + rules[i + 2]),
+                        sd = $("#" + rules[i + 3]);
                     if (bd.val() && sd.val()) {
                         if (sd.val() > bd.val()) {
                             return i18n.def['valid.age'];
                         }
                     }
                 },
-                chlNbr : function(field, rules, i, options) {
+                chlNbr: function(field, rules, i, options) {
                     if (!/^[0-9]{6}$/.test(field.val())) {
                         return i18n.def['valid.chlNbr'];
                     }
                 },
-                sceneNbr : function(field, rules, i, options) {
+                sceneNbr: function(field, rules, i, options) {
                     if (!/^[0-9]{4}$/.test(field.val())) {
                         return i18n.def['valid.sceneNbr'];
                     }
                 },
-                maxUTF8 : function(field, rules, i, options) {
+                maxUTF8: function(field, rules, i, options) {
                     var val = field.val();
                     if (val) {
                         if (val.countLength() > parseInt(rules[i + 2], 10)) {
@@ -1530,15 +1433,126 @@ $.holdReady(true);
             window.API = window.CommonAPI;
 
             // init
-            $(document).ready(function() {
+            $(function() {
                 loadPageInit.call(document);
-                $("body").on("click", "a", function(e) {
-                    if ($(this).attr('href').match("^#")) {
+                $("body").find("a").on("click", function(e) {
+                    if ($(this).attr('href') && $(this).attr('href').match("^#")) {
                         e.preventDefault();
                     }
                 });
             });
             $.holdReady(false);
         })(_jQuery);
+    }
+
+    var msie = /MSIE/.test(navigator.userAgent);
+    var msie7 = /MSIE 7.0/.test(navigator.userAgent);
+    _jQuery.ajaxSetup({
+        jsonp: null,
+        jsonpCallback: null,
+        cache: false,
+        dataType: 'json',
+        type: "POST",
+        data: {
+            _isAjax: true
+        },
+        timeout: Properties.ajaxTimeOut,
+        traditional: true
     });
+
+    require(['jquery-ui'], function(jqueryui) {
+        _jQuery.datepicker && _jQuery.datepicker.setDefaults({
+            dateFormat: 'yy-mm-dd',
+            buttonImageOnly: true,
+            showButtonPanel: true,
+            changeMonth: true,
+            changeYear: true,
+            buttonImage: baseUrl + '/images/icon_date.png',
+            showOn: 'both'
+        });
+    });
+
+    $.extend(window, {
+        router: {
+            set: function(settings) {
+                if (settings) {
+                    Backbone.history && Backbone.history.stop();
+                    var AppRouter = Backbone.Router.extend(settings);
+                    window._router = new AppRouter;
+                    window._router.on('all', function() {
+                        router.params = {};
+                        if (router._params) {
+                            router.params = router._params;
+                        }
+                        router._params = {};
+                    });
+                    Backbone.history.start();
+                }
+            },
+            to: function(path, params) {
+                router._params = params;
+                if (path && window._router)
+                    window._router.navigate(path, {
+                        trigger: true
+                    });
+                else
+                    throw "no router";
+            },
+            params: {}
+        },
+
+        url: function(path) {
+            return Properties.contextName + path;
+        }
+    });
+    // i18n plugin
+    (function($) {
+        window['i18n'] = {
+            keys: [],
+            load: function(f, st) {
+                return $.ajax({
+                        url: url("i18njs"),
+                        async: st && st.async || true,
+                        cache: false,
+                        dataType: 'json',
+                        data: {
+                            f: f,
+                            _: new Date().getTime()
+                        }
+                    }).done(function(res) {
+                      // FIXME by sk
+//                      console.debug('i18n.set('+ f + ', res);');
+                        i18n.set(f.match("\\w+$")[0], res);
+                        // i18n.set(f, res);
+                    });
+            },
+            set: function(key, jsonValue) {
+                $.extend(window['i18n'][key] = (function(value) {
+                    return function(key, values) {
+                        var msg = value[key];
+                        msg && values && $.each(values, function(i, v) {
+                            msg = msg.replace(new RegExp("\\{" + i + "\\}", "g"), v);
+                        });
+                        return msg;
+                    };
+                })(jsonValue), jsonValue);
+                i18n.keys.push(key);
+            },
+
+            setup: function(settings) {
+                s = $.extend(true, s, settings);
+            }
+        };
+        // load default i18n Data
+        i18n.set('def', {"sure": "確定","cancel": "取消","sessionTimeout": "您的登入己經過期\n請重新登入","confirmTitle": "提示","close": "關閉","timeout": "伺服器連線逾時，請稍後再試。","connectError": "伺服器連線失敗，請稍後再試，或檢查網路連線是否正常。","loading": "遠端系統《連線中》，請稍待","fileUploading": "檔案讀取中請耐心等候…","fileUploadSuccess": "檔案上傳完成!","fileSelect": "請先選擇檔案","newData": "新增","fileSelError": "請確認檔案類型,副檔名為","fileUploadError": "檔案讀取失敗，請重新上傳","selectOption": "選項","comboSpace": ""});
+    })(_jQuery);
+
+    require(['blockui'], function(blockui) {
+        $.blockUI.showBG = true;
+        $.startBlockUI && $.startBlockUI();
+    });
+    // 非同步載入伺服器上的 i18n
+    window.i18n.load("def", {async: true});
+    // 所有動作改以載入 default i18n 完成後再動作
+    commonjsInit();
 })(jQuery, window);

@@ -12,6 +12,7 @@
 package com.iisigroup.cap.component.impl;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 import javax.servlet.ServletResponse;
 
+import com.google.gson.JsonArray;
 import com.iisigroup.cap.component.GridResult;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.constants.GridEnum;
@@ -29,9 +31,7 @@ import com.iisigroup.cap.formatter.BeanFormatter;
 import com.iisigroup.cap.formatter.Formatter;
 import com.iisigroup.cap.formatter.impl.ADDateFormatter;
 import com.iisigroup.cap.formatter.impl.ADDateTimeFormatter;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.iisigroup.cap.utils.GsonUtil;
 
 /**
  * <pre>
@@ -58,7 +58,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
     protected Map<String, Formatter> dataReformatter;
 
     public MapGridResult() {
-        resultMap = new JSONObject();
+        resultMap = new HashMap<String, Object>();
     }
 
     public MapGridResult(List<Map<String, Object>> rowData, int records) {
@@ -66,7 +66,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
     }
 
     public MapGridResult(List<Map<String, Object>> rowData, int records, Map<String, Formatter> dataReformatter) {
-        resultMap = new JSONObject();
+        resultMap = new HashMap<String, Object>();
         setRowData(rowData);
         setRecords(records);
         setDataReformatter(dataReformatter);
@@ -165,7 +165,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
     @Override
     public String getResult() {
         resultMap.put(GridEnum.PAGEROWS.getCode(), getRowDataToJSON());
-        return resultMap.toString();
+        return GsonUtil.mapToJson(resultMap);
     }
 
     @Override
@@ -178,7 +178,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
 
     @Override
     public void add(Result result) {
-        JSONObject json = JSONObject.fromObject(result);
+        Map<String, Object> json = GsonUtil.jsonToMap(result.getResult());
         resultMap.putAll(json);
     }
 
@@ -198,13 +198,13 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
         return this.rowData;
     }
 
-    private JSONArray getRowDataToJSON() {
-        JSONArray rows = new JSONArray();
-        Map<String, Object> row = new HashMap<String, Object>();
+    private List<Map<String, Object>> getRowDataToJSON() {
+        List<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
         if (rowData != null && !rowData.isEmpty()) {
             for (Map<String, Object> data : rowData) {
+            	Map<String, Object> row = new HashMap<String, Object>();
                 try {
-                    row.put(GridEnum.CELL.getCode(), dataToJsonString(data));
+                    row.put(GridEnum.CELL.getCode(), dataToJsonObject(data));
                 } catch (CapException e) {
                     logger.error(e.getMessage(), getClass());
                 }
@@ -217,8 +217,43 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
     /** column split regularre char **/
     private static String SPLIT = "\\|";
 
+    protected Map<String, Object> dataToJsonObject(Map<String, Object> data) {
+        Map<String, Object> row = new HashMap<String, Object>();
+        for (String str : columns) {
+            Object val = null;
+            try {
+                try {
+                    String[] s = str.split(SPLIT);
+                    val = s.length == 1 ? data.get(s[0]) : data.get(s[1]);
+                    str = s[0];
+                } catch (Exception e) {
+                    val = "";
+                }
+                if (dataReformatter != null && dataReformatter.containsKey(str)) {
+                    Formatter callback = dataReformatter.get(str);
+                    if (callback instanceof BeanFormatter) {
+                        val = callback.reformat(data);
+                    } else {
+                        val = callback.reformat(val);
+                    }
+                } else if (val instanceof Timestamp) {
+                    val = new ADDateTimeFormatter().reformat(val);
+                } else if (val instanceof Date || val instanceof Calendar) {
+                    val = new ADDateFormatter().reformat(val);
+                }
+                // row.add(String.valueOf(val));
+            } catch (Exception e) {
+                // 2013/5/21,rodeschen,修改format錯誤放入原值
+                // val = "";
+                // new CapException(e.getMessage(), e, getClass());
+            }
+            row.put(str, val);
+        }
+        return row;
+    }
+
     protected String dataToJsonString(Map<String, Object> data) {
-        JSONArray row = new JSONArray();
+        JsonArray row = new JsonArray();
         for (String str : columns) {
             Object val = null;
             try {

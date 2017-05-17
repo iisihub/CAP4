@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     $("#upload").click(function() {
       $.capFileUpload({
         url : url("samplehandler/upload"),

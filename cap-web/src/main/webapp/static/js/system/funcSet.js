@@ -1,5 +1,5 @@
 pageInit(function() {
-  $(document).ready(function() {
+  $(function() {
     var mform = $("#mform");
     var grid = $("#gridview").jqGrid({
       url : url('functionsethandler/query'),
@@ -23,7 +23,7 @@ pageInit(function() {
         sortable : true
       }, {
         header : i18n['funcSet']['funcdesc'],//"備註",
-        name : 'desc',
+        name : 'description',
         align : "left",
         width : 200,
         sortable : true

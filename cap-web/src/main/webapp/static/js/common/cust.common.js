@@ -40,9 +40,8 @@ var menu = {
 }
 
 // init
-$(document).ready(
-    function() {
-      logDebug("cust common ready init");
+$(function() {
+//      console.debug("cust common ready init");
       var navTop = $("nav.top"), navSub = $("nav.sub ol");
       function render(res) {
         var _menu = res.child, ul = $("nav.top ul.navmenu");
@@ -58,7 +57,7 @@ $(document).ready(
           if ($this.attr("url")) {
             router.to($(this).attr("url"));
           } else {
-            if ($this.siblings("ul").size()) {
+            if ($this.siblings("ul").length) {
               var sel = $this.siblings("ul");
               sel.is(":visible") ? sel.hide().parent("li").children("a").removeClass('clicked').children("span").removeClass('icon-5').addClass('icon-1') : sel.show().parent("li").children("a")
                   .addClass('clicked').children("span").removeClass('icon-1').addClass('icon-5');
@@ -93,7 +92,7 @@ $(document).ready(
           loadsub : function(folder) {
             var tlink = navTop.find("a").removeClass("select").filter("a[url=" + folder + "]").addClass("select");
             var smenu = tlink.data("smenu");
-            if (navSub.find('a').size()) {
+            if (navSub.find('a').length) {
               navSub.animate({
                 opacity : 0.01
               }, 200, _f);
@@ -158,7 +157,9 @@ $(document).ready(
               navSub.find('.selected').parents(".menu_sub").siblings("a").click();
             }
 
-            API.loadPage(folder + '/' + page);
+            // FIXME by sk
+//            console.debug('API : '+ API);
+            API && API.loadPage(folder + '/' + page);
 
             function filter(topSmenu, target) {
               for ( var m in topSmenu) {
@@ -169,7 +170,6 @@ $(document).ready(
                   if (filter(topSmenu[m].child, target)) {
                     return true;
                   }
-                  ;
                 }
               }
               return false;
@@ -201,22 +201,25 @@ $(document).ready(
         }
         return false;
       });
-      $.datepicker._gotoTodayOriginal = $.datepicker._gotoToday;
-      $.datepicker._gotoToday = function(id) {
-        // now, call the original handler
-        $.datepicker._gotoTodayOriginal.apply(this, [ id ]);
-        // invoke selectDate to select the current date and close datepicker.
-        var target = $(id), inst = this._getInst(target[0]);
-        var dateStr = (dateStr != null ? dateStr : this._formatDate(inst));
-        inst.input.val(dateStr);
-      };
-      $.datepicker.setDefaults({
-        onChangeMonthYear : function(year, month, inst) {
-          var ym = API.getToday().substr(0, 7), changeYm = year + "-" + (month < 10 ? "0" : "") + month;
-          if (ym !== changeYm) {
-            $(this).datepicker('setDate', changeYm + '-1');
+
+      require(['jquery-ui'], function(jqueryui) {
+        $.datepicker._gotoTodayOriginal = $.datepicker._gotoToday;
+        $.datepicker._gotoToday = function(id) {
+          // now, call the original handler
+          $.datepicker._gotoTodayOriginal.apply(this, [ id ]);
+          // invoke selectDate to select the current date and close datepicker.
+          var target = $(id), inst = this._getInst(target[0]);
+          var dateStr = (dateStr != null ? dateStr : this._formatDate(inst));
+          inst.input.val(dateStr);
+        };
+        $.datepicker.setDefaults && $.datepicker.setDefaults({
+          onChangeMonthYear : function(year, month, inst) {
+            var ym = API.getToday().substr(0, 7), changeYm = year + "-" + (month < 10 ? "0" : "") + month;
+            if (ym !== changeYm) {
+              $(this).datepicker('setDate', changeYm + '-1');
+            }
           }
-        }
+        });
       });
 
       /* timeout controls */
@@ -224,12 +227,15 @@ $(document).ready(
       var idleDuration = 10;
       try {
         idleDuration = prop && prop[Properties.timeOut];
+        if (idleDuration == '' || parseInt(idleDuration) < 1) {
+          idleDuration = 10;
+        }
       } catch (e) {
         logDebug("Can't find prop");
       }
 
       // 計數器減差(這裡是分鐘)
-      var gapTime = 1;
+      var gapTime = 0.9;
       if (Properties.remindTimeout) {
         // #Cola235 增加切換頁reset timer
         // 計數器(這裡是毫秒)
@@ -237,50 +243,63 @@ $(document).ready(
         logDebug("set timer time::" + timecount);
         var t1merConfirm = [];
         var timer2 = null;
-        // TIMER FUNC1
+        var pathname = window.location.pathname;
+        //記錄各分頁自己的pageNo(session TOCM使用)
+        window.CCPAGENO = "";
         var cccheckMethod = function(dxx) {
           $.ajax({
-            url : url('checktimeouthandler/check'),
-            asyn : true,
+            url : url('checktimeouthandler/checkTO'),
+            async : true,
             data : {
-              isContinues : dxx.isContinues
+              isCntnu : dxx.isCntnu,
+              CCPAGENO : window.CCPAGENO
             },
             success : function(d) {
+              //有errorPage,表示要導頁處理
               if (d.errorPage) {
                 window.setCloseConfirm(false);
                 window.location = d.errorPage;
+              } else if (d.SHOW_REMIND === 'true') {
+                if (!/(timeout)$|(error)$|(cancelPage)$/i.test(pathname)) {
+                  timer2 = $.timer(gapTime * 60 * 1000, function() {
+                    //超過時間沒給確認動作,就當做取消交易
+                    cccheckMethod({
+                      isCntnu : false
+                    });
+                  }, false);
+                  API.showConfirmMessage("您已閒置一段時間，請問是否繼續作業?", function(data) {
+                    if (data) {
+                      timer2.stop();
+                      cccheckMethod({
+                        isCntnu : true
+                      });
+                      //按了之後,要重新倒數
+                      takeTimerReset();
+                    } else {
+                      timer2.stop();
+                      cccheckMethod({
+                        isCntnu : false
+                      });
+                    }
+                  });
+                }
               }
             }
           });
         };
-        // TIMER FUNC2
+
+        if (!/(timeout)$|(login)$|(error)$|(cancelPage)$/i.test(pathname)) {
+          window.timer = $.timer(timecount, function() {
+            //每xx分鐘上server問是否要提示繼續交易
+            cccheckMethod({
+              CCPAGENO : pathname
+            });
+          }, false);
+        }
         var takeTimerReset = function() {
           timer.reset(timecount);
         };
-        window.timer = $.timer(timecount, function() {
-          var pathname = window.location.pathname;
-          if (!/(timeout)$|(error)$/i.test(pathname)) {
-            if (t1merConfirm != undefined && t1merConfirm[0] && t1merConfirm[0].hidden == false) {
-              // DO NOTTHING
-            } else {
-              timer2 = $.timer(gapTime * 60 * 1000, function() {
-                // 超過時間沒給確認動作,就當做取消交易
-                cccheckMethod({
-                  isContinues : false
-                });
-              }, false);
-              t1merConfirm = CommonAPI.showConfirmMessage('您已閒置，請問是否繼續申請作業?', function(data) {
-                timer2.stop();
-                cccheckMethod({
-                  isContinues : data
-                });
-                // 按了之後,要重新倒數
-                t1merConfirm = [];
-                takeTimerReset();
-              });
-            }
-          }
-        }, false);
+
         // IDLE留著，當user沒看到confirm pop，時間到了idle還是要導倒timeout?
         ifvisible && ifvisible.setIdleDuration(idleDuration * 60);// minute*60
         // logDebug("idleDuration is ::: " + idleDuration);
@@ -289,12 +308,11 @@ $(document).ready(
           $.ajax({
             url : url('checktimeouthandler/check'),
             asyn : true,
-            data : {},
-            success : function(d) {
-              if (d.errorPage) {
-                window.setCloseConfirm(false);
-                window.location = d.errorPage;
-              }
+            data : {}
+          }).done(function(d) {
+            if (d.errorPage) {
+              window.setCloseConfirm(false);
+              window.location = d.errorPage;
             }
           });
         });
@@ -302,9 +320,8 @@ $(document).ready(
           // $(".ui-dialog-content").dialog("close");
         });
       }
-      ;
 
-      window.i18n.load("messages").done(function() {
+      window.i18n.load("messages", {async: true}).done(function() {
         $.extend(Properties, {
           myCustMessages : {
             custom_error_messages : {

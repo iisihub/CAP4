@@ -13,7 +13,7 @@ create table DEF_FUNC (
    SEQUENCE          DECIMAL(5,0),
    NAME              VARCHAR(162),
    PATH              VARCHAR(40),
-   DESC              VARCHAR(108),
+   DESCRIPTION       VARCHAR(108),
    STATUS            CHAR(1)                not null default '1',
    UPDATER           CHAR(6),
    UPDATETIME        TIMESTAMP              default CURRENT TIMESTAMP,

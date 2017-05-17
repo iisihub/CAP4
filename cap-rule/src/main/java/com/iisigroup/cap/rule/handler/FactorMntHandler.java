@@ -14,6 +14,7 @@ package com.iisigroup.cap.rule.handler;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -38,8 +39,7 @@ import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapBeanUtil;
 import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.cap.utils.CapString;
-
-import net.sf.json.JSONObject;
+import com.iisigroup.cap.utils.GsonUtil;
 
 /**
  * <pre>
@@ -129,17 +129,17 @@ public class FactorMntHandler extends MFormHandler {
         if (sary != null) {
             List<DivFtDtl> ftDtls = new ArrayList<DivFtDtl>();
             for (int i = 0; i < sary.length; i++) {
-                JSONObject gridData = JSONObject.fromObject(sary[i]);
+                Map<String, Object> gridData = GsonUtil.jsonToMap(sary[i]);
                 DivFtDtl ftDtl = new DivFtDtl();
                 CapBeanUtil.map2Bean(gridData, ftDtl);
                 ftDtl.setFactorNo(ftItm.getFactorNo());
-                if (!CapString.isEmpty(gridData.optString("rangeNo"))) {
-                    ftDtl.setRangeNo(gridData.optString("rangeNo"));
+                if (!CapString.isEmpty(CapString.trimNull(gridData.get("rangeNo")))) {
+                    ftDtl.setRangeNo(CapString.trimNull(gridData.get("rangeNo")));
                 } else {
                     ftDtl.setRangeNo(CapString.fillString(String.valueOf(i), 5, true, '0'));
                 }
-                if (!CapString.isEmpty(gridData.optString("oid"))) {
-                    ftDtl.setOid(gridData.optString("oid"));
+                if (!CapString.isEmpty(CapString.trimNull(gridData.get("oid")))) {
+                    ftDtl.setOid(CapString.trimNull(gridData.get("oid")));
                 }
                 ftDtl.setRangeSor(new BigDecimal(i));
                 ftDtl.setDivFtItm(ftItm);

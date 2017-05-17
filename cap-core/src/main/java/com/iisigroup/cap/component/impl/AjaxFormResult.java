@@ -15,6 +15,8 @@ package com.iisigroup.cap.component.impl;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.iisigroup.cap.component.Result;
-
-import net.sf.json.JSONObject;
+import com.iisigroup.cap.utils.GsonUtil;
 
 /**
  * <pre>
@@ -49,7 +50,7 @@ public class AjaxFormResult implements Result {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected JSONObject resultMap;
+    protected Map<String, Object> resultMap;
 
     protected String contentType;
     protected String encoding;
@@ -58,7 +59,15 @@ public class AjaxFormResult implements Result {
      * 建構子
      */
     public AjaxFormResult() {
-        resultMap = new JSONObject();
+        resultMap = new HashMap<String, Object>();
+    }
+
+    public AjaxFormResult(boolean sort) {
+        if (sort) {
+            resultMap = new LinkedHashMap<String, Object>();
+        } else {
+            resultMap = new HashMap<String, Object>();
+        }
     }
 
     /**
@@ -68,7 +77,7 @@ public class AjaxFormResult implements Result {
      *            Object
      */
     public AjaxFormResult(Object obj) {
-        resultMap = JSONObject.fromObject(obj);
+        resultMap = GsonUtil.objToMap(obj);
     }
 
     /**
@@ -217,6 +226,10 @@ public class AjaxFormResult implements Result {
         return resultMap.isEmpty();
     }
 
+    public Map<String, Object> getResultMap() {
+        return resultMap;
+    }
+
     /**
      * 移除欄位
      * 
@@ -249,7 +262,7 @@ public class AjaxFormResult implements Result {
     public void setResultMap(Map<String, AjaxFormResult> m) {
         for (String key : m.keySet()) {
             AjaxFormResult form = m.get(key);
-            resultMap.put(key, form.toString());
+            resultMap.put(key, form.getResultMap());
         }
     }
 
@@ -266,7 +279,7 @@ public class AjaxFormResult implements Result {
 
     @Override
     public String getResult() {
-        return resultMap.toString();
+        return GsonUtil.mapToJson(resultMap);
     }
 
     @Override
@@ -277,8 +290,8 @@ public class AjaxFormResult implements Result {
     @Override
     public void add(Result result) {
         if (result != null) {
-            JSONObject json = JSONObject.fromObject(result.getResult());
-            resultMap.putAll(json);
+            Map<String, ? extends Object> map = GsonUtil.jsonToMap(result.getResult());
+            resultMap.putAll(map);
         }
     }
 

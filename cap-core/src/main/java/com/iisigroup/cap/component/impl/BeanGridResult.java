@@ -11,21 +11,21 @@
 
 package com.iisigroup.cap.component.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletResponse;
 
+import com.google.gson.JsonArray;
 import com.iisigroup.cap.component.GridResult;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.constants.GridEnum;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.formatter.Formatter;
 import com.iisigroup.cap.model.GenericBean;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.iisigroup.cap.utils.GsonUtil;
 
 /**
  * <pre>
@@ -54,7 +54,7 @@ public class BeanGridResult extends AjaxFormResult implements GridResult<BeanGri
     protected Map<String, Formatter> dataReformatter;
 
     public BeanGridResult() {
-        resultMap = new JSONObject();
+        resultMap = new HashMap<String, Object>();
     }
 
     public BeanGridResult(List<? extends GenericBean> rowData, int records) {
@@ -62,7 +62,7 @@ public class BeanGridResult extends AjaxFormResult implements GridResult<BeanGri
     }
 
     public BeanGridResult(List<? extends GenericBean> rowData, int records, Map<String, Formatter> dataReformatter) {
-        resultMap = new JSONObject();
+        resultMap = new HashMap<String, Object>();
         setRowData(rowData);
         setRecords(records);
         setDataReformatter(dataReformatter);
@@ -160,8 +160,8 @@ public class BeanGridResult extends AjaxFormResult implements GridResult<BeanGri
 
     @Override
     public String getResult() {
-        resultMap.put(GridEnum.PAGEROWS.getCode(), getRowDataToJSON());
-        return resultMap.toString();
+        resultMap.put(GridEnum.PAGEROWS.getCode(), getRowDataToList());
+        return GsonUtil.mapToJson(resultMap);
     }
 
     @Override
@@ -174,8 +174,8 @@ public class BeanGridResult extends AjaxFormResult implements GridResult<BeanGri
 
     @Override
     public void add(Result result) {
-        JSONObject json = JSONObject.fromObject(result);
-        resultMap.putAll(json);
+        Map<String, Object> map = GsonUtil.jsonToMap(result.getResult());
+        resultMap.putAll(map);
     }
 
     public BeanGridResult addReformatData(String key, Formatter formatter) {
@@ -194,13 +194,29 @@ public class BeanGridResult extends AjaxFormResult implements GridResult<BeanGri
         return this.rowData;
     }
 
-    private JSONArray getRowDataToJSON() {
-        JSONArray rows = new JSONArray();
+    private JsonArray getRowDataToJSON() {
+        JsonArray rows = new JsonArray();
         Map<String, Object> row = new HashMap<String, Object>();
         if (rowData != null && !rowData.isEmpty()) {
             for (GenericBean data : rowData) {
                 try {
                     row.put(GridEnum.CELL.getCode(), data.toJSONString(this.columns, dataReformatter));
+                } catch (CapException e) {
+                    logger.error(e.getMessage(), e);
+                }
+                rows.add(GsonUtil.mapToJson(row));
+            }
+        }
+        return rows;
+    }
+
+    private List<Map<String, Object>> getRowDataToList() {
+        List<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
+        if (rowData != null && !rowData.isEmpty()) {
+            for (GenericBean data : rowData) {
+            	Map<String, Object> row = new HashMap<String, Object>();
+                try {
+                    row.put(GridEnum.CELL.getCode(), data.toJSONObject(this.columns, dataReformatter));
                 } catch (CapException e) {
                     logger.error(e.getMessage(), e);
                 }

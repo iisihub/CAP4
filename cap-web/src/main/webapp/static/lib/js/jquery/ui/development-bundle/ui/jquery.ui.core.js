@@ -262,7 +262,7 @@ $.fn.extend({
 	},
 
 	enableSelection: function() {
-		return this.unbind( ".ui-disableSelection" );
+		return this.off( ".ui-disableSelection" );
 	}
 });
 

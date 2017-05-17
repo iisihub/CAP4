@@ -31,7 +31,7 @@ public class FunctionRowMapper implements RowMapper<DefaultFunction> {
         item.setParent(rs.getInt("PARENT"));
         item.setName(rs.getString("NAME"));
         item.setPath(rs.getString("PATH"));
-        item.setDesc(rs.getString("DESC"));
+        item.setDescription(rs.getString("DESCRIPTION"));
         item.setStatus(rs.getString("STATUS"));
         item.setUpdater(rs.getString("UPDATER"));
         item.setUpdateTime(rs.getTimestamp("UPDATETIME"));

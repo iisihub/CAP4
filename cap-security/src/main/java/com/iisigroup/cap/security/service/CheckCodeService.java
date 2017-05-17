@@ -29,7 +29,7 @@ public interface CheckCodeService {
 
     String getErrorMessage();
 
-    <T> T createCheckCode();
+    <T> T createCheckCode(boolean isImage);
 
     CheckStatus valid(String answer);
 

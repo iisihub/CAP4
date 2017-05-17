@@ -28,13 +28,12 @@ import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.impl.CapSpringMVCRequest;
 import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapString;
+import com.iisigroup.cap.utils.GsonUtil;
 import com.opensymphony.module.sitemesh.Config;
 import com.opensymphony.module.sitemesh.Decorator;
 import com.opensymphony.module.sitemesh.DecoratorMapper;
 import com.opensymphony.module.sitemesh.Page;
 import com.opensymphony.module.sitemesh.mapper.AbstractDecoratorMapper;
-
-import net.sf.json.JSONSerializer;
 
 /**
  * <pre>
@@ -71,7 +70,6 @@ public class CapRequestJSONMapper extends AbstractDecoratorMapper {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Decorator getDecorator(HttpServletRequest request, Page page) {
         if ((decoratorFile == null || decoratorFile.contains(page.getProperties().get("meta.decorator")))
@@ -88,7 +86,7 @@ public class CapRequestJSONMapper extends AbstractDecoratorMapper {
                 }
             }
             StringBuffer str = new StringBuffer("<script type=\"text/javascript\">var reqJSON=");
-            str.append(JSONSerializer.toJSON(hm).toString()).append(";</script>");
+            str.append(GsonUtil.objToJson(hm)).append(";</script>");
             page.addProperty(PROP_KEY, str.toString());
         }
         return super.getDecorator(request, page);

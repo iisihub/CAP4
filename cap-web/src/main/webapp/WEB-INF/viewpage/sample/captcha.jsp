@@ -12,18 +12,33 @@
 </head>
 <body>
     <script>
-          loadScript('js/sample/captcha');
-        </script>
-    <h1>Captcha Demo Chat</h1>
+		loadScript('js/sample/captcha');
+	</script>
+
+
+
+
+    <h1>Audio Captcha Demo</h1>
+
     <br />
-    <form onsubmit="return false;">
-        <input id="captcha" name="captcha" class="captcha" type="text" />
+
+
+
+    <form method="post" autocomplete="off" onsubmit="return false;">
+        <input id="audioCaptcha" name="audioCaptcha" class="audioCaptcha"/>
+
+        <br/>
+
+        <%-- <input id="captcha" name="captcha" class="captcha" type="text" /> --%>
         <button id="submit">
             <spring:message code="captcha.001">
                 <!-- 驗証 -->
             </spring:message>
         </button>
     </form>
+
+
+
 </body>
 </body>
 </html>

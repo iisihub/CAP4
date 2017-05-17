@@ -57,9 +57,9 @@ import freemarker.template.Template;
 public abstract class AbstractReportPdfService implements ReportService {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
-    public final static String FIL_URL_PREFIX = "file:///";
-    public final static String REPORT_SUFFIX = ".ftl";
-    private final static String DEFAULT_ENCORDING = "utf-8";
+    protected final static String FIL_URL_PREFIX = "file:///";
+    protected final static String REPORT_SUFFIX = ".ftl";
+    protected final static String DEFAULT_ENCORDING = "utf-8";
     @Resource
     private FreeMarkerConfigurer fmConfg;
     @Resource
@@ -70,6 +70,12 @@ public abstract class AbstractReportPdfService implements ReportService {
     @Resource
     private ServletContext servletContext;
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.cap.report.ReportService#generateReport(com.iisigroup.cap.component.Request)
+     */
+    @Override
     public ByteArrayOutputStream generateReport(Request request) throws CapException {
         ByteArrayOutputStream templateOut = null;
         ByteArrayOutputStream out = null;
@@ -77,7 +83,7 @@ public abstract class AbstractReportPdfService implements ReportService {
         OutputStreamWriter wr = null;
         try {
             Template t = getFmConfg().getConfiguration().getTemplate(getReportDefinition() + REPORT_SUFFIX);
-            Map<String, Object> reportData = excute(request);
+            Map<String, Object> reportData = execute(request);
 
             templateOut = new ByteArrayOutputStream();
             wr = new OutputStreamWriter(templateOut, getSysConfig().getProperty(ReportParamEnum.defaultEncoding.toString(), DEFAULT_ENCORDING));
@@ -170,6 +176,11 @@ public abstract class AbstractReportPdfService implements ReportService {
         return getFontFactory().getFontPath(getSysConfig().getProperty(ReportParamEnum.defaultFont.toString(), "MSJH.TTF"), "");
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.cap.report.ReportService#isWriteToFile()
+     */
     @Override
     public boolean isWriteToFile() {
         return false; // PDF預設不寫檔

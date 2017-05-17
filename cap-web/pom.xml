@@ -3,7 +3,7 @@
     <parent>
         <artifactId>cap</artifactId>
         <groupId>com.iisigroup.cap</groupId>
-        <version>4.0.0b</version>
+        <version>4.0.1</version>
     </parent>
     <artifactId>cap-web</artifactId>
     <packaging>war</packaging>
@@ -27,6 +27,12 @@
         <dependency>
             <groupId>com.iisigroup.cap</groupId>
             <artifactId>cap-batch</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.freemarker</groupId>
+                    <artifactId>freemarker</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.iisigroup.cap</groupId>
@@ -48,10 +54,10 @@
             <groupId>com.iisigroup.cap</groupId>
             <artifactId>cap-report</artifactId>
         </dependency>
-       <!--  <dependency>
+        <dependency>
             <groupId>com.iisigroup.cap</groupId>
             <artifactId>cap-rule</artifactId>
-        </dependency> -->
+        </dependency>
         <dependency>
             <groupId>org.tuckey</groupId>
             <artifactId>urlrewritefilter</artifactId>
@@ -126,7 +132,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <configuration>
                     <webAppConfig>
-                        <extraClasspath>target/cap-web-4.0.0b/WEB-INF/classes</extraClasspath>
+                        <extraClasspath>target/cap-web-4.0.1/WEB-INF/classes</extraClasspath>
                     </webAppConfig>
                     <contextPath>/cap-web</contextPath>
                     <stopKey>foo</stopKey>
@@ -181,7 +187,7 @@
                             <!-- Window -->
                             <!-- <executable>C:\Program Files (x86)\nodejs\node</executable> -->
                             <arguments>
-                                <argument>${basedir}/src/main/webapp/static/requirejs/2.1.2/r.js</argument>
+                                <argument>${basedir}/src/main/webapp/static/requirejs/2.3.2/r.js</argument>
                                 <argument>-o</argument>
                                 <argument>${basedir}/src/main/webapp/static/build.js</argument>
                                 <argument>name=main</argument>

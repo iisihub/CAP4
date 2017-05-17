@@ -111,8 +111,8 @@ jQuery.tableDnD = {
         // Now we need to capture the mouse up and mouse move event
         // We can use bind so that we don't interfere with other event handlers
         jQuery(document)
-            .bind('mousemove', jQuery.tableDnD.mousemove)
-            .bind('mouseup', jQuery.tableDnD.mouseup);
+            .on('mousemove', jQuery.tableDnD.mousemove)
+            .on('mouseup', jQuery.tableDnD.mouseup);
 
         // Don't break the chain
         return this;

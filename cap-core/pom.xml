@@ -3,7 +3,7 @@
     <parent>
         <artifactId>cap</artifactId>
         <groupId>com.iisigroup.cap</groupId>
-        <version>4.0.0b</version>
+        <version>4.0.1</version>
     </parent>
     <artifactId>cap-core</artifactId>
     <dependencies>
@@ -78,17 +78,32 @@
             <groupId>jaxen</groupId>
             <artifactId>jaxen</artifactId>
             <version>1.1.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>xom</groupId>
+                    <artifactId>xom</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>net.sf.json-lib</groupId>
-            <artifactId>json-lib</artifactId>
-            <version>2.4</version>
-            <classifier>jdk15</classifier>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.8.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.7</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
-            <version>2.3.24-incubating</version>
         </dependency>
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -100,6 +115,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <version>1.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
