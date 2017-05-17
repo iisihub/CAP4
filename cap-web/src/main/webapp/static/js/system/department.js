@@ -14,9 +14,6 @@ pageInit(function() {
         name : 'code',
         align : "left",
         width : 10,
-        sortable : true,
-        formatter : 'click',
-        onclick : doEdit,
         sortable : true
       }, {
         header : i18n['department']['depname'],//"單位名稱",
