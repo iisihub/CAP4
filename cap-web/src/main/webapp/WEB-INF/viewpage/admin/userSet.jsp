@@ -11,7 +11,7 @@
           loadScript('js/admin/userSet');
         </script>
     <div>
-        <div class="btns" style="text-align: right">
+        <div class="btns">
             <button id="filter" type="button" class="btn1">
                 <spring:message code="btn.filter" />
             </button>

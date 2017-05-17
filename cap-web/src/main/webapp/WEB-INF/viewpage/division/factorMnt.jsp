@@ -14,7 +14,7 @@
         </script>
     <div>
         <form id="tabForm" name="tabForm">
-            <div class="btns" colspan="4" style="text-align: right">
+            <div class="btns">
                 <button id="qry" type="button" class="btn1">
                     <spring:message code="btn.query">
                         <!--查詢-->
