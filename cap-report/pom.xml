@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.iisigroup.cap</groupId>
         <artifactId>cap</artifactId>
-        <version>4.0.0b</version>
+        <version>4.0.1</version>
     </parent>
     <artifactId>cap-report</artifactId>
     <dependencies>
