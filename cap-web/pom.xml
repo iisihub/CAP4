@@ -221,7 +221,7 @@
                             <configFile> ${basedir}/src/main/webapp/static/build.js
                             </configFile>
                             <!-- optional path to optimizer executable -->
-                            <optimizerFile> ${basedir}/src/main/webapp/static/requirejs/2.1.2/r.js
+                            <optimizerFile> ${basedir}/src/main/webapp/static/requirejs/2.3.2/r.js
                             </optimizerFile>
                             <!-- optional parameters to optimizer executable -->
                             <optimizerParameters>
