@@ -22,7 +22,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.google.gson.JsonArray;
 import com.iisigroup.cap.annotation.HandlerType;
 import com.iisigroup.cap.annotation.HandlerType.HandlerTypeEnum;
 import com.iisigroup.cap.auth.model.DefaultFunction;
@@ -149,11 +148,13 @@ public class FunctionSetHandler extends MFormHandler {
         List<DefaultFunction> functions = functionSetService.findFunctionBySysTypeAndLevel(sysType, level);
 
         if (!CollectionUtils.isEmpty(functions)) {
-            JsonArray funcArray = new JsonArray();
+            List<Map<String, Object>> funcArray = new ArrayList<Map<String, Object>>();
             for (DefaultFunction func : functions) {
-                funcArray.add(GsonUtil.mapToJson(func.toJSONObject(CapEntityUtil.getColumnName(func), null)));
+                Map<String, Object> json = func.toJSONObject(CapEntityUtil.getColumnName(func), null);
+                json.remove("SPLIT");
+                funcArray.add(json);
             }
-            result.set("functions", funcArray.toString());
+            result.set("functions", funcArray);
         }
 
         return result;

@@ -103,7 +103,7 @@ public class AjaxFormResult implements Result {
      *            List<String>
      * @return this FormResult
      */
-    public AjaxFormResult set(String key, List<String> val) {
+    public AjaxFormResult set(String key, List<? extends Object> val) {
         resultMap.put(key, val);
         return this;
     }
