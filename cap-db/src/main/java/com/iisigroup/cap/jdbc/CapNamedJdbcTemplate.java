@@ -216,24 +216,6 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
     }
 
     /**
-     * 查詢，查詢結果為JavaBean
-     * 
-     * @param <T>
-     *            JavaBean
-     * @param sqlId
-     *            sqlId
-     * @param rm
-     *            RowMapper
-     * @param args
-     *            傳入參數
-     * @return T
-     * @throws GWException
-     */
-    public <T> T queryForObject(String sqlId, Map<String, ?> args, RowMapper<T> rm) {
-        return this.queryForObject(sqlId, null, args, rm);
-    }
-
-    /**
      * 查詢，查詢結果為Map<key,value>
      * 
      * @param sqlId
@@ -316,6 +298,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public int batchUpdate(String sqlId, Map<String, Integer> sqlTypes, final List<Map<String, Object>> batchValues) {
         long cur = System.currentTimeMillis();
         try {

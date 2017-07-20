@@ -17,10 +17,8 @@ import com.iisigroup.cap.db.constants.SearchMode;
 import com.iisigroup.cap.db.dao.SearchSetting;
 import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
 import com.iisigroup.cap.db.model.Page;
-import com.iisigroup.cap.jdbc.support.CapSqlStatement;
 import com.iisigroup.cap.security.dao.SecUserDao;
 import com.iisigroup.cap.security.model.User;
-import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapDate;
 
 /**
@@ -104,8 +102,7 @@ public class UserDaoImpl extends GenericDaoImpl<DefaultUser> implements SecUserD
     @Override
     public void processUserStatus(int pwdExpiredDay, int pwdAccountDisable, int pwdAccountDelete) {
         Map<String, Object> param = new HashMap<String, Object>();
-        CapSqlStatement sqlp = (CapSqlStatement) CapAppContext.getBean("userSqlStatement");
-        List<Map<String, Object>> result = getNamedJdbcTemplate().queryForList((String) sqlp.getValue("pwdlog_lastpwd"), param);
+        List<Map<String, Object>> result = getNamedJdbcTemplate().queryForList("pwdlog_lastpwd", param);
         for (Map<String, Object> rec : result) {
             String userCode = (String) rec.get("usercode");
             Timestamp lastpwd = (Timestamp) rec.get("lastpwd");
