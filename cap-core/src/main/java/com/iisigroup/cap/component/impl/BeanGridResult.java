@@ -18,7 +18,6 @@ import java.util.Map;
 
 import javax.servlet.ServletResponse;
 
-import com.google.gson.JsonArray;
 import com.iisigroup.cap.component.GridResult;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.constants.GridEnum;
@@ -192,22 +191,6 @@ public class BeanGridResult extends AjaxFormResult implements GridResult<BeanGri
 
     public List<? extends GenericBean> getRowData() {
         return this.rowData;
-    }
-
-    private JsonArray getRowDataToJSON() {
-        JsonArray rows = new JsonArray();
-        Map<String, Object> row = new HashMap<String, Object>();
-        if (rowData != null && !rowData.isEmpty()) {
-            for (GenericBean data : rowData) {
-                try {
-                    row.put(GridEnum.CELL.getCode(), data.toJSONString(this.columns, dataReformatter));
-                } catch (CapException e) {
-                    logger.error(e.getMessage(), e);
-                }
-                rows.add(GsonUtil.mapToJson(row));
-            }
-        }
-        return rows;
     }
 
     private List<Map<String, Object>> getRowDataToList() {

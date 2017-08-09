@@ -39,7 +39,7 @@ public class AccessControlServiceImpl implements AccessControlService {
     public List<Role> getAuthRolesByUrl(String url) {
         // FIXME
         url = url.replaceAll("/page/", "");
-        if (url.indexOf("_") > 0) {
+        if (url.lastIndexOf("_") >= 0) {
             url = url.substring(0, url.lastIndexOf("_"));
         }
         return dao.findBySysTypeAndPath(systemType, url);

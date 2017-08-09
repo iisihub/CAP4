@@ -44,8 +44,6 @@ import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatelessKnowledgeSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 
@@ -121,8 +119,6 @@ public class RuleTbMntHandler extends MFormHandler {
 
     @Resource
     private CommonService commonService;
-
-    private final Logger logger = LoggerFactory.getLogger(RuleTbMntHandler.class);
 
     /**
      * 查詢Condition資料明細
@@ -262,7 +258,7 @@ public class RuleTbMntHandler extends MFormHandler {
         return result;
     }
 
-    @HandlerType(HandlerTypeEnum.FileDownload)
+    @HandlerType(HandlerTypeEnum.FILE_DOWNLOAD)
     public Result dwnload(Request request) throws CapException {
         File file = createDecisionTable(request);
         FileInputStream is = null;

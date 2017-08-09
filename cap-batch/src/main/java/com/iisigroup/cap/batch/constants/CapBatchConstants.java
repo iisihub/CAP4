@@ -25,14 +25,14 @@ package com.iisigroup.cap.batch.constants;
  */
 public interface CapBatchConstants {
 
-    final String JOB_NAME = "jobName";
+    String JOB_NAME = "jobName";
 
-    final String LOCALHOST = "localhost";
+    String LOCALHOST = "localhost";
 
-    final String EXECUTOR = "executor";
+    String EXECUTOR = "executor";
 
-    final String K_JobExecution = "_jobExecution";
+    String K_JOB_EXECUTION = "_jobExecution";
 
-    final String[] SCHEDULE_KEYWORDS = new String[] { "isEnabled", "exeHost", "cronExpression", "timeZoneId", "repeatCount", "repeatInterval", "priority", "jobData" };
+    String[] SCHEDULE_KEYWORDS = new String[] { "isEnabled", "exeHost", "cronExpression", "timeZoneId", "repeatCount", "repeatInterval", "priority", "jobData" };
 
 }

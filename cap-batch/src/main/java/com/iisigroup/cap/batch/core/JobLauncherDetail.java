@@ -71,7 +71,7 @@ public class JobLauncherDetail extends QuartzJobBean implements CapBatchConstant
                 jobParameters = job.getJobParametersIncrementer().getNext(jobParameters);
             }
             jobExecution = jobLauncher.run(job, jobParameters);
-            context.put(K_JobExecution, jobExecution);
+            context.put(K_JOB_EXECUTION, jobExecution);
             batchService.updateExecution(jobExecution.getId(), (String) jobDataMap.get(EXECUTOR));
         } catch (JobExecutionException e) {
             logger.error("Could not execute job.", e);

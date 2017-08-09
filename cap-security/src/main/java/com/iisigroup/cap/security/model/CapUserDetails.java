@@ -42,7 +42,7 @@ public class CapUserDetails implements UserDetails {
 
     private String password;
     private String userId;
-    private String userName;
+    private String username;
     private String unitNo;
     private Map<String, String> roles;
     private JsonArray menu;
@@ -58,7 +58,7 @@ public class CapUserDetails implements UserDetails {
     public CapUserDetails(User user, String password, Map<String, String> roles) {
         this.password = password;
         this.userId = user.getCode();
-        this.userName = user.getName();
+        this.username = user.getName();
         this.unitNo = user.getDepCode();
         this.roles = new LinkedHashMap<String, String>();
         this.roles.putAll(roles);
@@ -84,7 +84,7 @@ public class CapUserDetails implements UserDetails {
     }
 
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     public boolean isAccountNonExpired() {
@@ -123,10 +123,6 @@ public class CapUserDetails implements UserDetails {
         return userId;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
     public String getUnitNo() {
         return unitNo;
     }
@@ -141,7 +137,7 @@ public class CapUserDetails implements UserDetails {
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.username = userName;
 
     }
 

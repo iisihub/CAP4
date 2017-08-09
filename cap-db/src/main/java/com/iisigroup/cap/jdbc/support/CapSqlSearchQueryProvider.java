@@ -99,13 +99,11 @@ public class CapSqlSearchQueryProvider {
         return sb.toString();
     }
 
-    @SuppressWarnings("incomplete-switch")
     private String generateItemQuery(SearchModeParameter search) {
         String key = search.getKey();
         Object value = search.getValue();
         StringBuffer sb = new StringBuffer();
         switch (search.getMode()) {
-
         case BETWEEN:
             Object[] values = asArray(value);
             if (values != null) {
@@ -155,6 +153,8 @@ public class CapSqlSearchQueryProvider {
         case NOT_EQUALS:
             sb.append(key).append(" != :").append(key);
             params.put(key, value);
+            break;
+        default:
             break;
         }
         return sb.toString();

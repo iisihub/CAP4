@@ -82,7 +82,7 @@ public class CapSecurityContext {
     public static String getUserName() {
         CapUserDetails user = getUser();
         if (user != null) {
-            return user.getUserName();
+            return user.getUsername();
         }
         return null;
     }

@@ -62,13 +62,13 @@ public class MenuServiceImpl implements MenuService {
 
         private static final long serialVersionUID = 7329433370534984288L;
 
-        int code;
+        private int code;
 
-        String name;
+        private String name;
 
-        String url;
+        private String url;
 
-        List<MenuItem> child = new LinkedList<MenuItem>();
+        private List<MenuItem> child = new LinkedList<MenuItem>();
 
         public int getCode() {
             return code;

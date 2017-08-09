@@ -7,15 +7,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.iisigroup.cap.security.CapSecurityContext;
 
 public class CaptchaCaptureFilter extends OncePerRequestFilter {
 
-    private final Logger logger = LoggerFactory.getLogger(CaptchaCaptureFilter.class);
     private String userCaptchaResponse;
     private HttpServletRequest request;
 

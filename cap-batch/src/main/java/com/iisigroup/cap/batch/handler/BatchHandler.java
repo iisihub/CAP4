@@ -114,7 +114,7 @@ public class BatchHandler extends MFormHandler {
         fmt.put("updateTime", new ADDateFormatter());
         fmt.put("jobStatus", new BeanFormatter() {
 
-            Collection<String> jobs = jobRegistry.getJobNames();
+            private Collection<String> jobs = jobRegistry.getJobNames();
 
             @SuppressWarnings("unchecked")
             @Override

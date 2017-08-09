@@ -1,5 +1,5 @@
 /* 專案JS設定檔    */
-Properties = {
+var Properties = {
   window : {
     closeConfirm : false,
     closeWindowMsg : false,

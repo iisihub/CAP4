@@ -18,8 +18,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
 import com.iisigroup.cap.annotation.HandlerType;
@@ -61,8 +59,6 @@ public class FactorMntHandler extends MFormHandler {
 
     @Resource
     private CommonService commonService;
-
-    private final Logger logger = LoggerFactory.getLogger(FactorMntHandler.class);
 
     /**
      * 查詢Factor資料明細

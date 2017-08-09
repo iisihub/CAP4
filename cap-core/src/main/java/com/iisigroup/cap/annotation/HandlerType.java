@@ -39,7 +39,7 @@ public @interface HandlerType {
     public enum HandlerTypeEnum {
         FORM,
         GRID,
-        FileUpload,
-        FileDownload;
+        FILE_UPLOAD,
+        FILE_DOWNLOAD;
     }
 }

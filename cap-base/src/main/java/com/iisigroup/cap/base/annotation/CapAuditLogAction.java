@@ -10,18 +10,18 @@ import com.iisigroup.cap.base.constants.CapFunctionCode;
 @Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CapAuditLogAction {
-    CapActionTypeEnum actionType() default CapActionTypeEnum.Update;
+    CapActionTypeEnum actionType() default CapActionTypeEnum.UPDATE;
 
     CapFunctionCode functionCode() default CapFunctionCode.F101;
 
     String name() default "";
 
     public enum CapActionTypeEnum {
-        Add,
-        Update,
-        Delete,
-        Query,
-        Export,
-        Import;
+        ADD,
+        UPDATE,
+        DELETE,
+        QUERY,
+        EXPORT,
+        IMPORT;
     }
 }

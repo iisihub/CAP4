@@ -36,8 +36,9 @@ import com.iisigroup.cap.utils.CapString;
  *          <li>2014/4/18,Sunkist Wang,update get commonSrv
  *          </ul>
  */
-@SuppressWarnings("serial")
 public class CapSystemProperties extends HashMap<String, String> {
+
+    private static final long serialVersionUID = -1728450512639392961L;
 
     private List<String> ignoreCache;
 

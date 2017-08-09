@@ -16,6 +16,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Writer;
@@ -33,6 +34,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Layout;
 import org.apache.log4j.helpers.CountingQuietWriter;
@@ -56,18 +58,19 @@ import com.iisigroup.cap.utils.CapDate;
  *          <li>2016/3/17,sunkist,update for zip and remove old directory
  *          <li>2016/8/10,sunkist,append log file
  *          </ul>
+ * 
+ *          <pre>
  *          log4j.appender.FILE.encoding=UTF-8
- *          log4j.appender.FILE=com.iisigroup.
- *          cap.log.TimeFolderSizeRollingFileAppender
+ *          log4j.appender.FILE=com.iisigroup.cap.log.TimeFolderSizeRollingFileAppender
  *          log4j.appender.FILE.logRootPath=./logs
  *          log4j.appender.FILE.datePattern=yyyy-MM-dd
  *          log4j.appender.FILE.File=CapLog.log
  *          log4j.appender.FILE.MaxFileSize=100MB
  *          log4j.appender.FILE.MaxBackupIndex=100
  *          log4j.appender.FILE.layout=org.apache.log4j.PatternLayout
- *          log4j.appender.FILE.layout.ConversionPattern=%d [%X{uuid}] |
- *          %X{login} | %X{reqURI} | %-28.28c{1} [%-5p] %m%n
+ *          log4j.appender.FILE.layout.ConversionPattern=%d [%X{uuid}] | %X{login} | %X{reqURI} | %-28.28c{1} [%-5p] %m%n
  *          #log4j.appender.FILE.Threshold = INFO
+ *          </pre>
  *
  *          output {workpath}/logs/2013-7-18/CapLog.log
  */
@@ -85,7 +88,7 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
     /**
      * The default maximum file size is 10MB.
      */
-    protected long maxFileSize = 10 * 1024 * 1024;
+    protected long maxFileSize = 10 * 1024 * 1024L;
 
     /**
      * There is one backup file by default.
@@ -185,6 +188,7 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
         return maxFileSize;
     }
 
+    @Override
     public void setFile(String file) {
         // Trim spaces from both ends. The users probably does not want
         // trailing spaces in file names.
@@ -226,36 +230,36 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
         }
     }
 
+    @Override
     public synchronized void setFile(String pFileName, boolean append, boolean bufferedIO, int bufferSize) throws IOException {
-        try {
-            reset();
-            this.fileName = pFileName;
-            LogLog.debug("setFile called: " + fileName + ", " + append);
-            // It does not make sense to have immediate flush and bufferedIO.
-            if (bufferedIO) {
-                setImmediateFlush(false);
-            }
-
-            Writer fw = createWriter(new FileOutputStream(fileName, append));
-            if (bufferedIO) {
-                fw = new BufferedWriter(fw, bufferSize);
-            }
-            this.setQWForFiles(fw);
-            this.fileAppend = append;
-            this.bufferedIO = bufferedIO;
-            this.bufferSize = bufferSize;
-            writeHeader();
-
-            if (append) {
-                currFile = new File(fileName);
-                ((CountingQuietWriter) qw).setCount(currFile.length());
-            }
-            LogLog.debug("setFile ended");
-        } catch (IOException e) {
-            errorHandler.error("Create log File error", e, FILE_OPEN_FAILURE);
-        } catch (Exception e) {
-            errorHandler.error("Create log File error", e, FILE_OPEN_FAILURE);
+        reset();
+        this.fileName = pFileName;
+        LogLog.debug("setFile called: " + fileName + ", " + append);
+        // It does not make sense to have immediate flush and bufferedIO.
+        if (bufferedIO) {
+            setImmediateFlush(false);
         }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(fileName, append);
+        } catch (FileNotFoundException e) {
+            throw e;
+        }
+        Writer fw = createWriter(fos);
+        if (bufferedIO) {
+            fw = new BufferedWriter(fw, bufferSize);
+        }
+        this.setQWForFiles(fw);
+        this.fileAppend = append;
+        this.bufferedIO = bufferedIO;
+        this.bufferSize = bufferSize;
+        writeHeader();
+
+        if (append) {
+            currFile = new File(fileName);
+            ((CountingQuietWriter) qw).setCount(currFile.length());
+        }
+        LogLog.debug("setFile ended");
     }
 
     final int BUFFER = 2048;
@@ -279,6 +283,7 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
         FileOutputStream fos = null;
         BufferedOutputStream bos = null;
         ZipArchiveOutputStream out = null;
+        FileInputStream fi = null;
         byte data[] = new byte[BUFFER];
         try {
             fos = new FileOutputStream(destUrl);
@@ -287,7 +292,7 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
 
             for (String fName : fileList) {
                 File file = new File(fName);
-                FileInputStream fi = new FileInputStream(file);
+                fi = new FileInputStream(file);
                 origin = new BufferedInputStream(fi, BUFFER);
                 ZipArchiveEntry entry = new ZipArchiveEntry(file.getName());
                 out.putArchiveEntry(entry);
@@ -301,30 +306,11 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
             }
 
         } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                }
-            }
-            if (bos != null) {
-                try {
-                    bos.close();
-                } catch (IOException e) {
-                }
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                }
-            }
-            if (origin != null) {
-                try {
-                    origin.close();
-                } catch (IOException e) {
-                }
-            }
+            IOUtils.closeQuietly(out);
+            IOUtils.closeQuietly(bos);
+            IOUtils.closeQuietly(fos);
+            IOUtils.closeQuietly(origin);
+            IOUtils.closeQuietly(fi);
         }
     }
 

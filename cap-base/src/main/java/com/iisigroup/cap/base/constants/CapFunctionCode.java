@@ -39,6 +39,9 @@ public enum CapFunctionCode {
      */
     F102("102", "sysParm");
 
+    private String code;
+    private String urlPath;
+
     private CapFunctionCode(String code) {
         this.code = code;
     }
@@ -51,13 +54,6 @@ public enum CapFunctionCode {
     public String getUrlPath() {
         return urlPath;
     }
-
-    public void setUrlPath(String urlPath) {
-        this.urlPath = urlPath;
-    }
-
-    private String code;
-    private String urlPath;
 
     public String getCode() {
         return this.code;

@@ -54,7 +54,6 @@ public class CapReminderTimerTask extends TimerTask {
             logger.debug("remind items TYPE[0,1] are empty! Not Execute");
         }
 
-        reminds = null;
         reminds = reminderService.getRemindItems(new String[] { RemindEnum.MAIL.getCode() }, null);// 2.電子郵件
         if (!CollectionUtils.isEmpty(reminds)) {
             sendEmail(reminds);

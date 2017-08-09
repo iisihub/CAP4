@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.iisigroup.cap.component.ErrorResult;
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
+import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.component.impl.DefaultErrorResult;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.exception.CapMessageException;
@@ -101,7 +102,7 @@ public class CapHandlerServlet extends HttpServlet {
         } else {
             SimpleContextHolder.put(CapWebUtil.localeKey, Locale.getDefault());
         }
-        Result result = null;
+        Result result;
         Logger pluginlogger = logger;
         Request request = getDefaultRequest(req);
         try {
@@ -111,7 +112,10 @@ public class CapHandlerServlet extends HttpServlet {
             plugin.setRequest(request);
             pluginlogger = LoggerFactory.getLogger(plugin.getClass());
             result = plugin.execute(request);
-
+            // TODO 若 handler 回傳的 result 是 null，該如何處理？
+            if (result == null) {
+                result = new AjaxFormResult();
+            }
         } catch (Exception e) {
             ErrorResult errorResult = getDefaultErrorResult();
             if (errorResult == null) {
@@ -130,14 +134,13 @@ public class CapHandlerServlet extends HttpServlet {
             if (!"true".equals(request.get("iframe"))) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
-        } finally {
-            result.respondResult(resp);
-            logger.debug("total spend time : {} ms", (System.currentTimeMillis() - st));
-            if (logger.isTraceEnabled()) {
-                logger.trace("Response Data : " + result.getLogMessage());
-            }
-            SimpleContextHolder.resetContext();
         }
+        result.respondResult(resp);
+        logger.debug("total spend time : {} ms", (System.currentTimeMillis() - st));
+        if (logger.isTraceEnabled()) {
+            logger.trace("Response Data : " + result.getLogMessage());
+        }
+        SimpleContextHolder.resetContext();
     }
 
     protected ErrorResult getDefaultErrorResult() {

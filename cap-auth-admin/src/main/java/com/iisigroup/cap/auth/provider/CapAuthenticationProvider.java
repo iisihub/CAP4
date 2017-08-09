@@ -130,7 +130,7 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private String checkStatus(CapUserDetails user, String username, String password, Map<String, String> policy, boolean captchaEnabled, boolean forceChangePwd) {
-        String authedPwd = "";
+        String authedPwd;
         int status = StringUtils.isBlank(user.getStatus()) ? -1 : Integer.parseInt(user.getStatus());
         switch (status) {
         case 0:// 正常

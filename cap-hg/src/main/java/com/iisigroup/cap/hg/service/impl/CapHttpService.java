@@ -24,8 +24,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.iisigroup.cap.constants.Constants;
 import com.iisigroup.cap.exception.CapException;
@@ -46,8 +44,6 @@ import com.iisigroup.cap.utils.CapString;
  *          </ul>
  */
 public class CapHttpService extends AbstractHGservice {
-
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private DefaultHttpClient httpClient;
     private HttpPost httpPost;

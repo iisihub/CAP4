@@ -70,7 +70,7 @@ public class CodeTypeHandler extends MFormHandler {
     @Resource
     private CommonService commonService;
 
-    @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.Query)
+    @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.QUERY)
     @HandlerType(HandlerTypeEnum.GRID)
     public BeanGridResult query(SearchSetting search, Request params) {
         if (!CapString.isEmpty(params.get("locale"))) {
@@ -104,7 +104,7 @@ public class CodeTypeHandler extends MFormHandler {
      *            request
      * @return IResult
      */
-    @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.Update)
+    @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.UPDATE)
     public Result modify(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         String type = request.get("type");
@@ -142,7 +142,7 @@ public class CodeTypeHandler extends MFormHandler {
      *            request
      * @return IResult
      */
-    @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.Delete)
+    @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.DELETE)
     public Result delete(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         codeTypeService.deleteById(request.get("oid"));
@@ -156,7 +156,7 @@ public class CodeTypeHandler extends MFormHandler {
      *            request
      * @return IResult
      */
-    @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.Query)
+    @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.QUERY)
     @SuppressWarnings("rawtypes")
     public Result queryByKeys(Request request) {
         String locale = CapSecurityContext.getLocale().toString();

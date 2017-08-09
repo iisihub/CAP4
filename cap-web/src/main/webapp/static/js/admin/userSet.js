@@ -1,6 +1,6 @@
 pageInit(function() {
   $(function() {
-    var grid, mform = $("#mform"), qform = $('#qform');
+    var grid, grid2, grid3, grid4, mform = $("#mform"), qform = $('#qform');
     grid = $("#gridview").jqGrid({
       url : url('usersethandler/query'),
       sortname : 'code',

@@ -87,7 +87,7 @@ public class GsonUtilTest {
         map.put("a", "1");
         map.put("b", "2");
         testData.add(map);
-        testData.add(BigDecimal.ONE);
+        // testData.add(BigDecimal.ONE);
         IntStream.range(0, testData.size()).forEach(i -> System.out.print((i == 0 ? "\n" + title + ": \n" : "\n") + "\t" + i + " => " + GsonUtil.objToMap(testData.get(i))));
     }
 

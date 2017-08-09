@@ -97,13 +97,6 @@ public class Department extends GenericBean implements DataObject {
     @OneToMany(mappedBy = "department", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<DefaultUser> users;
 
-    public Department() {
-    }
-
-    public Department(String code) {
-        this.setCode(code);
-    }
-
     public String getOid() {
         return this.oid;
     }

@@ -46,7 +46,7 @@ public class CapDate {
 
     private static final String[] DAY_OF_WEEK = { "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT" };
 
-    public final static long ONE_DAY_TIME_MILLIS = 1000 * 60 * 60 * 24;
+    public final static long ONE_DAY_TIME_MILLIS = 1000 * 60 * 60 * 24L;
 
     public final static String ZERO_DATE = "0001-01-01";
 

@@ -11,7 +11,6 @@
  */
 package com.iisigroup.cap.base.handler;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -92,19 +91,15 @@ public class CheckTimeoutHandler extends MFormHandler {
         return result;
     }
 
-    @SuppressWarnings({ "unchecked", "unused" })
+    @SuppressWarnings("unchecked")
     public Result checkTO(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         HttpServletRequest sreq = (HttpServletRequest) request.getServletRequest();
 
-        String refPath = sreq.getHeader("referer");
-        refPath = StringEscapeUtils.unescapeHtml(refPath);
-        String path = sreq.getPathInfo();
-        boolean isNewSes = sreq.getSession(false).isNew();
         String isFresh = request.get("REFSH_TO", "");
 
         HttpSession session = sreq.getSession(false);
-        Map<String, String> map = (Map<String, String>) session.getAttribute(TOCM);
+        HashMap<String, String> map = (HashMap<String, String>) session.getAttribute(TOCM);
 
         String curPage = request.get(CCPAGE_NO);
 
@@ -154,8 +149,6 @@ public class CheckTimeoutHandler extends MFormHandler {
                 }
 
                 long time = Long.parseLong(openTime);
-                Timestamp ts1 = new Timestamp(time);
-                String d12str = CapDate.convertTimestampToString(ts1, "HH:mm:ss.sss");
                 long curTime = CapDate.getCurrentTimestamp().getTime();
                 long propTimeOut = sreq.getSession(false).getMaxInactiveInterval();
                 if (!CapString.isEmpty(stout)) {
@@ -175,12 +168,7 @@ public class CheckTimeoutHandler extends MFormHandler {
                     }
                     // 前端回傳false表示timeout(user手動選取消,或是等1分鐘自動取消)
                     else if ("false".equals(isContinues) || diffSec > propTimeOut) {
-                        String webApUrl = sysProp.get("WEB_AP_URL");
-                        String st1 = sreq.getScheme();
-                        String st2 = sreq.getServerName();
-                        int port = sreq.getServerPort();
                         String st4 = sreq.getContextPath();
-                        webApUrl = st1 + "://" + st2 + ":" + port + st4;
                         result.set("errorPage", st4 + "/page/timeout");
                         map.remove(curPage);
                         session.setAttribute(TOCM, map);
@@ -207,7 +195,7 @@ public class CheckTimeoutHandler extends MFormHandler {
         // boolean isNewSes = sreq.getSession(false).isNew();
 
         HttpSession session = sreq.getSession(false);
-        Map<String, String> map = (Map<String, String>) session.getAttribute(TOCM);
+        HashMap<String, String> map = (HashMap<String, String>) session.getAttribute(TOCM);
         Map<String, Object> pmor = (Map<String, Object>) session.getAttribute("pmorq");
         if (pmor != null) {
             String cleanPreMoice = request.get("CLNPREMOICA");

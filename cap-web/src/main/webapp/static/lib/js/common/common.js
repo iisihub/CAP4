@@ -533,7 +533,7 @@ $.holdReady(true);
                 emptyJSON: {},
                 __ajax: $.ajax,
                 ajax: function(settings) {
-                    s = $.extend({
+                    var s = $.extend({
                         handler: "",
                         action: "",
                         formId: "",
@@ -1323,6 +1323,7 @@ $.holdReady(true);
                                         break;
                                     case "size":
                                         $cthis.attr(attr, common[attr]);
+                                        break;
                                     case "valid":
                                         break;
                                     default:

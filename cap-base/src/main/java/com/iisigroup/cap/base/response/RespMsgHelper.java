@@ -54,7 +54,7 @@ public class RespMsgHelper {
 
     private static final String OUT_SUG_SEPARATOR = "|<BR>";
 
-    private static final boolean isDBSource = true;
+    private static final boolean DB_SOURCE = true;
 
     /**
      * 格式化回應訊息
@@ -157,7 +157,7 @@ public class RespMsgHelper {
      */
     protected static String getMsgString(String key, Object workComp, Object[] params) {
         String msgstr = null;
-        if (isDBSource) {
+        if (DB_SOURCE) {
             String localeStr = SimpleContextHolder.get(CapWebUtil.localeKey).toString();
             // String localeStr = "zh_TW";
             ErrorCode errorCode = RespMsgFactory.getInstance().getErrorCode(key, localeStr);

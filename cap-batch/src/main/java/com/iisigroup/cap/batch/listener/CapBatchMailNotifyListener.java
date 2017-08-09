@@ -75,7 +75,7 @@ public class CapBatchMailNotifyListener implements JobListener, InitializingBean
     public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
         String jobName = context.getJobDetail().getKey().getName();
         final BatchSchedule sch = batchSerivce.findSchById(jobName);
-        final JobExecution job = (JobExecution) context.get(CapBatchConstants.K_JobExecution);
+        final JobExecution job = (JobExecution) context.get(CapBatchConstants.K_JOB_EXECUTION);
         if (sch != null && job != null) {
             if (sch.isNotify() && !CapString.isEmpty(sch.getNotifyStatus()) && !CapString.isEmpty(sch.getNotifyTo())) {
                 for (String status : sch.getNotifyStatus().split(",")) {

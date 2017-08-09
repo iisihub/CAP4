@@ -94,6 +94,8 @@ public class PasswordServiceImpl implements PasswordService {
         case 4:
             pattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&()_-])(?=\\S+$).{" + minLen + ",}$";
             break;
+        default:
+            break;
         }
         if (pattern != null && !password.matches(pattern)) {
             throw new CapMessageException(CapAppContext.getMessage("error.008", new Object[] { rule.getCodeDesc() }), getClass());

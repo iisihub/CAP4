@@ -47,8 +47,6 @@ import com.iisigroup.cap.utils.CapWebUtil;
 public class ByteArrayDownloadResult extends FileDownloadResult {
 
     private byte[] _byteArray = null;
-    private String _outputName;
-    private String _contentType;
 
     public ByteArrayDownloadResult() {
     }

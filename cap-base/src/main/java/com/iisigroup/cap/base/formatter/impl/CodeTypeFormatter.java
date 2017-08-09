@@ -35,38 +35,28 @@ import com.iisigroup.cap.utils.CapWebUtil;
  *          <li>2013/2/26,iristu,new
  *          </ul>
  */
-@SuppressWarnings("serial")
 public class CodeTypeFormatter implements Formatter {
 
-    CodeTypeService service;
-    String codeType;
-    KeyValueFormatTypeEnum show;
-    Map<String, String> codeMap;
+    private static final long serialVersionUID = 3499609752233060894L;
+    private KeyValueFormatTypeEnum show;
+    private Map<String, String> codeMap;
 
     public CodeTypeFormatter(CodeTypeService service, String codeType, Locale locale) {
-        this.service = service;
-        this.codeType = codeType;
         this.codeMap = service.findByCodeType(codeType, locale.toString());
         this.show = KeyValueFormatTypeEnum.Value;
     }
 
     public CodeTypeFormatter(CodeTypeService service, String codeType, Locale locale, KeyValueFormatTypeEnum show) {
-        this.service = service;
-        this.codeType = codeType;
         this.codeMap = service.findByCodeType(codeType, locale.toString());
         this.show = show;
     }
 
     public CodeTypeFormatter(CodeTypeService service, String codeType) {
-        this.service = service;
-        this.codeType = codeType;
         this.codeMap = service.findByCodeType(codeType, SimpleContextHolder.get(CapWebUtil.localeKey).toString());
         this.show = KeyValueFormatTypeEnum.Value;
     }
 
     public CodeTypeFormatter(CodeTypeService service, String codeType, KeyValueFormatTypeEnum show) {
-        this.service = service;
-        this.codeType = codeType;
         this.codeMap = service.findByCodeType(codeType, SimpleContextHolder.get(CapWebUtil.localeKey).toString());
         this.show = show;
     }
