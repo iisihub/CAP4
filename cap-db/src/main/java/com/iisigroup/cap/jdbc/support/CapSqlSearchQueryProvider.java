@@ -113,7 +113,7 @@ public class CapSqlSearchQueryProvider {
             }
             break;
         case GREATER_THAN:
-            sb.append(key).append(" < :").append(key);
+            sb.append(key).append(" > :").append(key);
             params.put(key, value);
             break;
         case GREATER_EQUALS:
