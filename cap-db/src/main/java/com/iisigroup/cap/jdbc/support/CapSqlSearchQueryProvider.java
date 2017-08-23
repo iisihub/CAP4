@@ -12,9 +12,11 @@
 package com.iisigroup.cap.jdbc.support;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -34,6 +36,8 @@ import com.iisigroup.cap.db.model.SearchModeParameter;
  * @version
  *          <ul>
  *          <li>2012/11/7,iristu,new
+ *          <li>2015/09/18,sunkist,update
+ *          <li>2015/09/25,sunkist,避免參數重覆問題
  *          </ul>
  */
 public class CapSqlSearchQueryProvider {
@@ -59,14 +63,33 @@ public class CapSqlSearchQueryProvider {
                 Object _key = s.getKey();
                 Object _value = s.getValue();
                 if (_key instanceof SearchModeParameter && _value instanceof SearchModeParameter) {
-                    sb.append('(').append(generateItemQuery((SearchModeParameter) _key));
+                    String mode = "";
                     if (SearchMode.OR == s.getMode()) {
-                        sb.append(" or ");
+                        mode = " or ";
                     } else if (SearchMode.AND == s.getMode()) {
-                        sb.append(" and ");
+                        mode = " and ";
                     }
-                    sb.append(generateItemQuery((SearchModeParameter) _value)).append(')');
+                    SearchModeParameter k = (SearchModeParameter) _key;
+                    SearchModeParameter v = (SearchModeParameter) _value;
+                    List<SearchModeParameter> mySearchPool = new ArrayList<SearchModeParameter>();
 
+                    // add all of key
+                    getRecursiveSearchModeParameterKey(mySearchPool, k);
+                    getRecursiveSearchModeParameterValue(mySearchPool, v);
+
+                    // append where string
+                    if (!mySearchPool.isEmpty()) {
+                        sb.append('(');
+                    }
+                    for (int i = 0; i < mySearchPool.size(); i++) {
+                        if (i != 0) {
+                            sb.append(mode);
+                        }
+                        sb.append(generateItemQuery(mySearchPool.get(i)));
+                    }
+                    if (!mySearchPool.isEmpty()) {
+                        sb.append(')');
+                    }
                 } else {
                     sb.append(generateItemQuery(s));
                 }
@@ -79,6 +102,26 @@ public class CapSqlSearchQueryProvider {
         }
 
         return sb.toString();
+    }
+
+    private SearchModeParameter getRecursiveSearchModeParameterKey(List<SearchModeParameter> mySearchPool, SearchModeParameter k) {
+        if (k.getKey() instanceof SearchModeParameter) {
+            getRecursiveSearchModeParameterKey(mySearchPool, (SearchModeParameter) k.getKey());
+            getRecursiveSearchModeParameterValue(mySearchPool, (SearchModeParameter) k.getValue());
+        } else {
+            mySearchPool.add(k);
+        }
+        return k;
+    }
+
+    private SearchModeParameter getRecursiveSearchModeParameterValue(List<SearchModeParameter> mySearchPool, SearchModeParameter v) {
+        if (v.getValue() instanceof SearchModeParameter) {
+            getRecursiveSearchModeParameterValue(mySearchPool, (SearchModeParameter) v.getValue());
+            getRecursiveSearchModeParameterKey(mySearchPool, (SearchModeParameter) v.getKey());
+        } else {
+            mySearchPool.add(v);
+        }
+        return v;
     }
 
     public String generateOrderCause() {
@@ -101,32 +144,33 @@ public class CapSqlSearchQueryProvider {
 
     private String generateItemQuery(SearchModeParameter search) {
         String key = search.getKey();
+        String paramKey = key + search.hashCode();
         Object value = search.getValue();
         StringBuffer sb = new StringBuffer();
         switch (search.getMode()) {
         case BETWEEN:
             Object[] values = asArray(value);
             if (values != null) {
-                sb.append(key).append(" between :").append(key).append("1 and :").append(key).append('2');
-                params.put(key + "1", values[0]);
-                params.put(key + "2", values[1]);
+                sb.append(key).append(" between :").append(paramKey).append("1 and :").append(paramKey).append('2');
+                params.put(paramKey + "1", values[0]);
+                params.put(paramKey + "2", values[1]);
             }
             break;
         case GREATER_THAN:
-            sb.append(key).append(" > :").append(key);
-            params.put(key, value);
+            sb.append(key).append(" > :").append(paramKey);
+            params.put(paramKey, value);
             break;
         case GREATER_EQUALS:
-            sb.append(key).append(" >= :").append(key);
-            params.put(key, value);
+            sb.append(key).append(" >= :").append(paramKey);
+            params.put(paramKey, value);
             break;
         case LESS_THAN:
-            sb.append(key).append(" < :").append(key);
-            params.put(key, value);
+            sb.append(key).append(" < :").append(paramKey);
+            params.put(paramKey, value);
             break;
         case LESS_EQUALS:
-            sb.append(key).append(" <= :").append(key);
-            params.put(key, value);
+            sb.append(key).append(" <= :").append(paramKey);
+            params.put(paramKey, value);
             break;
         case IS_NULL:
             sb.append(key).append(" is null ");
@@ -135,24 +179,24 @@ public class CapSqlSearchQueryProvider {
             sb.append(key).append(" is not null ");
             break;
         case IN:
-            sb.append(key).append(" in :").append(key);
-            params.put(key, asCollection(value));
+            sb.append(key).append(" in :").append(paramKey);
+            params.put(paramKey, asCollection(value));
             break;
         case LIKE:
-            sb.append(key).append(" like :").append(key);
-            params.put(key, value);
+            sb.append(key).append(" like :").append(paramKey);
+            params.put(paramKey, value);
             break;
         case NOT_LIKE:
-            sb.append(key).append(" not like :").append(key);
-            params.put(key, value);
+            sb.append(key).append(" not like :").append(paramKey);
+            params.put(paramKey, value);
             break;
         case EQUALS:
-            sb.append(key).append(" = :").append(key);
-            params.put(key, value);
+            sb.append(key).append(" = :").append(paramKey);
+            params.put(paramKey, value);
             break;
         case NOT_EQUALS:
-            sb.append(key).append(" != :").append(key);
-            params.put(key, value);
+            sb.append(key).append(" != :").append(paramKey);
+            params.put(paramKey, value);
             break;
         default:
             break;
