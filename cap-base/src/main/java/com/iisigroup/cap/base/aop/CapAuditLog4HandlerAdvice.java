@@ -38,6 +38,7 @@ import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.db.service.CommonService;
 import com.iisigroup.cap.security.CapSecurityContext;
 import com.iisigroup.cap.security.model.CapUserDetails;
+import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapBeanUtil;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.cap.utils.CapWebUtil;
@@ -112,11 +113,10 @@ public class CapAuditLog4HandlerAdvice {
             String action = null, function = null;
             CapAuditLogAction auditLogAction = method.getAnnotation(CapAuditLogAction.class);
 
-            action = (auditLogAction != null && auditLogAction.actionType() != null) ? auditLogAction.actionType().toString() : null;
-            function = (auditLogAction != null && auditLogAction.functionCode() != null) ? auditLogAction.functionCode().getCode() : null;
+            action = (auditLogAction != null && auditLogAction.action() != null) ? auditLogAction.action().toString() : null;
+            function = (auditLogAction != null && auditLogAction.functionCode() != null) ? auditLogAction.functionCode() : null;
             if (action != null && function != null) {
-                logAuditInfo = StrUtils.concat(auditLogAction.actionType().name(), CapConstants.SPACE, auditLogAction.functionCode().name(), CapConstants.SPACE,
-                        auditLogAction.functionCode().getUrlPath());
+                logAuditInfo = StrUtils.concat(auditLogAction.action(), CapConstants.SPACE, auditLogAction.functionCode(), CapConstants.SPACE, auditLogAction.urlPath());
             }
         }
         if (logger.isTraceEnabled()) {
@@ -156,8 +156,8 @@ public class CapAuditLog4HandlerAdvice {
             Class clazz = joinPoint.getTarget().getClass();
             AuditLog auditLog = loggedFunction(TITLE, targetName, clazz, params);
             if (auditLog != null) {
-                // 暫時不知道要放什麼值
-                auditLog.setRemark(CapConstants.EMPTY_STRING);
+                // TODOed SS_MGM_FUNC_INFO NAME + ACTION (i18n key)
+                auditLog.setRemark(StrUtils.concat(CapAppContext.getMessage("menu." + auditLog.getFunctionId()), CapAppContext.getMessage("auditlog.remark." + auditLog.getAction())));
                 commonSrv.save(auditLog);
             }
 
@@ -225,8 +225,8 @@ public class CapAuditLog4HandlerAdvice {
         if (method != null) {
             CapAuditLogAction auditLogAction = method.getAnnotation(CapAuditLogAction.class);
 
-            action = (auditLogAction != null && auditLogAction.actionType() != null) ? auditLogAction.actionType().toString() : null;
-            function = (auditLogAction != null && auditLogAction.functionCode() != null) ? auditLogAction.functionCode().getCode() : null;
+            action = (auditLogAction != null && auditLogAction.action() != null) ? auditLogAction.action().toString() : null;
+            function = (auditLogAction != null && auditLogAction.functionCode() != null) ? auditLogAction.functionCode() : null;
             if (action != null && function != null) {
                 haveToAudit = true;
             }
@@ -255,12 +255,12 @@ public class CapAuditLog4HandlerAdvice {
         if (haveToAudit) {
             auditLog = new AuditLog();
             auditLog.setId(UUIDGenerator.getUUID());
+            auditLog.setSystype(getSysId());
             auditLog.setUserId(uid);
             auditLog.setIpAddress(trimByLen(CapString.trimNull(ipAddress), 50));
             auditLog.setFunctionId(trimByLen(function, 20));
             auditLog.setAction(trimByLen(action.toLowerCase(), 20));
-            // auditLog.setRemark(trimByLen(CapString.trimNull(params.toString()),
-            // 50));
+            auditLog.setRemark(trimByLen(CapString.trimNull(params.toString()), 50));
 
             long tstart = NumberUtils.toLong(CapString.trimNull(params.get(CapConstants.C_AUDITLOG_START_TS)));
             if (tstart > 0) {

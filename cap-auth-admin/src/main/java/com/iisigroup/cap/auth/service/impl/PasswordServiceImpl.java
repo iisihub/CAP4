@@ -153,7 +153,7 @@ public class PasswordServiceImpl implements PasswordService {
         int notifyDay = Integer.parseInt(parmPwdNotifyDay.getParmValue());
         int expiredDay = Integer.parseInt(parmPwdExpiredDay.getParmValue());
         DefaultUser user = userDao.findByCode(userId);
-        List<PwdLog> list = userPwdHistoryDao.findByUserCode(user.getOid(), 1);
+        List<PwdLog> list = userPwdHistoryDao.findByUserCode(user.getCode(), 1);
         for (PwdLog h : list) {
             int diff = CapDate.calculateDays(Calendar.getInstance().getTime(), h.getUpdateTime());
             if (diff >= (expiredDay - notifyDay)) {

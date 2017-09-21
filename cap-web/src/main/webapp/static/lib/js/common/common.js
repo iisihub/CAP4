@@ -914,6 +914,43 @@ $.holdReady(true);
 
                     return this;
                 },
+
+                __dialog: $.fn.dialog,
+                dialog: function(arg1, arg2, arg3) {
+                    if (typeof arg1 !== "string") {
+                        var $this = this;
+                        $this.find('form').each(function() {
+                            // $(this).validate();
+                            $(this).validationEngine('validate');
+                        });
+                        var _o = arg1 && arg1.open;
+                        arg1 = $.extend({
+                            dialogClass: this.attr("id") + "_-dialog",
+                            bgiframe: true,
+                            autoOpen: false,
+                            modal: true,
+                            maxWidth: 600,
+                            // width:
+                            // 'auto',
+                            minWidth: 350
+                                // minWidth: 350
+                        }, arg1, {
+                            open: function() {
+                                _o && _o.apply(this, arguments);
+                            }
+                        });
+                        var ndialog = this.__dialog(arg1, arg2, arg3);
+                        var dialogs;
+                        (dialogs = $("." + this.attr("id") + "_-dialog")).each(function(index, element) {
+                            ((dialogs.length - 1) == index) ? (ndialog = $(element)) : ($(element).empty().remove());
+                        });
+                        $("div[id='" + this.attr("id") + "'],span[id='" + this.attr("id") + "']").each(function() {
+                            $(this).is(".ui-dialog-content") || $(this).empty().remove();
+                        });
+                        return ndialog.find('.ui-dialog-content');
+                    }
+                    return this.__dialog(arg1, arg2, arg3);
+                },
                 /**
                  * reverse field validate return value
                  */
@@ -1352,7 +1389,14 @@ $.holdReady(true);
 
                         $(document).on("ajaxStop", function() {
                             // $.unblockUI();
-                        }).on("ajaxComplete", function(event, xhr, settings) {}).on("ajaxSuccess", function(event, xhr) {}).on("ajaxError", function(event, xhr, ajaxOptions, thrownError) {});
+                        }).on("ajaxComplete", function(event, xhr, settings) {
+                          if (xhr.status == '999') {
+                            window.setCloseConfirm(false);
+                            API.formSubmit({
+                              url : url('page/login')
+                            });
+                          }
+                        }).on("ajaxSuccess", function(event, xhr) {}).on("ajaxError", function(event, xhr, ajaxOptions, thrownError) {});
                     }
                     $_this.find(".tabs").tabs();
                     // 設定可輸欄位才可選日期

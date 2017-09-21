@@ -11,6 +11,7 @@ CREATE TABLE AUDIT_LOG (
     action_type    VARCHAR(20),
     execute_date   DATETIME,
     remark         VARCHAR(50),
+    systype           CHAR(1),
     CONSTRAINT P_AUDIT_LOG PRIMARY KEY (oid)
 );
 

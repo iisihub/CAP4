@@ -13,6 +13,7 @@ package com.iisigroup.cap.security.service;
 
 import java.util.List;
 
+import com.iisigroup.cap.security.model.CapUserDetails;
 import com.iisigroup.cap.security.model.Role;
 
 /**
@@ -33,7 +34,9 @@ public interface AccessControlService {
 
     void lockUserByUserId(String userId);
 
-    void login(String userId);
+    void login(CapUserDetails user);
+
+    void addAuditLogForSSMSLogin(String userId, String ip, String remark);
 
     boolean checkCaptcha();
 

@@ -1,4 +1,4 @@
-/*_
+/*
  * Copyright (c) 2009-2011 International Integrated System, Inc. 
  * 11F, No.133, Sec.4, Minsheng E. Rd., Taipei, 10574, Taiwan, R.O.C.
  * All Rights Reserved.
@@ -197,7 +197,7 @@ public class BeanGridResult extends AjaxFormResult implements GridResult<BeanGri
         List<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
         if (rowData != null && !rowData.isEmpty()) {
             for (GenericBean data : rowData) {
-            	Map<String, Object> row = new HashMap<String, Object>();
+                Map<String, Object> row = new HashMap<String, Object>();
                 try {
                     row.put(GridEnum.CELL.getCode(), data.toJSONObject(this.columns, dataReformatter));
                 } catch (CapException e) {

@@ -80,7 +80,7 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
                     setForceChangePwd(username, false);
                     // 檢核是否要提醒使用者變更密碼
                     notifyPasswordChange(username, captchaEnabled, forceChangePwd);
-                    accessControlService.login(username);
+                    accessControlService.login(user);
                     return new UsernamePasswordAuthenticationToken(user, authedPwd, user.getAuthorities());
                 } else {
                     setWrountCount(username, getWrountCount(username) + 1);

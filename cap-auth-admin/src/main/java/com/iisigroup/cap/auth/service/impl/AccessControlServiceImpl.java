@@ -10,6 +10,7 @@ import com.iisigroup.cap.auth.dao.UserDao;
 import com.iisigroup.cap.auth.model.DefaultUser;
 import com.iisigroup.cap.security.CapSecurityContext;
 import com.iisigroup.cap.security.constants.CheckStatus;
+import com.iisigroup.cap.security.model.CapUserDetails;
 import com.iisigroup.cap.security.model.Role;
 import com.iisigroup.cap.security.service.AccessControlService;
 import com.iisigroup.cap.security.service.CheckCodeService;
@@ -58,8 +59,8 @@ public class AccessControlServiceImpl implements AccessControlService {
     }
 
     @Override
-    public void login(String userId) {
-        DefaultUser user = userDao.findByCode(userId);
+    public void login(CapUserDetails capUserDetails) {
+        DefaultUser user = userDao.findByCode(capUserDetails.getUserId());
         user.setLastLoginTime(CapDate.getCurrentTimestamp());
         userDao.save(user);
     }
@@ -72,5 +73,10 @@ public class AccessControlServiceImpl implements AccessControlService {
         CheckCodeService captcha = CapAppContext.getBean("capCaptcha");
         return CheckStatus.SUCCESS.equals(captcha.valid(captchaData1)) || CheckStatus.SUCCESS.equals(captcha.valid(captchaData2));
     }
+
+	@Override
+	public void addAuditLogForSSMSLogin(String userId, String ip, String remark) {
+		// TODO Auto-generated method stub
+	}
 
 }

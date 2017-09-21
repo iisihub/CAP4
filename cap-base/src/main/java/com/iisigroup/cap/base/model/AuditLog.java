@@ -67,8 +67,19 @@ public class AuditLog extends GenericBean implements DataObject {
     @Column(length = 50)
     private String remark;
 
+    @Column(name = "systype", length = 1, columnDefinition = "CHAR(1)")
+    private String systype;
+
     public String getId() {
         return oid;
+    }
+
+    public String getSystype() {
+        return systype;
+    }
+
+    public void setSystype(String systype) {
+        this.systype = systype;
     }
 
     public void setId(String id) {

@@ -26,7 +26,6 @@ import com.iisigroup.cap.annotation.HandlerType;
 import com.iisigroup.cap.annotation.HandlerType.HandlerTypeEnum;
 import com.iisigroup.cap.base.annotation.CapAuditLogAction;
 import com.iisigroup.cap.base.annotation.CapAuditLogAction.CapActionTypeEnum;
-import com.iisigroup.cap.base.constants.CapFunctionCode;
 import com.iisigroup.cap.base.model.CodeType;
 import com.iisigroup.cap.base.service.CodeTypeService;
 import com.iisigroup.cap.component.Request;
@@ -70,7 +69,7 @@ public class CodeTypeHandler extends MFormHandler {
     @Resource
     private CommonService commonService;
 
-    @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.QUERY)
+    @CapAuditLogAction(functionCode = "101", actionType = CapActionTypeEnum.QUERY)
     @HandlerType(HandlerTypeEnum.GRID)
     public BeanGridResult query(SearchSetting search, Request params) {
         if (!CapString.isEmpty(params.get("locale"))) {
@@ -104,7 +103,7 @@ public class CodeTypeHandler extends MFormHandler {
      *            request
      * @return IResult
      */
-    @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.UPDATE)
+    @CapAuditLogAction(functionCode = "101", actionType = CapActionTypeEnum.UPDATE)
     public Result modify(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         String type = request.get("type");
@@ -142,7 +141,7 @@ public class CodeTypeHandler extends MFormHandler {
      *            request
      * @return IResult
      */
-    @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.DELETE)
+    @CapAuditLogAction(functionCode = "101", actionType = CapActionTypeEnum.DELETE)
     public Result delete(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         codeTypeService.deleteById(request.get("oid"));
@@ -156,7 +155,7 @@ public class CodeTypeHandler extends MFormHandler {
      *            request
      * @return IResult
      */
-    @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.QUERY)
+    @CapAuditLogAction(functionCode = "101", actionType = CapActionTypeEnum.QUERY)
     @SuppressWarnings("rawtypes")
     public Result queryByKeys(Request request) {
         String locale = CapSecurityContext.getLocale().toString();

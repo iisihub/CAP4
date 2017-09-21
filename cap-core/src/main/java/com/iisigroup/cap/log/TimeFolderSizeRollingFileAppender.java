@@ -75,10 +75,10 @@ import com.iisigroup.cap.utils.CapDate;
  *          output {workpath}/logs/2013-7-18/CapLog.log
  */
 public class TimeFolderSizeRollingFileAppender extends FileAppender implements ErrorCode {
-    private String logRootPath = ".";
+    private String logRootPath = "./logs";
 
-    public void setLogRootPath(String logrootpath) {
-        this.logRootPath = logrootpath;
+    public void setLogRootPath(String logRootPath) {
+        this.logRootPath = logRootPath;
     }
 
     public String getLogRootPath() {
@@ -217,7 +217,7 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
             try {
                 for (int i = 1; i <= zipDayBefore; i++) {
                     String beforeTheDay = getLogRootPath().replaceAll("[/\\\\]$", "") + File.separator + new SimpleDateFormat(datePattern).format(CapDate.shiftDays(new Date(), -i));
-                    String destUrl = zipPath + File.separator + FilenameUtils.getBaseName(fileName) + "." + new SimpleDateFormat(datePattern).format(CapDate.shiftDays(new Date(), -i)) + ".zip";
+                    String destUrl = logRootPath + File.separator + zipPath + File.separator + FilenameUtils.getBaseName(fileName) + "." + new SimpleDateFormat(datePattern).format(CapDate.shiftDays(new Date(), -i)) + ".zip";
                     LogLog.debug("zipfile::destUrl=" + destUrl);
                     zipFiles(beforeTheDay, destUrl);
 
