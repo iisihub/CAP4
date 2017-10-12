@@ -2,7 +2,7 @@ pageInit(function() {
   $(function() {
     $('#change').click(function() {
       $.ajax({
-        url : url("usershandler/changePassword"),
+        url : url("usersethandler/changePassword"),
         data : $('#mform').serializeData()
       }).done(function() {
         API.showMessage('', i18n.pwdchange.changePwdOk, function() {
