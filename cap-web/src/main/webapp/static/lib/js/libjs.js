@@ -13,20 +13,25 @@ require.config({
     'blockui' : 'lib/js/jquery/plugin/blockUI/jquery.blockUI',
     'underscore' : 'lib/js/underscore/1.8.3/underscore',
     'backbone' : 'lib/js/backbone/1.3.3/backbone',
-    'sceditor' : 'lib/js/jquery/plugin/sceditor/jquery.sceditor.xhtml.min',
+    'bootstrap' : 'lib/js/bootstrap/3.3.7/bootstrap',
+    'datatables' : 'lib/js/datatables/1.10.15/jquery.dataTables',
+    'sceditor' : 
+    'lib/js/jquery/plugin/sceditor/jquery.sceditor.xhtml.min',
     'ifvisible' : 'lib/js/ifvisible/ifvisible', /* idle handle */
     'timer' : 'lib/js/timer/jquery.timer', /* timer handle */
     'fullcalendar' : 'lib/js/calendar/fullcalendar'
   },
   shim : {
     'blockui' : [ 'jquery' ],
-    'jquery-ui' : [ 'jquery' ],
+    'jquery-ui' : [ 'jquery', 'bootstrap' ],
     'jqgrid-i18n' : [ 'jquery' ],
-    'jqgrid' : [ 'jquery-ui', 'jqgrid-i18n' ],
+    'jqgrid' : [ 'jquery-ui', 'jqgrid-i18n', 'bootstrap' ],
     'validate-i18n' : [ 'jquery' ],
     'validate' : [ 'jquery', 'validate-i18n' ],
     'fileupload' : [ 'jquery' ],
     'backbone' : [ 'underscore', 'jquery' ],
+    'bootstrap' : [ 'jquery' ],
+    'datatables' : [ 'jquery' ],
     'sceditor' : [ 'jquery' ],
     'ifvisible' : [ 'jquery' ],
     'timer' : [ 'jquery' ],
@@ -34,7 +39,7 @@ require.config({
   }
 });
 
-define('libjs', [ 'json3', 'socketio', 'jquery', 'blockui', 'jquery-ui', 'jqgrid-i18n', 'jqgrid', 'validate-i18n', 'validate', 'fileupload', 'underscore', 'backbone', 'sceditor', 'ifvisible',
+define('libjs', [ 'json3', 'socketio', 'jquery', 'blockui', 'jquery-ui', 'jqgrid-i18n', 'jqgrid', 'validate-i18n', 'validate', 'fileupload', 'underscore', 'backbone', 'bootstrap', 'datatables', 'sceditor', 'ifvisible',
     'timer', 'fullcalendar'], function() {
   window.ifvisible = require.s.contexts._.defined.ifvisible;
   // $.holdReady(true); // enable at common.js

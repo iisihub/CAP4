@@ -12,6 +12,8 @@
     'blockui' : 'lib/js/jquery/plugin/blockUI/jquery.blockUI',
     'underscore' : 'lib/js/underscore/1.8.3/underscore-min',
     'backbone' : 'lib/js/backbone/1.3.3/backbone-min',
+    'bootstrap' : 'lib/js/bootstrap/3.3.7/bootstrap.min',
+    'datatables' : 'lib/js/datatables/1.10.15/jquery.dataTables.min',
     'sceditor' : 'lib/js/jquery/plugin/sceditor/jquery.sceditor.xhtml.min',
     'socketio' : 'lib/js/socket.io',
     'ifvisible' : 'lib/js/ifvisible/ifvisible',

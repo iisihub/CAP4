@@ -1,9 +1,107 @@
 @import "../module/reset";
+@import "../module/base";
 @import "../module/jquery-ui-1.12.1.scss";
 @import "../module/ui.jqgrid.scss";
 @import "../module/validationEngine.jquery.scss";
-@import "../module/base.scss";
+@import "../module/bootstrap-all";
+@import "../module/datatables";
 
 .btn1.ui-button, .ui-dialog-buttonset button.ui-button {
   line-height: 0px !important;
+}
+
+.ui-widget-overlay {
+  opacity: .3;
+}
+
+.ui-widget-header .ui-icon {
+  background-image: url("images/ui-icons_ffffff_256x240.png");
+}
+
+.ui-dialog {
+  .ui-dialog-titlebar-close {
+    &:hover .ui-icon,
+    &:focus .ui-icon {
+      background-color: !important;
+      border: !important;
+      background: !important;
+      background-image: url("images/ui-icons_004276_256x240.png");
+    }
+    background-color: Transparent;
+    border: none;
+  }
+}
+
+.btn1 {
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #767676;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url(./fonts/bootstrap/glyphicons-halflings-regular.eot?1484215868);
+  src: url(./fonts/bootstrap/glyphicons-halflings-regular.eot?&1484215868#iefix) format("embedded-opentype"), url(./fonts/bootstrap/glyphicons-halflings-regular.woff2?1484215868) format("woff2"),
+    url(./fonts/bootstrap/glyphicons-halflings-regular.woff?1484215868) format("woff"), url(./fonts/bootstrap/glyphicons-halflings-regular.ttf?1484215868) format("truetype"),
+    url(./fonts/bootstrap/glyphicons-halflings-regular.svg?1484215868#glyphicons_halflingsregular) format("svg");
+}
+
+.ad {
+  font-size: 12px;
+}
+
+.btn3 {
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #767676;
+  padding: 10px;
+  margin: 0;
+  cursor: pointer;
+  height: 43px
+}
+
+tbody {
+  th.dt-body-left, td.dt-body-left {
+    text-align: left;
+  }
+
+  th.dt-body-center, td.dt-body-center {
+    text-align: center;
+  }
+
+  th.dt-body-right, td.dt-body-right {
+    text-align: right;
+  }
+
+  th.dt-body-justify, td.dt-body-justify {
+    text-align: justify;
+  }
+
+  th.dt-body-nowrap, td.dt-body-nowrap {
+    white-space: nowrap;
+  }
+}
+
+.cropperContainer {
+  height: auto;
+  min-height: 200px;
+}
+
+img {
+  #image1, #image2, #image3{
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+  }
+}
+
+.btn-primary-active {
+  color: #2b2b2b;
+  background-color: #ddd;
 }
