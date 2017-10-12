@@ -13,6 +13,7 @@ package com.iisigroup.cap.base.model;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -35,6 +36,7 @@ import com.iisigroup.cap.model.GenericBean;
  */
 @SuppressWarnings("serial")
 @Entity
+@Cacheable
 @Table(name = "CFG_SYSPARM", uniqueConstraints = @UniqueConstraint(columnNames = "parmId"))
 public class SysParm extends GenericBean implements DataObject {
 
