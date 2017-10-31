@@ -53,32 +53,51 @@
                 <script>
                     // loadScript('js/common/cust.socket');
                 </script>
-                <div class="mainBody">
-                    <header>
-                        <div class="logo">
-                            <a><img src="../static/images/logo.png"></a>
+                <div class="mainBody container">
+                    <header class="visible-md visible-lg">
+                        <div class="row">
+                            <div class="logo col-md-12 nopadding">
+                                <a><img src="../static/images/logo.png"></a>
+                            </div>
+                            <ol style="height: 18px;">
+                                <li class="lang"><a href="#language">&nbsp;LANGUAGE&nbsp;</a></li>
+                                <li>&nbsp;-<a href="?lang=zh_TW">&nbsp;正體&nbsp;</a></li>
+                                <li>&nbsp;-<a href="?lang=zh_CN">&nbsp;简体&nbsp;</a></li>
+                                <li>&nbsp;-<a href="?lang=en">&nbsp;ENGLISH&nbsp;</a></li>
+                            </ol>
+                            <ol style="height: 18px; width: 35px; right: 140px;">
+                                <li class="lang"><a href="../j_spring_security_logout">登出</a></li>
+                            </ol>
                         </div>
-                        <ol style="height: 18px;">
-                            <li class="lang"><a href="#language">&nbsp;LANGUAGE&nbsp;</a></li>
-                            <li>&nbsp;-<a href="?lang=zh_TW">&nbsp;正體&nbsp;</a></li>
-                            <li>&nbsp;-<a href="?lang=zh_CN">&nbsp;简体&nbsp;</a></li>
-                            <li>&nbsp;-<a href="?lang=en">&nbsp;ENGLISH&nbsp;</a></li>
-                        </ol>
-                        <ol style="height: 18px; width: 35px; right: 140px;">
-                            <li class="lang"><a href="../j_spring_security_logout">登出</a></li>
-                        </ol>
                     </header>
-                    <nav class="top">
+                    <nav class="top row">
                         <ul class="block"></ul>
                         <ul class="navmenu"></ul>
                     </nav>
                     <div class="clear"></div>
                     <div class="main">
-                        <nav class="sub">
-                            <ol>
-                            </ol>
-                        </nav>
-                        <article id="article"></article>
+                        <div class="row hidden-print">
+                            <div class="visible-xs visible-sm">
+                                <button type="button" class="def_btn navbar-toggle hamburger-menu" data-toggle="collapse" data-target=".navbar-collapse">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 navbar-collapse collapse nopadding">
+                                <nav style="min-height: 75vh;" class="sub navbar navbar-default" role="navigation">
+                                    <ol>
+                                    </ol>
+                                </nav>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <article id="article" class="col-xs-12 col-sm-12 col-md-9"></article>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="clear"></div>
                     <footer>

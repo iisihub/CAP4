@@ -50,7 +50,7 @@
         </head>
 
         <body>
-            <div class="mainBody">
+            <div class="mainBody container">
                 <header>
                     <div class="logo">
                         <a><img src="../../static/images/logo.png"></a>
