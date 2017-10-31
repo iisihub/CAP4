@@ -188,7 +188,7 @@ $(function() {
 
       $("a[href='#language']").click(function() {
         var o = $(this).parents("ol");
-        if (o.height() == 18) {
+        if (o.height() <= 18) {
           $(this).parent("li.lang").css('background-image', 'url(' + baseUrl + '/images/icon-down.png)');
           $(o).animate({
             height : 100
