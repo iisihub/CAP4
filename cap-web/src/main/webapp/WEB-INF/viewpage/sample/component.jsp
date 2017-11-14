@@ -10,7 +10,8 @@
 </head>
 <body>
     <script>
-          loadScript('js/common/component', 'js/sample/custComponent');
+          loadScript('js/common/CitiWebATMLib', 'js/common/component');
+          // loadScript('js/sample/custComponent');
         </script>
     <h1>
         <spring:message code="component.title"></spring:message>
