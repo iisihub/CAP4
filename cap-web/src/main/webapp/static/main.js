@@ -28,11 +28,17 @@ require([ 'jquery-ui', 'libjs', 'common.properties', 'cust-properties', 'capjs',
 });
 
 // global method
-window.loadScript = function(url) {
+window.loadScript = function(url, url2) {
   require([ 'cust-common' ], function() {
-    require([ url ], function(pageJs) {
+    require([ url , [url2]], function(pageJs) {
       logDebug(url + ' loaded');
       pageJs && pageJs.init();
+      if (url2) {
+        require([ url2 ], function(pageJs) {
+          logDebug(url2 + ' loaded');
+          pageJs && pageJs.init();
+        });
+      }
     })
   });
 };
