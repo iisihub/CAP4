@@ -19,13 +19,13 @@
             <link rel="stylesheet" href="../../static/css/form.css" />
             <link rel="stylesheet" href="../../static/lib/css/common.message.css" />
             <!-- common.message (iLog) -->
-            <link rel="shortcut icon" href="../static/images/favicon.ico" />
-            <link rel="bookmark" href="../static/images/favicon.ico" />
-            <link rel="apple-touch-icon" href="../static/images/apple-touch-icon.png" />
+            <link rel="shortcut icon" href="../../static/images/favicon.ico" />
+            <link rel="bookmark" href="../../static/images/favicon.ico" />
+            <link rel="apple-touch-icon" href="../../static/images/apple-touch-icon.png" />
             <!--[if lt IE 9]>
-    <script src="../static/lib/js/html5.js"></script>
-    <script src="../static/lib/js/respond/respond.min.js"></script>
-    <link rel="stylesheet" href="../static/css/ie.css">
+    <script src="../../static/lib/js/html5.js"></script>
+    <script src="../../static/lib/js/respond/respond.min.js"></script>
+    <link rel="stylesheet" href="../../static/css/ie.css">
 <![endif]-->
             <style>
                 html {
@@ -39,7 +39,7 @@
                 } else {
                     top.location = self.location;
                 }
-                var baseUrl = "../static";
+                var baseUrl = "../../static";
                 //-->
             </script>
             <script src="../../static/requirejs/2.3.2/require.min.js"></script>

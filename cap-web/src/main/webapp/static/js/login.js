@@ -1,8 +1,11 @@
 pageInit(function() {
     $(function() {
-        // FIXME by sk
-//        console.debug('window.setCloseConfirm : '+ window.setCloseConfirm);
         window.setCloseConfirm && window.setCloseConfirm(false);
+        if (window.location.href.indexOf('/page/login') > 0) {
+          document.documentElement.style.display = 'block';
+        } else {
+          top.location = url('page/login');
+        }
         var agreeChange = false;
         function login(ignoreNotify) {
             $.ajax({
