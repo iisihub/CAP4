@@ -157,7 +157,7 @@ public class CapAuditLog4HandlerAdvice {
             AuditLog auditLog = loggedFunction(TITLE, targetName, clazz, params);
             if (auditLog != null) {
                 // TODOed SS_MGM_FUNC_INFO NAME + ACTION (i18n key)
-                auditLog.setRemark(StrUtils.concat(CapAppContext.getMessage("menu." + auditLog.getFunctionId()), CapAppContext.getMessage("auditlog.remark." + auditLog.getAction())));
+                auditLog.setRemark(StrUtils.concat(CapAppContext.getMessage("menu." + auditLog.getFunctionId()), CapAppContext.getMessage("auditlog.remark." + auditLog.getActionType())));
                 commonSrv.save(auditLog);
             }
 
@@ -259,7 +259,7 @@ public class CapAuditLog4HandlerAdvice {
             auditLog.setUserId(uid);
             auditLog.setIpAddress(trimByLen(CapString.trimNull(ipAddress), 50));
             auditLog.setFunctionId(trimByLen(function, 20));
-            auditLog.setAction(trimByLen(action.toLowerCase(), 20));
+            auditLog.setActionType(trimByLen(action.toLowerCase(), 20));
             auditLog.setRemark(trimByLen(CapString.trimNull(params.toString()), 50));
 
             long tstart = NumberUtils.toLong(CapString.trimNull(params.get(CapConstants.C_AUDITLOG_START_TS)));

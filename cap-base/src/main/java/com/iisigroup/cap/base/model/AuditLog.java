@@ -110,12 +110,12 @@ public class AuditLog extends GenericBean implements DataObject {
         this.functionId = functionId;
     }
 
-    public String getAction() {
+    public String getActionType() {
         return actionType;
     }
 
-    public void setAction(String action) {
-        this.actionType = action;
+    public void setActionType(String actionType) {
+        this.actionType = actionType;
     }
 
     public Timestamp getExecuteDate() {

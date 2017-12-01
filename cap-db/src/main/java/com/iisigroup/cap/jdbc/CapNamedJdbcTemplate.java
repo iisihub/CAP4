@@ -250,33 +250,6 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
     }
 
     /**
-     * 查詢筆數專用
-     * 
-     * @param sqlId
-     *            sqlId
-     * @param args
-     *            args
-     * @return int
-     * @throws GWException
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public int queryForInt(String sqlId, Map<String, ?> args) {
-        StringBuffer sql = new StringBuffer((String) sqlp.getValue(sqlId, sqlId));
-        sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));
-        if (logger.isTraceEnabled()) {
-            logger.trace(new StringBuffer("SqlId=").append(sqlp.containsKey(sqlId) ? sqlId : "").append("\n\t").append(CapDbUtil.convertToSQLCommand(sql.toString(), args)).toString());
-        }
-        long cur = System.currentTimeMillis();
-        try {
-            return super.queryForObject(sql.toString(), (Map) args, Integer.class);
-        } catch (Exception e) {
-            throw new CapDBException(e, causeClass);
-        } finally {
-            logger.info("CapNamedJdbcTemplate spend {} ms", (System.currentTimeMillis() - cur));
-        }
-    }
-
-    /**
      * 查詢，查詢結果為Map<key,value>
      * 
      * @param sqlId
