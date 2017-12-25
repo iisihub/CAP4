@@ -7,14 +7,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import com.iisigroup.cap.security.CapSecurityContext;
 
 public class CaptchaCaptureFilter extends OncePerRequestFilter {
 
     private String userCaptchaResponse;
-    private HttpServletRequest request;
 
     public void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
 
@@ -25,10 +23,8 @@ public class CaptchaCaptureFilter extends OncePerRequestFilter {
         // and CaptchaVerifierFilter will enter an infinite loop
 
         synchronized (req) {
-            if (req.getParameter("captcha") != null) {
-                // CapSecurityContext.getUser().put("request", req);
-                CapSecurityContext.getUser().getExtraAttrib().put("request", req);
-                request = req;
+            if (!StringUtils.isBlank(req.getParameter("captcha"))) {
+                userCaptchaResponse = req.getParameter("captcha");
             }
             logger.debug("userResponse: " + req.getParameter("captcha"));
         }
@@ -45,13 +41,5 @@ public class CaptchaCaptureFilter extends OncePerRequestFilter {
 
     public void setUserCaptchaResponse(String userCaptchaResponse) {
         this.userCaptchaResponse = userCaptchaResponse;
-    }
-
-    public HttpServletRequest getRequest() {
-        return request;
-    }
-
-    public void setRequest(HttpServletRequest request) {
-        this.request = request;
     }
 }

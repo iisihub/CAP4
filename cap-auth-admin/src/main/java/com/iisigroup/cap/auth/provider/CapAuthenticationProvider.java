@@ -2,6 +2,7 @@ package com.iisigroup.cap.auth.provider;
 
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -31,6 +32,8 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     private PasswordService passwordService;
     private AccessControlService accessControlService;
     private CaptchaCaptureFilter captchaCaptureFilter;
+    @Resource
+    private HttpServletRequest request;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -154,7 +157,7 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
         default:
             throw new CapAuthenticationException("Invalid User Status.", captchaEnabled, forceChangePwd);
         }
-        String agreeChange = captchaCaptureFilter.getRequest().getParameter("agreeChange");
+        String agreeChange = request.getParameter("agreeChange");
         if (Boolean.valueOf(agreeChange)) {
             authedPwd = forceChangePassword(username, captchaEnabled, forceChangePwd, "");
         }
@@ -162,7 +165,7 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private void notifyPasswordChange(String userId, boolean captchaEnabled, boolean forceChangePwd) {
-        String ignoreNotify = captchaCaptureFilter.getRequest().getParameter("ignoreNotify");
+        String ignoreNotify = request.getParameter("ignoreNotify");
         if (!Boolean.valueOf(ignoreNotify)) {
             int diff = passwordService.getPasswordChangeNotifyDay(userId) + 1;
             if (diff > 0) {
@@ -172,8 +175,8 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private String forceChangePassword(String username, boolean captchaEnabled, boolean forceChangePwd, String reason) {
-        String newPwd = captchaCaptureFilter.getRequest().getParameter("newPwd");
-        String confirm = captchaCaptureFilter.getRequest().getParameter("confirm");
+        String newPwd = request.getParameter("newPwd");
+        String confirm = request.getParameter("confirm");
         if (StringUtils.isBlank(newPwd) || StringUtils.isBlank(confirm)) {
             setForceChangePwd(username, true);
             throw new CapAuthenticationException(reason + CapAppContext.getMessage("error.010"), captchaEnabled, true);
@@ -235,7 +238,7 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private boolean isForceChangePwd(String username) {
-        HttpSession session = captchaCaptureFilter.getRequest().getSession();
+        HttpSession session = request.getSession();
         if (session.getAttribute("forceChangePwd-" + username) == null) {
             session.setAttribute("forceChangePwd-" + username, false);
         }
@@ -243,12 +246,12 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private void setForceChangePwd(String username, boolean forceChangePwd) {
-        HttpSession session = captchaCaptureFilter.getRequest().getSession();
+        HttpSession session = request.getSession();
         session.setAttribute("forceChangePwd-" + username, forceChangePwd);
     }
 
     private int getWrountCount(String username) {
-        HttpSession session = captchaCaptureFilter.getRequest().getSession();
+        HttpSession session = request.getSession();
         if (session.getAttribute("wrongCount-" + username) == null) {
             session.setAttribute("wrongCount-" + username, 0);
         }
@@ -256,12 +259,12 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private void setWrountCount(String username, int count) {
-        HttpSession session = captchaCaptureFilter.getRequest().getSession();
+        HttpSession session = request.getSession();
         session.setAttribute("wrongCount-" + username, count);
     }
 
     private boolean isCaptchaEnabled() {
-        HttpServletRequest req = captchaCaptureFilter.getRequest();
+        HttpServletRequest req = request;
         if (req == null) {
             return false;
         }
@@ -270,7 +273,7 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private void setCaptchaEnabled(boolean captchaEnabled) {
-        HttpSession session = captchaCaptureFilter.getRequest().getSession();
+        HttpSession session = request.getSession();
         session.setAttribute("captchaEnabled", captchaEnabled);
     }
 

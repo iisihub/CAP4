@@ -11,7 +11,6 @@
  */
 package com.iisigroup.cap.security;
 
-import java.net.InetAddress;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Locale;
@@ -136,14 +135,8 @@ public class CapSecurityContext {
 
     private static CapUserDetails getDefautlUserDetails() {
         CapUserDetails user = new CapUserDetails();
-        String userId = "";
-        try {
-            userId = InetAddress.getLocalHost().getHostName();
-        } catch (java.net.UnknownHostException uhe) {
-            userId = "UNKNOWN";
-        }
-        user.setUserId(userId);
-        user.setUserName(userId);
+        user.setUserId("SYS");
+        user.setUserName("SYS");
         user.setUnitNo("999");
         return user;
     }
