@@ -1,4 +1,4 @@
-package com.iisigroup.cap.mvc.rest;
+package com.iisigroup.cap.rest.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

@@ -12,6 +12,7 @@
     <http pattern="/captcha.png*" security="none" />
     <http pattern="/app/error/message*" security="none" />
     <http pattern="/page/login*" security="none" />
+    <http pattern="/swagger-ui.html" security="none" />
     <http auto-config="false" access-decision-manager-ref="accessDecisionManager" entry-point-ref="capAuthenticationEntryPoint" use-expressions="false" disable-url-rewriting="false">
         <headers disabled="true" />
         <csrf disabled="true" />
@@ -25,7 +26,7 @@
         <!-- without cap-auth-admin start -->
         <!-- <intercept-url pattern="/page/**" access="IS_AUTHENTICATED_FULLY" /> -->
         <!-- without cap-auth-admin end -->
-        <intercept-url pattern="/rest/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/rest/**" access="IS_AUTHENTICATED_FULLY" />
         <intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY" />
         <anonymous enabled="true" />
         <!-- cap-auth-admin start -->

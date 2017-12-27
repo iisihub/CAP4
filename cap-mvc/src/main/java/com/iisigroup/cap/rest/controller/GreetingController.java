@@ -1,4 +1,4 @@
-package com.iisigroup.cap.mvc.rest;
+package com.iisigroup.cap.rest.controller;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.iisigroup.cap.rest.model.Greeting;
 
 @RestController
 public class GreetingController {
@@ -19,7 +21,7 @@ public class GreetingController {
         return getGreeting(name);
     }
 
-    @RequestMapping("/greeting/{name}")
+    @RequestMapping(value = "/greeting/{name}", method = RequestMethod.GET)
     public Greeting greetingByName(@PathVariable(name = "name") String name) {
         return getGreeting(name);
     }
