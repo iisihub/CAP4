@@ -25,8 +25,9 @@
         <!-- without cap-auth-admin start -->
         <!-- <intercept-url pattern="/page/**" access="IS_AUTHENTICATED_FULLY" /> -->
         <!-- without cap-auth-admin end -->
+        <intercept-url pattern="/rest/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY" />
-        <anonymous enabled="false" />
+        <anonymous enabled="true" />
         <!-- cap-auth-admin start -->
         <form-login always-use-default-target="true" login-page="/page/login" default-target-url="/page/index" authentication-failure-handler-ref="ajaxAuthenticationFailureHandler"
             username-parameter="j_username" password-parameter="j_password" login-processing-url="/j_spring_security_check" />
