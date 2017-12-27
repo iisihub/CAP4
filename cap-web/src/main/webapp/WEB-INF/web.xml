@@ -150,6 +150,14 @@
         </init-param>
     </servlet>
     <servlet>
+        <servlet-name>dispatcher-rest</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring/rest.xml</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
         <servlet-name>handler</servlet-name>
         <servlet-class>com.iisigroup.cap.web.CapHandlerServlet</servlet-class>
         <init-param>
@@ -168,6 +176,10 @@
     <servlet-mapping>
         <servlet-name>dispatcher-page</servlet-name>
         <url-pattern>/page/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher-rest</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>handler</servlet-name>
