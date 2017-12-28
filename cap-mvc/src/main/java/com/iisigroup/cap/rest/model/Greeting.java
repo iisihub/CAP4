@@ -1,9 +1,6 @@
 package com.iisigroup.cap.rest.model;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "user")
+//@XmlRootElement(name = "user")
 public class Greeting {
 
     private final long id;
@@ -19,12 +16,12 @@ public class Greeting {
         this.content = content;
     }
 
-    @XmlElement
+    // @XmlElement
     public long getId() {
         return id;
     }
 
-    @XmlElement
+    // @XmlElement
     public String getContent() {
         return content;
     }

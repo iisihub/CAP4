@@ -11,6 +11,7 @@
             <list>
                 <value>classpath:db/database.properties</value>
                 <value>classpath:config.properties</value>
+                <value>classpath:rest.properties</value>
             </list>
         </property>
     </bean>

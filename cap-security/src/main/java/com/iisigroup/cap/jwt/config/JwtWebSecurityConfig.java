@@ -1,4 +1,4 @@
-package com.iisigroup.cap.jwt.service.impl;
+package com.iisigroup.cap.jwt.config;
 
 import javax.annotation.Resource;
 
@@ -19,10 +19,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.iisigroup.cap.jwt.JwtAuthenticationEntryPoint;
 import com.iisigroup.cap.jwt.filter.JwtAuthenticationTokenFilter;
 
-@Configuration
-@EnableWebSecurity
+//@Configuration
+//@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class JwtWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     private JwtAuthenticationEntryPoint unauthorizedHandler;
