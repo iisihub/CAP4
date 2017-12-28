@@ -89,4 +89,8 @@
     <!-- JWT -->
     <beans:bean id="jwtTokenUtil" class="com.iisigroup.cap.jwt.JwtTokenUtil" />
     <beans:bean id="jwtUserDetailsServiceImpl" class="com.iisigroup.cap.jwt.service.impl.JwtUserDetailsServiceImpl" />
+    <authentication-manager id="jwtAuthenticationManager">
+        <authentication-provider user-service-ref="jwtUserDetailsServiceImpl" />
+    </authentication-manager>
+    <beans:bean id="jwtAuthenticationEntryPoint" class="com.iisigroup.cap.jwt.JwtAuthenticationEntryPoint" />
 </beans:beans>
