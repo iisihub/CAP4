@@ -86,4 +86,7 @@
     <beans:bean id="loggerListener" class="org.springframework.security.access.event.LoggerListener" />
     <!-- Security context -->
     <beans:bean id="capSecurityContext" class="com.iisigroup.cap.security.CapSecurityContext" scope="session" />
+    <!-- JWT -->
+    <beans:bean id="jwtTokenUtil" class="com.iisigroup.cap.jwt.JwtTokenUtil" />
+    <beans:bean id="jwtUserDetailsServiceImpl" class="com.iisigroup.cap.jwt.service.impl.JwtUserDetailsServiceImpl" />
 </beans:beans>
