@@ -179,7 +179,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>dispatcher-rest</servlet-name>
-        <url-pattern>/rest/*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>handler</servlet-name>
