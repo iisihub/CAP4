@@ -5,12 +5,8 @@
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.1.xsd">
     <http pattern="/swagger-ui.html" security="none" />
     <http pattern="/auth/**" security="none" />
-    <http create-session="stateless" authentication-manager-ref="jwtAuthenticationManager" entry-point-ref="jwtAuthenticationEntryPoint" use-expressions="false" disable-url-rewriting="false">
-        <csrf disabled="true" />
-        <anonymous enabled="true" />
-        <intercept-url pattern="/auth/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-        <intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY" />
-        <custom-filter ref="jwtAuthenticationTokenFilter" before="FIRST" />
+    <http pattern="/**" auto-config="true" create-session="stateless">
+        <custom-filter ref="jwtAuthenticationTokenFilter" before="BASIC_AUTH_FILTER" />
     </http>
     <!-- Security context -->
     <beans:bean id="capSecurityContext" class="com.iisigroup.cap.security.CapSecurityContext" scope="session" />

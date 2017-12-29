@@ -19,12 +19,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.iisigroup.cap.jwt.JwtAuthenticationEntryPoint;
 import com.iisigroup.cap.jwt.filter.JwtAuthenticationTokenFilter;
 
-//@Configuration
-//@EnableWebSecurity
+@Configuration
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class JwtWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Resource
+    @Resource(name = "jwtAuthenticationEntryPoint")
     private JwtAuthenticationEntryPoint unauthorizedHandler;
 
     @Resource(name = "jwtUserDetailsServiceImpl")
@@ -40,10 +40,8 @@ public class JwtWebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
-        return new JwtAuthenticationTokenFilter();
-    }
+    @Resource(name = "jwtAuthenticationTokenFilter")
+    private JwtAuthenticationTokenFilter authenticationTokenFilterBean;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -67,7 +65,7 @@ public class JwtWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         // 添加JWT filter
-        httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(authenticationTokenFilterBean, UsernamePasswordAuthenticationFilter.class);
 
         // 禁用缓存
         httpSecurity.headers().cacheControl();

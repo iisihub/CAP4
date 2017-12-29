@@ -17,6 +17,7 @@ public class GreetingController {
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "greeting", method = RequestMethod.GET)
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "HelloWorld") String name) {
         return getGreeting(name);
@@ -27,7 +28,7 @@ public class GreetingController {
     public Greeting greetingByName(@PathVariable(name = "name") String name) {
         return getGreeting(name);
     }
-    
+
     /**
      * Get greeting
      * 
