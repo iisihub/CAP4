@@ -49,8 +49,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
             <util:map>
                 <entry key="FORM" value="simpleOperation" />
                 <entry key="GRID" value="simpleOperation" />
-                <entry key="FileUpload" value="fileUploadOperation" />
-                <entry key="FileDownload" value="fileDownloadOperation" />
+                <entry key="FILE_UPLOAD" value="fileUploadOperation" />
+                <entry key="FILE_DOWNLOAD" value="fileDownloadOperation" />
             </util:map>
         </constructor-arg>
     </bean>
