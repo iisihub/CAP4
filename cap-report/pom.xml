@@ -42,7 +42,6 @@
             <artifactId>jxl</artifactId>
             <version>2.6.12</version>
             <type>jar</type>
-            <scope>compile</scope>
         </dependency>
         <!-- ******************** JExcelApi(jxl) LIB END ******************** -->
     </dependencies>

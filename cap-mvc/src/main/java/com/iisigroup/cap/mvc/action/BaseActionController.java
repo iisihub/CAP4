@@ -6,7 +6,9 @@ import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 
 /**
  * <pre>
@@ -20,8 +22,10 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
  *          <li>2011/11/1,rodeschen,new
  *          </ul>
  */
-public class BaseActionController extends MultiActionController {
+@Controller
+public class BaseActionController {
 
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
     public static final String SUCCESS_VIEW = "success";
 
     /**

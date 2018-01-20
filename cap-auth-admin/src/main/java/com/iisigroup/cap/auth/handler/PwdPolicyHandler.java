@@ -16,8 +16,8 @@ import org.springframework.stereotype.Controller;
 
 import com.iisigroup.cap.auth.service.PwdPolicyService;
 import com.iisigroup.cap.base.model.SysParm;
-import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.db.service.CommonService;
 import com.iisigroup.cap.mvc.handler.MFormHandler;

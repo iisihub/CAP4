@@ -16,7 +16,7 @@ import java.util.Map;
 
 import javax.servlet.ServletResponse;
 
-import org.apache.commons.lang.CharEncoding;
+import org.apache.commons.lang3.CharEncoding;
 
 import com.iisigroup.cap.component.ErrorResult;
 import com.iisigroup.cap.component.Request;

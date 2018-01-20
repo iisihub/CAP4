@@ -6,9 +6,6 @@
         <version>4.0.1</version>
     </parent>
     <artifactId>cap-hg</artifactId>
-    <properties>
-        <spring.integration.version>4.3.0.RELEASE</spring.integration.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>com.iisigroup.cap</groupId>
@@ -17,12 +14,12 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
-            <version>4.4.5</version>
+            <version>4.4.8</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.2</version>
+            <version>4.5.4</version>
         </dependency>
     </dependencies>
 </project>

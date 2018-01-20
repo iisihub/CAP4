@@ -13,11 +13,12 @@ package com.iisigroup.cap.utils;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.CharEncoding;
+import org.apache.commons.lang3.CharEncoding;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -114,7 +115,7 @@ public class CapXmlUtil {
      * @return String
      */
     public static String convertDocumentToString(Document doc, boolean format) {
-        StringWriter out = new StringWriter();
+        Writer out = new StringWriter();
         try {
             new XMLWriter(out, new OutputFormat(Constants.EMPTY_STRING, format, CharEncoding.UTF_8)).write(doc);
             return out.toString();

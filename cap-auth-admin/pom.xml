@@ -7,7 +7,7 @@
     </parent>
     <artifactId>cap-auth-admin</artifactId>
     <properties>
-        <spring.batch.version>3.0.7.RELEASE</spring.batch.version>
+        <spring.batch.version>4.0.0.RELEASE</spring.batch.version>
     </properties>
     <dependencies>
         <dependency>
@@ -22,13 +22,12 @@
             <groupId>org.springframework.batch</groupId>
             <artifactId>spring-batch-core</artifactId>
             <version>${spring.batch.version}</version>
-            <scope>compile</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
         <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2.2</version>
-            <scope>compile</scope>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.1</version>
         </dependency>
         <!-- for testing -->
         <dependency>

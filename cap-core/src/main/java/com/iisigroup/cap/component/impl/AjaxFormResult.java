@@ -13,6 +13,7 @@
 package com.iisigroup.cap.component.impl;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,7 +23,6 @@ import java.util.Map;
 
 import javax.servlet.ServletResponse;
 
-import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -309,7 +309,7 @@ public class AjaxFormResult implements Result {
         if (encoding != null) {
             return this.encoding;
         } else {
-            return CharEncoding.UTF_8;
+            return StandardCharsets.UTF_8.name();
         }
     }
 

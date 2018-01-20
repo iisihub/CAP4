@@ -18,7 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.iisigroup.cap.db.model.DataObject;
 import com.iisigroup.cap.db.model.listener.CapOidGeneratorListener;

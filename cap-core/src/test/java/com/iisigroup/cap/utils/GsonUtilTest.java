@@ -11,6 +11,7 @@
  */
 package com.iisigroup.cap.utils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -20,7 +21,6 @@ import java.util.stream.IntStream;
 
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 
 /**

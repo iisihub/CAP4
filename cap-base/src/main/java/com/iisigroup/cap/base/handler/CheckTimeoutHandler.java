@@ -22,7 +22,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.stereotype.Controller;
 
 import com.iisigroup.cap.base.CapSystemProperties;
@@ -80,7 +80,7 @@ public class CheckTimeoutHandler extends MFormHandler {
         long diffSec = diff / 1000;
         // session timeout 導向 error page
         String refPath = sreq.getHeader("referer");
-        refPath = StringEscapeUtils.unescapeHtml(refPath);
+        refPath = StringEscapeUtils.unescapeHtml3(refPath);
         if ((diffSec > time3 && refPath.lastIndexOf("error") < 0 && refPath.lastIndexOf("timeout") < 0) || "false".equals(isContinues)) {
             // if(!isNewSes){
             result.set("errorPage", "/cap-web/page/timeout");
@@ -190,7 +190,7 @@ public class CheckTimeoutHandler extends MFormHandler {
         HttpServletRequest sreq = (HttpServletRequest) request.getServletRequest();
 
         String refPath = sreq.getHeader("referer");
-        refPath = StringEscapeUtils.unescapeHtml(refPath);
+        refPath = StringEscapeUtils.unescapeHtml3(refPath);
 
         // boolean isNewSes = sreq.getSession(false).isNew();
 
