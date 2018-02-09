@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.iisigroup.cap</groupId>
         <artifactId>cap</artifactId>
-        <version>4.0.1</version>
+        <version>4.0.1-colabase-201802091200</version>
     </parent>
     <artifactId>cap-websocket</artifactId>
     <dependencies>
