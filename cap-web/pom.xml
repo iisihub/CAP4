@@ -40,10 +40,6 @@
         </dependency>
         <dependency>
             <groupId>com.iisigroup.cap</groupId>
-            <artifactId>cap-websocket</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.iisigroup.cap</groupId>
             <artifactId>cap-captcha</artifactId>
         </dependency>
         <dependency>
