@@ -36,10 +36,6 @@
         </dependency>
         <dependency>
             <groupId>com.iisigroup.cap</groupId>
-            <artifactId>cap-auth-admin</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.iisigroup.cap</groupId>
             <artifactId>cap-captcha</artifactId>
         </dependency>
         <dependency>

@@ -20,20 +20,20 @@
         <intercept-url pattern="/page/index" access="IS_AUTHENTICATED_FULLY" />
         <intercept-url pattern="/page/common/*" access="IS_AUTHENTICATED_FULLY" />
         <!-- cap-auth-admin start -->
-        <intercept-url pattern="/page/**" access="${systemType}" />
+<!--         <intercept-url pattern="/page/**" access="${systemType}" /> -->
         <!-- cap-auth-admin end -->
         <!-- without cap-auth-admin start -->
-        <!-- <intercept-url pattern="/page/**" access="IS_AUTHENTICATED_FULLY" /> -->
+        <intercept-url pattern="/page/**" access="IS_AUTHENTICATED_FULLY" />
         <!-- without cap-auth-admin end -->
         <intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY" />
         <anonymous enabled="false" />
         <!-- cap-auth-admin start -->
-        <form-login always-use-default-target="true" login-page="/page/login" default-target-url="/page/index" authentication-failure-handler-ref="ajaxAuthenticationFailureHandler"
-            username-parameter="j_username" password-parameter="j_password" login-processing-url="/j_spring_security_check" />
+<!--         <form-login always-use-default-target="true" login-page="/page/login" default-target-url="/page/index" authentication-failure-handler-ref="ajaxAuthenticationFailureHandler" -->
+<!--             username-parameter="j_username" password-parameter="j_password" login-processing-url="/j_spring_security_check" /> -->
         <!-- cap-auth-admin end -->
         <!-- without cap-auth-admin start -->
-        <!-- <form-login always-use-default-target="true" login-page="/page/login" default-target-url="/page/index" username-parameter="j_username" password-parameter="j_password" login-processing-url="/j_spring_security_check" 
-            /> -->
+        <form-login always-use-default-target="true" login-page="/page/login" default-target-url="/page/index" username-parameter="j_username" password-parameter="j_password" login-processing-url="/j_spring_security_check" 
+            />
         <!-- without cap-auth-admin end -->
         <session-management>
             <concurrency-control max-sessions="1" expired-url="/page/login?error" session-registry-alias="sessionRegistry" /> <!-- exception-if-maximum-exceeded="true" -->
@@ -47,20 +47,20 @@
     <beans:bean id="captchaCaptureFilter" class="com.iisigroup.cap.security.captcha.filter.CaptchaCaptureFilter"></beans:bean>
     <!-- cap-captcha end -->
     <!-- cap-auth-admin start -->
-    <beans:bean id="userDetailsServiceImpl" class="com.iisigroup.cap.auth.service.impl.UserDetailsServiceImpl" />
-    <beans:bean id="customAuthenticationProvider" class="com.iisigroup.cap.auth.provider.CapAuthenticationProvider" p:captchaCaptureFilter-ref="captchaCaptureFilter" p:userService-ref="userDetailsServiceImpl"
-        p:passwordService-ref="passwordService" p:accessControlService-ref="accessControlService" />
-    <authentication-manager>
-        <authentication-provider ref="customAuthenticationProvider" />
-    </authentication-manager>
+<!--     <beans:bean id="userDetailsServiceImpl" class="com.iisigroup.cap.auth.service.impl.UserDetailsServiceImpl" /> -->
+<!--     <beans:bean id="customAuthenticationProvider" class="com.iisigroup.cap.auth.provider.CapAuthenticationProvider" p:captchaCaptureFilter-ref="captchaCaptureFilter" p:userService-ref="userDetailsServiceImpl" -->
+<!--         p:passwordService-ref="passwordService" p:accessControlService-ref="accessControlService" /> -->
+<!--     <authentication-manager> -->
+<!--         <authentication-provider ref="customAuthenticationProvider" /> -->
+<!--     </authentication-manager> -->
     <!-- cap-auth-admin end -->
     <!-- without cap-auth-admin start -->
-    <!-- <beans:bean id="userDetailsServiceImpl" class="com.iisigroup.cap.security.service.impl.CapDefaultUserDetailsService" />
+    <beans:bean id="userDetailsServiceImpl" class="com.iisigroup.cap.security.service.impl.CapDefaultUserDetailsService" />
     <authentication-manager>
         <authentication-provider user-service-ref="userDetailsServiceImpl">
             <password-encoder hash="plaintext" />
         </authentication-provider>
-    </authentication-manager> -->
+    </authentication-manager>
     <!-- without cap-auth-admin end -->
     <beans:bean id="capAuthenticationEntryPoint" class="com.iisigroup.cap.security.web.CapAuthenticationEntryPoint">
         <beans:constructor-arg value="/page/login" />
@@ -70,11 +70,11 @@
         <beans:constructor-arg name="decisionVoters">
             <beans:list>
                 <!-- cap-auth-admin start -->
-                <beans:bean class="com.iisigroup.cap.auth.vote.CapPermissionVoter">
-                    <beans:property name="rolePrefix" value="${systemType}" />
-                    <beans:property name="securityService" ref="accessControlService" />
-                    <beans:property name="stripQueryStringFromUrls" value="true" />
-                </beans:bean>
+<!--                 <beans:bean class="com.iisigroup.cap.auth.vote.CapPermissionVoter"> -->
+<!--                     <beans:property name="rolePrefix" value="${systemType}" /> -->
+<!--                     <beans:property name="securityService" ref="accessControlService" /> -->
+<!--                     <beans:property name="stripQueryStringFromUrls" value="true" /> -->
+<!--                 </beans:bean> -->
                 <!-- cap-auth-admin end -->
                 <beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
             </beans:list>
