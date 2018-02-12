@@ -43,11 +43,6 @@
             </dependency>
             <dependency>
                 <groupId>com.iisigroup.cap</groupId>
-                <artifactId>cap-hg</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.iisigroup.cap</groupId>
                 <artifactId>cap-db</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -106,7 +101,6 @@
         <module>cap-security</module>
         <module>cap-config</module>
         <module>cap-web</module>
-        <module>cap-hg</module>
         <module>cap-db</module>
         <module>cap-base</module>
         <module>cap-auth-admin</module>
