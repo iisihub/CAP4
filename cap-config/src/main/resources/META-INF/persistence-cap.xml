@@ -19,15 +19,6 @@
         <class>com.iisigroup.cap.auth.model.DefaultFunction</class>
         <class>com.iisigroup.cap.auth.model.PwdLog</class>
         <!-- cap-auth-admin end -->
-        <!-- cap-rule start -->
-        <class>com.iisigroup.cap.rule.model.CaseInfo</class>
-        <class>com.iisigroup.cap.rule.model.DivFtItm</class>
-        <class>com.iisigroup.cap.rule.model.DivFtDtl</class>
-        <class>com.iisigroup.cap.rule.model.DivCtItm</class>
-        <class>com.iisigroup.cap.rule.model.DivCtDtl</class>
-        <class>com.iisigroup.cap.rule.model.DivRlItm</class>
-        <class>com.iisigroup.cap.rule.model.DivRlDtl</class>
-        <!-- cap-rule end -->
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
     </persistence-unit>
 </persistence>
