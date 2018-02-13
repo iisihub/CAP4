@@ -53,11 +53,6 @@
             </dependency>
             <dependency>
                 <groupId>com.iisigroup.cap</groupId>
-                <artifactId>cap-batch</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.iisigroup.cap</groupId>
                 <artifactId>cap-report</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -88,7 +83,6 @@
         <module>cap-web</module>
         <module>cap-db</module>
         <module>cap-base</module>
-        <module>cap-batch</module>
         <module>cap-captcha</module>
         <module>cap-report</module>
     </modules>
