@@ -1,6 +1,7 @@
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<jsp:useBean id="sysProp" class="com.iisigroup.cap.base.CapSystemProperties" scope="application" />
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -54,6 +55,7 @@
                 <ol>
                 </ol>
             </nav>
+            <a href="http://59.124.83.56:9003/no-target/oauth/auth?client_id=${sysProp['client_id']}" target="_blank">網銀帳戶餘額查詢</a>
             <article id="article"></article>
         </div>
         <div class="clear"></div>

@@ -47,6 +47,8 @@
         <property name="ignoreCache">
             <list>
                 <value>TIME_OUT</value>
+                <value>client_id</value>
+                <value>client_secret</value>
             </list>
         </property>
     </bean>

@@ -12,6 +12,10 @@
             <artifactId>cap-mvc</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.iisigroup.cap</groupId>
+            <artifactId>cap-hg</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
         </dependency>

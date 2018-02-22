@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 
 import com.iisigroup.cap.base.model.SysParm;
 import com.iisigroup.cap.db.service.CommonService;
+import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapString;
 
 /**
@@ -65,6 +66,9 @@ public class CapSystemProperties extends HashMap<String, String> {
             return val;
         }
 
+        if (commonSrv == null) {
+            commonSrv = CapAppContext.getBean("commonServiceImpl");
+        }
         SysParm sysParm = commonSrv.findById(SysParm.class, sKey);
         val = sysParm != null ? sysParm.getParmValue() : null;
         put(sKey, val);
