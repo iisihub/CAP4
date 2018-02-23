@@ -73,6 +73,12 @@
                 <artifactId>freemarker</artifactId>
                 <version>2.3.25-incubating</version>
             </dependency>
+            <!-- cola base -->
+            <dependency>
+                <groupId>com.iisigroup.cap</groupId>
+                <artifactId>citi-otp</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <modules>
@@ -85,6 +91,7 @@
         <module>cap-base</module>
         <module>cap-captcha</module>
         <module>cap-report</module>
+        <module>citi-otp</module>
     </modules>
     <profiles>
         <profile>

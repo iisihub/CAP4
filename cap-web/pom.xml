@@ -23,6 +23,11 @@
             <!-- 包版時不包進 war 中 使用 build plugin copy 進classes -->
             <scope>provided</scope>
         </dependency>
+		<!-- cola base -->
+		<dependency>
+			<groupId>com.iisigroup.colabase</groupId>
+			<artifactId>citi-otp</artifactId>
+		</dependency>
         <!-- optional -->
         <dependency>
             <groupId>com.iisigroup.cap</groupId>
