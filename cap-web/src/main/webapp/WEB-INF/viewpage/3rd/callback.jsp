@@ -16,18 +16,24 @@
     <!-- <a href="/cap-web/page/index">回首頁</a> -->
     <form method="post" autocomplete="off" onsubmit="return false;">
         <div>
-            Username: <span id="username" class="field"></span>
+            <strong>Username:</strong> <span id="username" class="field"></span>
         </div>
         <div>
-            Scope: <span id="scope" class="field"></span>
+            <strong>AppEndUser:</strong> <span id="app_enduser" class="field"></span>
         </div>
         <div>
-            Token: <span id="access_token" class="field"></span>
+            <strong>Scope:</strong> <span id="scope" class="field"></span>
+        </div>
+        <div>
+            <strong>Token:</strong> <span id="access_token" class="field"></span>
         </div>
         <div>
             <button type="button" id="redo">查詢</button>
         </div>
     </form>
+    <strong>Token:</strong>
+    <div id="token"></div>
+    <strong>Inquiry:</strong>
     <div id="result"></div>
 </body>
 </body>

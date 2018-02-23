@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 
@@ -50,7 +51,8 @@ public class OAuthHandler extends MFormHandler {
 
     public Result token(Request request) {
         String code = request.get("code");
-        String[] scopes = CapString.trimNull(request.get("scope"), "").split(" ");
+        String username = CapString.trimNull(((HttpServletRequest) request.getServletRequest()).getSession().getAttribute("username"));
+        // String[] scopes = CapString.trimNull(request.get("scope"), "").split(" ");
 
         HGService hgService = new CapHttpService();
 
@@ -64,7 +66,7 @@ public class OAuthHandler extends MFormHandler {
         header.put("Content-Type", "application/x-www-form-urlencoded");
         hgService.setHeader(header);
 
-        hgService.setSendData("grant_type=authorization_code&code=" + code);
+        hgService.setSendData("grant_type=authorization_code&code=" + code + "&app_enduser=" + username);
         try {
             hgService.initConnection();
             hgService.execute();

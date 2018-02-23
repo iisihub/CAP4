@@ -7,16 +7,11 @@ pageInit(function() {
       url : url('oauthhandler/token'),
       data : {
         'code' : reqJSON.code
-      // ,'scope' : scope
       }
     }).done(function(d) {
-      $("#result").text(print(d));
       $("form").injectData(d);
-      // FIXME username in session ?
-      // FIXME who check this ?
-      if ((d.scope && d.scope.indexOf(reqJSON.scope) > -1) && (d.username && d.username == reqJSON.username)) {
-        inquiryAccount(d);
-      }
+      $("#token").text(print(d));
+      inquiryAccount(d);
     }).fail(function(d) {
       // window.location = 'http://localhost:8080/cap-web/j_spring_security_logout';
     });
@@ -33,7 +28,10 @@ pageInit(function() {
       $("#result").empty();
       $.ajax({
         url : url('mobilebankinghandler/getAvailableBalance'),
-        data : d
+        data : {
+          'access_token' : d.access_token,
+          'username' : d.username
+        }
       }).done(function(d) {
         $("#result").text(print(d));
       });

@@ -14,18 +14,21 @@ package com.iisigroup.cap.auth.handler;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.stereotype.Controller;
 
+import com.iisigroup.cap.base.CapSystemProperties;
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
-import com.iisigroup.cap.utils.CapString;
 
 /**
  * <pre>
@@ -42,13 +45,21 @@ import com.iisigroup.cap.utils.CapString;
 @Controller("mobilebankinghandler")
 public class MobileBankingHandler extends MFormHandler {
 
+    @Resource
+    private CapSystemProperties sysProp;
+
+    public Result user(Request request) {
+        ((HttpServletRequest) request.getServletRequest()).getSession().setAttribute("username", request.get("username"));
+        return new AjaxFormResult();
+    }
+
     public Result getAvailableBalance(Request request) {
 
-        String[] scopes = CapString.trimNull(request.get("scope"), "").split(" ");
+        // String[] scopes = CapString.trimNull(request.get("scope"), "").split(" ");
         String username = request.get("username");
         String token = request.get("access_token");
 
-        String url = "http://59.124.83.56:9003/v1/customer/availbalsumminq?CustID=A123456789&AcctNo=56789013-011&apikey=PufzaI4gHJNccdAEcG8EyAj1AfYrWZqf";
+        String url = "http://59.124.83.56:9003/v1/customer/availbalsumminq?CustID=A123456789&AcctNo=56789013-011&apikey=" + sysProp.get("client_id") + "&app_enduser=" + username;
 
         try {
             HttpClient client = HttpClientBuilder.create().build();

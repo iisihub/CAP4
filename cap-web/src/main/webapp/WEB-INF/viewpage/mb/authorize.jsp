@@ -32,9 +32,18 @@
             <input type="radio" id="pay" name="pay" class="validate[required]" value=""/>Deny
         </label>
         <br/>
+        NO_SCOPE:
+        <label>
+            <input type="radio" id="other" name="other" value="NO_SCOPE"/>Approve
+        </label>
+        <label>
+            <input type="radio" id="other" name="other" value=""/>Deny
+        </label>
+        <br/>
         <input type="hidden" id="client_id" name="client_id" value="${sysProp['client_id']}"/>
-        <input type="hidden" id="username" name="username" value=""/>
-        <input type="hidden" id="scope" name="scope" value="inquiry%20pay"/>
+        <!-- <input type="hidden" id="username" name="username" value=""/> -->
+        <!-- <input type="hidden" id="scope" name="scope" value="inquiry%20pay"/> -->
+        <!-- <input type="hidden" id="scope" name="scope" value="NO_SCOPE"/> -->
         <button id="submit">Submit</button>
     </form>
 </body>
