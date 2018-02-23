@@ -67,8 +67,7 @@ $.holdReady(true);
                         try {
                             json = JSON.parse(xhr.responseText);
                         } catch (e) {
-                            // logDebug("ajaxError",
-                            // e);
+                            // logDebug("ajaxError", e);
                             json = {};
                         }
                         // ilog.debug(json);
@@ -77,10 +76,7 @@ $.holdReady(true);
                         }
 
                         if (res && xhr.status && xhr.status != '200' || xhr.status == 0) {
-                            // ilog.server("http
-                            // error code: 「" +
-                            // xhr.status +
-                            // "」");
+                            // ilog.server("http error code: 「" + xhr.status + "」");
                             return false;
                         }
                         return res;
@@ -94,18 +90,13 @@ $.holdReady(true);
                                 window.location = window.location.href.replace(/#$/, '');
                                 window.close();
                             });
-                            // API.loadPage("../error/errormsg?errorMsg="
-                            // +
-                            // encodeURIComponent(encodeURIComponent(json.AJAX_CLOSE_PAGE_HANDLER_EXCEPTION)),
-                            // $("#" +
-                            // Properties.innerPageFrameId));
+                            // API.loadPage("../error/errormsg?errorMsg=" + encodeURIComponent(encodeURIComponent(json.AJAX_CLOSE_PAGE_HANDLER_EXCEPTION)),
+                            // $("#" + Properties.innerPageFrameId));
                             return false;
                         },
                         AJAX_MESSAGE_HANDLER_EXCEPTION: function(xhr, action, json) {
                             // ilog.debug(json.AJAX_MESSAGE_HANDLER_EXCEPTION);
-                            // CommonAPI.showPopMessage(json.AJAX_MESSAGE_HANDLER_EXCEPTION,
-                            // action
-                            // || undefined);
+                            // CommonAPI.showPopMessage(json.AJAX_MESSAGE_HANDLER_EXCEPTION, action || undefined);
                             API.showErrorMessage(json.AJAX_MESSAGE_HANDLER_EXCEPTION);
                             return false;
                         },
@@ -152,9 +143,7 @@ $.holdReady(true);
                     }
 
                     if (res && xhr.status && xhr.status != '200') {
-                        // ilog.server("http
-                        // error code: 「" +
-                        // xhr.status + "」");
+                        // ilog.server("http error code: 「" + xhr.status + "」");
                         return "connect error";
                     }
                     return "";
@@ -240,8 +229,7 @@ $.holdReady(true);
                             closeName: i18n.def.close,
                             title: message && !$.isFunction(message) ? title : i18n.def.confirmTitle,
                             message: message && !$.isFunction(message) ? message : title,
-                            // buttons:
-                            // closeBtn,
+                            // buttons: closeBtn,
                             buttons: closeBtn,
                             noClose: true
                         });
@@ -260,10 +248,8 @@ $.holdReady(true);
                     showPopMessage: function(title, message, action, cls) {
                         var randomID = "sysMessage" + new Date().getTime();
                         // var closeBtn = {};
-                        // closeBtn[i18n.def.close]
-                        // = function(){
-                        // CommonAPI.iConfirmDialog(randomID,
-                        // 'close');
+                        // closeBtn[i18n.def.close] = function(){
+                        // CommonAPI.iConfirmDialog(randomID, 'close');
                         // };
 
                         return CommonAPI._showConfirmMessage({
@@ -272,8 +258,7 @@ $.holdReady(true);
                             closeName: i18n.def.close,
                             title: message && !$.isFunction(message) ? title : i18n.def.confirmTitle,
                             message: message && !$.isFunction(message) ? message : title,
-                            // buttons:
-                            // closeBtn,
+                            // buttons: closeBtn,
                             close: function() {
                                 $("#" + randomID).remove();
                                 action && action();
@@ -583,21 +568,25 @@ $.holdReady(true);
                         if (!xhr || !status) {
                             return;
                         }
+                        if(xhr.status == 401) {
+                          API.showErrorMessage('Error', i18n.def.sessionTimeout, function() {
+                            window.setCloseConfirm && window.setCloseConfirm(false);
+                            window.location = url('page/login');
+                          });
+                        }
                         settings.error && settings.error(xhr, status, e);
-
                         var statusText = "";
                         try {
                             statusText = xhr.statusText;
                         } catch (e) {}
                         if (statusText == 'timeout') {
-                            // request
-                            // timeout
+                            // request timeout
                             API.showErrorMessage(i18n.def.timeout);
                         } else if (!xhr.status && statusText) {
                             API.showErrorMessage(i18n.def.connectError + "-「" + statusText + "」");
                         } else if (xhr.responseText) {
                             errorCheck(xhr);
-                        } else if (xhr.status == 0 || xhr.status && xhr.status != '200') {
+                        } else if (xhr.status == 0 || xhr.status && xhr.status != '200' && xhr.status != '401') {
                             API.showErrorMessage("http error code: 「" + xhr.status + "」");
                         }
                     }).always(function() {
@@ -802,8 +791,7 @@ $.holdReady(true);
                         return this.___load.apply(this, arguments);
                     }
 
-                    // Don't do a request if no elements
-                    // are being requested
+                    // Don't do a request if no elements are being requested
                     if (!this.length) {
                         return this;
                     }
@@ -835,13 +823,7 @@ $.holdReady(true);
                     // Request the remote document
                     $.ajax({
                         url: url,
-
-                        // if "type"
-                        // variable is
-                        // undefined,
-                        // then "GET"
-                        // method will
-                        // be used
+                        // if "type" variable is undefined, then "GET" method will be used
                         type: type,
                         dataType: "html",
                         data: params,
@@ -859,59 +841,17 @@ $.holdReady(true);
                             }
                         }
                     }).done(function(responseText) {
-
-                        // Save response
-                        // for use in
-                        // complete
-                        // callback
+                        // Save response for use in complete callback
                         response = arguments;
-
-                        // See if a
-                        // selector was
-                        // specified
-                        self.html(selector ? // Create
-                            // a
-                            // dummy
-                            // div
-                            // to
-                            // hold
-                            // the
-                            // results
+                        // See if a selector was specified
+                        self.html(selector ? // Create a dummy div to hold the results
                             $("<div>")
-                            // inject
-                            // the
-                            // contents
-                            // of
-                            // the
-                            // document
-                            // in,
-                            // removing
-                            // the
-                            // scripts
-                            // to
-                            // avoid
-                            // any
-                            // 'Permission
-                            // Denied'
-                            // errors
-                            // in
-                            // IE
+                            // inject the contents of the document in, removing the scripts to avoid any 'Permission Denied' errors in IE
                             .append(responseText.replace(rscript, ""))
-                            // Locate
-                            // the
-                            // specified
-                            // elements
-                            .find(selector) : // If
-                            // not,
-                            // just
-                            // inject
-                            // the
-                            // full
-                            // result
+                            // Locate the specified elements
+                            .find(selector) : // If not, just inject the full result
                             responseText);
-
                     });
-
                     return this;
                 },
                 /**

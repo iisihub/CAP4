@@ -35,12 +35,11 @@
         <!-- <form-login always-use-default-target="true" login-page="/page/login" default-target-url="/page/index" username-parameter="j_username" password-parameter="j_password" login-processing-url="/j_spring_security_check" 
             /> -->
         <!-- without cap-auth-admin end -->
-        <session-management>
-            <concurrency-control max-sessions="1" expired-url="/page/login?error" session-registry-alias="sessionRegistry" /> <!-- exception-if-maximum-exceeded="true" -->
-        </session-management>
+        <session-management session-authentication-strategy-ref="sas"></session-management>
         <logout logout-url="/j_spring_security_logout" logout-success-url="/page/login" />
         <!-- cap-captcha start -->
         <custom-filter ref="captchaCaptureFilter" before="FORM_LOGIN_FILTER" />
+        <custom-filter ref="concurrentSessionFilter" position="CONCURRENT_SESSION_FILTER" />
         <!-- cap-captcha end -->
     </http>
     <!-- cap-captcha start -->
@@ -53,6 +52,30 @@
     <authentication-manager>
         <authentication-provider ref="customAuthenticationProvider" />
     </authentication-manager>
+    <beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+    <beans:bean id="concurrentSessionFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+        <beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+        <beans:constructor-arg name="expiredUrl" value="/page/login?error" />
+        <!-- this permits redirection to session timeout page from javascript/ajax or http -->
+        <beans:property name="redirectStrategy" ref="enhancedRedirectStrategy" />
+    </beans:bean>
+    <beans:bean id="enhancedRedirectStrategy" class="com.iisigroup.cap.security.web.EnhancedRedirectStrategy"></beans:bean>
+    <beans:bean id="sas" class="org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy">
+        <beans:constructor-arg>
+            <beans:list>
+                <beans:bean class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
+                    <beans:constructor-arg ref="sessionRegistry" />
+                    <beans:property name="maximumSessions" value="1" />
+                    <beans:property name="exceptionIfMaximumExceeded" value="false" />
+                </beans:bean>
+                <beans:bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy">
+                </beans:bean>
+                <beans:bean class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
+                    <beans:constructor-arg ref="sessionRegistry" />
+                </beans:bean>
+            </beans:list>
+        </beans:constructor-arg>
+    </beans:bean>
     <!-- cap-auth-admin end -->
     <!-- without cap-auth-admin start -->
     <!-- <beans:bean id="userDetailsServiceImpl" class="com.iisigroup.cap.security.service.impl.CapDefaultUserDetailsService" />

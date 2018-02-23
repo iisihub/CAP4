@@ -4,6 +4,11 @@ pageInit(function() {
 //        console.debug('window.setCloseConfirm : '+ window.setCloseConfirm);
         window.setCloseConfirm && window.setCloseConfirm(false);
         var agreeChange = false;
+        if (window.location.href.indexOf('page/login') < 0) {
+          API.showErrorMessage('作業逾時，請重新登入。', function() {
+            window.location.href = url('page/login');
+          });
+        }
         function login(ignoreNotify) {
             $.ajax({
                 url: url("j_spring_security_check"),
