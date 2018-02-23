@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.iisigroup.cap</groupId>
-    <artifactId>cap</artifactId>
+    <groupId>com.iisigroup.colabase</groupId>
+    <artifactId>citi</artifactId>
     <version>4.0.1-colabase-201802091200</version>
     <packaging>pom</packaging>
     <properties>
@@ -22,43 +22,43 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.iisigroup.cap</groupId>
-                <artifactId>cap-core</artifactId>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.iisigroup.cap</groupId>
-                <artifactId>cap-mvc</artifactId>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-mvc</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.iisigroup.cap</groupId>
-                <artifactId>cap-security</artifactId>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-security</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.iisigroup.cap</groupId>
-                <artifactId>cap-config</artifactId>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-config</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.iisigroup.cap</groupId>
-                <artifactId>cap-db</artifactId>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-db</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.iisigroup.cap</groupId>
-                <artifactId>cap-base</artifactId>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-base</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.iisigroup.cap</groupId>
-                <artifactId>cap-report</artifactId>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-report</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.iisigroup.cap</groupId>
-                <artifactId>cap-captcha</artifactId>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-captcha</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -75,22 +75,22 @@
             </dependency>
             <!-- cola base -->
             <dependency>
-                <groupId>com.iisigroup.cap</groupId>
+                <groupId>com.iisigroup.colabase</groupId>
                 <artifactId>citi-otp</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
     <modules>
-        <module>cap-core</module>
-        <module>cap-mvc</module>
-        <module>cap-security</module>
-        <module>cap-config</module>
-        <module>cap-web</module>
-        <module>cap-db</module>
-        <module>cap-base</module>
-        <module>cap-captcha</module>
-        <module>cap-report</module>
+        <module>citi-core</module>
+        <module>citi-mvc</module>
+        <module>citi-security</module>
+        <module>citi-config</module>
+        <module>citi-web</module>
+        <module>citi-db</module>
+        <module>citi-base</module>
+        <module>citi-captcha</module>
+        <module>citi-report</module>
         <module>citi-otp</module>
     </modules>
     <profiles>
