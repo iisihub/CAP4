@@ -58,7 +58,7 @@ public class MobileBankingHandler extends MFormHandler {
             httpGet.addHeader("Authorization", "Bearer " + token);
             HttpResponse response = client.execute(httpGet);
 
-            System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+            logger.debug("Response Code : " + response.getStatusLine().getStatusCode());
 
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<jsp:useBean id="sysProp" class="com.iisigroup.cap.base.CapSystemProperties" scope="application" />
 <!DOCTYPE>
 <html>
 <head>
@@ -31,6 +32,9 @@
             <input type="radio" id="pay" name="pay" class="validate[required]" value=""/>Deny
         </label>
         <br/>
+        <input type="hidden" id="client_id" name="client_id" value="${sysProp['client_id']}"/>
+        <input type="hidden" id="username" name="username" value=""/>
+        <input type="hidden" id="scope" name="scope" value="inquiry%20pay"/>
         <button id="submit">Submit</button>
     </form>
 </body>

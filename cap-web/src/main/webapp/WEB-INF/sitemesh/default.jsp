@@ -55,7 +55,7 @@
                 <ol>
                 </ol>
             </nav>
-            <a href="http://59.124.83.56:9003/no-target/oauth/auth?client_id=${sysProp['client_id']}" target="_blank">網銀帳戶餘額查詢</a>
+            <a href="http://59.124.83.56:9003/no-target/oauth/auth?client_id=${sysProp['client_id']}" target="_self">網銀帳戶餘額查詢</a>
             <article id="article"></article>
         </div>
         <div class="clear"></div>

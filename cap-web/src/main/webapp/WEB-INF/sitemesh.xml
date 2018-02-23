@@ -35,7 +35,7 @@
             <param name="ignorePathReg" value="(page/index)" />
         </mapper>
         <mapper class="com.iisigroup.cap.sitemesh.mapper.CapRequestJSONMapper">
-            <param name="decoratorFile" value="minimal,form,login" />
+            <param name="decoratorFile" value="minimal,form,login,mb" />
             <param name="ignoreParams" value="_isAjax,formAction,_pa" />
         </mapper>
         <mapper class="com.iisigroup.cap.sitemesh.mapper.CapSystemPropertiesJSONMapper">
