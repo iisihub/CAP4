@@ -21,7 +21,7 @@
             <input type="radio" id="inquiry" name="inquiry" class="validate[required]" value="inquiry" checked="checked"/>Approve
         </label>
         <label>
-            <input type="radio" id="inquiry" name="inquiry" class="validate[required]" value=""/>Deny
+            <input type="radio" id="inquiry" name="inquiry" class="validate[required]" value="X"/>Deny
         </label>
         <br/>
         Pay:
@@ -29,12 +29,12 @@
             <input type="radio" id="pay" name="pay" class="validate[required]" value="pay" checked="checked"/>Approve
         </label>
         <label>
-            <input type="radio" id="pay" name="pay" class="validate[required]" value=""/>Deny
+            <input type="radio" id="pay" name="pay" class="validate[required]" value="X"/>Deny
         </label>
         <br/>
-        NO_SCOPE:
+        Other:
         <label>
-            <input type="radio" id="other" name="other" value="NO_SCOPE"/>Approve
+            <input type="radio" id="other" name="other" value="other"/>Approve
         </label>
         <label>
             <input type="radio" id="other" name="other" value=""/>Deny
