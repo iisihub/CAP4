@@ -105,6 +105,11 @@
             <version>1.2</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlets</artifactId>
+            <version>9.4.6.v20170531</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

@@ -107,5 +107,13 @@ pageInit(function() {
       mform.reset();
       grid.resetSelection();
     });
+
+    $("#oauth_auth").length && $.ajax({
+      url : $("#oauth_auth").attr('href'),
+      type : 'GET'
+    }).always(function(d) {
+      $("#article").html(d.responseText);
+    });
+
   });
 });

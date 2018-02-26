@@ -29,6 +29,7 @@ import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
+import com.iisigroup.cap.utils.CapString;
 
 /**
  * <pre>
@@ -51,6 +52,10 @@ public class MobileBankingHandler extends MFormHandler {
     public Result user(Request request) {
         ((HttpServletRequest) request.getServletRequest()).getSession().setAttribute("username", request.get("username"));
         return new AjaxFormResult();
+    }
+
+    public Result getUser(Request request) {
+        return new AjaxFormResult().set("user", CapString.trimNull(((HttpServletRequest) request.getServletRequest()).getSession().getAttribute("username")));
     }
 
     public Result getAvailableBalance(Request request) {

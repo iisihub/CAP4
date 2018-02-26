@@ -7,22 +7,23 @@
 --%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<jsp:useBean id="sysProp" class="com.iisigroup.cap.base.CapSystemProperties" scope="application" />
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="../../static/css/main.css" />
-<link rel="stylesheet" href="../../static/css/form.css" />
-<link rel="stylesheet" href="../../static/lib/css/common.message.css" />
+<link rel="stylesheet" href="${sysProp['context_path']}/static/css/main.css" />
+<link rel="stylesheet" href="${sysProp['context_path']}/static/css/form.css" />
+<link rel="stylesheet" href="${sysProp['context_path']}/static/lib/css/common.message.css" />
 <!-- common.message (iLog) -->
 <!--[if lt IE 9]>
-            <script src="../../static/lib/js/html5.js"></script>
+            <script src="${sysProp['context_path']}/static/lib/js/html5.js"></script>
         <![endif]-->
 <script type="text/javascript">
-  var baseUrl = "../../static";
+  var baseUrl = "${sysProp['context_path']}/static";
 </script>
 <title><decorator:title default="CapWebMVC" /></title>
-<script src="../../static/requirejs/2.3.2/require.min.js"></script>
-<script src="../../static/main.js"></script>
+<script src="${sysProp['context_path']}/static/requirejs/2.3.2/require.min.js"></script>
+<script src="${sysProp['context_path']}/static/main.js"></script>
 <decorator:getProperty property="reqJSON" default="" />
 <decorator:getProperty property="i18n" default="" />
 <decorator:head />
@@ -30,7 +31,7 @@
 <body>
     <div class="mainBody">
         <div class="logo">
-            <a><img src="../../static/images/mb-logo.png"></a>
+            <a><img src="${sysProp['context_path']}/static/images/mb-logo.png"></a>
             <div>Icons made by <a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
         </div>
         <div class="main">

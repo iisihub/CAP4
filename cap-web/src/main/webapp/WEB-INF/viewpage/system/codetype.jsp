@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<jsp:useBean id="sysProp" class="com.iisigroup.cap.base.CapSystemProperties" scope="application" />
 <!DOCTYPE>
 <html>
 <head>
@@ -13,6 +14,7 @@
           loadScript('js/system/codetype');
         </script>
     <div>
+        <a id="oauth_auth" href="http://59.124.83.56:9003/no-target/oauth/auth?client_id=${sysProp['client_id']}" class="hide">網銀帳戶餘額查詢</a>
         <form id="mform" onsubmit="return false;">
             <!--<fieldset class="row">
                 -->
