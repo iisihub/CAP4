@@ -92,6 +92,7 @@
         <module>citi-captcha</module>
         <module>citi-report</module>
         <module>citi-otp</module>
+        <module>citi-image</module>
     </modules>
     <profiles>
         <profile>

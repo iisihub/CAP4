@@ -28,6 +28,10 @@
 			<groupId>com.iisigroup.colabase</groupId>
 			<artifactId>citi-otp</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.iisigroup.colabase</groupId>
+			<artifactId>citi-image</artifactId>
+		</dependency>
         <!-- optional -->
         <dependency>
             <groupId>com.iisigroup.colabase</groupId>
