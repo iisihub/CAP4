@@ -5,25 +5,38 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpRequestRetryHandler;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpOptions;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.HttpTrace;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
+import org.springframework.util.CollectionUtils;
 
 import com.iisigroup.cap.constants.Constants;
 import com.iisigroup.cap.exception.CapException;
@@ -45,8 +58,9 @@ import com.iisigroup.cap.utils.CapString;
  */
 public class CapHttpService extends AbstractHGservice {
 
-    private DefaultHttpClient httpClient;
-    private HttpPost httpPost;
+    private HttpClientBuilder httpClientBuilder;
+    private CloseableHttpClient httpClient;
+    private HttpRequestBase httpMethod;
     // private HttpResponse httpResponse;
     private int httpStatus;
     private byte[] responseData;
@@ -55,7 +69,7 @@ public class CapHttpService extends AbstractHGservice {
     /** default socket Timeout **/
     // private int defaultSocketTimeout = 55000;
     /** default encode **/
-    private String defaultEncode = HTTP.UTF_8;
+    private Charset defaultEncode = Consts.UTF_8;
     /** connection status **/
     private ConnStatus status;
     /** async **/
@@ -64,6 +78,8 @@ public class CapHttpService extends AbstractHGservice {
     private Object sendData;
 
     private Map<String, String> header;
+
+    private List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 
     /**
      * @param Map
@@ -77,7 +93,6 @@ public class CapHttpService extends AbstractHGservice {
      * 
      * @see com.iisi.cap.hg.service.IHGService#getStatus()
      */
-    @SuppressWarnings("unchecked")
     @Override
     public ConnStatus getStatus() {
         return status;
@@ -102,18 +117,13 @@ public class CapHttpService extends AbstractHGservice {
      * 
      * @see com.iisi.cap.hg.service.IHGService#getMessage()
      */
-    @SuppressWarnings("unchecked")
     @Override
     public Object getReceiveData() throws CapException {
         return responseData;
     }
 
-    public String getReceiveStringData() throws CapException {
-        try {
-            return new String(responseData, defaultEncode);
-        } catch (UnsupportedEncodingException e) {
-            throw new CapException(e, getClass());
-        }
+    public String getReceiveStringData() {
+        return new String(responseData, defaultEncode);
     }
 
     /*
@@ -121,7 +131,6 @@ public class CapHttpService extends AbstractHGservice {
      * 
      * @see com.iisigroup.cap.hg.service.IHGService#setHeader(java.lang.Object)
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void setHeader(Object data) {
         this.header = (Map<String, String>) data;
@@ -162,7 +171,11 @@ public class CapHttpService extends AbstractHGservice {
      * @throws UnsupportedEncodingException
      */
     public void setRequestBody(String body) throws UnsupportedEncodingException {
-        httpPost.setEntity(new StringEntity(body, defaultEncode));
+        if (httpMethod instanceof HttpEntityEnclosingRequestBase) {
+            ((HttpEntityEnclosingRequestBase) httpMethod).setEntity(new StringEntity(body, defaultEncode));
+        } else {
+            throw new UnsupportedOperationException();
+        }
     }
 
     /**
@@ -173,26 +186,38 @@ public class CapHttpService extends AbstractHGservice {
      * @throws UnsupportedEncodingException
      */
     public void setRequestParams(Map<String, String> map) throws UnsupportedEncodingException {
-        List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+        nvps = new ArrayList<NameValuePair>();
         for (String key : map.keySet()) {
             nvps.add(new BasicNameValuePair(key, map.get(key)));
         }
-        httpPost.setEntity(new UrlEncodedFormEntity(nvps, defaultEncode));
-
     }
 
     public void setRequestHeader(Map<String, String> map) {
         for (String key : map.keySet()) {
-            httpPost.addHeader(key, map.get(key));
+            httpMethod.addHeader(key, map.get(key));
         }
     }
 
     private void excuteHttp() throws Exception {
 
-        httpPost.setURI(new URI((String) getProperty(Constants.HOST_URL)));
+        String url = (String) getProperty(Constants.HOST_URL);
+        URI uri;
+        if (httpMethod instanceof HttpEntityEnclosingRequestBase) {
+            if (!CollectionUtils.isEmpty(nvps)) {
+                ((HttpEntityEnclosingRequestBase) httpMethod).setEntity(new UrlEncodedFormEntity(nvps, defaultEncode));
+            }
+            uri = new URI(url);
+        } else {
+            if (!CollectionUtils.isEmpty(nvps)) {
+                uri = new URIBuilder(url).addParameters(nvps).build();
+            } else {
+                uri = new URI(url);
+            }
+        }
+        httpMethod.setURI(uri);
         long st = System.currentTimeMillis();
 
-        HttpResponse httpResponse = httpClient.execute(httpPost);
+        HttpResponse httpResponse = httpClient.execute(httpMethod);
         logger.debug("Send Host spand time1: " + (System.currentTimeMillis() - st) + "ms");
         httpStatus = httpResponse.getStatusLine().getStatusCode();
 
@@ -207,7 +232,7 @@ public class CapHttpService extends AbstractHGservice {
                 // defaultEncode).toArray());
 
             } catch (RuntimeException ex) {
-                httpPost.abort();
+                httpMethod.abort();
                 throw ex;
             } finally {
                 instream.close();
@@ -215,13 +240,6 @@ public class CapHttpService extends AbstractHGservice {
 
             httpClient.getConnectionManager().shutdown();
         }
-        // httpClient.setHttpRequestRetryHandler(new HttpRequestRetryHandler() {
-        // @Override
-        // public boolean retryRequest(IOException exception, int count,
-        // HttpContext context) {
-        // return !(count > 3);
-        // }
-        // });
         if (logger.isTraceEnabled()) {
             logger.trace("host response:" + new String(responseData));
         }
@@ -277,10 +295,38 @@ public class CapHttpService extends AbstractHGservice {
      * 
      * @see com.iisi.cap.hg.service.IHGService#initConnection()
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void initConnection() throws CapException {
-        httpPost = new HttpPost();
+        String method = getProperty(Constants.HTTP_METHOD);
+        switch (method) {
+        case HttpDelete.METHOD_NAME:
+            httpMethod = new HttpDelete();
+            break;
+        case HttpPatch.METHOD_NAME:
+            httpMethod = new HttpPatch();
+            break;
+        case HttpPost.METHOD_NAME:
+            httpMethod = new HttpPost();
+            break;
+        case HttpPut.METHOD_NAME:
+            httpMethod = new HttpPut();
+            break;
+        case HttpGet.METHOD_NAME:
+            httpMethod = new HttpGet();
+            break;
+        case HttpHead.METHOD_NAME:
+            httpMethod = new HttpHead();
+            break;
+        case HttpOptions.METHOD_NAME:
+            httpMethod = new HttpOptions();
+            break;
+        case HttpTrace.METHOD_NAME:
+            httpMethod = new HttpTrace();
+            break;
+        default:
+            throw new UnsupportedOperationException("Http Method Unsupported: " + method);
+        }
+
         if (this.header instanceof Map) {
             setRequestHeader((Map<String, String>) this.header);
         }
@@ -293,11 +339,11 @@ public class CapHttpService extends AbstractHGservice {
         } catch (UnsupportedEncodingException e) {
             throw new CapException(e, getClass());
         }
-        httpClient = new DefaultHttpClient();
+        httpClientBuilder = HttpClientBuilder.create();
         String retryCount = getProperty(Constants.HTTP_RETRY_COUNT);
         if (retryCount != null) {
             final int count = Integer.valueOf(retryCount);
-            httpClient.setHttpRequestRetryHandler(new HttpRequestRetryHandler() {
+            httpClientBuilder.setRetryHandler(new HttpRequestRetryHandler() {
 
                 @Override
                 public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
@@ -307,17 +353,18 @@ public class CapHttpService extends AbstractHGservice {
                     logger.info("retry count:" + executionCount + " -- error:" + exception.getMessage());
                     return true;
                 }
+
             });
         }
 
         int ct = Integer.valueOf((String) getProperty(Constants.CONNECTION_TIMEOUT));
         int st = Integer.valueOf((String) getProperty(Constants.CONNECTION_TIMEOUT));
 
-        String encode = defaultEncode;
+        Charset encode = defaultEncode;
         String async = getProperty(Constants.ASYNC);
 
-        httpClient.getParams().setParameter(HttpConnectionParams.CONNECTION_TIMEOUT, ct);
-        httpClient.getParams().setParameter(HttpConnectionParams.SO_TIMEOUT, st);
+        RequestConfig config = RequestConfig.custom().setConnectTimeout(ct).setSocketTimeout(st).build();
+        httpClient = httpClientBuilder.setDefaultRequestConfig(config).build();
         defaultEncode = encode != null ? encode : defaultEncode;
         isAsync = (async != null ? Boolean.valueOf(async) : false);
         setStatus(ConnStatus.INIT);
@@ -328,7 +375,6 @@ public class CapHttpService extends AbstractHGservice {
      * 
      * @see com.iisi.cap.hg.service.IHGService#errorHandle(java.lang.Exception)
      */
-    @SuppressWarnings("unchecked")
     @Override
     public String errorHandle(Exception e) {
         logger.error(e.getMessage(), e);
