@@ -3,9 +3,9 @@
 <!DOCTYPE>
 <html>
 <head>
-<meta name="decorator" content="form">
+<meta name="decorator" content="none">
 <title><spring:message code="calendar.title"></spring:message></title>
-<link href='../../static/lib/css/calendar/fullcalendar.css' rel='stylesheet' />
+<link href='../static/lib/css/calendar/fullcalendar.css' rel='stylesheet' />
 <style>
 #detect {
   padding: 5px;
@@ -38,7 +38,7 @@
 </head>
 <body>
     <script>
-          loadScript('js/common/calendar');
+          loadScript('js/admin/calendar');
         </script>
     <br />
     <div id='calendar'></div>
