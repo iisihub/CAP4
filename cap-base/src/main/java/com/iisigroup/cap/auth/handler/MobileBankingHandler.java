@@ -11,23 +11,23 @@
  */
 package com.iisigroup.cap.auth.handler;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.stereotype.Controller;
 
 import com.iisigroup.cap.base.CapSystemProperties;
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
+import com.iisigroup.cap.constants.Constants;
 import com.iisigroup.cap.exception.CapException;
+import com.iisigroup.cap.hg.service.HGService;
+import com.iisigroup.cap.hg.service.impl.CapHttpService;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
 import com.iisigroup.cap.utils.CapString;
 
@@ -64,27 +64,36 @@ public class MobileBankingHandler extends MFormHandler {
         String username = request.get("username");
         String token = request.get("access_token");
 
-        String url = "http://59.124.83.56:9003/v1/customer/availbalsumminq?CustID=A123456789&AcctNo=56789013-011&apikey=" + sysProp.get("client_id") + "&app_enduser=" + username;
+        String url = "http://59.124.83.56:9003/v1/customer/availbalsumminq";
 
         try {
-            HttpClient client = HttpClientBuilder.create().build();
-            HttpGet httpGet = new HttpGet(url);
+            HGService hgService = new CapHttpService();
+
+            hgService.setProperty("SSL", "false");
+            hgService.setProperty(Constants.HTTP_METHOD, HttpGet.METHOD_NAME);
+            hgService.setProperty(Constants.HOST_URL, url);
+            hgService.setProperty(Constants.CONNECTION_TIMEOUT, "3000");
+            hgService.setProperty(Constants.ASYNC, "false");
+
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("CustID", "A123456789");
+            params.put("AcctNo", "56789013-011");
+            params.put("apikey", sysProp.get("client_id"));
+            params.put("app_enduser", username);
+            hgService.setSendData(params);
 
             // add request header
-            httpGet.addHeader("Authorization", "Bearer " + token);
-            HttpResponse response = client.execute(httpGet);
+            Map<String, Object> header = new HashMap<String, Object>();
+            header.put("Authorization", "Bearer " + token);
+            hgService.setHeader(header);
 
-            logger.debug("Response Code : " + response.getStatusLine().getStatusCode());
+            hgService.initConnection();
+            hgService.execute();
+            String receiveData = new String(hgService.getReceiveData(), "UTF-8");
 
-            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            logger.debug("Response Code : " + ((CapHttpService) hgService).getHttpStatus());
 
-            StringBuffer sb = new StringBuffer();
-            String line = "";
-            while ((line = rd.readLine()) != null) {
-                sb.append(line);
-            }
-
-            return new AjaxFormResult().set("result", sb.toString());
+            return new AjaxFormResult().set("result", receiveData);
         } catch (CapException e) {
             throw e;
         } catch (Exception e) {

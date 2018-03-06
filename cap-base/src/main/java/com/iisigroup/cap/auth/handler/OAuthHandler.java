@@ -18,6 +18,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.http.client.methods.HttpPost;
 import org.springframework.stereotype.Controller;
 
 import com.iisigroup.cap.base.CapSystemProperties;
@@ -57,8 +58,9 @@ public class OAuthHandler extends MFormHandler {
         HGService hgService = new CapHttpService();
 
         hgService.setProperty("SSL", "false");
+        hgService.setProperty(Constants.HTTP_METHOD, HttpPost.METHOD_NAME);
         hgService.setProperty(Constants.HOST_URL, "http://59.124.83.56:9003/no-target/oauth/token");
-        hgService.setProperty(Constants.CONNECTION_TIMEOUT, "300");
+        hgService.setProperty(Constants.CONNECTION_TIMEOUT, "3000");
         hgService.setProperty(Constants.ASYNC, "false");
 
         Map<String, Object> header = new HashMap<String, Object>();
