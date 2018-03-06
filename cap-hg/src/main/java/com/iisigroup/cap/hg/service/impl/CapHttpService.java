@@ -30,6 +30,7 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -334,7 +335,12 @@ public class CapHttpService extends AbstractHGservice {
             if (this.sendData instanceof Map) {
                 setRequestParams((Map<String, String>) this.sendData);
             } else if (this.sendData instanceof String && !CapString.isEmpty((String) this.sendData)) {
-                setRequestBody((String) this.sendData);
+                Map<String, String> params = new HashMap<String, String>();
+                List<NameValuePair> list = URLEncodedUtils.parse((String) this.sendData, defaultEncode);
+                for (NameValuePair elem : list) {
+                    params.put(elem.getName(), elem.getValue());
+                }
+                setRequestParams(params);
             }
         } catch (UnsupportedEncodingException e) {
             throw new CapException(e, getClass());

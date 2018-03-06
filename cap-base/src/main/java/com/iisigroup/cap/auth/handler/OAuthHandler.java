@@ -68,7 +68,11 @@ public class OAuthHandler extends MFormHandler {
         header.put("Content-Type", "application/x-www-form-urlencoded");
         hgService.setHeader(header);
 
-        hgService.setSendData("grant_type=authorization_code&code=" + code + "&app_enduser=" + username);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("grant_type", "authorization_code");
+        params.put("code", code);
+        params.put("app_enduser", username);
+        hgService.setSendData(params);
         try {
             hgService.initConnection();
             hgService.execute();
