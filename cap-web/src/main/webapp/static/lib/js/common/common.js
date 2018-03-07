@@ -568,11 +568,13 @@ $.holdReady(true);
                         if (!xhr || !status) {
                             return;
                         }
-                        if(xhr.status == 401) {
-                          API.showErrorMessage('Error', i18n.def.sessionTimeout, function() {
-                            window.setCloseConfirm && window.setCloseConfirm(false);
-                            window.location = url('page/login');
-                          });
+                        if (xhr.status == 401) {
+                          if (window.location.href.indexOf('page/login') < 0) {
+                            API.showErrorMessage('Error', i18n.def.sessionTimeout, function() {
+                              window.setCloseConfirm && window.setCloseConfirm(false);
+                              window.location = url('page/login');
+                            });
+                          }
                         }
                         settings.error && settings.error(xhr, status, e);
                         var statusText = "";

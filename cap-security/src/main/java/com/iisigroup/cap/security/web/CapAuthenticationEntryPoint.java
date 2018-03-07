@@ -12,10 +12,17 @@
  */
 package com.iisigroup.cap.security.web;
 
-import javax.naming.AuthenticationException;
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 /**
@@ -30,9 +37,42 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
  *          </ul>
  */
 public class CapAuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint {
+    private static final Log logger = LogFactory.getLog(CapAuthenticationEntryPoint.class);
+    private final RedirectStrategy redirectStrategy = new EnhancedRedirectStrategy();
 
     public CapAuthenticationEntryPoint(String loginFormUrl) {
         super(loginFormUrl);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint#commence(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
+     * org.springframework.security.core.AuthenticationException)
+     */
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        String redirectUrl = null;
+        if (super.isUseForward()) {
+            if (super.isForceHttps() && "http".equals(request.getScheme())) {
+                // First redirect the current request to HTTPS.
+                // When that request is received, the forward to the login page will be used.
+                redirectUrl = buildHttpsRedirectUrlForRequest(request);
+            }
+            if (redirectUrl == null) {
+                String loginForm = determineUrlToUseForThisRequest(request, response, authException);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Server side forward to: " + loginForm);
+                }
+                RequestDispatcher dispatcher = request.getRequestDispatcher(loginForm);
+                dispatcher.forward(request, response);
+                return;
+            }
+        } else {
+            // redirect to login page. Use https if forceHttps true
+            redirectUrl = buildRedirectUrlToLoginPage(request, response, authException);
+        }
+
+        redirectStrategy.sendRedirect(request, response, redirectUrl);
     }
 
     /*
