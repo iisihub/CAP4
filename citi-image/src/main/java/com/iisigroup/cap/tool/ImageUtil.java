@@ -6,8 +6,6 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.imageio.*;
 import javax.imageio.stream.ImageInputStream;
@@ -22,6 +20,9 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ImageUtil {
   private final static Logger logger = LoggerFactory.getLogger(ImageUtil.class);
@@ -410,9 +411,9 @@ public class ImageUtil {
 
     ByteArrayOutputStream bao = new ByteArrayOutputStream();
     try (
-      FileInputStream fis = new FileInputStream(src);
-      BufferedInputStream bis = new BufferedInputStream(fis);
-      BufferedOutputStream bos = new BufferedOutputStream(bao)
+            FileInputStream fis = new FileInputStream(src);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            BufferedOutputStream bos = new BufferedOutputStream(bao)
     ) {
       int data;
       while ((data = bis.read()) != -1) {
