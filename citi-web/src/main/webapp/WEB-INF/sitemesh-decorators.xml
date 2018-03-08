@@ -12,6 +12,7 @@
     <decorator name="none" page="none.jsp" />
     <decorator name="form" page="form.jsp" />
     <decorator name="login" page="login.jsp" />
+    <decorator name="cola" page="colabase.jsp"/>
     <decorator name="default" page="default.jsp">
         <pattern>/*</pattern>
     </decorator>

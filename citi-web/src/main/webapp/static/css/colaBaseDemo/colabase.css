@@ -1,0 +1,29 @@
+/* menu */
+.mainBody {
+	margin: 0 auto; 
+	width: 60%;
+	font-size: 14px;
+}
+.mainBody img{
+	width:100%;
+}
+.footer{
+	border-top: 1px solid #ccc;
+}
+.copyright{
+	text-align: right;
+	font-size: 12px;
+}
+.orangeBtn {
+    background-color: #f68b1f;
+    padding: 6px 0;
+    border: 3px solid #f68b1f;
+    font-size: 1.25rem;
+    width: 60%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    color: white;
+	cursor: pointer;
+	text-align: center;
+	border-radius: 14px;
+}
