@@ -12,9 +12,15 @@
 	<script>
 		loadScript('js/colaBaseDemo/otp');
   	</script>
-	<input type="text" id="mobilePhone" maxlength="10" placeholder="請輸入發送OTP簡訊手機號碼" />
-	<button id="sendbtn" class="sendbtn" type="button">發送OTP簡訊</button><br/>
-	<input type="password" id="otp" name="otp" maxlength="6" placeholder="請輸入簡訊動態密碼OTP" /><br/>
-	<a href="#" id="reSendOTPbtn"><u>重新發送簡訊動態密碼OTP</u></a><br/>
+	<div style="height: 560px;">
+		<form id="otpForm" autocomplete="off" method="post">
+			<h3>OTP身份認證</h3>
+			<input type="text" id="mobilePhone" maxlength="10" placeholder="請輸入發送OTP簡訊手機號碼" />
+			<button id="sendbtn" class="sendbtn" type="button">發送OTP簡訊</button><br/>
+			<input type="password" id="otp" name="otp" maxlength="6" placeholder="請輸入簡訊動態密碼OTP" />
+			<button id="reSendOTPbtn" class="sendbtn" type="button">重新發送簡訊動態密碼OTP</button><br/>
+			<input id="otpSeconds" type="text" name="ss" readOnly> 秒失效
+		</form>
+	</div>
 </body>
 </html>
