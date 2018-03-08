@@ -2,15 +2,15 @@
 .mainBody {
 	margin: 0 auto; 
 	width: 60%;
-	font-size: 14px;
+	font-size: 100%;
 }
-.mainBody img{
+.mainBody img {
 	width:100%;
 }
-.footer{
+.footer {
 	border-top: 1px solid #ccc;
 }
-.copyright{
+.copyright {
 	text-align: right;
 	font-size: 12px;
 }
@@ -26,4 +26,22 @@
 	cursor: pointer;
 	text-align: center;
 	border-radius: 14px;
+}
+.sendbtn {
+	border-radius: 4px;
+    box-sizing: border-box;
+    display: inline-block;
+    color: #fff;
+    font-size: 16px;
+    width: auto;
+    height: 33px;
+    text-align: center;
+    background: #FF9800;
+}
+.mainBody input {
+    width: 30%;
+    margin: 0 auto 10px;
+    border: 1px solid #d7d7d7;
+    height: 34px;
+    font-size: 16px;
 }

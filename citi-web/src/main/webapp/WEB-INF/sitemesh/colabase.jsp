@@ -5,11 +5,9 @@
 <html>
 <head>
 <link rel="stylesheet" href="../../static/css/colaBaseDemo/colabase.css" />
-<link rel="stylesheet" href="../../static/lib/css/common.message.css" />
 <script type="text/javascript">
   var baseUrl = "../../static";
 </script>
-<title>Cola Base</title>
 <!-- jQuery -->
 <script type="text/javascript" src="https://www.citibank.com.tw/sim/zh-tw/js/jquery-1.8.3.min.js"></script>
 <script src="../../static/requirejs/2.3.2/require.min.js"></script>
@@ -18,6 +16,7 @@
 <decorator:getProperty property="i18n" default="" />
 <decorator:getProperty property="prop" default="" />
 <decorator:head />
+<title>Cola Base</title>
 </head>
 <body>
     <div class="mainBody">
