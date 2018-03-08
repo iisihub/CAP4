@@ -14,7 +14,7 @@
   	</script>
   	<div>
 		<fieldset>
-		    <legend><h1 >Cola Base Moulde Demo Page</h1></legend>
+		    <legend><h1 >Cola Base Module Demo Page</h1></legend>
 		    <table style="width:80%;margin: 0 auto; " >
 		    		<tr>
 		    			<td><button id="otpBtn" class="orangeBtn" type="button">OTP</button></td>
