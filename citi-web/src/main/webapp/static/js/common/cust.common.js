@@ -178,13 +178,14 @@ $(function() {
         });
         return true;
       }
-
-      // whit menuhandler start
-      menu = false;
-      // whit menuhandler end
-      navTop.length && (menu && render(menu)) || $.get(url("menuhandler/queryMenu")).done(function(res) {
-        render(res);
-      });
+      if(window.location.pathname.indexOf('colaBaseDemo') == -1){//colaBaseDemo 不要get menuhandler
+        // whit menuhandler start
+        menu = false;
+        // whit menuhandler end
+        navTop.length && (menu && render(menu)) || $.get(url("menuhandler/queryMenu")).done(function(res) {
+          render(res);
+        });
+      }
 
       $("a[href='#language']").click(function() {
         var o = $(this).parents("ol");
