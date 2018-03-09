@@ -37,7 +37,7 @@ import com.iisigroup.cap.report.constants.ReportParamEnum;
 import com.iisigroup.cap.report.factory.ItextFontFactory;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.cap.utils.CapSystemConfig;
-import com.itextpdf.text.pdf.BaseFont;
+import com.lowagie.text.pdf.BaseFont;
 
 import freemarker.template.Template;
 
