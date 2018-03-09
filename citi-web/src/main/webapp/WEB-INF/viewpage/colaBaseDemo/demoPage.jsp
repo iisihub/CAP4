@@ -18,7 +18,7 @@
 		    <table style="width:80%;margin: 0 auto; " >
 		    		<tr>
 		    			<td><button id="otpBtn" class="orangeBtn" type="button">OTP</button></td>
-		    			<td><button id="" class="orangeBtn" type="button">TEST</button></td>
+		    			<td><button id="imageUtilBtn" class="orangeBtn" type="button">ImageUtil</button></td>
 		    			<td><button id="" class="orangeBtn" type="button">TEST</button></td>
 		    		</tr>
 		    		<tr>
