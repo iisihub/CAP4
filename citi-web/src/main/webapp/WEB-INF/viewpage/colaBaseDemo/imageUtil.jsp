@@ -42,7 +42,11 @@
         <br/>
         <button id="addFileBtn" class="sendbtn" type="button">＋新增檔案</button>
 
-        <button id="sendbtn" class="sendbtn" type="button">轉檔</button>
+        <button id="sendTranBtn" class="sendbtn" type="button">轉檔</button>
+        <br/><br/>
+        <input class="longInput" type="text" name="inputFile" maxlength="200"
+               placeholder="請輸入要轉Base64的File path"/>
+        <button id="sendBase64Btn" class="sendbtn" type="button">單檔轉成Base64字串</button>
         <br/>
     </form>
     <fieldset style="font-size: 1.5em; margin-top: 20px;">
