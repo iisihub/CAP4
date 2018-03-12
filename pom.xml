@@ -79,6 +79,11 @@
                 <artifactId>citi-otp</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-image</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <modules>
