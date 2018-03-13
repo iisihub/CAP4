@@ -1,4 +1,4 @@
-package com.iisigroup.cap.tool;
+package com.iisigroup.colabase.tool;
 
 import java.awt.image.BufferedImage;
 

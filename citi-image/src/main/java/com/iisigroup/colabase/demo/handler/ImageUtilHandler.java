@@ -1,4 +1,4 @@
-package com.iisigroup.cap.demo.handler;
+package com.iisigroup.colabase.demo.handler;
 
 import com.iisigroup.cap.mvc.handler.MFormHandler;
 import org.springframework.stereotype.Controller;
