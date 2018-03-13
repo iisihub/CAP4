@@ -9,25 +9,27 @@
 <title>OTP身份認證</title>
 </head>
 <body>
-	<script>
-    loadScript('js/colaBaseDemo/demoPage');
-  	</script>
-  	<div>
-		<fieldset>
-		    <legend><h1 >Cola Base Module Demo Page</h1></legend>
-		    <table style="width:80%;margin: 0 auto; " >
-		    		<tr>
-		    			<td><button id="otpBtn" class="orangeBtn" type="button">OTP</button></td>
-		    			<td><button id="imageUtilBtn" class="orangeBtn" type="button">ImageUtil</button></td>
-		    			<td><button id="writingBoardBtn" class="orangeBtn" type="button">SignaturePanel</button></td>
-		    		</tr>
-		    		<tr>
-		    			<td><button id="" class="orangeBtn" type="button">TEST</button></td>
-		    			<td><button id="" class="orangeBtn" type="button">TEST</button></td>
-		    			<td><button id="" class="orangeBtn" type="button">TEST</button></td>
-		    		</tr>
-		    </table>
-		  </fieldset>
-  	</div>
+    <script>
+          loadScript('js/colaBaseDemo/demoPage');
+        </script>
+    <div>
+        <fieldset>
+            <legend>
+                <h1>Cola Base Module Demo Page</h1>
+            </legend>
+            <table style="width: 80%; margin: 0 auto;">
+                <tr>
+                    <td><button id="otpBtn" class="orangeBtn" type="button">OTP</button></td>
+                    <td><button id="imageUtilBtn" class="orangeBtn" type="button">ImageUtil</button></td>
+                    <td><button id="writingBoardBtn" class="orangeBtn" type="button">SignaturePanel</button></td>
+                </tr>
+                <tr>
+                    <td><button id="" class="orangeBtn" type="button">TEST</button></td>
+                    <td><button id="" class="orangeBtn" type="button">TEST</button></td>
+                    <td><button id="" class="orangeBtn" type="button">TEST</button></td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
 </body>
 </html>

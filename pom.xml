@@ -176,7 +176,7 @@
                 </plugins>
             </build>
         </profile>
-		<!-- BEGIN: Specific to mapping unit tests and covered code -->
+        <!-- BEGIN: Specific to mapping unit tests and covered code -->
         <profile>
             <id>coverage-per-test</id>
             <build>
@@ -206,7 +206,7 @@
                 </dependency>
             </dependencies>
         </profile>
-		<!-- END: Specific to mapping unit tests and covered code -->
+        <!-- END: Specific to mapping unit tests and covered code -->
     </profiles>
     <dependencies>
         <!-- SERVLET API ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
