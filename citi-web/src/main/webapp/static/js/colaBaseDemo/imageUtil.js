@@ -13,5 +13,16 @@ pageInit(function () {
             $("#singleFiles").append($tempInput);
         }).click();
 
+        $("#sendBase64Btn").click(function(){
+            $.ajax({
+                type: 'post',
+                async: true,
+                url: url('demoimageutilhandler/demo'),
+                data: {
+                    test: '123'
+                }
+            });
+        });
+
     });
 });
