@@ -13,6 +13,7 @@
     <http pattern="/app/error/message*" security="none" />
     <http pattern="/page/login*" security="none" />
     <http pattern="/page/colaBaseDemo/*" security="none" />
+	<http pattern="/demo**handler/*" security="none" />
     <http auto-config="false" access-decision-manager-ref="accessDecisionManager" entry-point-ref="capAuthenticationEntryPoint" use-expressions="false" disable-url-rewriting="false">
         <headers disabled="true" />
         <csrf disabled="true" />
