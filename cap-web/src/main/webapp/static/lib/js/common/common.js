@@ -1362,8 +1362,9 @@ $.holdReady(true);
                     $_this.find("button").not(".def_btn").addClass("btn1").button();
 
                     $_this.find("form").each(function() {
-                        $(this).validationEngine({
+                        $(this).__validationEngine({
                             validationEventTrigger: 'blur',
+                            promptPosition: 'topLeft',
                             scroll: false
                         });
                     });
