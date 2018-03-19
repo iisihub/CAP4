@@ -5,9 +5,10 @@
     <!-- 資料庫連接 -->
     <import resource="h2server.xml" />
     <!-- JNDI -->
-    <bean id="cap-db" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName">
-            <value>java:comp/env/jdbc/capdb</value>
-        </property>
+    <bean id="cap-db" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="org.h2.Driver" />
+        <property name="jdbcUrl" value="jdbc:h2:../h2db/capdb" />
+        <property name="user" value="sa" />
+        <property name="password" value="" />
     </bean>
 </beans>
