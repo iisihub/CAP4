@@ -364,6 +364,23 @@ public class ImageUtil {
 
   /**
    * 讀取圖片建立 ImageBuilder。
+   * @param imageFiles
+   * @return
+     */
+  public static ImageBuilder fromSrc(List<File> imageFiles) {
+    Builder builder = null;
+    try {
+      builder = getImagesDetail(imageFiles);
+    } catch (IOException e) {
+      //e.printStackTrace();
+      logger.error("IOException ImageBuilder.fromSrc ", e);
+    }
+
+    return builder;
+  }
+
+  /**
+   * 讀取圖片建立 ImageBuilder。
    *
    * @param imageFile  圖片
    * @param imageFiles 更多圖片
@@ -373,15 +390,7 @@ public class ImageUtil {
     List<File> imageFileList = new ArrayList(Arrays.asList(imageFiles));
     imageFileList.add(0, imageFile);
 
-    Builder builder = null;
-    try {
-      builder = getImagesDetail(imageFileList);
-    } catch (IOException e) {
-      //e.printStackTrace();
-      logger.error("IOException ImageBuilder.fromSrc ", e);
-    }
-
-    return builder;
+    return ImageUtil.fromSrc(imageFileList);
   }
 
   /**
