@@ -32,6 +32,10 @@
             <groupId>com.iisigroup.colabase</groupId>
             <artifactId>citi-image</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.iisigroup.colabase</groupId>
+            <artifactId>citi-net</artifactId>
+        </dependency>
         <!-- optional -->
         <dependency>
             <groupId>com.iisigroup.colabase</groupId>
