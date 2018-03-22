@@ -25,27 +25,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ImageUtil {
-  private final static Logger logger = LoggerFactory.getLogger(ImageUtil.class);
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(ImageUtil.class);
+  private static final String DESTINATION_ERROR_MESSAGE = "Destination location is not a directory!";
 
   // for citi WAS ENV will cause NoClassDefFoundError
   static {
     try {
       new JBIG2ImageReader(null);
-      logger.debug("[ImageUtil] create JBIG2ImageReader success.");
+      LOGGER.debug("[ImageUtil] create JBIG2ImageReader success.");
     } catch (IOException e) {
-      logger.debug("[ImageUtil] create JBIG2ImageReader fail, IOException msg: " + e.getMessage(), e);
-    } catch (Exception e) {
-      logger.debug("[ImageUtil] create JBIG2ImageReader fail, exception msg: " + e.getMessage(), e);
-    } catch (Error e) {
-      logger.debug("[ImageUtil] create JBIG2ImageReader fail, error : " + e.getClass(), e);
+      LOGGER.debug("[ImageUtil] create JBIG2ImageReader fail, IOException msg: " + e.getMessage(), e);
     }
   }
 
   private static class Builder implements ImageBuilder {
 
     private static final String OUTPUT_PREFIX = "output_";
-    private static final String RESIZE_PREFIX = "resize_";
-    private static final String ROTATE_PREFIX = "rotate_";
     private static final String COMBINE_PREFIX = "combine_";
 
     private boolean isClosed = false;
@@ -55,10 +51,12 @@ public class ImageUtil {
       this.imageDataList = imageDataList;
     }
 
+    private final String BUILDER_CLOSE_ERROR_MESSAGE= "Builder is closed!";
+
     @Override
     public void close() {
       if (isClosed) {
-        throw new UnsupportedOperationException("Builder is closed!");
+        throw new UnsupportedOperationException(BUILDER_CLOSE_ERROR_MESSAGE);
       }
 
       Iterator<ImageData> imageDetailListIterator = imageDataList.iterator();
@@ -86,7 +84,7 @@ public class ImageUtil {
     @Override
     public Builder resize(int width, int height) throws IOException {
       if (isClosed) {
-        throw new UnsupportedOperationException("Builder is closed!");
+        throw new UnsupportedOperationException(BUILDER_CLOSE_ERROR_MESSAGE);
       }
 
       if (width <= 0 || height <= 0) {
@@ -124,7 +122,7 @@ public class ImageUtil {
     @Override
     public Builder rotate(Orientation orientation) {
       if (isClosed) {
-        throw new UnsupportedOperationException("Builder is closed!");
+        throw new UnsupportedOperationException(BUILDER_CLOSE_ERROR_MESSAGE);
       }
 
       Iterator<ImageData> imageDetailListIterator = imageDataList.iterator();
@@ -189,13 +187,11 @@ public class ImageUtil {
     @Override
     public File combineAndWriteToMultipageTIFF(File destLocation, float quality, boolean isCloseBuilderAfterWrote) throws IOException {
       if (isClosed) {
-        throw new UnsupportedOperationException("Builder is closed!");
+        throw new UnsupportedOperationException(BUILDER_CLOSE_ERROR_MESSAGE);
       }
 
-      if (checkDestLocationIsExists(destLocation)) {
-        if (!checkDestLocationIsDirectory(destLocation)) {
-          throw new UnsupportedOperationException("Destination location is not a directory!");
-        }
+      if (checkDestLocationIsExists(destLocation) && !checkDestLocationIsDirectory(destLocation)) {
+        throw new UnsupportedOperationException(DESTINATION_ERROR_MESSAGE);
       }
 
       SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_hh_mm_ss");
@@ -237,7 +233,7 @@ public class ImageUtil {
         if (imageWriter != null) {
           imageWriter.abort();
         }
-        logger.error("IOException combineAndWriteToMultipageTIFF +" + e.getLocalizedMessage(), e);
+        LOGGER.error("IOException combineAndWriteToMultipageTIFF +" + e.getLocalizedMessage(), e);
         throw e;
       } finally {
         if (imageWriter != null) {
@@ -280,12 +276,12 @@ public class ImageUtil {
     @Override
     public List<File> writeToFiles(File destLocation, String fileType, float quality, boolean isCloseBuilderAfterWrote) throws IOException {
       if (isClosed) {
-        throw new UnsupportedOperationException("Builder is closed!");
+        throw new UnsupportedOperationException(BUILDER_CLOSE_ERROR_MESSAGE);
       }
 
       if (checkDestLocationIsExists(destLocation)) {
         if (!checkDestLocationIsDirectory(destLocation)) {
-          throw new UnsupportedOperationException("Destination location is not a directory!");
+          throw new UnsupportedOperationException(DESTINATION_ERROR_MESSAGE);
         }
       }
 
@@ -334,15 +330,6 @@ public class ImageUtil {
 
       return newImageFileList;
     }
-
-//    @Override
-//    public List<String> convertToBase64() {
-//      if (isClosed) {
-//        throw new UnsupportedOperationException("Builder is closed!");
-//      }
-//
-//      return convertImageToBase64String(this);
-//    }
   }
 
   /**
@@ -372,8 +359,7 @@ public class ImageUtil {
     try {
       builder = getImagesDetail(imageFiles);
     } catch (IOException e) {
-      //e.printStackTrace();
-      logger.error("IOException ImageBuilder.fromSrc ", e);
+      LOGGER.error("IOException ImageBuilder.fromSrc ", e);
     }
 
     return builder;
@@ -429,17 +415,14 @@ public class ImageUtil {
         bos.write(data);
       }
     } catch (FileNotFoundException e) {
-      //e.printStackTrace();
-      logger.error("FileNotFoundException ImageBuilder.fromSrc ", e);
+      LOGGER.error("FileNotFoundException ImageBuilder.fromSrc ", e);
     } catch (IOException e) {
-      //e.printStackTrace();
-      logger.error("IOException e ImageBuilder.fromSrc ", e);
+      LOGGER.error("IOException e ImageBuilder.fromSrc ", e);
     } finally {
       try {
         bao.close();
       } catch (IOException e) {
-        //e.printStackTrace();
-        logger.error("IOException e ImageBuilder.fromSrc ", e);
+        LOGGER.error("IOException e ImageBuilder.fromSrc ", e);
       }
     }
 
@@ -448,31 +431,6 @@ public class ImageUtil {
     return base64String;
   }
 
-//  private static List<String> convertImageToBase64String(Builder imagesDetail) {
-//    List<String> base64StringList = new ArrayList<>();
-//
-//    List<ImageData> imageDataList = imagesDetail.imageDataList;
-//
-//    Iterator<ImageData> imageDetailListIterator = imageDataList.iterator();
-//    while (imageDetailListIterator.hasNext()) {
-//      ImageData imageData = imageDetailListIterator.next();
-//      String imageType = imageData.getImageType();
-//      BufferedImage[] imagePages = imageData.getImagePages();
-//
-//      byte[] imageBytes = new byte[0];
-//      try {
-//        imageBytes = writeImageToByteArray(imageType, imagePages);
-//      } catch (IOException e) {
-//        e.printStackTrace();
-//      }
-//      String base64StringPage = DatatypeConverter.printBase64Binary(imageBytes);
-//
-//      base64StringList.add(base64StringPage);
-//    }
-//    imagesDetail.close();
-//
-//    return base64StringList;
-//  }
 
   private static Builder getImagesDetail(File[] files) throws IOException {
     List<File> fileList = Arrays.asList(files);
@@ -485,7 +443,6 @@ public class ImageUtil {
     Iterator<File> filesIterator = fileList.iterator();
     while (filesIterator.hasNext()) {
       File imageFile = filesIterator.next();
-      String missionName = imageFile.getName();
       readImageFile(imageFile, imageDataList);
     }
 
@@ -510,7 +467,7 @@ public class ImageUtil {
         imageDataList.add(imageData);
       }
     } catch (UnsupportedOperationException e) {
-      logger.warn(e.getMessage() + " Try to read as PDF...");
+      LOGGER.warn(e.getMessage() + " Try to read as PDF...");
       ImageIO.scanForPlugins();
       // PDF
       try (
@@ -527,12 +484,9 @@ public class ImageUtil {
 
         ImageData imageData = new ImageData(imageFile.getName().replaceFirst("\\.[^.]+$", ""), "TIFF", imagePages);
         imageDataList.add(imageData);
-      } catch (InvalidPasswordException ee) {
-        //System.out.println(ee.getMessage() + " Skipped file: " + imageFile.getPath());
-        logger.error(ee.getMessage() + " Skipped file: " + imageFile.getPath(), ee);
       } catch (IOException ee) {
         //System.out.println(ee.getMessage() + " Skipped file: " + imageFile.getPath());
-        logger.error(ee.getMessage() + " Skipped file: " + imageFile.getPath(), ee);
+        LOGGER.error(ee.getMessage() + " Skipped file: " + imageFile.getPath(), ee);
       }
     }
 
@@ -545,7 +499,7 @@ public class ImageUtil {
 
     ImageReader imageReader = null;
     try (
-      FileInputStream fis = new FileInputStream(imageFile);
+      FileInputStream fis = new FileInputStream(imageFile)
     ) {
       imageReader = getImageReader(fis);
 
@@ -592,7 +546,7 @@ public class ImageUtil {
         throw new IIOException("Can not create destination directory!");
       }
     } else if (!destLocation.isDirectory()) {
-      throw new UnsupportedOperationException("Destination location is not a directory!");
+      throw new UnsupportedOperationException(DESTINATION_ERROR_MESSAGE);
     }
 
     ImageOutputStream ios = ImageIO.createImageOutputStream(destFile);
@@ -656,11 +610,7 @@ public class ImageUtil {
       }
 
       if (ios != null) {
-        try {
           ios.close();
-        } catch (IOException e) {
-          throw e;
-        }
       }
     }
   }
@@ -748,10 +698,7 @@ public class ImageUtil {
   }
 
   private static boolean checkDestLocationIsDirectory(File destLocation) {
-    if (!destLocation.isDirectory()) {
-      return false;
-    }
+    return destLocation.isDirectory();
 
-    return true;
   }
 }
