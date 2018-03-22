@@ -26,7 +26,7 @@
     <form id="imageUtilForm" autocomplete="off" method="post">
         <h3>圖片檔案轉檔成TIFF</h3>
         輸出檔案資料夾
-        <input class="longInput" type="text" id="inputFolderPath" name="" maxlength="200"
+        <input class="longInput" type="text" id="outputFolderPath" name="" maxlength="200"
                placeholder="請輸入輸出檔案的Folder path"/><br/>
         <label for="inputFolder">
             <input class="radioInput" id="inputFolder" type="radio" name="inputType"
@@ -44,15 +44,15 @@
 
         <button id="sendTranBtn" class="sendbtn" type="button">轉檔</button>
         <br/><br/>
-        <input class="longInput" type="text" name="inputFile" maxlength="200"
+        <input class="longInput" type="text" id="transBase64InputFilePath" name="inputFile" maxlength="200"
                placeholder="請輸入要轉Base64的File path"/>
         <button id="sendBase64Btn" class="sendbtn" type="button">單檔轉成Base64字串</button>
         <br/>
     </form>
     <fieldset style="font-size: 1.5em; margin-top: 20px;">
         <legend>轉檔結果</legend>
-        <div id="resultBoard" style="color: red">
-            success !
+        <div id="resultBoard" style="color: red; width: 650px; display: block; word-wrap: break-word;">
+            <%--success !--%>
         </div>
     </fieldset>
 
