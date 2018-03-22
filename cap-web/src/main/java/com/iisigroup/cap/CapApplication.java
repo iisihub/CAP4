@@ -9,7 +9,7 @@
  * This software is confidential and proprietary information of 
  * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
-package com.iisigroup.cap.springboot;
+package com.iisigroup.cap;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
@@ -30,7 +30,7 @@ import org.tuckey.web.filters.urlrewrite.gzip.GzipFilter;
 
 import com.iisigroup.cap.web.CapHandlerServlet;
 import com.iisigroup.cap.web.LogContextFilter;
-import com.opensymphony.module.sitemesh.filter.PageFilter;
+import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
 
 /**
  * <pre>
@@ -121,7 +121,7 @@ public class CapApplication {
     @Bean
     public FilterRegistrationBean pageFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
-        Filter pageFilter = new PageFilter();
+        Filter pageFilter = new SiteMeshFilter();
         registration.setFilter(pageFilter);
         registration.addUrlPatterns("/page/*");
         registration.setDispatcherTypes(DispatcherType.FORWARD, DispatcherType.REQUEST);
