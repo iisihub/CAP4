@@ -73,6 +73,8 @@ public class FunctionSetHandler extends MFormHandler {
 
     @Resource
     private FunctionSetService functionSetService;
+    @Autowired
+    private CapAppContext capAppContext;
 
     @HandlerType(HandlerTypeEnum.GRID)
     public BeanGridResult query(SearchSetting search, Request params) {
@@ -176,7 +178,7 @@ public class FunctionSetHandler extends MFormHandler {
         if (!CapString.isEmpty(code)) {
             function = functionSetService.findFunctionByCode(code);
             if (isNew.equals("true") && function != null) {
-                throw new CapMessageException(CapAppContext.getMessage("js.data.exists"), FunctionSetHandler.class);
+                throw new CapMessageException(capAppContext.getMessage("js.data.exists"), FunctionSetHandler.class);
             }
         }
         functionSetService.save(function, request);
@@ -201,7 +203,7 @@ public class FunctionSetHandler extends MFormHandler {
             codeItem = functionSetService.findFunctionByCode(code);
         }
         if (codeItem == null) {
-            throw new CapMessageException(CapAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
+            throw new CapMessageException(capAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
         }
 
         List<RoleFunction> setRole = new ArrayList<RoleFunction>();
@@ -252,7 +254,7 @@ public class FunctionSetHandler extends MFormHandler {
         List<Object> roleItem = GsonUtil.jsonToObjectList(request.get("roleItem"));
 
         if (CapString.isEmpty(code)) {
-            throw new CapMessageException(CapAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
+            throw new CapMessageException(capAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
         }
 
         List<String> delRole = new ArrayList<String>();

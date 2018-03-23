@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.iisigroup.cap.auth.dao.UserDao;
@@ -37,6 +38,8 @@ import com.iisigroup.cap.utils.CapDate;
 @Repository
 public class UserDaoImpl extends GenericDaoImpl<DefaultUser> implements SecUserDao<DefaultUser>, UserDao {
 
+    @Autowired
+    private CapAppContext capAppContext;
     @Override
     public DefaultUser getUserByLoginId(String loginId, String depCode) {
         SearchSetting search = createSearchTemplete();
@@ -100,7 +103,7 @@ public class UserDaoImpl extends GenericDaoImpl<DefaultUser> implements SecUserD
     @Override
     public void processUserStatus(int pwdExpiredDay, int pwdAccountDisable, int pwdAccountDelete) {
         Map<String, Object> param = new HashMap<String, Object>();
-        CapSqlStatement sqlp = (CapSqlStatement) CapAppContext.getBean("userSqlStatement");
+        CapSqlStatement sqlp = (CapSqlStatement) capAppContext.getBean("userSqlStatement");
         List<Map<String, Object>> result = getNamedJdbcTemplate().queryForList((String) sqlp.getValue("pwdlog_lastpwd"), param);
         for (Map<String, Object> rec : result) {
             String userCode = (String) rec.get("usercode");

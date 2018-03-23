@@ -5,6 +5,8 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.iisigroup.cap.auth.dao.RoleDao;
 import com.iisigroup.cap.auth.dao.UserDao;
 import com.iisigroup.cap.auth.model.DefaultUser;
@@ -64,12 +66,15 @@ public class AccessControlServiceImpl implements AccessControlService {
         userDao.save(user);
     }
 
+    @Autowired
+    private CapAppContext capAppContext;
+
     public boolean checkCaptcha() {
 //        HttpServletRequest req = CapSecurityContext.getUser().get("request");
         HttpServletRequest req = (HttpServletRequest) CapSecurityContext.getUser().getExtraAttrib().get("request");
         String captchaData1 = req != null ? req.getParameter("captcha") : "";
         String captchaData2 = req != null ? req.getParameter("audioCaptcha") : "";
-        CheckCodeService captcha = CapAppContext.getBean("capCaptcha");
+        CheckCodeService captcha = capAppContext.getBean("capCaptcha");
         return CheckStatus.SUCCESS.equals(captcha.valid(captchaData1)) || CheckStatus.SUCCESS.equals(captcha.valid(captchaData2));
     }
 

@@ -3,7 +3,6 @@
     xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
-    <bean id="CapPluginManager" class="com.iisigroup.cap.plugin.PluginManager" />
     <bean id="CapDefaultRequest" class="com.iisigroup.cap.component.impl.CapSpringMVCRequest" scope="prototype" />
     <bean id="CapDefaultErrorResult" class="com.iisigroup.cap.component.impl.DefaultErrorResult" scope="prototype" />
     <bean id="simpleOperation" class="com.iisigroup.cap.operation.simple.SimpleOperation">

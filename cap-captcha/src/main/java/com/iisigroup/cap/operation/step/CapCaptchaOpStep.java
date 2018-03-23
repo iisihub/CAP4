@@ -14,6 +14,8 @@ package com.iisigroup.cap.operation.step;
 
 import java.lang.reflect.Method;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.exception.CapMessageException;
 import com.iisigroup.cap.handler.Handler;
@@ -39,6 +41,9 @@ import com.iisigroup.cap.utils.CapString;
  */
 public class CapCaptchaOpStep extends AbstractCustomizeOpStep {
 
+    @Autowired
+    private CapAppContext capAppContext;
+
     @Override
     public OpStepContext execute(OpStepContext ctx, Request params, Handler handler) {
         String methodId = params.get(Handler.FORM_ACTION, "");
@@ -47,10 +52,10 @@ public class CapCaptchaOpStep extends AbstractCustomizeOpStep {
                 if (methodId.equals(method.getName())) {
                     if (method.isAnnotationPresent(Captcha.class)) {
                         String key = method.getAnnotation(Captcha.class).value();
-                        CheckCodeService captcha = CapAppContext.getBean(CaptchaHandler.DEFAULT_RENDER);
+                        CheckCodeService captcha = capAppContext.getBean(CaptchaHandler.DEFAULT_RENDER);
                         if (captcha == null || !CheckStatus.SUCCESS.equals(captcha.valid(params.get(key)))) {
                             // 驗証碼無效請重新輸入
-                            throw new CapMessageException(CapAppContext.getMessage(captcha.getErrorMessage()), getClass());
+                            throw new CapMessageException(capAppContext.getMessage(captcha.getErrorMessage()), getClass());
                         }
                     }
                 }

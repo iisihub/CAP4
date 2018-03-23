@@ -17,8 +17,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.Resource;
 
 import com.iisigroup.cap.utils.CapString;
@@ -37,7 +37,7 @@ import com.iisigroup.cap.utils.CapString;
  *          <li>2013/1/23,roodeschen,fix weglogic deployment error
  *          </ul>
  */
-public class CapReloadableResourceBundleMessageSource extends org.springframework.context.support.ReloadableResourceBundleMessageSource implements ApplicationContextAware, InitializingBean {
+public class CapReloadableResourceBundleMessageSource extends org.springframework.context.support.ReloadableResourceBundleMessageSource implements InitializingBean {
 
     // private final String i18nFileREG = "(_zh_CN|_en|_zh_TW).properties$";
     // private final String i18nPattern = "classpath:/i18n/**/*.properties";
@@ -71,12 +71,12 @@ public class CapReloadableResourceBundleMessageSource extends org.springframewor
         this.basePath = basePath;
     }
 
-    @Override
+    @Autowired
     public void setApplicationContext(ApplicationContext ctx) {
         applicationContext = ctx;
     }
 
-    private static ApplicationContext applicationContext;
+    private ApplicationContext applicationContext;
 
     /*
      * (non-Javadoc)

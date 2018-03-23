@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.iisigroup.cap.security.CapSecurityContext;
@@ -34,6 +35,7 @@ import com.iisigroup.cap.utils.CapWebUtil;
  *          <li>2013/12/30,tammy,以RequestContextUtils.getLocale(request)取得
  *          </ul>
  */
+@Component
 public class LocaleChangeInterceptor extends org.springframework.web.servlet.i18n.LocaleChangeInterceptor {
 
     @Override

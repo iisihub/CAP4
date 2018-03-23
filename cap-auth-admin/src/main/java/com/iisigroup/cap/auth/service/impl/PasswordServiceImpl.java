@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,8 @@ public class PasswordServiceImpl implements PasswordService {
     private PwdLogDao userPwdHistoryDao;
     @Resource
     private CodeTypeDao codeTypeDao;
+    @Autowired
+    private CapAppContext capAppContext;
 
     @Override
     public boolean checkPasswordRule(String userId, String password, String password2, boolean forcePwdChange) {
@@ -53,13 +56,13 @@ public class PasswordServiceImpl implements PasswordService {
         String ruleType = parmPwdRule.getParmValue();
         CodeType rule = codeTypeDao.findByCodeTypeAndCodeValue("pwdrule", ruleType, CapSecurityContext.getLocale().toString());
         if (StringUtils.isBlank(password) || StringUtils.isBlank(password2)) {
-            throw new CapMessageException(CapAppContext.getMessage("error.001", new Object[] {}), getClass());
+            throw new CapMessageException(capAppContext.getMessage("error.001", new Object[] {}), getClass());
         }
         if (!password.equals(password2) || password.length() < minLen) {
-            throw new CapMessageException(CapAppContext.getMessage("error.002", new Object[] { minLen }), getClass());
+            throw new CapMessageException(capAppContext.getMessage("error.002", new Object[] { minLen }), getClass());
         }
         if (userId.equalsIgnoreCase(password)) {
-            throw new CapMessageException(CapAppContext.getMessage("error.004", new Object[] { minLen }), getClass());
+            throw new CapMessageException(capAppContext.getMessage("error.004", new Object[] { minLen }), getClass());
         }
         // pwd history validate
         DefaultUser user = userDao.findByCode(userId);
@@ -71,11 +74,11 @@ public class PasswordServiceImpl implements PasswordService {
                 // user status 不為 1 時，check change interval: 最近一次變更不得小於間隔
                 if (i == 0 && !"1".equals(user.getStatus()) && !forcePwdChange) {
                     if (CapDate.calculateDays(Calendar.getInstance().getTime(), h.getUpdateTime()) <= changeInteval) {
-                        throw new CapMessageException(CapAppContext.getMessage("error.005", new Object[] { changeInteval }), getClass());
+                        throw new CapMessageException(capAppContext.getMessage("error.005", new Object[] { changeInteval }), getClass());
                     }
                 }
                 if (passwordEncoder.matches(password, h.getPassword())) {
-                    throw new CapMessageException(CapAppContext.getMessage("error.003", new Object[] { maxHistory }), getClass());
+                    throw new CapMessageException(capAppContext.getMessage("error.003", new Object[] { maxHistory }), getClass());
                 }
                 i++;
             }
@@ -98,7 +101,7 @@ public class PasswordServiceImpl implements PasswordService {
             break;
         }
         if (pattern != null && !password.matches(pattern)) {
-            throw new CapMessageException(CapAppContext.getMessage("error.008", new Object[] { rule.getCodeDesc() }), getClass());
+            throw new CapMessageException(capAppContext.getMessage("error.008", new Object[] { rule.getCodeDesc() }), getClass());
         }
         return true;
     }

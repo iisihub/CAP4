@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapString;
@@ -58,6 +59,9 @@ public class CapSystemPropertiesJSONMapper extends AbstractDecoratorMapper {
     private Set<String> decoratorFile;
     private Map<String, Object> sysProp;
 
+    @Autowired
+    private CapAppContext capAppContext;
+
     public void init(Config config, Properties properties, DecoratorMapper parent) throws InstantiationException {
         super.init(config, properties, parent);
         String decorator = properties.getProperty("decoratorFile");
@@ -70,7 +74,7 @@ public class CapSystemPropertiesJSONMapper extends AbstractDecoratorMapper {
             searchKeys = new HashSet<String>();
             searchKeys.addAll(Arrays.asList(params.split(",")));
         }
-        sysProp = CapAppContext.getBean("sysProp");
+        sysProp = capAppContext.getBean("sysProp");
     }
 
     @Override

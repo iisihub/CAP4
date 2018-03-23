@@ -22,7 +22,9 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.constants.Constants;
@@ -41,6 +43,7 @@ import com.iisigroup.cap.utils.CapString;
  *          <li>2010/7/12,iristu,new
  *          </ul>
  */
+@Component
 public class MessageBundleScriptCreator {
     protected final static Logger LOGGER = LoggerFactory.getLogger(MessageBundleScriptCreator.class);
 
@@ -59,7 +62,7 @@ public class MessageBundleScriptCreator {
      *            i18nPath
      * @return String
      */
-    public static String generateJson(String i18nPath) {
+    public String generateJson(String i18nPath) {
         return generateJson(loadProperties(i18nPath), null);
 
     }
@@ -73,7 +76,7 @@ public class MessageBundleScriptCreator {
      *            filter字串
      * @return String
      */
-    public static String generateJson(String i18nPath, Set<String> filterList) {
+    public String generateJson(String i18nPath, Set<String> filterList) {
         return generateJson(loadProperties(i18nPath), filterList);
 
     }
@@ -148,7 +151,7 @@ public class MessageBundleScriptCreator {
      *            i18n Path
      * @return String
      */
-    public static String createScript(String i18nPath) {
+    public String createScript(String i18nPath) {
         return createScript(CapString.getRegularMatch(i18nPath, I18NKEY_REG), loadProperties(i18nPath), null);
     }
 
@@ -161,9 +164,12 @@ public class MessageBundleScriptCreator {
      *            filter字串
      * @return String
      */
-    public static String createScript(String i18nPath, Set<String> filterList) {
+    public String createScript(String i18nPath, Set<String> filterList) {
         return createScript(CapString.getRegularMatch(i18nPath, I18NKEY_REG), loadProperties(i18nPath), filterList);
     }
+
+    @Autowired
+    private CapAppContext capAppContext;
 
     /**
      * 讀取 i18n 檔案
@@ -172,7 +178,7 @@ public class MessageBundleScriptCreator {
      *            i18nPath
      * @return Properties
      */
-    private static Properties loadProperties(String i18nPath) {
+    private Properties loadProperties(String i18nPath) {
         Properties prop = new Properties();
         Locale locale = null;
         try {
@@ -187,13 +193,13 @@ public class MessageBundleScriptCreator {
         InputStream is = null;
         try {
             i18nFile = new StringBuffer("classpath:/i18n/").append(i18nPath).append("_").append(locale.toString()).append(".properties").toString();
-            Resource rs = CapAppContext.getApplicationContext().getResource(i18nFile);
+            Resource rs = capAppContext.getApplicationContext().getResource(i18nFile);
             if (rs != null) {
                 is = rs.getInputStream();
                 prop.load(is);
             } else {
                 i18nFile = new StringBuffer("classpath:/i18n/").append(i18nPath).append("_").append(".properties").toString();
-                rs = CapAppContext.getApplicationContext().getResource(i18nFile);
+                rs = capAppContext.getApplicationContext().getResource(i18nFile);
                 if (rs != null) {
                     is = rs.getInputStream();
                     prop.load(is);

@@ -1,11 +1,12 @@
 package com.iisigroup.cap.mvc.handler;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.iisigroup.cap.annotation.HandlerType;
 import com.iisigroup.cap.annotation.HandlerType.HandlerTypeEnum;
-import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.mvc.i18n.MessageBundleScriptCreator;
@@ -40,9 +41,12 @@ public class BaseHandler extends MFormHandler {
         return new AjaxFormResult();
     }
 
+    @Autowired
+    private MessageBundleScriptCreator messageBundleScriptCreator;
+
     @HandlerType(HandlerTypeEnum.FORM)
     public Result queryJsI18N(Request request) {
-        String result = MessageBundleScriptCreator.generateJson(request.get("f").replaceAll("/?webroot/page", ""));
+        String result = messageBundleScriptCreator.generateJson(request.get("f").replaceAll("/?webroot/page", ""));
         return new AjaxFormResult(result);
     }
 
