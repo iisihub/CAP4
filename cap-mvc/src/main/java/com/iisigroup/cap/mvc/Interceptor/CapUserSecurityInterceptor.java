@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.iisigroup.cap.security.CapSecurityContext;
@@ -33,6 +34,7 @@ import com.iisigroup.cap.security.model.CapUserDetails;
  *          <li>2011/11/30,rodeschen,new
  *          </ul>
  */
+@Component
 public class CapUserSecurityInterceptor extends HandlerInterceptorAdapter {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 

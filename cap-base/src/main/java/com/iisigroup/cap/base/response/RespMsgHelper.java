@@ -14,6 +14,7 @@ import java.text.MessageFormat;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.iisigroup.cap.base.model.ErrorCode;
 import com.iisigroup.cap.component.Request;
@@ -55,7 +56,8 @@ public class RespMsgHelper {
     private static final String OUT_SUG_SEPARATOR = "|<BR>";
 
     private static final boolean DB_SOURCE = true;
-
+    @Autowired
+    private CapAppContext capAppContext;
     /**
      * 格式化回應訊息
      *
@@ -65,7 +67,7 @@ public class RespMsgHelper {
      *            i18n key
      * @return 回應訊息
      */
-    public static String getMessage(String key) {
+    public String getMessage(String key) {
         return getMessage(key, (Object[]) null);
     }
 
@@ -78,7 +80,7 @@ public class RespMsgHelper {
      *            i18n key
      * @return 回應訊息
      */
-    public static String getMessage(Request request, String key) {
+    public String getMessage(Request request, String key) {
         return getMessage(request, key, (Object[]) null);
     }
 
@@ -91,7 +93,7 @@ public class RespMsgHelper {
      *            自訂的參數組(沒有設null)
      * @return 回應訊息
      */
-    public static String getMessage(String key, Object[] params) {
+    public String getMessage(String key, Object[] params) {
         String value = getMsgString(key, null, params);
         return format(key, value, null);
 
@@ -106,8 +108,8 @@ public class RespMsgHelper {
      *            !=null則使用本參數當作回傳的錯誤訊息
      * @return 回應訊息
      */
-    public static String getMessage(String key, String custMessage) {
-        String value = CapAppContext.getMessage(key);
+    public String getMessage(String key, String custMessage) {
+        String value = capAppContext.getMessage(key);
         return format(key, value, custMessage);
 
     }
@@ -121,7 +123,7 @@ public class RespMsgHelper {
      *            自訂的參數組(沒有設null)
      * @return 回應訊息
      */
-    public static String getMessage(Request request, String key, Object[] params) {
+    public String getMessage(Request request, String key, Object[] params) {
 
         String value = getMsgString(key, request, params);
         return format(key, value, null);
@@ -136,7 +138,7 @@ public class RespMsgHelper {
      *            !=null則使用本參數當作回傳的錯誤訊息
      * @return 回應訊息
      */
-    public static String getMessage(Request request, String key, String custMessage) {
+    public String getMessage(Request request, String key, String custMessage) {
 
         String value = getMsgString(key, request, null);
         return format(key, value, custMessage);
@@ -155,7 +157,7 @@ public class RespMsgHelper {
      *            預設值
      * @return
      */
-    protected static String getMsgString(String key, Object workComp, Object[] params) {
+    protected String getMsgString(String key, Object workComp, Object[] params) {
         String msgstr = null;
         if (DB_SOURCE) {
             String localeStr = SimpleContextHolder.get(CapWebUtil.localeKey).toString();
@@ -177,9 +179,9 @@ public class RespMsgHelper {
             if (workComp instanceof Request) {
                 Request request = (Request) workComp;
                 if (params == null) {
-                    msgstr = CapAppContext.getMessage(key);
+                    msgstr = capAppContext.getMessage(key);
                 } else {
-                    msgstr = CapAppContext.getMessage(key, params);
+                    msgstr = capAppContext.getMessage(key, params);
                 }
             }
         }
@@ -292,7 +294,7 @@ public class RespMsgHelper {
      *            i18n key
      * @return 回應訊息
      */
-    public static String getMainMessage(Request request, String key) {
+    public String getMainMessage(Request request, String key) {
         String temp = getMessage(request, key);
         if (!StringUtils.isEmpty(temp)) {
             String[] values = temp.split(OUT_SEPARATOR);

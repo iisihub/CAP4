@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import com.corundumstudio.socketio.SocketIOClient;
@@ -43,6 +44,8 @@ public class CapReminderTimerTask extends TimerTask {
     private RemindService reminderService;
     @Resource
     private EmailService emailService;
+    @Autowired
+    private CapAppContext capAppContext;
 
     @Override
     public void run() {
@@ -103,20 +106,20 @@ public class CapReminderTimerTask extends TimerTask {
             Remind content = reminderService.findRemind(remind.getPid());
             // 主旨
             StringBuffer subject = new StringBuffer();
-            subject.append(CapAppContext.getMessage("remind.subject1"));
+            subject.append(capAppContext.getMessage("remind.subject1"));
             subject.append(formatter.reformat(content.getStartDate()));
             subject.append(" ");
-            subject.append(CapAppContext.getMessage("remind.subject2"));
+            subject.append(capAppContext.getMessage("remind.subject2"));
             subject.append(CapString.isEmpty(content.getContent()) ? "" : content.getContent().substring(0, content.getContent().length() > 40 ? 40 : content.getContent().length()));
             // 內文
             StringBuffer sendContext = new StringBuffer();
-            sendContext.append(CapAppContext.getMessage("remind.startDate"));
+            sendContext.append(capAppContext.getMessage("remind.startDate"));
             sendContext.append(formatter.reformat(content.getStartDate()));
             sendContext.append("<br/>");
-            sendContext.append(CapAppContext.getMessage("remind.endDate"));
+            sendContext.append(capAppContext.getMessage("remind.endDate"));
             sendContext.append(formatter.reformat(content.getEndDate()));
             sendContext.append("<br/>");
-            sendContext.append(CapAppContext.getMessage("remind.subject2"));
+            sendContext.append(capAppContext.getMessage("remind.subject2"));
             sendContext.append(formatter.reformat(content.getContent()));
 
             String email = reminderService.getUsrEmail(remind.getScopePid());

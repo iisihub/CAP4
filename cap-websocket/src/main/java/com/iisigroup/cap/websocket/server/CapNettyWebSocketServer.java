@@ -15,6 +15,7 @@ import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.Configuration;
@@ -36,6 +37,7 @@ import com.iisigroup.cap.websocket.model.ChatObject;
  *          <li>2013/8/6,rodeschen,new
  *          </ul>
  */
+@Component
 public class CapNettyWebSocketServer {
 
     private final Logger logger = LoggerFactory.getLogger(CapNettyWebSocketServer.class);

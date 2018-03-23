@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.iisigroup.cap.component.Request;
@@ -50,13 +51,16 @@ public class CaptchaHandler extends MFormHandler {
 
     public static String DEFAULT_RENDER = "capCaptcha";
 
+    @Autowired
+    private CapAppContext capAppContext;
+
     /**
      * create captcha image
      * 
      * @throws IOException
      */
     public Result img(Request request) {
-        CheckCodeService captcha = CapAppContext.getBean(DEFAULT_RENDER);
+        CheckCodeService captcha = capAppContext.getBean(DEFAULT_RENDER);
         BufferedImage img = captcha.createCheckCode(true);
         ByteArrayOutputStream baos = null;
         try {
@@ -82,7 +86,7 @@ public class CaptchaHandler extends MFormHandler {
      * @throws IOException
      */
     public Result audio(Request request) {
-        CheckCodeService captcha = CapAppContext.getBean(DEFAULT_RENDER);
+        CheckCodeService captcha = capAppContext.getBean(DEFAULT_RENDER);
         Sample audio = captcha.createCheckCode(false);
         ByteArrayOutputStream baos = null;
 

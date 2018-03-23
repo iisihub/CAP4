@@ -17,6 +17,7 @@ import java.util.Map;
 import javax.servlet.ServletResponse;
 
 import org.apache.commons.lang.CharEncoding;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.iisigroup.cap.component.ErrorResult;
 import com.iisigroup.cap.component.Request;
@@ -59,7 +60,8 @@ public class DefaultErrorResult implements ErrorResult {
     String logMessage = "";
     private String contentType;
     private String encoding;
-
+    @Autowired
+    private CapAppContext capAppContext;
     public DefaultErrorResult() {
     }
 
@@ -175,9 +177,9 @@ public class DefaultErrorResult implements ErrorResult {
     protected String formatMessage(Request request, String msgKey, Object extraInfo) {
         Locale locale = getLocale(request);
         if (extraInfo != null) {
-            return CapAppContext.getMessage(msgKey, (Object[]) extraInfo, locale);
+            return capAppContext.getMessage(msgKey, (Object[]) extraInfo, locale);
         } else {
-            return CapAppContext.getMessage(msgKey, locale);
+            return capAppContext.getMessage(msgKey, locale);
         }
 
     }

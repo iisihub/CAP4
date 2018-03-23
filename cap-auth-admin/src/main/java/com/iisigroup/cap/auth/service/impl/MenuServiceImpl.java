@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iisigroup.cap.auth.dao.FunctionDao;
@@ -34,6 +35,8 @@ public class MenuServiceImpl implements MenuService {
 
     @Resource
     I18nDao i18nDao;
+    @Autowired
+    private CapAppContext capAppContext;
 
     public MenuItem getMenuByRoles(Set<String> roles) {
         Map<String, I18n> menuI18n = i18nDao.findAsMapByCodeType("menu", SimpleContextHolder.get(CapWebUtil.localeKey).toString());
@@ -45,7 +48,7 @@ public class MenuServiceImpl implements MenuService {
             item.setCode(code.getCode());
             // 改為從 i18n table 取得字串
             I18n i18n = menuI18n.get("menu." + code.getCode());
-            item.setName(i18n == null ? CapAppContext.getMessage("menu." + code.getCode()) : i18n.getCodeDesc());
+            item.setName(i18n == null ? capAppContext.getMessage("menu." + code.getCode()) : i18n.getCodeDesc());
             item.setUrl(code.getPath());
             menuMap.put(item.getCode(), item);
 

@@ -71,6 +71,8 @@ public class RemindHandler extends MFormHandler {
 
     @Autowired
     private CodeTypeService codeTypeService;
+    @Autowired
+    private CapAppContext capAppContext;
 
     @HandlerType(HandlerTypeEnum.GRID)
     public BeanGridResult query(SearchSetting search, Request params) {
@@ -184,7 +186,7 @@ public class RemindHandler extends MFormHandler {
             remind = commonSrv.findById(Remind.class, pid);
         }
         if (remind == null) {
-            throw new CapMessageException(CapAppContext.getMessage("EXCUE_ERROR"), RemindHandler.class);
+            throw new CapMessageException(capAppContext.getMessage("EXCUE_ERROR"), RemindHandler.class);
         }
         Reminds reminds = new Reminds();
         reminds.setPid(pid);
@@ -211,7 +213,7 @@ public class RemindHandler extends MFormHandler {
         AjaxFormResult result = new AjaxFormResult();
         String oid = request.get("oid");
         if (CapString.isEmpty(oid)) {
-            throw new CapMessageException(CapAppContext.getMessage("EXCUE_ERROR"), RemindHandler.class);
+            throw new CapMessageException(capAppContext.getMessage("EXCUE_ERROR"), RemindHandler.class);
         }
         Remind remind = commonSrv.findById(Remind.class, oid);
         if (remind != null) {
@@ -234,7 +236,7 @@ public class RemindHandler extends MFormHandler {
         List<Reminds> models = new ArrayList<Reminds>();
 
         if (oids == null) {
-            throw new CapMessageException(CapAppContext.getMessage("EXCUE_ERROR"), RemindHandler.class);
+            throw new CapMessageException(capAppContext.getMessage("EXCUE_ERROR"), RemindHandler.class);
         }
         for (String oid : oids) {
             Reminds reminds = commonSrv.findById(Reminds.class, oid);

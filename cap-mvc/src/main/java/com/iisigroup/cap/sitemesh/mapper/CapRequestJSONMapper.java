@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.util.UrlUtils;
 
 import com.iisigroup.cap.component.Request;
@@ -54,6 +55,8 @@ public class CapRequestJSONMapper extends AbstractDecoratorMapper {
     private String ignorePathReg;
     private Set<String> ignoreParams;
     private Set<String> decoratorFile;
+    @Autowired
+    private CapAppContext capAppContext;
 
     public void init(Config config, Properties properties, DecoratorMapper parent) throws InstantiationException {
         super.init(config, properties, parent);
@@ -93,7 +96,7 @@ public class CapRequestJSONMapper extends AbstractDecoratorMapper {
     }
 
     private Request getDefaultRequest() {
-        Request cr = CapAppContext.getBean("CapDefaultRequest");
+        Request cr = capAppContext.getBean("CapDefaultRequest");
         return cr != null ? cr : new CapSpringMVCRequest();
     }
 

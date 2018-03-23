@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.iisigroup.cap.component.ErrorResult;
 import com.iisigroup.cap.component.Request;
@@ -63,11 +64,14 @@ public class CapHandlerServlet extends HttpServlet {
 
     protected PluginManager pluginMgr;
 
+    @Autowired
+    private CapAppContext capAppContext;
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         String manager = config.getInitParameter("pluginManager");
-        pluginMgr = (PluginManager) CapAppContext.getBean(manager);
+        pluginMgr = (PluginManager) capAppContext.getBean(manager);
         DEFAULT_REQUEST = config.getInitParameter("defaultRequest");
         if (CapString.isEmpty(DEFAULT_REQUEST)) {
             DEFAULT_REQUEST = "CapDefaultRequest";
@@ -144,11 +148,11 @@ public class CapHandlerServlet extends HttpServlet {
     }
 
     protected ErrorResult getDefaultErrorResult() {
-        return CapAppContext.getBean(DEFAULT_ERROR_RESULT);
+        return capAppContext.getBean(DEFAULT_ERROR_RESULT);
     }
 
     protected Request getDefaultRequest(HttpServletRequest req) {
-        Request cr = CapAppContext.getBean(DEFAULT_REQUEST);
+        Request cr = capAppContext.getBean(DEFAULT_REQUEST);
         cr.setRequestObject(req);
         return cr;
     }
