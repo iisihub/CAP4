@@ -142,16 +142,16 @@ public class CapApplication extends SpringBootServletInitializer {
     // return registration;
     // }
 
-    // @Bean
-    // public FilterRegistrationBean pageFilter() {
-    // FilterRegistrationBean registration = new FilterRegistrationBean();
-    // Filter pageFilter = new SiteMeshFilter();
-    // registration.setFilter(pageFilter);
-    // registration.addUrlPatterns("/page/*");
-    // registration.setDispatcherTypes(DispatcherType.FORWARD, DispatcherType.REQUEST);
-    // registration.setOrder(7);
-    // return registration;
-    // }
+    @Bean
+    public FilterRegistrationBean pageFilter() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        Filter pageFilter = new SiteMeshFilter();
+        registration.setFilter(pageFilter);
+        registration.addUrlPatterns("/page/*");
+        registration.setDispatcherTypes(DispatcherType.FORWARD, DispatcherType.REQUEST);
+        registration.setOrder(7);
+        return registration;
+    }
 
     // @Bean
     // public FilterRegistrationBean delegatingFilterProxy() {

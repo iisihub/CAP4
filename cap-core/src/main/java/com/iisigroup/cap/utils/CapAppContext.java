@@ -30,20 +30,19 @@ import com.iisigroup.cap.operation.simple.SimpleContextHolder;
 public class CapAppContext implements ApplicationContextAware {
     protected final static Logger LOGGER = LoggerFactory.getLogger(CapAppContext.class);
 
-    @Override
+    @Autowired
     public void setApplicationContext(ApplicationContext ctx) {
         applicationContext = ctx;
     }
 
-    @Autowired
-    private ApplicationContext applicationContext;
+    private static ApplicationContext applicationContext;
 
-    public ApplicationContext getApplicationContext() {
+    public static ApplicationContext getApplicationContext() {
         return applicationContext;
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getBean(String beanName) {
+    public static <T> T getBean(String beanName) {
         return (T) (applicationContext.containsBean(beanName) ? applicationContext.getBean(beanName) : null);
     }
 
