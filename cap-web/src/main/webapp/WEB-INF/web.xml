@@ -11,10 +11,7 @@
     </context-param>
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>
-            classpath:spring/applicationContext.xml
-            classpath:spring/security.xml
-        </param-value>
+        <param-value>classpath:spring/applicationContext.xml</param-value>
     </context-param>
     <context-param>
         <description>設置環境變量根目錄名稱</description>
