@@ -1,15 +1,25 @@
 package com.iisigroup.cap;
 
+import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
+
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
+
+import com.iisigroup.cap.mvc.action.PageAction;
+import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
 
 @SpringBootApplication
 // @EnableDiscoveryClient
@@ -42,6 +52,19 @@ public class CapApplication extends SpringBootServletInitializer {
         // propertySourcesPlaceholderConfigurer.setSystemPropertiesModeName("SYSTEM_PROPERTIES_MODE_OVERRIDE");
         propertySourcesPlaceholderConfigurer.setIgnoreResourceNotFound(false);
         return propertySourcesPlaceholderConfigurer;
+    }
+
+    @Bean
+    public ServletRegistrationBean restServlet() {
+        AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
+        applicationContext.register(PageAction.class);
+        DispatcherServlet pageDispatcherServlet = new DispatcherServlet(applicationContext);
+        ServletRegistrationBean registrationBean = new ServletRegistrationBean(pageDispatcherServlet);
+        registrationBean.setLoadOnStartup(1);
+        registrationBean.addUrlMappings("/page/*");
+        // 不設定 name，就會取代預設的 DispatcherServlet，如果設了 name 就會變成兩個 DispatcherServlet 導致無限遞迴...
+        // registrationBean.setName("page");
+        return registrationBean;
     }
 
     // @Autowired
