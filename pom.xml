@@ -94,6 +94,11 @@
                 <artifactId>citi-zip</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-moica</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <modules>
@@ -110,6 +115,7 @@
         <module>citi-image</module>
         <module>citi-net</module>
         <module>citi-zip</module>
+        <module>citi-moica</module>
     </modules>
     <profiles>
         <profile>
