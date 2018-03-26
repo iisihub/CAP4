@@ -89,6 +89,11 @@
                 <artifactId>citi-net</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-zip</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <modules>
@@ -104,6 +109,7 @@
         <module>citi-otp</module>
         <module>citi-image</module>
         <module>citi-net</module>
+        <module>citi-zip</module>
     </modules>
     <profiles>
         <profile>

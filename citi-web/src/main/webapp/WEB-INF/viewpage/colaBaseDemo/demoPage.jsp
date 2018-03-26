@@ -24,7 +24,7 @@
                     <td><button id="writingBoardBtn" class="orangeBtn" type="button">SignaturePanel</button></td>
                 </tr>
                 <tr>
-                    <td><button id="" class="orangeBtn" type="button">TEST</button></td>
+                    <td><button id="zipBtn" class="orangeBtn" type="button">ZIP</button></td>
                     <td><button id="" class="orangeBtn" type="button">TEST</button></td>
                     <td><button id="" class="orangeBtn" type="button">TEST</button></td>
                 </tr>

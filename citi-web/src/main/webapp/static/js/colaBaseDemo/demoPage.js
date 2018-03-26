@@ -12,6 +12,9 @@ pageInit(function() {
       window.setCloseConfirm(false);
       window.location.href = url('page/colaBaseDemo/signaturePanel')
     });
-
+    $("#zipBtn").on('click', function(e) {
+        window.setCloseConfirm(false);
+        window.location.href = url('page/colaBaseDemo/zip')
+      });
   });
 });
