@@ -6,9 +6,9 @@
     <import resource="h2server.xml" />
     <!-- JNDI -->
     <bean id="cap-db" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="driverClass" value="org.h2.Driver" />
-        <property name="jdbcUrl" value="jdbc:h2:../h2db/capdb" />
-        <property name="user" value="sa" />
-        <property name="password" value="" />
+        <property name="driverClass" value="${jdbc.driver}" />
+        <property name="jdbcUrl" value="${jdbc.url}" />
+        <property name="user" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
     </bean>
 </beans>

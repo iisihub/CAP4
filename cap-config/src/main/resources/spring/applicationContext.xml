@@ -19,8 +19,8 @@
     <import resource="classpath:db/jpa.xml" />
     <import resource="classpath:spring/component.xml" />
     <!-- 
-     -->
     <import resource="classpath:spring/security.xml" />
+     -->
     <import resource="classpath:spring/operation.xml" />
     <!-- audit log -->
     <import resource="classpath:spring/auditlog.xml" />

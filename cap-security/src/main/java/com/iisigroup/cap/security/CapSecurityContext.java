@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import com.iisigroup.cap.security.model.CapUserDetails;
 
@@ -37,6 +38,7 @@ import com.iisigroup.cap.security.model.CapUserDetails;
  *          <li>2011/11/4,rodeschen,new
  *          </ul>
  */
+@Component
 public class CapSecurityContext {
 
     /**

@@ -7,10 +7,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.iisigroup.cap.security.CapSecurityContext;
 
+@Component
 public class CaptchaCaptureFilter extends OncePerRequestFilter {
 
     private String userCaptchaResponse;
