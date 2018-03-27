@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iisigroup.cap.auth.dao.UserDao;
@@ -25,8 +24,6 @@ public class PwdPolicyServiceImpl implements PwdPolicyService {
     CommonDao commonDao;
     @Resource
     UserDao userDao;
-    @Autowired
-    private CapAppContext capAppContext;
 
     @Override
     public void updatePwdPolicy(Request request) {
@@ -41,7 +38,7 @@ public class PwdPolicyServiceImpl implements PwdPolicyService {
             }
             parm.setParmId(key);
             parm.setParmValue(data);
-            parm.setParmDesc(capAppContext.getMessage("pwdpolicy." + key.substring(4)));
+            parm.setParmDesc(CapAppContext.getMessage("pwdpolicy." + key.substring(4)));
             parm.setUpdater(CapSecurityContext.getUserId());
             parm.setUpdateTime(CapDate.getCurrentTimestamp());
             commonDao.save(parm);

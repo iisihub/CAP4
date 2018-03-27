@@ -18,7 +18,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.iisigroup.cap.annotation.HandlerType;
@@ -60,8 +59,6 @@ public class FactorMntHandler extends MFormHandler {
 
     @Resource
     private CommonService commonService;
-    @Autowired
-    private CapAppContext capAppContext;
 
     /**
      * 查詢Factor資料明細
@@ -104,13 +101,13 @@ public class FactorMntHandler extends MFormHandler {
         if ("A".equals(type)) {
             if (ftItm != null) {
                 // factorMnt.0001 代碼重覆!
-                throw new CapMessageException(capAppContext.getMessage("factorMntPage.0001"), getClass());
+                throw new CapMessageException(CapAppContext.getMessage("factorMntPage.0001"), getClass());
             }
             ftItm = new DivFtItm();
         } else {
             if (ftItm != null && !ftItm.getOid().equals(request.get("oid"))) {
                 // factorMnt.0001 代碼重覆!
-                throw new CapMessageException(capAppContext.getMessage("factorMntPage.0001"), getClass());
+                throw new CapMessageException(CapAppContext.getMessage("factorMntPage.0001"), getClass());
             } else if (ftItm == null && !CapString.isEmpty(request.get("oid"))) {
                 ftItm = factorMntService.getById(request.get("oid"));
             } else if (ftItm == null) {
@@ -154,7 +151,7 @@ public class FactorMntHandler extends MFormHandler {
         factorMntService.saveDivFtItm(ftItm);
         if (!delFtDtl.isEmpty())
             factorMntService.deleteFtDtlByList(delFtDtl);
-        result.set(Constants.AJAX_NOTIFY_MESSAGE, capAppContext.getMessage("factorMntPage.0002"));
+        result.set(Constants.AJAX_NOTIFY_MESSAGE, CapAppContext.getMessage("factorMntPage.0002"));
         return result;
     }
 
@@ -168,7 +165,7 @@ public class FactorMntHandler extends MFormHandler {
     public Result delete(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         factorMntService.deleteById(request.get("oid"));
-        result.set(Constants.AJAX_NOTIFY_MESSAGE, capAppContext.getMessage("factorMntPage.0003"));
+        result.set(Constants.AJAX_NOTIFY_MESSAGE, CapAppContext.getMessage("factorMntPage.0003"));
         return result;
     }
 

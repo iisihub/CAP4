@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,8 +31,6 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     private PasswordService passwordService;
     private AccessControlService accessControlService;
     private CaptchaCaptureFilter captchaCaptureFilter;
-    @Autowired
-    private CapAppContext capAppContext;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -113,7 +110,7 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
         final int usernameMaxLength = 10;
         final int passwordMaxLength = 50;
         if (username.length() > usernameMaxLength || password.length() > passwordMaxLength) {
-            throw new CapAuthenticationException(capAppContext.getMessage("login.checkLength"));
+            throw new CapAuthenticationException(CapAppContext.getMessage("login.checkLength"));
         }
     }
 
@@ -128,7 +125,7 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     private void customValidInput2(String newPwd, String confirm) {
         final int passwordMaxLength = 50;
         if (newPwd.length() > passwordMaxLength || confirm.length() > passwordMaxLength) {
-            throw new CapAuthenticationException(capAppContext.getMessage("login.checkLength"));
+            throw new CapAuthenticationException(CapAppContext.getMessage("login.checkLength"));
         }
     }
 
@@ -142,18 +139,18 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
         case 1:// 初始
                // 若「首次登入是否強制更換密碼」為1，則強制更換密碼，否則用原密碼登入。
             if ("1".equals(policy.get(PwdPolicyKeys.PWD_FORCE_CHANGE_PWD.toString().toLowerCase()))) {
-                authedPwd = forceChangePassword(username, captchaEnabled, forceChangePwd, capAppContext.getMessage("error.011"));
+                authedPwd = forceChangePassword(username, captchaEnabled, forceChangePwd, CapAppContext.getMessage("error.011"));
             } else {
                 authedPwd = password;
             }
             break;
         case 2: // 禁用
-            throw new CapAuthenticationException(capAppContext.getMessage("error.006", new Object[] { username }), captchaEnabled, forceChangePwd);
+            throw new CapAuthenticationException(CapAppContext.getMessage("error.006", new Object[] { username }), captchaEnabled, forceChangePwd);
         case 3: // 密碼過期
-            authedPwd = forceChangePassword(username, captchaEnabled, forceChangePwd, capAppContext.getMessage("error.012"));
+            authedPwd = forceChangePassword(username, captchaEnabled, forceChangePwd, CapAppContext.getMessage("error.012"));
             break;
         case 9: // 刪除
-            throw new CapAuthenticationException(capAppContext.getMessage("error.007", new Object[] { username }), captchaEnabled, forceChangePwd);
+            throw new CapAuthenticationException(CapAppContext.getMessage("error.007", new Object[] { username }), captchaEnabled, forceChangePwd);
         default:
             throw new CapAuthenticationException("Invalid User Status.", captchaEnabled, forceChangePwd);
         }
@@ -169,7 +166,7 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
         if (!Boolean.valueOf(ignoreNotify)) {
             int diff = passwordService.getPasswordChangeNotifyDay(userId) + 1;
             if (diff > 0) {
-                throw new CapAuthenticationException(capAppContext.getMessage("error.013", new Object[] { diff }), captchaEnabled, forceChangePwd, true);
+                throw new CapAuthenticationException(CapAppContext.getMessage("error.013", new Object[] { diff }), captchaEnabled, forceChangePwd, true);
             }
         }
     }
@@ -179,7 +176,7 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
         String confirm = captchaCaptureFilter.getRequest().getParameter("confirm");
         if (StringUtils.isBlank(newPwd) || StringUtils.isBlank(confirm)) {
             setForceChangePwd(username, true);
-            throw new CapAuthenticationException(reason + capAppContext.getMessage("error.010"), captchaEnabled, true);
+            throw new CapAuthenticationException(reason + CapAppContext.getMessage("error.010"), captchaEnabled, true);
         } else {
 
             customValidInput2(newPwd, confirm);

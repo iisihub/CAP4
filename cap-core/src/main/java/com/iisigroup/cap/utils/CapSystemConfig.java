@@ -1,5 +1,5 @@
 /* 
- * CapSystemConfigUtil.java
+ * CapSystemConfig.java
  * 
  * Copyright (c) 2009-2011 International Integrated System, Inc. 
  * All Rights Reserved.
@@ -15,9 +15,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 /**
  * <pre>
@@ -31,7 +28,6 @@ import org.springframework.stereotype.Component;
  *          <li>2011/12/26,rodeschen,new
  *          </ul>
  */
-@Component
 public class CapSystemConfig implements InitializingBean {
 
     private Properties properties = new Properties();
@@ -39,8 +35,7 @@ public class CapSystemConfig implements InitializingBean {
     public CapSystemConfig() {
     }
 
-    @Autowired
-    public CapSystemConfig(@Value("classpath:config.properties") Properties properties) throws IOException {
+    public CapSystemConfig(Properties properties) throws IOException {
         this.properties = properties;
     }
 

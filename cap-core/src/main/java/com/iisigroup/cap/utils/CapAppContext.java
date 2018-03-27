@@ -46,7 +46,7 @@ public class CapAppContext implements ApplicationContextAware {
         return (T) (applicationContext.containsBean(beanName) ? applicationContext.getBean(beanName) : null);
     }
 
-    public Resource getResource(String path) {
+    public static Resource getResource(String path) {
         Resource resource = applicationContext.getResource(path);
         return resource;
     }
@@ -55,21 +55,21 @@ public class CapAppContext implements ApplicationContextAware {
         return (T) applicationContext.getBean(beanName, c);
     }
 
-    public String getMessage(String key) {
+    public static String getMessage(String key) {
         Locale locale = (Locale) SimpleContextHolder.get(CapWebUtil.localeKey);
         return getMessage(key, null, locale == null ? Locale.getDefault() : locale);
     }
 
-    public String getMessage(String key, Object[] args) {
+    public static String getMessage(String key, Object[] args) {
         Locale locale = (Locale) SimpleContextHolder.get(CapWebUtil.localeKey);
         return getMessage(key, args, locale == null ? Locale.getDefault() : locale);
     }
 
-    public String getMessage(String key, Locale locale) {
+    public static String getMessage(String key, Locale locale) {
         return getMessage(key, null, locale);
     }
 
-    public String getMessage(String key, Object[] args, Locale locale) {
+    public static String getMessage(String key, Object[] args, Locale locale) {
         try {
             return applicationContext.getMessage(key, args, locale);
         } catch (NoSuchMessageException e) {

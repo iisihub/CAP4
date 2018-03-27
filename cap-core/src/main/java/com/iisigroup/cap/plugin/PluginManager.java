@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 
 import com.iisigroup.cap.exception.CapPlugInNotFoundException;
 
@@ -33,7 +32,6 @@ import com.iisigroup.cap.exception.CapPlugInNotFoundException;
  *          <li>2011/11/1,rodeschen,from cap
  *          </ul>
  */
-@Component
 public class PluginManager implements InitializingBean {
 
     private final Logger logger = LoggerFactory.getLogger(PluginManager.class);

@@ -11,8 +11,6 @@
  */
 package com.iisigroup.cap.formatter.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.iisigroup.cap.constants.Constants;
 import com.iisigroup.cap.formatter.Formatter;
 import com.iisigroup.cap.utils.CapAppContext;
@@ -32,9 +30,6 @@ import com.iisigroup.cap.utils.CapString;
  */
 @SuppressWarnings("serial")
 public class I18NFormatter implements Formatter {
-
-    @Autowired
-    private CapAppContext capAppContext;
 
     String prefix;
     boolean hasPrefix = false;
@@ -58,7 +53,7 @@ public class I18NFormatter implements Formatter {
     public String reformat(Object in) {
         String key = CapString.trimNull(in);
         if (!CapString.isEmpty(key)) {
-            return capAppContext.getMessage(hasPrefix ? (prefix + key) : key);
+            return CapAppContext.getMessage(hasPrefix ? (prefix + key) : key);
         }
         return Constants.EMPTY_STRING;
     }
