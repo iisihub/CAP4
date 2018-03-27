@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>cap</artifactId>
@@ -54,10 +55,12 @@
             <groupId>com.iisigroup.cap</groupId>
             <artifactId>cap-report</artifactId>
         </dependency>
+        <!-- 
         <dependency>
             <groupId>com.iisigroup.cap</groupId>
             <artifactId>cap-rule</artifactId>
         </dependency>
+         -->
         <dependency>
             <groupId>org.tuckey</groupId>
             <artifactId>urlrewritefilter</artifactId>
@@ -80,18 +83,6 @@
             <version>${hibernate.validator.version}</version>
         </dependency>
         <!-- provided：在編譯和測試的過程有效,在最後生成war時不加入 runtime：在運行的時候依賴,在編譯的時候不依賴 -->
-        <dependency>
-            <groupId>com.mchange</groupId>
-            <artifactId>c3p0</artifactId>
-            <version>0.9.5.2</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib-nodep</artifactId>
-            <version>3.2.2</version>
-            <scope>runtime</scope>
-        </dependency>
         <!-- H2 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <dependency>
             <groupId>com.h2database</groupId>
@@ -105,8 +96,34 @@
             <version>1.2</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jasper</artifactId>
+            <version>8.5.29</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- 
          -->
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>el-impl</artifactId>
+            <version>2.2.1-b05</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--
+        -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -126,6 +143,11 @@
                 <configuration>
                     <argLine>-Xmx1024m</argLine>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>1.5.10.RELEASE</version>
             </plugin>
             <!-- 將config copy 至 classes -->
             <plugin>

@@ -1,13 +1,19 @@
 package com.iisigroup.cap;
 
+import java.util.stream.Stream;
+
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRegistration;
 
+import org.apache.catalina.core.Constants;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
@@ -170,4 +176,20 @@ public class CapApplication extends SpringBootServletInitializer {
     // return registration;
     // }
 
+    @Bean
+    public ServletContextInitializer preCompileJspsAtStartup() {
+        return servletContext -> {
+            getDeepResourcePaths(servletContext, "/WEB-INF/").forEach(jspPath -> {
+                // log.info("Registering JSP: {}", jspPath);
+                ServletRegistration.Dynamic reg = servletContext.addServlet(jspPath, Constants.JSP_SERVLET_CLASS);
+                reg.setInitParameter("jspFile", jspPath);
+                reg.setLoadOnStartup(99);
+                reg.addMapping(jspPath);
+            });
+        };
+    }
+
+    private static Stream<String> getDeepResourcePaths(ServletContext servletContext, String path) {
+        return (path.endsWith("/")) ? servletContext.getResourcePaths(path).stream().flatMap(p -> getDeepResourcePaths(servletContext, p)) : Stream.of(path);
+    }
 }
