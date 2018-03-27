@@ -12,12 +12,12 @@ import static org.junit.Assert.*;
  */
 public class ImageUtilTest {
 
-    //測試檔案資料夾
+    // 測試檔案資料夾
     private final String testFileFolderPath = "/Users/VALLA/Desktop/testImageUtil/targetFolder";
-    //轉檔後放置資料夾
+    // 轉檔後放置資料夾
     private final String transFilePlaceFolderPath = "/Users/VALLA/Desktop/testImageUtil/resultFolder";
 
-    //測試檔案名稱
+    // 測試檔案名稱
     private final String testFileName = "IamEN.jpg";
 
     private File targetImageFile = new File(testFileFolderPath, testFileName);
@@ -74,16 +74,16 @@ public class ImageUtilTest {
     @Test
     public void test_files_combind_to_one_tiff() throws Exception {
         imageFilesBuilder.combineAndWriteToMultipageTIFF(placeFolder, true);
-        //output_combine_20180302_05_00_53.tiff
+        // output_combine_20180302_05_00_53.tiff
         boolean checkFile = false;
-        for(File file : placeFolder.listFiles()){
-            if(file.getName().contains("output_combine_"))
+        for (File file : placeFolder.listFiles()) {
+            if (file.getName().contains("output_combine_"))
                 checkFile = true;
         }
         assertTrue(checkFile);
     }
 
-    @Test (expected = Exception.class)
+    @Test(expected = Exception.class)
     public void test_target_file_not_found() throws Exception {
         ImageUtil.fromSrc("I'm not exsist");
         fail();
