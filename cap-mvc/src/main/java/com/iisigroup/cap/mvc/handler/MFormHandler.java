@@ -18,8 +18,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.iisigroup.cap.action.Action;
 import com.iisigroup.cap.annotation.HandlerType;
 import com.iisigroup.cap.annotation.HandlerType.HandlerTypeEnum;
@@ -246,11 +244,8 @@ public abstract class MFormHandler extends HandlerPlugin {
         return SIMPLE_OPERATION;
     }
 
-    @Autowired
-    private CapAppContext capAppContext;
-
     protected Operation getOperation(Request params) {
-        return (Operation) capAppContext.getApplicationContext().getBean(getOperationName(params));
+        return (Operation) CapAppContext.getApplicationContext().getBean(getOperationName(params));
     }
 
     private SearchSetting createSearchTemplete() {

@@ -18,7 +18,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.iisigroup.cap.annotation.HandlerType;
@@ -69,8 +68,6 @@ public class RoleSetHandler extends MFormHandler {
 
     @Resource
     private RoleSetService roleSetService;
-    @Autowired
-    private CapAppContext capAppContext;
 
     @HandlerType(HandlerTypeEnum.GRID)
     public BeanGridResult query(SearchSetting search, Request params) {
@@ -151,7 +148,7 @@ public class RoleSetHandler extends MFormHandler {
 
     public Result getAllDepartment(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
-        result.set("All", capAppContext.getMessage("All"));
+        result.set("All", CapAppContext.getMessage("All"));
         result.putAll(roleSetService.findAllDepartment());
 
         return result;
@@ -164,7 +161,7 @@ public class RoleSetHandler extends MFormHandler {
             return result;
         }
 
-        result.set("All", capAppContext.getMessage("All"));
+        result.set("All", CapAppContext.getMessage("All"));
         result.putAll(roleSetService.findAllFunc(sysType));
 
         return result;
@@ -187,10 +184,10 @@ public class RoleSetHandler extends MFormHandler {
         if (!CapString.isEmpty(code)) {
             role = roleSetService.findRoleByCode(code);
             if (isNew.equals("true") && role != null) {
-                throw new CapMessageException(capAppContext.getMessage("js.data.exists"), RoleSetHandler.class);
+                throw new CapMessageException(CapAppContext.getMessage("js.data.exists"), RoleSetHandler.class);
             }
         } else {
-            throw new CapMessageException(capAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
+            throw new CapMessageException(CapAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
         }
         if (role == null) {
             role = new DefaultRole();
@@ -222,7 +219,7 @@ public class RoleSetHandler extends MFormHandler {
             role = roleSetService.findRoleByCode(code);
         }
         if (role == null) {
-            throw new CapMessageException(capAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
+            throw new CapMessageException(CapAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
         }
 
         List<UserRole> list = new ArrayList<UserRole>();
@@ -260,7 +257,7 @@ public class RoleSetHandler extends MFormHandler {
             role = roleSetService.findRoleByCode(code);
         }
         if (role == null) {
-            throw new CapMessageException(capAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
+            throw new CapMessageException(CapAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
         }
 
         List<RoleFunction> list = new ArrayList<RoleFunction>();
@@ -312,7 +309,7 @@ public class RoleSetHandler extends MFormHandler {
         List<Object> users = GsonUtil.jsonToObjectList(request.get("users"));
 
         if (CapString.isEmpty(code)) {
-            throw new CapMessageException(capAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
+            throw new CapMessageException(CapAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
         }
 
         List<String> delUsr = new ArrayList<String>();
@@ -341,7 +338,7 @@ public class RoleSetHandler extends MFormHandler {
         List<Object> funcItem = GsonUtil.jsonToObjectList(request.get("funcItem"));
 
         if (CapString.isEmpty(code)) {
-            throw new CapMessageException(capAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
+            throw new CapMessageException(CapAppContext.getMessage("EXCUE_ERROR"), RoleSetHandler.class);
         }
 
         List<String> delFunc = new ArrayList<String>();

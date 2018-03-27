@@ -20,7 +20,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.iisigroup.cap.annotation.HandlerType;
@@ -75,8 +74,6 @@ public class ConditionMntHandler extends MFormHandler {
 
     @Resource
     private CommonService commonService;
-    @Autowired
-    private CapAppContext capAppContext;
 
     /**
      * 查詢Condition資料明細
@@ -149,13 +146,13 @@ public class ConditionMntHandler extends MFormHandler {
         if ("A".equals(type)) {
             if (ctItm != null) {
                 // conditionMnt.0001 條件代碼重覆!
-                throw new CapMessageException(capAppContext.getMessage("condition.0001"), getClass());
+                throw new CapMessageException(CapAppContext.getMessage("condition.0001"), getClass());
             }
             ctItm = new DivCtItm();
         } else {
             if (ctItm != null && !ctItm.getOid().equals(request.get("oid"))) {
                 // conditionMnt.0001 條件代碼重覆!
-                throw new CapMessageException(capAppContext.getMessage("condition.0001"), getClass());
+                throw new CapMessageException(CapAppContext.getMessage("condition.0001"), getClass());
             } else if (ctItm == null && !CapString.isEmpty(request.get("oid"))) {
                 ctItm = conditionMntService.getById(request.get("oid"));
             } else if (ctItm == null) {
@@ -212,7 +209,7 @@ public class ConditionMntHandler extends MFormHandler {
         conditionMntService.saveDivCtItm(ctItm);
         if (!delCtDtl.isEmpty())
             conditionMntService.deleteCtDtlByList(delCtDtl);
-        result.set(Constants.AJAX_NOTIFY_MESSAGE, capAppContext.getMessage("condition.0002"));
+        result.set(Constants.AJAX_NOTIFY_MESSAGE, CapAppContext.getMessage("condition.0002"));
         return result;
     }
 
@@ -226,7 +223,7 @@ public class ConditionMntHandler extends MFormHandler {
     public Result delete(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         conditionMntService.deleteById(request.get("oid"));
-        result.set(Constants.AJAX_NOTIFY_MESSAGE, capAppContext.getMessage("condition.0003"));
+        result.set(Constants.AJAX_NOTIFY_MESSAGE, CapAppContext.getMessage("condition.0003"));
         return result;
     }
 

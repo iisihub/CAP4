@@ -18,7 +18,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 
@@ -76,8 +75,6 @@ public class UserSetHandler extends MFormHandler {
     private CodeTypeService codeTypeService;
     @Resource
     private CommonService commonService;
-    @Autowired
-    private CapAppContext capAppContext;
 
     @HandlerType(HandlerTypeEnum.GRID)
     public MapGridResult query(SearchSetting search, Request params) {
@@ -118,7 +115,7 @@ public class UserSetHandler extends MFormHandler {
         String code = request.get("code");
         DefaultUser user = userService.findUserByUserCode(code);
         if (user != null) {
-            throw new CapMessageException(capAppContext.getMessage("users.exist", new Object[] { code }), getClass());
+            throw new CapMessageException(CapAppContext.getMessage("users.exist", new Object[] { code }), getClass());
         }
         String name = request.get("name");
         String password = request.get("password");
@@ -142,7 +139,7 @@ public class UserSetHandler extends MFormHandler {
         }
         DefaultUser user = userService.findUserByUserCode(code);
         if (user != null && !user.getOid().equals(oid)) {
-            throw new CapMessageException(capAppContext.getMessage("users.exist", new Object[] { code }), getClass());
+            throw new CapMessageException(CapAppContext.getMessage("users.exist", new Object[] { code }), getClass());
         }
         String name = request.get("name");
         String email = request.get("email");
@@ -194,7 +191,7 @@ public class UserSetHandler extends MFormHandler {
             passwordService.checkPasswordRule(userId, newPwd, confirm, false);
             passwordService.changeUserPassword(userId, newPwd);
         } else {
-            throw new CapMessageException(capAppContext.getMessage("error.009"), getClass());
+            throw new CapMessageException(CapAppContext.getMessage("error.009"), getClass());
         }
         return new AjaxFormResult();
     }

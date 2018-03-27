@@ -19,7 +19,6 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ReflectionUtils;
 
@@ -70,8 +69,6 @@ public class CodeTypeHandler extends MFormHandler {
 
     @Resource
     private CommonService commonService;
-    @Autowired
-    private CapAppContext capAppContext;
 
     @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.QUERY)
     @HandlerType(HandlerTypeEnum.GRID)
@@ -117,13 +114,13 @@ public class CodeTypeHandler extends MFormHandler {
         if ("A".equals(type)) {
             if (code != null) {
                 // codetype.0001 代碼重覆!
-                throw new CapMessageException(capAppContext.getMessage("codetype.0001"), getClass());
+                throw new CapMessageException(CapAppContext.getMessage("codetype.0001"), getClass());
             }
             code = new CodeType();
         } else {
             if (code != null && !code.getOid().equals(request.get("oid"))) {
                 // codetype.0001 代碼重覆!
-                throw new CapMessageException(capAppContext.getMessage("codetype.0001"), getClass());
+                throw new CapMessageException(CapAppContext.getMessage("codetype.0001"), getClass());
             } else if (code == null) {
                 code = codeTypeService.getById(request.get("oid"));
             }

@@ -40,7 +40,6 @@ import org.springframework.batch.core.launch.NoSuchJobExecutionException;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
@@ -459,12 +458,9 @@ public class BatchHandler extends MFormHandler {
         return new MapGridResult(list, list.size(), fmt);
     }
 
-    @Autowired
-    private CapAppContext capAppContext;
-
     private void jobRegistryLoad(BatchJob job) {
         org.springframework.core.io.Resource resource = batchSrv.getJobResource(job);
-        ApplicationContext context = createApplicationContextFactory(capAppContext.getApplicationContext(), resource);
+        ApplicationContext context = createApplicationContextFactory(CapAppContext.getApplicationContext(), resource);
         Job j = context.getBean(job.getJobId(), Job.class);
         jobRegistry.unregister(j.getName());
         try {

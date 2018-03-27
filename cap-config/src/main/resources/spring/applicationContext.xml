@@ -3,6 +3,17 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+    <bean id="systemConfig" class="com.iisigroup.cap.utils.CapSystemConfig">
+        <constructor-arg index="0">
+            <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+                <property name="locations">
+                    <list>
+                        <value>classpath:config.properties</value>
+                    </list>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
     <import resource="classpath:db/datasource.xml" />
     <import resource="classpath:db/jdbcTemplate.xml" />
     <import resource="classpath:db/jpa.xml" />

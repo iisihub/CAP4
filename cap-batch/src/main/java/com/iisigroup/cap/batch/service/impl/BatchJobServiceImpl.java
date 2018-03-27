@@ -18,7 +18,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.batch.core.JobParameters;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.iisigroup.cap.batch.dao.BatchExecutionDao;
 import com.iisigroup.cap.batch.dao.BatchJobDao;
@@ -56,8 +55,6 @@ public class BatchJobServiceImpl implements BatchJobService {
 
     @Resource
     private CapSystemConfig config;
-    @Autowired
-    private CapAppContext capAppContext;
 
     /*
      * (non-Javadoc)
@@ -76,7 +73,7 @@ public class BatchJobServiceImpl implements BatchJobService {
 
     @Override
     public org.springframework.core.io.Resource getJobResource(BatchJob job) {
-        return capAppContext.getResource(new StringBuffer(config.getProperty("batch.jobsroot", "")).append(job.getJobResource()).toString());
+        return CapAppContext.getResource(new StringBuffer(config.getProperty("batch.jobsroot", "")).append(job.getJobResource()).toString());
     }
 
     @Override

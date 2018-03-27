@@ -14,7 +14,6 @@ import java.text.MessageFormat;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.iisigroup.cap.base.model.ErrorCode;
 import com.iisigroup.cap.component.Request;
@@ -56,8 +55,7 @@ public class RespMsgHelper {
     private static final String OUT_SUG_SEPARATOR = "|<BR>";
 
     private static final boolean DB_SOURCE = true;
-    @Autowired
-    private CapAppContext capAppContext;
+
     /**
      * 格式化回應訊息
      *
@@ -109,7 +107,7 @@ public class RespMsgHelper {
      * @return 回應訊息
      */
     public String getMessage(String key, String custMessage) {
-        String value = capAppContext.getMessage(key);
+        String value = CapAppContext.getMessage(key);
         return format(key, value, custMessage);
 
     }
@@ -179,9 +177,9 @@ public class RespMsgHelper {
             if (workComp instanceof Request) {
                 Request request = (Request) workComp;
                 if (params == null) {
-                    msgstr = capAppContext.getMessage(key);
+                    msgstr = CapAppContext.getMessage(key);
                 } else {
-                    msgstr = capAppContext.getMessage(key, params);
+                    msgstr = CapAppContext.getMessage(key, params);
                 }
             }
         }

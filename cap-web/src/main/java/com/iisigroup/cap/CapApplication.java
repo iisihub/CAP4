@@ -23,8 +23,11 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.tuckey.web.filters.urlrewrite.UrlRewriteFilter;
+import org.tuckey.web.filters.urlrewrite.gzip.GzipFilter;
 
 import com.iisigroup.cap.mvc.action.PageAction;
+import com.iisigroup.cap.web.CapHandlerServlet;
 import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
 
 @SpringBootApplication
@@ -73,14 +76,6 @@ public class CapApplication extends SpringBootServletInitializer {
         return registrationBean;
     }
 
-    // @Autowired
-    // CapSystemConfig systemConfig;
-    //
-    // @Bean
-    // public CapSystemConfig systemConfig(@Value("classpath:config.properties") String config) {
-    // return systemConfig;
-    // }
-
     // @Bean
     // public ServletRegistrationBean dispatcherServletRegistrationBean() {
     // ServletRegistrationBean registrationBean = new ServletRegistrationBean(new DispatcherServlet(), "/page/*");
@@ -88,14 +83,14 @@ public class CapApplication extends SpringBootServletInitializer {
     // return registrationBean;
     // }
 
-    // @Bean
-    // public ServletRegistrationBean capHandlerServletRegistrationBean() {
-    // ServletRegistrationBean registrationBean = new ServletRegistrationBean(new CapHandlerServlet(), "/handler/*");
-    // registrationBean.addInitParameter("pluginManager", "CapPluginManager");
-    // registrationBean.addInitParameter("defaultRequest", "CapDefaultRequest");
-    // registrationBean.addInitParameter("errorResult", "CapDefaultErrorResult");
-    // return registrationBean;
-    // }
+    @Bean
+    public ServletRegistrationBean capHandlerServletRegistrationBean() {
+        ServletRegistrationBean registrationBean = new ServletRegistrationBean(new CapHandlerServlet(), "/handler/*");
+        registrationBean.addInitParameter("pluginManager", "CapPluginManager");
+        registrationBean.addInitParameter("defaultRequest", "CapDefaultRequest");
+        registrationBean.addInitParameter("errorResult", "CapDefaultErrorResult");
+        return registrationBean;
+    }
 
     // @Bean
     // public FilterRegistrationBean filterRegistrationBean() {
@@ -127,26 +122,26 @@ public class CapApplication extends SpringBootServletInitializer {
     // return registration;
     // }
 
-    // @Bean
-    // public FilterRegistrationBean urlRewriteFilter() {
-    // FilterRegistrationBean registration = new FilterRegistrationBean();
-    // Filter urlRewriteFilter = new UrlRewriteFilter();
-    // registration.setFilter(urlRewriteFilter);
-    // registration.setDispatcherTypes(DispatcherType.REQUEST);
-    // registration.setOrder(4);
-    // return registration;
-    // }
+    @Bean
+    public FilterRegistrationBean urlRewriteFilter() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        Filter urlRewriteFilter = new UrlRewriteFilter();
+        registration.setFilter(urlRewriteFilter);
+        registration.setDispatcherTypes(DispatcherType.REQUEST);
+        registration.setOrder(4);
+        return registration;
+    }
 
-    // @Bean
-    // public FilterRegistrationBean gzipFilter() {
-    // FilterRegistrationBean registration = new FilterRegistrationBean();
-    // Filter gzipFilter = new GzipFilter();
-    // registration.setFilter(gzipFilter);
-    // registration.addUrlPatterns("*.js", "*.css");
-    // registration.setDispatcherTypes(DispatcherType.REQUEST);
-    // registration.setOrder(2);
-    // return registration;
-    // }
+    @Bean
+    public FilterRegistrationBean gzipFilter() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        Filter gzipFilter = new GzipFilter();
+        registration.setFilter(gzipFilter);
+        registration.addUrlPatterns("*.js", "*.css");
+        registration.setDispatcherTypes(DispatcherType.REQUEST);
+        registration.setOrder(2);
+        return registration;
+    }
 
     @Bean
     public FilterRegistrationBean pageFilter() {
@@ -166,13 +161,6 @@ public class CapApplication extends SpringBootServletInitializer {
     // delegatingFilterProxy.setTargetBeanName(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME);
     // registration.setFilter(delegatingFilterProxy);
     // registration.setOrder(1);
-    // return registration;
-    // }
-
-    // @Bean
-    // public ServletListenerRegistrationBean<CapWebSocketListener> servlteListener() {
-    // ServletListenerRegistrationBean<CapWebSocketListener> registration = new ServletListenerRegistrationBean<CapWebSocketListener>(
-    // new CapWebSocketListener().setApplicationContext(applicationContext));
     // return registration;
     // }
 

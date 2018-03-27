@@ -44,7 +44,6 @@ import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatelessKnowledgeSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 
@@ -120,8 +119,6 @@ public class RuleTbMntHandler extends MFormHandler {
 
     @Resource
     private CommonService commonService;
-    @Autowired
-    private CapAppContext capAppContext;
 
     /**
      * 查詢Condition資料明細
@@ -167,13 +164,13 @@ public class RuleTbMntHandler extends MFormHandler {
         if ("A".equals(type)) {
             if (rlItm != null) {
                 // 代碼重覆!
-                throw new CapMessageException(capAppContext.getMessage("ruleTb.0001"), getClass());
+                throw new CapMessageException(CapAppContext.getMessage("ruleTb.0001"), getClass());
             }
             rlItm = new DivRlItm();
         } else {
             if (rlItm != null && !rlItm.getOid().equals(request.get("oid"))) {
                 // 代碼重覆!
-                throw new CapMessageException(capAppContext.getMessage("ruleTb.0001"), getClass());
+                throw new CapMessageException(CapAppContext.getMessage("ruleTb.0001"), getClass());
             } else if (rlItm == null && !CapString.isEmpty(request.get("oid"))) {
                 rlItm = ruleTbMntService.getById(request.get("oid"));
             } else if (rlItm == null) {
@@ -231,7 +228,7 @@ public class RuleTbMntHandler extends MFormHandler {
         ruleTbMntService.saveDivRlItm(rlItm);
         if (!delRlDtl.isEmpty())
             ruleTbMntService.deleteRlDtlByList(delRlDtl);
-        result.set(Constants.AJAX_NOTIFY_MESSAGE, capAppContext.getMessage("ruleTb.0002"));
+        result.set(Constants.AJAX_NOTIFY_MESSAGE, CapAppContext.getMessage("ruleTb.0002"));
         return result;
     }
 
@@ -245,7 +242,7 @@ public class RuleTbMntHandler extends MFormHandler {
     public Result delete(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         ruleTbMntService.deleteById(request.get("oid"));
-        result.set(Constants.AJAX_NOTIFY_MESSAGE, capAppContext.getMessage("ruleTb.0003"));
+        result.set(Constants.AJAX_NOTIFY_MESSAGE, CapAppContext.getMessage("ruleTb.0003"));
         return result;
     }
 
