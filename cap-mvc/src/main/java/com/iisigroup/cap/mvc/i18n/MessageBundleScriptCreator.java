@@ -22,7 +22,6 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
@@ -151,7 +150,7 @@ public class MessageBundleScriptCreator {
      *            i18n Path
      * @return String
      */
-    public String createScript(String i18nPath) {
+    public static String createScript(String i18nPath) {
         return createScript(CapString.getRegularMatch(i18nPath, I18NKEY_REG), loadProperties(i18nPath), null);
     }
 
@@ -168,9 +167,6 @@ public class MessageBundleScriptCreator {
         return createScript(CapString.getRegularMatch(i18nPath, I18NKEY_REG), loadProperties(i18nPath), filterList);
     }
 
-    @Autowired
-    private CapAppContext capAppContext;
-
     /**
      * 讀取 i18n 檔案
      *
@@ -178,7 +174,7 @@ public class MessageBundleScriptCreator {
      *            i18nPath
      * @return Properties
      */
-    private Properties loadProperties(String i18nPath) {
+    private static Properties loadProperties(String i18nPath) {
         Properties prop = new Properties();
         Locale locale = null;
         try {
@@ -193,13 +189,13 @@ public class MessageBundleScriptCreator {
         InputStream is = null;
         try {
             i18nFile = new StringBuffer("classpath:/i18n/").append(i18nPath).append("_").append(locale.toString()).append(".properties").toString();
-            Resource rs = capAppContext.getApplicationContext().getResource(i18nFile);
+            Resource rs = CapAppContext.getApplicationContext().getResource(i18nFile);
             if (rs != null) {
                 is = rs.getInputStream();
                 prop.load(is);
             } else {
                 i18nFile = new StringBuffer("classpath:/i18n/").append(i18nPath).append("_").append(".properties").toString();
-                rs = capAppContext.getApplicationContext().getResource(i18nFile);
+                rs = CapAppContext.getApplicationContext().getResource(i18nFile);
                 if (rs != null) {
                     is = rs.getInputStream();
                     prop.load(is);

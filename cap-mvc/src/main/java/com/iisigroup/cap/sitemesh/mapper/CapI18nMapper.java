@@ -50,9 +50,6 @@ public class CapI18nMapper extends AbstractDecoratorMapper {
         ignorePathReg = properties.getProperty("ignorePathReg");
     }
 
-    @Autowired
-    private MessageBundleScriptCreator messageBundleScriptCreator;
-
     /*
      * (non-Javadoc)
      * 
@@ -62,7 +59,7 @@ public class CapI18nMapper extends AbstractDecoratorMapper {
     public Decorator getDecorator(HttpServletRequest request, com.opensymphony.module.sitemesh.Page page) {
         String pathInfo = CapWebUtil.getRequestURL(request);
         if (!CapString.checkRegularMatch(UrlUtils.buildRequestUrl(request), ignorePathReg)) {
-            page.addProperty(PROP_I18N, messageBundleScriptCreator.createScript(pathInfo.replaceAll("(^/page/|[.][jJ][sS][pP]$)", "")));
+            page.addProperty(PROP_I18N, MessageBundleScriptCreator.createScript(pathInfo.replaceAll("(^/page/|[.][jJ][sS][pP]$)", "")));
         }
         return super.getDecorator(request, page);
     }
