@@ -12,18 +12,31 @@
     <script>
           loadScript('js/colaBaseDemo/otp');
         </script>
-    <div style="height: 560px;">
+    <div style="height: 460px;">
         <form id="otpForm" autocomplete="off" method="post">
             <h3>OTP身份認證</h3>
+            <input type="text" id="otpTimoutSec" maxlength="4" placeholder="請輸入OTP TIME OUT秒數"/>
+            <br /> 
+            <span class="otpMaxRetry" style="display:none">
+                <input type="text" id="otpMaxRetry" maxlength="2" placeholder="請輸入OTP重送最多次數" value=""/>
+                <br /> 
+            </span>
             <input type="text" id="mobilePhone" maxlength="10" placeholder="請輸入發送OTP簡訊手機號碼" />
-            <button id="sendBtn" class="sendbtn" type="button">發送OTP簡訊</button><br /> 
+            <button id="sendBtn" class="sendbtn" type="button">發送OTP簡訊</button>
+            <button id="reSendOtpBtn" class="sendbtn" type="button" style="display:none">重新發送OTP簡訊動態密碼</button>
+            <br /> 
+            <hr>
             <input type="password" id="otp" name="otp" maxlength="6" placeholder="請輸入6碼OTP簡訊動態密碼" />
-            <button id="reSendOtpBtn" class="sendbtn" type="button">重新發送OTP簡訊動態密碼</button><br /> 
-            密碼於 <span id="otpSeconds" style="color: red;">60</span> 秒後失效，若密碼失效請按『重送OTP簡訊動態密碼』重送，最多可重送 <span id="otpSeconds" style="color: red;">3</span> 次
-            <button id="subimtBtn" class="sendbtn" type="button" style="background: red; margin: 30px 200px;">認證OTP簡訊動態密碼</button><br />
-            <p style="display: none; color: red; margin: 20px 225px;">
-                密碼驗證 <span id="otpResult">成功</span> !!
-            <p>
+            <button id="subimtBtn" class="sendbtn" type="button" style="background: red;">認證OTP簡訊動態密碼</button>
+            <br />
+            <fieldset>
+                <legend>
+                    <h3>Message</h3>
+                </legend>
+                 <span id="otpResultMsg"></span><br />
+                 <span id="otpSmsMsg"></span><br /> 
+                 <span id="retryMsg"></span>
+            </fieldset>
         </form>
     </div>
 </body>
