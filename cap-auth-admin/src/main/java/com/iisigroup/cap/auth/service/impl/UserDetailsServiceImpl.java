@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.iisigroup.cap.security.dao.SecUserDao;
 import com.iisigroup.cap.security.model.CapUserDetails;
@@ -41,6 +42,7 @@ import com.iisigroup.cap.utils.CapString;
  *          <li>2010/7/9,iristu,new
  *          </ul>
  */
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);

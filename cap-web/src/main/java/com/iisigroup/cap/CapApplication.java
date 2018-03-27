@@ -21,20 +21,21 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
+import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.tuckey.web.filters.urlrewrite.UrlRewriteFilter;
 import org.tuckey.web.filters.urlrewrite.gzip.GzipFilter;
 
 import com.iisigroup.cap.mvc.action.PageAction;
 import com.iisigroup.cap.web.CapHandlerServlet;
+import com.iisigroup.cap.web.LogContextFilter;
 import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
 
 @SpringBootApplication
-// @EnableDiscoveryClient
-// @EnableAdminServer
-// @EnableWebMvc
-// @ImportResource({ "classpath:spring/applicationContext.xml", "classpath:spring/page.xml", "classpath:spring/security.xml" })
 @ImportResource({ "classpath:spring/applicationContext.xml" })
 public class CapApplication extends SpringBootServletInitializer {
 
@@ -44,7 +45,6 @@ public class CapApplication extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) throws Exception {
-        System.setProperty("spring.devtools.restart.enabled", "true");
         SpringApplication.run(CapApplication.class, args);
     }
 
@@ -76,13 +76,6 @@ public class CapApplication extends SpringBootServletInitializer {
         return registrationBean;
     }
 
-    // @Bean
-    // public ServletRegistrationBean dispatcherServletRegistrationBean() {
-    // ServletRegistrationBean registrationBean = new ServletRegistrationBean(new DispatcherServlet(), "/page/*");
-    // registrationBean.addInitParameter("contextConfigLocation", "classpath:spring/page.xml");
-    // return registrationBean;
-    // }
-
     @Bean
     public ServletRegistrationBean capHandlerServletRegistrationBean() {
         ServletRegistrationBean registrationBean = new ServletRegistrationBean(new CapHandlerServlet(), "/handler/*");
@@ -92,35 +85,35 @@ public class CapApplication extends SpringBootServletInitializer {
         return registrationBean;
     }
 
-    // @Bean
-    // public FilterRegistrationBean filterRegistrationBean() {
-    // FilterRegistrationBean registration = new FilterRegistrationBean();
-    // CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-    // characterEncodingFilter.setForceEncoding(true);
-    // characterEncodingFilter.setEncoding("UTF-8");
-    // registration.setFilter(characterEncodingFilter);
-    // registration.setOrder(3);
-    // return registration;
-    // }
+    @Bean
+    public FilterRegistrationBean filterRegistrationBean() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setForceEncoding(true);
+        characterEncodingFilter.setEncoding("UTF-8");
+        registration.setFilter(characterEncodingFilter);
+        registration.setOrder(3);
+        return registration;
+    }
 
-    // @Bean
-    // public FilterRegistrationBean openEntityManagerInViewFilter() {
-    // FilterRegistrationBean registration = new FilterRegistrationBean();
-    // Filter openEntityManagerInViewFilter = new OpenEntityManagerInViewFilter();
-    // registration.setFilter(openEntityManagerInViewFilter);
-    // registration.setDispatcherTypes(DispatcherType.FORWARD, DispatcherType.REQUEST);
-    // registration.setOrder(6);
-    // return registration;
-    // }
+    @Bean
+    public FilterRegistrationBean openEntityManagerInViewFilter() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        Filter openEntityManagerInViewFilter = new OpenEntityManagerInViewFilter();
+        registration.setFilter(openEntityManagerInViewFilter);
+        registration.setDispatcherTypes(DispatcherType.FORWARD, DispatcherType.REQUEST);
+        registration.setOrder(6);
+        return registration;
+    }
 
-    // @Bean
-    // public FilterRegistrationBean logContextFilter() {
-    // FilterRegistrationBean registration = new FilterRegistrationBean();
-    // Filter logContextFilter = new LogContextFilter();
-    // registration.setFilter(logContextFilter);
-    // registration.setOrder(5);
-    // return registration;
-    // }
+    @Bean
+    public FilterRegistrationBean logContextFilter() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        Filter logContextFilter = new LogContextFilter();
+        registration.setFilter(logContextFilter);
+        registration.setOrder(5);
+        return registration;
+    }
 
     @Bean
     public FilterRegistrationBean urlRewriteFilter() {
@@ -154,15 +147,15 @@ public class CapApplication extends SpringBootServletInitializer {
         return registration;
     }
 
-    // @Bean
-    // public FilterRegistrationBean delegatingFilterProxy() {
-    // FilterRegistrationBean registration = new FilterRegistrationBean();
-    // DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy();
-    // delegatingFilterProxy.setTargetBeanName(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME);
-    // registration.setFilter(delegatingFilterProxy);
-    // registration.setOrder(1);
-    // return registration;
-    // }
+    @Bean
+    public FilterRegistrationBean delegatingFilterProxy() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy();
+        delegatingFilterProxy.setTargetBeanName(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME);
+        registration.setFilter(delegatingFilterProxy);
+        registration.setOrder(1);
+        return registration;
+    }
 
     @Bean
     public ServletContextInitializer preCompileJspsAtStartup() {
