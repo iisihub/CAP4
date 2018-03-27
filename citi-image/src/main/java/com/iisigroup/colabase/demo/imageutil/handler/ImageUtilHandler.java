@@ -1,4 +1,4 @@
-package com.iisigroup.colabase.demo.handler;
+package com.iisigroup.colabase.demo.imageutil.handler;
 
 import com.iisigroup.cap.mvc.handler.MFormHandler;
 import com.iisigroup.colabase.tool.ImageBuilder;
@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.iisigroup.colabase.tool.ImageUtil.convertImageToBase64String;
 
 /**
  * <pre>
@@ -22,7 +21,8 @@ import static com.iisigroup.colabase.tool.ImageUtil.convertImageToBase64String;
  * </pre>
  *
  * @author AndyChen
- * @version <ul>
+ * @version
+ *          <ul>
  *          <li>2018/03/12,AndyChen,new
  *          </ul>
  * @since 2018/03/12
@@ -37,7 +37,7 @@ public class ImageUtilHandler extends MFormHandler {
 
     public Result demo(Request params) {
 
-//        [_pa, inputFilesPath, _AuditLogTS, _isAjax, inputFolderPath, formAction, inputType]
+        // [_pa, inputFilesPath, _AuditLogTS, _isAjax, inputFolderPath, formAction, inputType]
         AjaxFormResult result = new AjaxFormResult();
         String inputType = params.get("inputType", "");
 
@@ -48,32 +48,32 @@ public class ImageUtilHandler extends MFormHandler {
         }
         ImageBuilder imageBuilder = null;
         switch (inputType) {
-            //folder
-            case "0":
-                File folder = new File(params.get("inputFolderPath"));
-                if (!folder.exists() || !folder.isDirectory()) {
-                    result.set("result", "please make sure your folder path is correct.");
+        // folder
+        case "0":
+            File folder = new File(params.get("inputFolderPath"));
+            if (!folder.exists() || !folder.isDirectory()) {
+                result.set("result", "please make sure your folder path is correct.");
+                return result;
+            }
+            imageBuilder = ImageUtil.fromSrc(folder);
+            break;
+        // multi files
+        case "1":
+            String[] filesPath = params.get("inputFilesPath", "").split(",");
+            List<File> files = new ArrayList<>();
+            for (String path : filesPath) {
+                File file = new File(path);
+                if (!file.exists()) {
+                    result.set("result", "file: " + file.getName() + " is not exists. Please check the file.");
                     return result;
                 }
-                imageBuilder = ImageUtil.fromSrc(folder);
-                break;
-            //multi files
-            case "1":
-                String[] filesPath = params.get("inputFilesPath", "").split(",");
-                List<File> files = new ArrayList<>();
-                for (String path : filesPath) {
-                    File file = new File(path);
-                    if (!file.exists()) {
-                        result.set("result", "file: " + file.getName() + " is not exists. Please check the file.");
-                        return result;
-                    }
-                    files.add(file);
-                }
-                imageBuilder = ImageUtil.fromSrc(files);
-                break;
-            default:
-                result.set("result", "please choose a input type!");
-                return result;
+                files.add(file);
+            }
+            imageBuilder = ImageUtil.fromSrc(files);
+            break;
+        default:
+            result.set("result", "please choose a input type!");
+            return result;
         }
         try {
             imageBuilder.writeToFiles(outputFolder, "tiff", true);
@@ -81,7 +81,7 @@ public class ImageUtilHandler extends MFormHandler {
             result.set("result", "output file fail, make sure path is correct.");
         }
         if (outputFolder.exists()) {
-            result.set("result", "trans file is success created in " +  outputFolder.getAbsolutePath());
+            result.set("result", "trans file is success created in " + outputFolder.getAbsolutePath());
         }
         return result;
     }
@@ -98,6 +98,5 @@ public class ImageUtilHandler extends MFormHandler {
         result.set("result", base64Str);
         return result;
     }
-
 
 }
