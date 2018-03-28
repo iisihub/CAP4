@@ -36,7 +36,7 @@ import com.iisigroup.cap.web.LogContextFilter;
 import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
 
 @SpringBootApplication
-@ImportResource({ "classpath:spring/applicationContext.xml" })
+@ImportResource({ "classpath:spring/applicationContext.xml", "classpath:spring/security.xml" })
 public class CapApplication extends SpringBootServletInitializer {
 
     @Override
