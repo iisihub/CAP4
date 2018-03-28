@@ -35,7 +35,7 @@ public class SequenceDaoImpl extends GenericDaoImpl<Sequence> implements Sequenc
     public Sequence findBySeqNode(String seqNode) {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("seqNode", seqNode);
-        return getNamedJdbcTemplate().queryForObject("Sequence.findBySeqNode", args, new RowMapper<Sequence>() {
+        return getNamedJdbcTemplate().queryForObject("Sequence.findBySeqNode", "", args, new RowMapper<Sequence>() {
             @Override
             public Sequence mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Sequence seq = new Sequence();

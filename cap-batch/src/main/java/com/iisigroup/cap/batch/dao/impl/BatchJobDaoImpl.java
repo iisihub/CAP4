@@ -33,7 +33,7 @@ public class BatchJobDaoImpl extends GenericDaoImpl<BatchJob> implements BatchJo
     public BatchJob findByJobId(String jobId) {
         Map<String, Object> job = new HashMap<String, Object>();
         job.put("jobId", jobId);
-        return getNamedJdbcTemplate().queryForObject("batchJob.findById", job, new BatchJobRowMapper());
+        return getNamedJdbcTemplate().queryForObject("batchJob.findById", "", job, new BatchJobRowMapper());
     }
 
     @Override

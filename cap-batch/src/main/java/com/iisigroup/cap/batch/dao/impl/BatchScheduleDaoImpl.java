@@ -33,7 +33,7 @@ public class BatchScheduleDaoImpl extends GenericDaoImpl<BatchSchedule> implemen
     public BatchSchedule findById(String id) {
         Map<String, Object> sch = new HashMap<String, Object>();
         sch.put("schId", id);
-        return getNamedJdbcTemplate().queryForObject("batchSch.findById", sch, new BatchScheduleRowMapper());
+        return getNamedJdbcTemplate().queryForObject("batchSch.findById", "", sch, new BatchScheduleRowMapper());
     }
 
     @Override
