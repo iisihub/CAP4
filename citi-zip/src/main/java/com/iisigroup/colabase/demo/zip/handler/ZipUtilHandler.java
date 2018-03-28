@@ -1,7 +1,7 @@
-package com.iisigroup.colabase.demo.handler;
+package com.iisigroup.colabase.demo.zip.handler;
 
 import com.iisigroup.cap.mvc.handler.MFormHandler;
-import com.iisigroup.colabase.tool.ZipUtil;
+import com.iisigroup.colabase.zip.tool.ZipUtil;
 
 import org.springframework.stereotype.Controller;
 
@@ -62,15 +62,15 @@ public class ZipUtilHandler extends MFormHandler {
         }
         return result;
     }
-    
+
     public Result isEmptyFolderDemo(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         ZipUtil zip = new ZipUtil();
         try {
             String isEmptyFolder1 = request.get("isEmptyFolder1");
             String isEmptyFolder2 = request.get("isEmptyFolder2");
-            
-            Boolean isEmpty = zip.isEmptyFolder(isEmptyFolder1, isEmptyFolder2);
+
+            Boolean isEmpty = zip.isEmptyFolder(false, isEmptyFolder1, isEmptyFolder2);
             result.set("result", "Success,  is empty folder ? : " + isEmpty);
         } catch (Exception e) {
             result.set("result", "Fail, cause : " + e.getClass());
@@ -78,13 +78,13 @@ public class ZipUtilHandler extends MFormHandler {
         }
         return result;
     }
-    
+
     public Result isExistsFileDemo(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         ZipUtil zip = new ZipUtil();
         try {
             File isExistsFile = new File(request.get("isExistsFile"));
-            
+
             Boolean isExists = zip.isExistsFile(isExistsFile);
             result.set("result", "Success,  is exists file ? : " + isExists);
         } catch (Exception e) {

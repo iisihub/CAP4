@@ -1,4 +1,4 @@
-package com.iisigroup.colabase.tool;
+package com.iisigroup.colabase.zip.tool;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -25,13 +25,16 @@ import org.apache.commons.lang.StringUtils;
 
 import com.iisigroup.cap.exception.CapException;
 
-/**<pre>
+/**
+ * <pre>
  * 實作ZIP功能
  * </pre>
- * @since  2018年3月25日
+ * 
+ * @since 2018年3月25日
  * @author JohnsonHo
- * @version <ul>
- *           <li>2018年3月25日,JohnsonHo,new
+ * @version
+ *          <ul>
+ *          <li>2018年3月25日,JohnsonHo,new
  *          </ul>
  */
 public class ZipUtil {
@@ -155,29 +158,31 @@ public class ZipUtil {
         }
 
     }
-    
-    public Boolean isEmptyFolder(String... fileList) {
-        
+
+    public Boolean isEmptyFolder(Boolean isDeleteEmptyFolder, String... fileList) {
+
         boolean hasFile = true;
-        
+
         for (int i = 0; i < fileList.length; i++) {
-            //資料夾只要有一個檔案就判斷為檔案存在
+            // 資料夾只要有一個檔案就判斷為檔案存在
             if (new File(fileList[i]).list() != null && new File(fileList[i]).list().length > 0) {
                 hasFile = false;
             } else {
-                //若資料夾內沒檔案將會刪除資料夾
-                new File(fileList[i]).delete();
+                // 若資料夾內沒檔案且delete參數為true，將會刪除資料夾
+                if (isDeleteEmptyFolder) {
+                    new File(fileList[i]).delete();
+                }
             }
         }
         return hasFile;
     }
-    
+
     public Boolean isExistsFile(File file) {
-        
+
         if (!file.exists()) {
             return false;
         }
         return true;
     }
-    
+
 }
