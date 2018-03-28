@@ -1,5 +1,5 @@
 /* 
- * CapMvcConfig.java
+ * CapMvcConfiguration.java
  * 
  * Copyright (c) 2018 International Integrated System, Inc. 
  * All Rights Reserved.
@@ -39,17 +39,26 @@ import com.iisigroup.cap.mvc.i18n.SessionLocaleResolver;
  *          </ul>
  */
 @Configuration
-public class CapMvcConfig extends WebMvcConfigurerAdapter {
+public class CapMvcConfiguration extends WebMvcConfigurerAdapter {
+
+    private CapUserSecurityInterceptor capUserSecurityInterceptor;
 
     @Autowired
-    CapUserSecurityInterceptor capUserSecurityInterceptor;
+    public void capUserSecurityInterceptor(CapUserSecurityInterceptor capUserSecurityInterceptor) {
+        this.capUserSecurityInterceptor = capUserSecurityInterceptor;
+    }
+
+    private LocaleChangeInterceptor localeChangeInterceptor;
 
     @Autowired
-    LocaleChangeInterceptor localeChangeInterceptor;
+    public void localeChangeInterceptor(LocaleChangeInterceptor localeChangeInterceptor) {
+        this.localeChangeInterceptor = localeChangeInterceptor;
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(capUserSecurityInterceptor);
+        localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);
     }
 
