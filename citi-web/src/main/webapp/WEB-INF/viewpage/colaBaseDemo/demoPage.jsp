@@ -25,7 +25,7 @@
                 </tr>
                 <tr>
                     <td><button id="zipBtn" class="orangeBtn" type="button">ZIP</button></td>
-                    <td><button id="" class="orangeBtn" type="button">TEST</button></td>
+                    <td><button id="netUseUtilBtn" class="orangeBtn" type="button">NetUseUtil</button></td>
                     <td><button id="" class="orangeBtn" type="button">TEST</button></td>
                 </tr>
             </table>

@@ -13,8 +13,12 @@ pageInit(function() {
       window.location.href = url('page/colaBaseDemo/signaturePanel')
     });
     $("#zipBtn").on('click', function(e) {
-        window.setCloseConfirm(false);
-        window.location.href = url('page/colaBaseDemo/zip')
-      });
+      window.setCloseConfirm(false);
+      window.location.href = url('page/colaBaseDemo/zip')
+    });
+    $("#netUseUtilBtn").on('click', function(e) {
+      window.setCloseConfirm(false);
+      window.location.href = url('page/colaBaseDemo/copyFile')
+    });
   });
 });
