@@ -57,7 +57,7 @@ public class CapMvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(capUserSecurityInterceptor);
+        // registry.addInterceptor(capUserSecurityInterceptor);
         localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);
     }

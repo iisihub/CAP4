@@ -4,18 +4,10 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.iisigroup.cap.security.CapSecurityContext;
-import com.iisigroup.cap.security.model.CapUserDetails;
-import com.iisigroup.cap.utils.CapAppContext;
 
 /**
  * <pre>
@@ -58,10 +50,10 @@ public class PageAction extends BaseActionController {
     public ModelAndView handleRequestInternal(Locale locale, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String path = request.getPathInfo();
         ModelAndView model = new ModelAndView(path);
-        CapUserDetails userDetails = CapSecurityContext.getUser();
-        if (userDetails != null) {
-            model.addObject("userDetails", userDetails);
-        }
+        // CapUserDetails userDetails = CapSecurityContext.getUser();
+        // if (userDetails != null) {
+        // model.addObject("userDetails", userDetails);
+        // }
         return model;
     }
 }
