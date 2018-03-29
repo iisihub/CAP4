@@ -176,7 +176,7 @@ public class NetUseUtil {
      * @param uXwd 密碼(未加密)
      * @return the exit value for the subprocess
      */
-    public static int connectNetworkDrive(String netPath, String Drive, String domain, String uName, String uXwd) {
+    public static int connectNetworkDrive(String netPath, String drive, String domain, String uName, String uXwd) {
         netPath = netPath.trim();
         if (netPath.lastIndexOf("\\") == netPath.length() - 1) {
             netPath = netPath.substring(0, netPath.length() - 1);
@@ -186,7 +186,7 @@ public class NetUseUtil {
         BufferedReader bf = null;
         try {
             StringBuffer command = new StringBuffer();
-            command.append("net use ").append(Drive).append(": ").append(netPath).append(" /user:");
+            command.append("net use ").append(drive).append(": ").append(netPath).append(" /user:");
             if (!"".equals(domain)) {
                 command.append(domain).append("\\");
             }

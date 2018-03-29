@@ -54,6 +54,7 @@ public class CopyFileServiceImpl implements CopyFileService {
                 diskLtr = NetUseUtil.getFreeDriveLetter(COLA_FREE_DRIVE_LETTERS);
             }
             contNetDiskStat = NetUseUtil.connectNetworkDrive(path, diskLtr, domain, userName, userXwd);
+            logger.debug("contNetDiskStat:" + contNetDiskStat);
             if (contNetDiskStat == 0) { // TODO 看NetUseUtil有無更改，看回傳值
                 logger.debug("*****成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
             } else {

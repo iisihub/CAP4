@@ -70,9 +70,12 @@ public class DemoCopyFileHandler extends MFormHandler {
         int contNetDiskStat = -1;
         try {
             contNetDiskStat = NetUseUtil.connectNetworkDrive(path, diskLtr, domain, userName, userXwd);
+            logger.debug("contNetDiskStat:" + contNetDiskStat);
             if (contNetDiskStat == 0) {
                 logger.debug("*****成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
                 result.set("result", "成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
+            } else if (contNetDiskStat != -1) {
+                result.set("result", "網路磁碟機連線已執行，請檢查網路磁碟機連線狀況。");
             } else {
                 logger.debug("*****網路磁碟機連線失敗");
                 result.set("result", "網路磁碟機連線失敗");
@@ -109,9 +112,12 @@ public class DemoCopyFileHandler extends MFormHandler {
                 diskLtr = NetUseUtil.getFreeDriveLetter(diskLtrs);
             }
             contNetDiskStat = NetUseUtil.connectNetworkDrive(path, diskLtr, domain, userName, userXwd);
+            logger.debug("contNetDiskStat:" + contNetDiskStat);
             if (contNetDiskStat == 0) {
                 logger.debug("*****成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
                 result.set("result", "成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
+            } else if (contNetDiskStat != -1) {
+                result.set("result", "網路磁碟機連線已執行，請檢查網路磁碟機連線狀況。");
             } else {
                 logger.debug("*****網路磁碟機連線失敗");
                 result.set("result", "網路磁碟機連線失敗");
@@ -189,8 +195,11 @@ public class DemoCopyFileHandler extends MFormHandler {
         int disContNetDiskStat = -1;
         try {
             disContNetDiskStat = NetUseUtil.disconnectNetworkPath(diskLtr);
+            logger.debug("disContNetDiskStat:" + disContNetDiskStat);
             if (disContNetDiskStat == 0) {
                 result.set("result", "成功卸載網路磁碟機：" + diskLtr + ":" + File.separator);
+            } else if (disContNetDiskStat != -1) {
+                result.set("result", "您可能未在" + diskLtr + ":" + File.separator + "掛載網路磁碟機");
             }
         } catch (Exception e) {
             result.set("error", e.getMessage());
@@ -204,6 +213,7 @@ public class DemoCopyFileHandler extends MFormHandler {
         int disContNetDiskStat = -1;
         try {
             disContNetDiskStat = NetUseUtil.disconnectAllNetworkPath();
+            logger.debug("disContNetDiskStat:" + disContNetDiskStat);
             if (disContNetDiskStat == 0) {
                 result.set("result", "成功卸載所有網路磁碟機");
             }
