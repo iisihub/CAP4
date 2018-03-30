@@ -197,6 +197,28 @@
     </build>
     <profiles>
         <profile>
+            <id>openshift</id>
+            <build>
+                <!-- <finalName>cap-web</finalName> -->
+                <plugins>
+                    <!-- 將config copy 至 classes -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <webResources>
+                                <resource>
+                                    <directory>${basedir}/../cap-config/src/main/resources</directory>
+                                    <targetPath>WEB-INF/classes</targetPath>
+                                </resource>
+                            </webResources>
+                            <warName>ROOT</warName>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>req</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
