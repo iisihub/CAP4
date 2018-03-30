@@ -135,6 +135,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <version>1.5.10.RELEASE</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -148,6 +154,23 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>1.5.10.RELEASE</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <fork>true</fork>
+                    <wait>1000</wait>
+                    <maxAttempts>60</maxAttempts>
+                    <addResources>true</addResources>
+                    <folders>
+                        <folder>${basedir}/../cap-config/src/main/resources</folder>
+                        <folder>${basedir}/target/${project.build.finalName}/WEB-INF/classes</folder>
+                    </folders>
+                </configuration>
             </plugin>
             <!-- 將config copy 至 classes -->
             <plugin>
@@ -198,9 +221,34 @@
     <profiles>
         <profile>
             <id>openshift</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <!-- <finalName>cap-web</finalName> -->
                 <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <version>1.5.10.RELEASE</version>                 
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>repackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>               
+                        <configuration>
+                            <fork>true</fork>
+                            <wait>1000</wait>
+                            <maxAttempts>60</maxAttempts>
+                            <addResources>true</addResources>
+                            <folders>
+                                <folder>${basedir}/../cap-config/src/main/resources</folder>
+                                <folder>${basedir}/target/${project.build.finalName}/WEB-INF/classes</folder>
+                            </folders>
+                        </configuration>
+                    </plugin>
                     <!-- 將config copy 至 classes -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -220,9 +268,9 @@
         </profile>
         <profile>
             <id>req</id>
-            <activation>
+            <!-- <activation>
                 <activeByDefault>true</activeByDefault>
-            </activation>
+            </activation> -->
             <build>
                 <plugins>
                     <plugin>
