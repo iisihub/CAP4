@@ -7,9 +7,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
@@ -18,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.colabase.otp.service.OTPService;
@@ -29,6 +33,19 @@ public class OTPServiceImpl implements OTPService {
     private static final DecimalFormat OTP_DECIMAL_FMT = new DecimalFormat("000000");
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    // Session 計算OTP傳送次數
+    public static String SESSION_RETRY_COUNT = "retryCount";
+    // OTP回傳參數
+    public static String OTP = "otp";
+    public static String OTP_SMS_MSG = "otpSmsMsg";
+    public static String OTP_RETRY_MSG = "retryMsg";
+    public static String IS_MAX_RETRY = "isMaxRetry";
+    public static String IS_SEND_OTP = "isSendOTP";
+    // OTP回傳的訊息
+    private static String RETRY_MSG = "若密碼失效請按『重送OTP簡訊動態密碼』重送，最多可重送{0}次，你已重送了{1}次。";
+    private static String MAX_RETRY_MSG = "已達可重送次數{0}次限制。";
+    // SMS Msg
+    private static String SMS_MSG = "您的「簡訊動態密碼OTP」為{0}，密碼將於{1}秒後失效。請於網頁輸入密碼完成申請。";
     // SMS Setting
     private static final String SMS_HOST = "sms-pp.sapmobileservices.com";
     private static final String SMS_ENTRY = "/citi/citi_tw_ua97201/citi_tw_ua97201.sms";
@@ -39,14 +56,83 @@ public class OTPServiceImpl implements OTPService {
     private static final String PROXY_ENABLE = "true";
     private static final String PROXY_HOST = "sgproxy-app.wlb.apac.nsroot.net";
     private static final String PROXY_PORT = "8080";
-    // SMS Message
-    private static String SMS_MSG = "您的「簡訊動態密碼OTP」為{0}，密碼將於{1}秒後失效。請於網頁輸入密碼完成申請。";
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.colabase.otp.service.OTPService#genAndSendOTP(java.lang.String, int)
+     */
+    @Override
+    public Map<String, String> genAndSendOTP(String mobilePhone, int otpTimeoutSeconds) {
+        Map<String, String> otpMap = new HashMap<>();
+        try {
+            if (!CapString.isEmpty(mobilePhone) && mobilePhone.startsWith("09")) {
+                String otp = generateOTP();
+                otpMap.put(OTP, otp);
+                String otpSmsMsg = MessageFormat.format(SMS_MSG, new Object[] { otp, otpTimeoutSeconds });
+                otpMap.put(OTP_SMS_MSG, otpSmsMsg);
+                logger.debug("=========OTP message=========" + otpSmsMsg);
+                if (!CapString.isEmpty(otp) && !CapString.isEmpty(otpSmsMsg)) {
+                    String msg = sendOTPbySMS(mobilePhone, otpSmsMsg);
+                    otpMap.put(IS_SEND_OTP, "true");
+                    logger.debug("=========send OTP by SMS=========" + msg);
+                }
+            }
+        } catch (Exception e) {
+            logger.warn("Generate & Send OTP password error.", e);
+        }
+        return otpMap;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.colabase.otp.service.OTPService#resendOTP(java.lang.String, int, int, boolean, int)
+     */
+    @Override
+    public Map<String, String> resendOTP(String mobilePhone, int otpTimeoutSeconds, int otpMaxRetry, boolean isResendOTP, int retryCount) {
+        Map<String, String> resendOtpMap = new HashMap<>();
+        boolean isMaxRetry = false;
+        // 重送OTP
+        if (isResendOTP) {
+            resendOtpMap.put(OTP_RETRY_MSG, MessageFormat.format(RETRY_MSG, new Object[] { otpMaxRetry, retryCount }));
+            resendOtpMap.put(IS_MAX_RETRY, String.valueOf(isMaxRetry));
+            // 限制重送次數
+            isMaxRetry = limitOTPRetryCount(retryCount, otpMaxRetry);
+            if (isMaxRetry) {
+                String retryMsg = MessageFormat.format(MAX_RETRY_MSG, new Object[] { otpMaxRetry });
+                resendOtpMap.put(IS_MAX_RETRY, String.valueOf(isMaxRetry));
+                resendOtpMap.put(OTP_RETRY_MSG, retryMsg);
+                return resendOtpMap;
+            }
+            resendOtpMap.putAll(genAndSendOTP(mobilePhone, otpTimeoutSeconds));
+        }
+        try {
+        } catch (Exception e) {
+            logger.warn("Resend OTP password error.", e);
+        }
+        return resendOtpMap;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.colabase.otp.service.OTPService#generateOTP()
+     */
+    @Override
+    public String generateOTP() {
+        Random rnd = new Random();
+        String otp = OTP_DECIMAL_FMT.format(rnd.nextInt(999999) + 1);
+        logger.debug("=========OTP number =========" + otp);
+        return otp;
+    }
 
     /*
      * (non-Javadoc)
      * 
      * @see com.iisigroup.colabase.otp.service.OTPService#sendOTPbySMS(java.lang.String, java.lang.String)
      */
+    @Override
     public String sendOTPbySMS(String mobilePhone, String message) throws CapException {
         if (!StringUtils.isEmpty(mobilePhone) && mobilePhone.startsWith("09")) {
             mobilePhone = "+886" + mobilePhone.substring(1, mobilePhone.length());
@@ -153,22 +239,6 @@ public class OTPServiceImpl implements OTPService {
     /*
      * (non-Javadoc)
      * 
-     * @see com.iisigroup.colabase.otp.service.OTPService#generateOTP(javax.servlet.http.HttpSession, java.lang.String, int)
-     */
-    @Override
-    public String generateOTP(HttpSession session, String smsMsg, int otpTimeOutSec) {
-        Random rnd = new Random();
-        String otpMsg = OTP_DECIMAL_FMT.format(rnd.nextInt(999999) + 1);
-        session.setAttribute("OTP", otpMsg);
-        logger.debug("=========OTP number =========" + otpMsg);
-        otpMsg = MessageFormat.format(smsMsg, new Object[] { otpMsg, otpTimeOutSec });
-        logger.debug("=========OTP message=========" + otpMsg);
-        return otpMsg;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see com.iisigroup.colabase.otp.service.OTPService#limitOTPRetryCount(int, int)
      */
     @Override
@@ -183,35 +253,31 @@ public class OTPServiceImpl implements OTPService {
     /*
      * (non-Javadoc)
      * 
-     * @see com.iisigroup.colabase.otp.service.OTPService#genAndSendOTP(javax.servlet.http.HttpSession, java.lang.String, int)
-     */
-    @Override
-    public String genAndSendOTP(HttpSession session, String mobilePhone, int otpTimeoutSeconds) {
-        String otpSmsMsg = "";
-        try {
-            otpSmsMsg = generateOTP(session, SMS_MSG, otpTimeoutSeconds);
-            if (!CapString.isEmpty(mobilePhone) && mobilePhone.startsWith("09") && !CapString.isEmpty(otpSmsMsg)) {
-                sendOTPbySMS(mobilePhone, otpSmsMsg);
-                session.setAttribute("hasSendOTP", true);
-            }
-        } catch (Exception e) {
-            logger.warn("Generate & Send OTP password error.", e);
-        }
-        return otpSmsMsg;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see com.iisigroup.colabase.otp.service.OTPService#verifyOTP(java.lang.String, java.lang.String)
      */
     @Override
     public boolean verifyOTP(String userOtp, String otp) {
         boolean isVerofy = false;
-        if (otp.equals(userOtp)) {
+        if (!CapString.isEmpty(userOtp) && !CapString.isEmpty(otp) && otp.equals(userOtp)) {
             isVerofy = true;
         }
         return isVerofy;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.colabase.otp.service.OTPService#invalidateSession(com.iisigroup.cap.component.Request)
+     */
+    @Override
+    public void invalidateSession(Request request) {
+        HttpSession session = ((HttpServletRequest) request.getServletRequest()).getSession(false);
+        if (session != null) {
+            if (session.getAttribute(SESSION_RETRY_COUNT) != null) {
+                session.removeAttribute(SESSION_RETRY_COUNT);
+            }
+            session.invalidate();
+        }
     }
 
 }

@@ -1,10 +1,39 @@
 package com.iisigroup.colabase.otp.service;
 
-import javax.servlet.http.HttpSession;
+import java.util.Map;
 
+import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.exception.CapException;
 
 public interface OTPService {
+
+    /**
+     * 產生及傳送OTP密碼
+     * 
+     * @param mobilePhone
+     * @param otpTimeoutSeconds
+     * @return
+     */
+    Map<String, String> genAndSendOTP(String mobilePhone, int otpTimeoutSeconds);
+
+    /**
+     * 重新產生及傳送OTP密碼，若超過限制次數則不重新發送OTP密碼
+     * 
+     * @param mobilePhone
+     * @param otpTimeoutSeconds
+     * @param otpMaxRetry
+     * @param isResendOTP
+     * @param retryCount
+     * @return
+     */
+    Map<String, String> resendOTP(String mobilePhone, int otpTimeoutSeconds, int otpMaxRetry, boolean isResendOTP, int retryCount);
+
+    /**
+     * 產生6碼OTP密碼
+     * 
+     * @return
+     */
+    String generateOTP();
 
     /**
      * 傳送 SMS。
@@ -19,6 +48,7 @@ public interface OTPService {
     String sendOTPbySMS(String mobilePhone, String message) throws CapException;
 
     /**
+     * 限制OTP密碼重送次數
      * 
      * @param sendCount
      * @param otpMaxRetry
@@ -27,15 +57,7 @@ public interface OTPService {
     boolean limitOTPRetryCount(int sendCount, int otpMaxRetry);
 
     /**
-     * 
-     * @param session
-     * @param smsMsg
-     * @param otpTimeOutSec
-     * @return
-     */
-    String generateOTP(HttpSession session, String smsMsg, int otpTimeOutSec);
-
-    /**
+     * 驗證OTP密碼
      * 
      * @param userOtp
      * @param OTP
@@ -44,12 +66,10 @@ public interface OTPService {
     boolean verifyOTP(String userOtp, String OTP);
 
     /**
+     * Invalidate Session
      * 
-     * @param session
-     * @param mobilePhone
-     * @param otpTimeoutSeconds
-     * @return
+     * @param request
      */
-    String genAndSendOTP(HttpSession session, String mobilePhone, int otpTimeoutSeconds);
+    void invalidateSession(Request request);
 
 }

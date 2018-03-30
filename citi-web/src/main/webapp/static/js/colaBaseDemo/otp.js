@@ -5,7 +5,7 @@ pageInit(function() {
     var form = $("#form").val();
     var otpTimoutSecVal = $("#otpTimoutSec").val();
     var reloadSec = 5;
-    var OTPExpiredErrorMsg = '您的「簡訊動態密碼OTP」已超過輸入時間，為保障您資料傳輸安全，' + reloadSec + '秒後跳轉畫面，請重新輸入，謝謝';
+    var OTPExpiredErrorMsg = '您的「簡訊動態密碼OTP」已超過輸入時間，為保障您資料傳輸安全，' + reloadSec + '秒後跳轉畫面，請重新輸入，謝謝。';
 
     // invalidate session
     $.ajax({
@@ -99,6 +99,9 @@ pageInit(function() {
             $("#reSendOtpBtn,.otpMaxRetry").show();
             if (otpMaxRetryVal != "") {
               $("#otpMaxRetry").readOnly();
+            }
+            if (otpTimoutSecVal != "") {
+              $("#otpTimoutSec").readOnly();
             }
           }
         });
