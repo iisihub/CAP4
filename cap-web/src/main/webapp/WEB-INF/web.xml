@@ -28,10 +28,10 @@
         <description>log4j</description>
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
     </listener>
-    <listener>
+    <!-- <listener>
         <description>spring</description>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
+    </listener> -->
     <listener>
         <description>spring-request-listener</description>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
