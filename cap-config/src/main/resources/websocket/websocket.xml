@@ -12,7 +12,7 @@
     <bean id="reminderTask" class="com.iisigroup.cap.websocket.timer.CapReminderTimerTask"></bean>
     <bean id="scheduledExecutorTask" class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
         <property name="runnable" ref="reminderTask"></property>
-        <property name="period" value="30000"></property>
+        <property name="period" value="8730000"></property>
         <property name="delay" value="1000"></property>
     </bean>
     <bean id="scheduledExecutorFactoryBean" class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean">
