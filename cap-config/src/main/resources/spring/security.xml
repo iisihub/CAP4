@@ -3,6 +3,19 @@
     xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.1.xsd">
+    <http pattern="/monitor/autoconfig" security="none"/>
+    <http pattern="/monitor/configprops" security="none"/>
+    <http pattern="/monitor/beans" security="none"/>
+    <http pattern="/monitor/dump" security="none"/>
+    <http pattern="/monitor/metrics" security="none"/>
+    <http pattern="/monitor/metrics/**" security="none"/>
+    <http pattern="/monitor/env" security="none"/>
+    <http pattern="/monitor/env/**" security="none"/>
+    <http pattern="/monitor/health" security="none"/>
+    <http pattern="/monitor/info" security="none"/>
+    <http pattern="/monitor/mappings" security="none"/>    
+    <http pattern="/monitor/shutdown" security="none"/>
+    <http pattern="/monitor/trace" security="none"/>
     <http auto-config="false" access-decision-manager-ref="accessDecisionManager" entry-point-ref="capAuthenticationEntryPoint" disable-url-rewriting="false">
         <intercept-url pattern="/img/**" access="permitAll" method="GET"/>
         <intercept-url pattern="/**/images/**" access="permitAll" method="GET"/>
