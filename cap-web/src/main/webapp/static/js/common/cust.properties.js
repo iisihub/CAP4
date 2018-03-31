@@ -16,7 +16,7 @@ $.extend(Properties || {}, {
       });
     }
   },
-  contextName : "/",
+  contextName : "/cap-web/",
   ajaxTimeOut : 60 * 1000 * 3, // timeOut: 1000
   // 下拉選單handler
   ComboBoxHandler : 'codetypehandler/queryByKeys',

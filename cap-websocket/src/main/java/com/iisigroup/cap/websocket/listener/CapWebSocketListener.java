@@ -11,6 +11,7 @@
  */
 package com.iisigroup.cap.websocket.listener;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -39,12 +40,8 @@ import com.iisigroup.cap.websocket.server.CapNettyWebSocketServer;
 public class CapWebSocketListener implements ServletContextListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(CapWebSocketListener.class);
 
-    private ApplicationContext context;
-
-    @Autowired
-    public void setContext(ApplicationContext context) {
-        this.context = context;
-    }
+    @Resource
+    private CapNettyWebSocketServer server;
 
     /*
      * (non-Javadoc)
@@ -65,12 +62,11 @@ public class CapWebSocketListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         // TODO Auto-generated method stub
-        CapNettyWebSocketServer bean = CapAppContext.getBean("capNettyWebSocketServer");
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Get CapNettyWebSocketServer bean." + bean.getServer().hashCode());
+            LOGGER.debug("Get CapNettyWebSocketServer bean." + server.getServer().hashCode());
         }
         LOGGER.info("SocketIOServer stop....");
-        bean.getServer().stop();
+        server.getServer().stop();
     }
 
 }
