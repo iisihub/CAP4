@@ -243,6 +243,30 @@
                 <!-- <finalName>cap-web</finalName> -->
                 <plugins>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-h2db-resources</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}/target/h2db</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>../h2db</directory>
+                                            <includes>
+                                                <include>capdb.h2.db</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <version>1.5.10.RELEASE</version>                 
