@@ -35,11 +35,8 @@ import com.iisigroup.cap.web.CapHandlerServlet;
 import com.iisigroup.cap.web.LogContextFilter;
 import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
 
-import de.codecentric.boot.admin.config.EnableAdminServer;
-
-@EnableAdminServer
 @SpringBootApplication
-@ImportResource({ "classpath:spring/applicationContext.xml" }) // , "classpath:spring/security.xml" })
+@ImportResource({ "classpath:spring/applicationContext.xml"})//, "classpath:spring/security.xml" })
 public class CapApplication extends SpringBootServletInitializer {
 
     @Override
