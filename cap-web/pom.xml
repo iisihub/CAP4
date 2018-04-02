@@ -34,9 +34,9 @@
                     <artifactId>freemarker</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>org.springframework.integration</groupId>
-                    <artifactId>spring-integration-core</artifactId>
-                </exclusion>
+					<groupId>org.springframework.integration</groupId>
+					<artifactId>spring-integration-core</artifactId>
+				</exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -126,13 +126,7 @@
             <version>2.1</version>
             <scope>provided</scope>
         </dependency>
-        <!--  
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <version>${spring-boot.version}</version>
-            <optional>true</optional>
-        </dependency>
+        <!--
         -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -142,10 +136,6 @@
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.security</groupId>
-                    <artifactId>spring-security-bom</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -157,45 +147,13 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>            
             <version>1.5.10.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.integration</groupId>
-            <artifactId>spring-integration-core</artifactId>
-            <version>4.3.14.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-server</artifactId>
-            <version>1.5.7</version>
-        </dependency>
-        <dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-server-ui</artifactId>
-            <version>1.5.7</version>
-        </dependency>
-        <dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-starter-client</artifactId>
-            <version>1.5.7</version>
-        </dependency>
-        <dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-server-ui-login</artifactId>
-            <version>1.5.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-            <version>1.5.10.RELEASE</version>
-        </dependency>              
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-bom</artifactId>
-            <version>${spring-security.version}</version>
-            <scope>import</scope>
-            <type>pom</type>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-core</artifactId>
+			<version>4.3.14.RELEASE</version>
         </dependency>
     </dependencies>
     <build>
@@ -287,14 +245,14 @@
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
-                        <version>1.5.10.RELEASE</version>
+                        <version>1.5.10.RELEASE</version>                 
                         <executions>
                             <execution>
                                 <goals>
                                     <goal>repackage</goal>
                                 </goals>
                             </execution>
-                        </executions>
+                        </executions>               
                         <configuration>
                             <fork>true</fork>
                             <wait>1000</wait>
@@ -317,7 +275,7 @@
                                     <targetPath>WEB-INF/classes</targetPath>
                                 </resource>
                             </webResources>
-                            <warName>cap-web</warName>
+                            <warName>ROOT</warName>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -380,10 +338,10 @@
                             <!-- optional path to a nodejs executable -->
                             <!-- <nodeExecutable> C:/Program Files/nodejs/node </nodeExecutable> -->
                             <!-- path to optimizer json config file -->
-                            <configFile> ${basedir}/src/main/webapp/static/build.js
+                            <configFile> ${basedir}/src/main/webapp/static/build.js 
                             </configFile>
                             <!-- optional path to optimizer executable -->
-                            <optimizerFile> ${basedir}/src/main/webapp/static/requirejs/2.3.2/r.js
+                            <optimizerFile> ${basedir}/src/main/webapp/static/requirejs/2.3.2/r.js 
                             </optimizerFile>
                             <!-- optional parameters to optimizer executable -->
                             <optimizerParameters>
@@ -393,10 +351,10 @@
                                 <parameter>out=${basedir}/src/main/webapp/static/build-main.js</parameter>
                             </optimizerParameters>
                             <!-- Whether or not to process configFile with maven filters. If you use this option, some options in your configFile must resolve to absolute paths (see below) -->
-                            <filterConfig> false
+                            <filterConfig> false 
                             </filterConfig>
                             <!-- Skip requirejs optimization if true -->
-                            <skip> false
+                            <skip> false 
                             </skip>
                         </configuration>
                     </plugin>

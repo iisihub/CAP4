@@ -83,7 +83,7 @@ public class CheckTimeoutHandler extends MFormHandler {
         refPath = StringEscapeUtils.unescapeHtml(refPath);
         if ((diffSec > time3 && refPath.lastIndexOf("error") < 0 && refPath.lastIndexOf("timeout") < 0) || "false".equals(isContinues)) {
             // if(!isNewSes){
-            result.set("errorPage", "/cap-web/page/timeout");
+            result.set("errorPage", "/page/timeout");
             sreq.getSession(false).invalidate();
             // }
         }
