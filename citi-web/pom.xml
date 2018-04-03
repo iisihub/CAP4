@@ -40,6 +40,10 @@
             <groupId>com.iisigroup.colabase</groupId>
             <artifactId>citi-zip</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.iisigroup.colabase</groupId>
+            <artifactId>citi-ssl</artifactId>
+        </dependency>
         <!-- optional -->
         <dependency>
             <groupId>com.iisigroup.colabase</groupId>
