@@ -71,7 +71,7 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
     protected Class<T> type;
     protected Logger logger;
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "pu-cap")
     private EntityManager entityManager;
 
     @Resource(name = "capJdbcTemplate")

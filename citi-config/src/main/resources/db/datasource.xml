@@ -10,4 +10,10 @@
             <value>java:comp/env/jdbc/capdb</value>
         </property>
     </bean>
+    
+    <bean id="citi-db-sql" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName">
+            <value>${cc.jndiname}</value>
+        </property>
+    </bean>
 </beans>

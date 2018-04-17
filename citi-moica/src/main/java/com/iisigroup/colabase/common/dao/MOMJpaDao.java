@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
+import com.iisigroup.cap.jdbc.CapNamedJdbcTemplate;
 /**
  * <pre>
  * MOMJpaDao
@@ -32,19 +33,19 @@ import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
  */
 public class MOMJpaDao<T> extends GenericDaoImpl<T> {
 
-    @PersistenceContext(unitName = "pu-mom")
+    @PersistenceContext(unitName = "pu-cap-sql")
     protected EntityManager entityManager;
 
     @Autowired
     @Qualifier("capJdbcTemplate")
-    private MOMNamedJdbcTemplate namedJdbcTemplate;
+    private CapNamedJdbcTemplate namedJdbcTemplate;
 
     @Override
     public EntityManager getEntityManager() {
         return entityManager;
     }
 
-    public MOMNamedJdbcTemplate getNamedJdbcTemplate() {
+    public CapNamedJdbcTemplate getNamedJdbcTemplate() {
         return namedJdbcTemplate;
     }
 }

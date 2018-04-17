@@ -38,6 +38,10 @@
         </dependency>
         <dependency>
             <groupId>com.iisigroup.colabase</groupId>
+            <artifactId>citi-moica</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.iisigroup.colabase</groupId>
             <artifactId>citi-zip</artifactId>
         </dependency>
         <dependency>
@@ -100,6 +104,13 @@
             <version>1.2</version>
             <scope>provided</scope>
         </dependency>
+        <!-- SQLServer -->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>sqljdbc</artifactId>
+            <version>4.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -132,16 +143,8 @@
                     <contextPath>/citi-web</contextPath>
                     <stopKey>foo</stopKey>
                     <stopPort>8080</stopPort>
-                    <!-- <systemProperties>
-                        <systemProperty>
-                        <name>cola.cas.host</name>
-                        <value>https://citi/citi-cas</value>
-                        </systemProperty>
-                        <systemProperty>
-                        <name>cola.ap.host</name>
-                        <value>http://localhost:8080</value>
-                        </systemProperty>
-                        </systemProperties> -->
+                    <!-- <systemProperties> <systemProperty> <name>cola.cas.host</name> <value>https://citi/citi-cas</value> </systemProperty> <systemProperty> <name>cola.ap.host</name> <value>http://localhost:8080</value> 
+                        </systemProperty> </systemProperties> -->
                 </configuration>
                 <executions>
                     <execution>

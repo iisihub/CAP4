@@ -26,6 +26,27 @@
             </map>
         </property>
     </bean>
+    <bean id="entityManagerFactorySQL" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="citi-db-sql" />
+        <property name="persistenceUnitName" value="pu-cap-sql" />
+        <property name="persistenceXmlLocation" value="classpath:META-INF/persistence-cap.xml" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+        </property>
+        <property name="jpaProperties">
+            <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+                <property name="location">
+                    <value>classpath:/db/hibernate.properties</value>
+                </property>
+            </bean>
+        </property>
+        <property name="jpaPropertyMap">
+            <map>
+                <entry key="hibernate.dialect.sql" value="${hibernate.dialect.sql}" />
+                <entry key="hibernate.default_schema.sql" value="${hibernate.default_schema.sql}" />
+            </map>
+        </property>
+    </bean>
     <!-- setup spring support Clob and Blob -->
     <bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" />
     <!-- Enable exception translation for beans annotated with @Repository <bean
@@ -33,6 +54,10 @@
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
     <bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
+    <bean id="txSqlManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactorySQL" />
     </bean>
     <!-- 配置事务管理器 -->
     <!--設置service层交易處理的方法 -->

@@ -9,8 +9,9 @@
         <property name="ignoreResourceNotFound" value="false" />
         <property name="locations">
             <list>
-                <value>classpath:db/database.properties</value>
-                <value>classpath:config.properties</value>
+				<value>classpath:db/database.properties</value>
+				<value>classpath:db/hibernate.properties</value>
+				<value>classpath:config.properties</value>
             </list>
         </property>
     </bean>
