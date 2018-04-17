@@ -65,8 +65,12 @@ public class ZipUtil {
         byte[] buffer = new byte[BUFFER_SIZE];
         int length = -1;
         ZipOutputStream out = null;
+        BufferedOutputStream buffOutput = null;
+        FileOutputStream fileOutput = null;
         try {
-            out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(destination), BUFFER_SIZE));
+            fileOutput = new FileOutputStream(destination);
+            buffOutput = new BufferedOutputStream(fileOutput, BUFFER_SIZE);
+            out = new ZipOutputStream(buffOutput);
             ZipParameters parameters = new ZipParameters();
             parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
             parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_ULTRA);
@@ -93,6 +97,8 @@ public class ZipUtil {
             throw new CapException(e, getClass());
         } finally {
             IOUtils.closeQuietly(out);
+            IOUtils.closeQuietly(buffOutput);
+            IOUtils.closeQuietly(fileOutput);
         }
     }
 
@@ -153,8 +159,8 @@ public class ZipUtil {
         } catch (ZipException e) {
             throw new CapException(e, getClass());
         } finally {
-            IOUtils.closeQuietly(inputStream);
             IOUtils.closeQuietly(out);
+            IOUtils.closeQuietly(inputStream);
         }
 
     }
