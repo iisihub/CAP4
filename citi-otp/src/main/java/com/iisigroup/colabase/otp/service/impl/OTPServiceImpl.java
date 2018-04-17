@@ -25,7 +25,7 @@ import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.colabase.otp.service.OTPService;
-import com.iisigroup.colabase.va.crypto.HttpsConnectionOpener;
+import com.iisigroup.colabase.otp.va.crypto.HttpsConnectionOpener;
 
 @Service
 public class OTPServiceImpl implements OTPService {

@@ -1,4 +1,4 @@
-package com.iisigroup.colabase.va.crypto;
+package com.iisigroup.colabase.otp.va.crypto;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLPeerUnverifiedException;
