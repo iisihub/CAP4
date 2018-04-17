@@ -52,8 +52,8 @@
 </head>
 <body>
 	<script>
-		loadScript('js/colaBaseDemo/zip');
-	</script>
+    loadScript('js/colaBaseDemo/zip');
+  </script>
 	<h3>《壓縮檔案》</h3>
 	<div class="outerBox">
 		<div class="leftBox">

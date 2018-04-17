@@ -74,7 +74,7 @@ pageInit(function() {
 					$('#isExistsFileResult').text(e.result);
 				}
 			});
-		});
+    		});
 
-	});
+  });
 });
