@@ -67,6 +67,9 @@ public class ZipUtil {
         ZipOutputStream out = null;
         BufferedOutputStream buffOutput = null;
         FileOutputStream fileOutput = null;
+        FileInputStream fileInput = null;
+        BufferedInputStream buffInput = null;
+        InputStream inputStream = null;
         try {
             fileOutput = new FileOutputStream(destination);
             buffOutput = new BufferedOutputStream(fileOutput, BUFFER_SIZE);
@@ -83,19 +86,27 @@ public class ZipUtil {
             for (File unzipFile : unzipFiles) {
                 parameters.setSourceFileCRC((int) CRCUtil.computeFileCRC(unzipFile.getAbsolutePath()));
                 out.putNextEntry(unzipFile, parameters);
-                InputStream inputStream = new BufferedInputStream(new FileInputStream(unzipFile));
+                
+                fileInput = new FileInputStream(unzipFile);
+                buffInput = new BufferedInputStream(fileInput);
+                inputStream = new BufferedInputStream(buffInput);
+                
                 while ((length = inputStream.read(buffer)) != -1) {
                     out.write(buffer, 0, length);
                 }
                 out.closeEntry();
                 IOUtils.closeQuietly(inputStream);
+                IOUtils.closeQuietly(buffInput);
+                IOUtils.closeQuietly(fileInput);
             }
-
             // output the zip file
             out.finish();
         } catch (ZipException e) {
             throw new CapException(e, getClass());
         } finally {
+            IOUtils.closeQuietly(inputStream);
+            IOUtils.closeQuietly(buffInput);
+            IOUtils.closeQuietly(fileInput);
             IOUtils.closeQuietly(out);
             IOUtils.closeQuietly(buffOutput);
             IOUtils.closeQuietly(fileOutput);
