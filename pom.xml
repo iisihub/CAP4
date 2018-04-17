@@ -104,6 +104,11 @@
                 <artifactId>citi-ssl</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-pdf</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <modules>
@@ -122,6 +127,7 @@
         <module>citi-zip</module>
         <module>citi-moica</module>
         <module>citi-ssl</module>
+        <module>citi-pdf</module>
     </modules>
     <profiles>
         <profile>

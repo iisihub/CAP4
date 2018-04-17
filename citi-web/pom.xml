@@ -48,6 +48,10 @@
             <groupId>com.iisigroup.colabase</groupId>
             <artifactId>citi-ssl</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.iisigroup.colabase</groupId>
+            <artifactId>citi-pdf</artifactId>
+        </dependency>
         <!-- optional -->
         <dependency>
             <groupId>com.iisigroup.colabase</groupId>
