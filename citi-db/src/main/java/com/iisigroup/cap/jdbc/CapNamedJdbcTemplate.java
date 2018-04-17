@@ -268,7 +268,8 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         }
         long cur = System.currentTimeMillis();
         try {
-            return super.queryForObject(sql.toString(), (Map) args, Integer.class);
+            return (int) queryForObject(sql.toString(), (Map) args,
+                    Integer.class);
         } catch (Exception e) {
             throw new CapDBException(e, causeClass);
         } finally {

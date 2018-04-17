@@ -12,4 +12,14 @@
         <class>com.iisigroup.cap.base.model.Reminds</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
     </persistence-unit>
+    
+    <persistence-unit name="pu-cap-sql">
+        <!-- base -->
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <!-- VA -->
+        <class>com.iisigroup.colabase.va.model.CAInfo</class>
+        <class>com.iisigroup.colabase.va.model.TransLog</class>
+        <class>com.iisigroup.colabase.va.model.VerPath</class>
+        <class>com.iisigroup.colabase.va.model.CrlCert</class>
+    </persistence-unit>
 </persistence>

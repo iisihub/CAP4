@@ -16,7 +16,7 @@ import com.iisigroup.cap.model.GenericBean;
 @SuppressWarnings("serial")
 @Entity
 @EntityListeners({ CapOidGeneratorListener.class })
-@Table(name = "CAINFO", uniqueConstraints = @UniqueConstraint(columnNames = "oid") )
+@Table(name = "CO_CAINFO", uniqueConstraints = @UniqueConstraint(columnNames = "oid") )
 public class CAInfo extends GenericBean implements DataObject {
 
     @Id
