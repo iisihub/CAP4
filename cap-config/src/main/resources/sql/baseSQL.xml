@@ -103,16 +103,16 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
             ]]></value>
         </entry>
         <!-- Sequence -->
-        <entry key="Sequence.listAll">
-            <value><![CDATA[select * from cfg_Sequence order by seqNode]]></value>
+        <entry key="sequence_findForSequencePage">
+            <value><![CDATA[select * from cfg_Sequence]]></value>
         </entry>
-        <entry key="Sequence.findBySeqNode">
+        <entry key="sequence_findBySeqNode">
             <value><![CDATA[select * from cfg_Sequence where seqNode = :seqNode]]></value>
         </entry>
-        <entry key="Sequence.updateByNodeAndNextSeq">
+        <entry key="sequence_updateByNodeAndNextSeqFromMap">
             <value><![CDATA[update cfg_Sequence set nextSeq=:nextSeq,rounds=:rounds,updateTime=:updateTime where seqNode=:seqNode and nextSeq=:oldSeq]]></value>
         </entry>
-        <entry key="Sequence.insert">
+        <entry key="sequence_createFromMap">
             <value><![CDATA[INSERT INTO cfg_Sequence (seqNode, NEXTSEQ, ROUNDS,updateTime ) VALUES (:seqNode,:nextSeq,:rounds,:updateTime)]]></value>
         </entry>
         <entry key="role_findBySysTypeAndPath">

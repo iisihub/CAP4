@@ -38,9 +38,9 @@
         <div id="gridview"></div>
         <!-- dialog start-->
         <!--Start : 查詢-->
-        <div id="SEARCH" style="display: none">
-            <form id="searchForm">
-                <table class="tb2" width="99%" border="0" cellspacing="0" cellpadding="0" id="searchTable">
+        <div id="qryDialog" style="display: none">
+            <form id="qform">
+                <table class="row-data" width="99%" border="0" cellspacing="0" cellpadding="0" id="searchTable">
                     <tbody>
                         <tr>
                             <td width="40%" class="hd1"><spring:message code="js.code"></spring:message></td>
@@ -63,9 +63,9 @@
             </form>
         </div>
         <!--Start : 編輯-->
-        <div id="EDIT" style="display: none">
-            <form id="JForm">
-                <table class="tb2" width="99%" border="0" cellspacing="0" cellpadding="0">
+        <div id="editDialog" style="display: none">
+            <form id="eform">
+                <table class="row-data" width="99%" border="0" cellspacing="0" cellpadding="0">
                     <tbody>
                         <tr>
                             <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="js.code"></spring:message></td>
@@ -82,7 +82,7 @@
                             </td>
                              -->
                             <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="js.severity"></spring:message></td>
-                            <td width="30%"><select id="severity" name="severity">
+                            <td width="30%" colspan="3"><select id="severity" name="severity">
                                     <option value="INFO">INFO</option>
                                     <option value="WARN">WARN</option>
                                     <option value="ERROR">ERROR</option>

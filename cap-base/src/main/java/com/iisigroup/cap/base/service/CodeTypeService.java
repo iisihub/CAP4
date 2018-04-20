@@ -12,7 +12,10 @@ package com.iisigroup.cap.base.service;
 import java.util.Map;
 
 import com.iisigroup.cap.base.model.CodeType;
+import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
+import com.iisigroup.cap.db.dao.SearchSetting;
+import com.iisigroup.cap.db.model.Page;
 
 /**
  * <pre>
@@ -30,12 +33,27 @@ import com.iisigroup.cap.component.impl.AjaxFormResult;
 public interface CodeTypeService {
 
     /**
-     * save CodeType
+     * add codetype
      * 
      * @param codeType
-     *            CodeType
+     * @param codeValue
+     * @param codeDesc
+     * @param codeOrder
+     * @param locale
      */
-    void saveCodeType(CodeType codeType);
+    void addCodeType(String codeType, String codeValue, String codeDesc, Integer codeOrder, String locale);
+
+    /**
+     * modify codetype
+     * 
+     * @param oid
+     * @param codeType
+     * @param codeValue
+     * @param codeDesc
+     * @param codeOrder
+     * @param locale
+     */
+    void modifyCodeType(String oid, String codeType, String codeValue, String codeDesc, Integer codeOrder, String locale);
 
     /**
      * get Map by code type
@@ -140,5 +158,14 @@ public interface CodeTypeService {
      *            oid
      */
     void deleteById(String oid);
+
+    /**
+     * query page for grid
+     * 
+     * @param search
+     * @param params
+     * @return
+     */
+    Page<CodeType> findPage(SearchSetting search, Request params);
 
 }

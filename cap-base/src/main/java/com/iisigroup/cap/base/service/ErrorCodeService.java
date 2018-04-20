@@ -3,6 +3,9 @@ package com.iisigroup.cap.base.service;
 import java.util.List;
 
 import com.iisigroup.cap.base.model.ErrorCode;
+import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.db.dao.SearchSetting;
+import com.iisigroup.cap.db.model.Page;
 
 /**
  * <pre>
@@ -24,14 +27,27 @@ public interface ErrorCodeService {
     void reload();
 
     /**
-     * <pre>
-     * 新增或修改
-     * </pre>
+     * add ErrorCode
      * 
-     * @param entry
-     *            CBCLCODE
+     * @param code
+     * @param locale
+     * @param severity
+     * @param message
+     * @param suggestion
      */
-    void save(ErrorCode entry);
+    void addErrorCode(String code, String locale, String severity, String message, String suggestion);
+
+    /**
+     * modify ErrorCode
+     * 
+     * @param oid
+     * @param code
+     * @param locale
+     * @param severity
+     * @param message
+     * @param suggestion
+     */
+    void modifyErrorCode(String oid, String code, String locale, String severity, String message, String suggestion);
 
     /**
      * get the error code by code and locale
@@ -46,5 +62,21 @@ public interface ErrorCodeService {
     ErrorCode getErrorCode(String code, String locale);
 
     List<ErrorCode> getErrorCodeListBySysId(String sysId, String locale);
+
+    /**
+     * delete ErrorCode By Oid
+     * 
+     * @param oid
+     */
+    void deleteErrorCodeByOid(String oid);
+
+    /**
+     * find page
+     * 
+     * @param search
+     * @param params
+     * @return
+     */
+    Page<ErrorCode> findPage(SearchSetting search, Request params);
 
 }

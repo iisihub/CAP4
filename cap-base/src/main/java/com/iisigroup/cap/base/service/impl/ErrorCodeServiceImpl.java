@@ -17,8 +17,16 @@ import org.springframework.stereotype.Service;
 import com.iisigroup.cap.base.dao.ErrorCodeDao;
 import com.iisigroup.cap.base.model.ErrorCode;
 import com.iisigroup.cap.base.service.ErrorCodeService;
+import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.db.constants.SearchMode;
+import com.iisigroup.cap.db.dao.SearchSetting;
+import com.iisigroup.cap.db.model.Page;
 import com.iisigroup.cap.exception.CapException;
+import com.iisigroup.cap.exception.CapMessageException;
+import com.iisigroup.cap.security.CapSecurityContext;
+import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapBeanUtil;
+import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.cap.utils.ManagementUtil;
 
@@ -39,7 +47,7 @@ public class ErrorCodeServiceImpl implements ErrorCodeService {
     private final Logger logger = LoggerFactory.getLogger(ErrorCodeServiceImpl.class);
 
     @Resource
-    ErrorCodeDao errorCodeDao;
+    private ErrorCodeDao errorCodeDao;
 
     private SoftReferenceCache<String, ErrorCode> errorCodeCache = new SoftReferenceCache<String, ErrorCode>();
 
@@ -86,20 +94,46 @@ public class ErrorCodeServiceImpl implements ErrorCodeService {
         return CapString.concat(StringUtils.trimToEmpty(code), ".", StringUtils.trimToEmpty(locale));
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.cap.base.service.ErrorCodeService#addErrorCode(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
     @Override
-    public void save(ErrorCode model) {
-        errorCodeDao.save(model);
+    public void addErrorCode(String code, String locale, String severity, String message, String suggestion) {
+        ErrorCode errorCode = getErrorCode(code, locale);
+        if (errorCode != null) {
+            throw new CapMessageException(CapAppContext.getMessage("js.data.exists"), getClass()); // 資料已存在
+        }
+        saveOrUpdateErrorCode(new ErrorCode(), code, locale, severity, message, suggestion);
     }
 
-    /**
-     * get the errorcode by code and locale
-     *
-     * @param code
-     *            代碼類型
-     * @param locale
-     *            語言別
-     * @return Map
-     *
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.cap.base.service.ErrorCodeService#modifyErrorCode(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    @Override
+    public void modifyErrorCode(String oid, String code, String locale, String severity, String message, String suggestion) {
+        ErrorCode errorCode = errorCodeDao.find(oid);
+        saveOrUpdateErrorCode(errorCode, code, locale, severity, message, suggestion);
+    }
+
+    private void saveOrUpdateErrorCode(ErrorCode errorCode, String code, String locale, String severity, String message, String suggestion) {
+        errorCode.setCode(code.toUpperCase());
+        errorCode.setLocale(locale);
+        errorCode.setSeverity(severity);
+        errorCode.setMessage(message);
+        errorCode.setSuggestion(suggestion);
+        errorCode.setLastModifyBy(CapSecurityContext.getUserId());
+        errorCode.setLastModifyTime(CapDate.getCurrentTimestamp());
+        errorCodeDao.save(errorCode);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.cap.base.service.ErrorCodeService#getErrorCode(java.lang.String, java.lang.String)
      */
     @Override
     public ErrorCode getErrorCode(String code, String locale) {
@@ -156,6 +190,42 @@ public class ErrorCodeServiceImpl implements ErrorCodeService {
         public synchronized void clear() {
             this.map.clear();
         }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.cap.base.service.ErrorCodeService#deleteErrorCodeByOid(java.lang.String)
+     */
+    @Override
+    public void deleteErrorCodeByOid(String oid) {
+        ErrorCode errorCode = errorCodeDao.find(oid);
+        if (errorCode != null) {
+            errorCodeDao.delete(errorCode);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.cap.base.service.ErrorCodeService#findPage(com.iisigroup.cap.db.dao.SearchSetting, com.iisigroup.cap.component.Request)
+     */
+    @Override
+    public Page<ErrorCode> findPage(SearchSetting search, Request params) {
+        String code = params.get("code");
+        String locale = params.get("locale");
+        String sysId = params.get("sysId");
+        if (!CapString.isEmpty(code)) {
+            search.addSearchModeParameters(SearchMode.LIKE, "code", code);
+        }
+        if (!CapString.isEmpty(locale)) {
+            search.addSearchModeParameters(SearchMode.EQUALS, "locale", locale);
+        }
+        if (!CapString.isEmpty(sysId)) {
+            search.addSearchModeParameters(SearchMode.LIKE, "sysId", sysId);
+        }
+        search.addOrderBy("code");
+        return errorCodeDao.findPage(ErrorCode.class, search);
     }
 
 }

@@ -1,6 +1,5 @@
 pageInit(function() {
   $(function() {
-    var mform = $("#mform");
     var grid = $("#gridview").jqGrid({
       url : url('errorCodehandler/query'),
       height : "380",
@@ -10,36 +9,34 @@ pageInit(function() {
       autowidth : true,
       localFirst : true,
       colModel : [ {
-        header : i18n['errorCode']['code'],//"訊息代碼",
+        header : i18n['errorCode']['code'],// "訊息代碼",
         name : 'code',
         align : 'left',
         width : 120,
-        formatter : 'click',
-        onclick : doEdit,
         sortable : true
       }, {
-        header : i18n['errorCode']['locale'],//"語言別",
+        header : i18n['errorCode']['locale'],// "語言別",
         name : 'locale',
         align : 'center',
         width : 60,
         sortable : false
-      //            },  {
-      //                header: i18n['errorCode']['sysId'],//"系統別",
-      //                name: 'sysId', align: 'center', width: 60, sortable: true
+      // }, {
+      // header: i18n['errorCode']['sysId'],//"系統別",
+      // name: 'sysId', align: 'center', width: 60, sortable: true
       }, {
-        header : i18n['errorCode']['severity'],//"等級",
+        header : i18n['errorCode']['severity'],// "等級",
         name : 'severity',
         align : 'left',
         width : 60,
         sortable : false
       }, {
-        header : i18n['errorCode']['message'],//"狀態說明",
+        header : i18n['errorCode']['message'],// "狀態說明",
         name : 'message',
         align : 'left',
         width : 250,
         sortable : false
       }, {
-        header : i18n['errorCode']['suggestion'],//"建議處理方式",
+        header : i18n['errorCode']['suggestion'],// "建議處理方式",
         name : 'suggestion',
         align : 'left',
         width : 300,
@@ -58,40 +55,33 @@ pageInit(function() {
         openEditWindow(true);
       }
     });
-    function doEdit(cellvalue, options, rowObject) {
-      openEditWindow(true, rowObject);
-    }
-    function openEditWindow(isEdit, rowObject) {
-      var $form = $('#JForm');
-      $form.reset();
+    function openEditWindow(isEdit) {
+      var eform = $('#eform');
+      eform.reset();
 
       var oid = '';
       if (isEdit) {
-        if (!rowObject) {
-          var id = grid.jqGrid('getGridParam', 'selrow');
-          if (id) {
-            rowObject = grid.jqGrid('getRowData', id);
-          } else {
-            API.showMessage(i18n.def['selectd.msg']);
-            return;
-          }
+        var sel = grid.getSelRowDatas();
+        if (!sel) {
+          API.showMessage(i18n.def['selectd.msg']);
+          return;
         }
-        oid = rowObject.oid;
-        $form.find('#code').val(rowObject.code).attr("disabled", true);
-        $form.find('#locale').val(rowObject.locale).attr("disabled", true);
-        $form.find('#severity').val(rowObject.severity);
-        $form.find('#message').val(rowObject.message);
-        $form.find('#suggestion').text(rowObject.suggestion);
-        $form.find('#sendMon').val(rowObject.sendMon);
-        $form.find('#helpURL').val(rowObject.helpURL);
-        $form.find('#sysId').val(rowObject.sysId);
+        oid = sel.oid;
+        eform.find('#code').val(sel.code).attr("disabled", true);
+        eform.find('#locale').val(sel.locale).attr("disabled", true);
+        eform.find('#severity').val(sel.severity);
+        eform.find('#message').val(sel.message);
+        eform.find('#suggestion').text(sel.suggestion);
+        eform.find('#sendMon').val(sel.sendMon);
+        eform.find('#helpURL').val(sel.helpURL);
+        eform.find('#sysId').val(sel.sysId);
       } else {
-        $form.find('#code').val('').removeAttr("disabled");
-        $form.find('#locale').val('').removeAttr("disabled");
-        $form.find('#message').val('');
-        $form.find('#suggestion').text('');
+        eform.find('#code').val('').removeAttr("disabled");
+        eform.find('#locale').val('').removeAttr("disabled");
+        eform.find('#message').val('');
+        eform.find('#suggestion').text('');
       }
-      var edit = $("#EDIT").dialog({
+      var eDialog = $("#editDialog").dialog({
         title : i18n.def['edit'], // 編輯
         modal : true,
         width : 600,
@@ -101,81 +91,79 @@ pageInit(function() {
         buttons : API.createJSON([ {
           key : i18n.def.sure,
           value : function() {
-            if ($form.validationEngine('validate')) {
+            if (eform.validationEngine('validate')) {
               $.ajax({
-                url : url('errorCodehandler/save'),
-                data : $.extend($form.serializeData(), {
+                url : url('errorCodehandler/' + (isEdit ? 'modify' : 'add')),
+                data : $.extend(eform.serializeData(), {
                   oid : oid
                 })
               }).done(function(responseData) {
-                edit.dialog('close');
-                if (responseData.exist) {
-                  API.showMessage(i18n.def['data.exists']);
-                } else {
-                  grid.trigger("reloadGrid");
-                }
+                eDialog.dialog('close');
+                grid.trigger("reloadGrid");
               });
             }
           }
         }, {
           key : i18n.def.close,
           value : function() {
-            edit.dialog('close');
+            eDialog.dialog('close');
           }
         } ])
       });
-      edit.dialog('open');
+      eDialog.dialog('open');
     }
     function openSearchWindow() {
-      var search = $("#SEARCH").dialog({
+      var qDialog = $("#qryDialog").dialog({
         title : i18n.def['query'],
         width : 400,
         height : 200,
         modal : true,
+        close : function(){
+          $("#qform").reset();
+        },
         buttons : API.createJSON([ {
           key : i18n.def.sure,
           value : function() {
             grid.jqGrid('setGridParam', {
               postData : {
-                code : search.find("#code").val(),
-                locale : search.find("#locale").val(),
-                sysId : search.find("#sysId").val()
+                code : qDialog.find("#code").val(),
+                locale : qDialog.find("#locale").val(),
+                sysId : qDialog.find("#sysId").val()
               }
             });
             grid.trigger("reloadGrid");
-            search.dialog('close');
+            qDialog.dialog('close');
           }
         }, {
           key : i18n.def.clear,
           value : function() {
-            $("#searchForm").reset();
+            $("#qform").reset();
           }
         }, {
           key : i18n.def.close,
           value : function() {
-            search.dialog('close');
+            qDialog.dialog('close');
           }
         } ])
       });
-      search.dialog('open');
+      qDialog.dialog('open');
     }
 
-    $(".btns").find("#qry").click(function() {//查詢
+    $(".btns").find("#qry").click(function() {// 查詢
       openSearchWindow();
-    }).end().find("#add").click(function() {//新增
+    }).end().find("#add").click(function() {// 新增
       openEditWindow(false);
-    }).end().find("#modify").click(function() {//修改
+    }).end().find("#modify").click(function() {// 修改
       openEditWindow(true);
-    }).end().find("#delete").click(function() {
-      var id = grid.jqGrid('getGridParam', 'selrow');
-      if (id) {
-        var rowObject = grid.jqGrid('getRowData', id);
+    }).end().find("#delete").click(function() {// 刪除
+      var sel = grid.getSelRowDatas();
+      if (sel) {
         API.showConfirmMessage(i18n.def['del.confrim'], function(b) {
           if (b) {
             $.ajax({
               url : url('errorCodehandler/delete'),
               data : {
-                oid : rowObject.oid
+                oid : sel.oid
               }
             }).done(function(responseData) {
               grid.trigger("reloadGrid");

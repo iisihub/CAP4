@@ -13,6 +13,8 @@ package com.iisigroup.cap.base.service;
 
 import java.util.Map;
 
+import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.db.dao.SearchSetting;
 import com.iisigroup.cap.db.model.Page;
 
 /**
@@ -29,7 +31,14 @@ import com.iisigroup.cap.db.model.Page;
  */
 public interface SequenceService {
 
-    Page<Map<String, Object>> findPage(int start, int fetch);
+    /**
+     * query data for grid
+     * 
+     * @param search
+     * @param params
+     * @return
+     */
+    Page<Map<String, Object>> findPage(SearchSetting search, Request params);
 
     /**
      * 取得序號

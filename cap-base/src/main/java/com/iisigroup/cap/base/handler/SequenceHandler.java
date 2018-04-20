@@ -30,7 +30,7 @@ import com.iisigroup.cap.mvc.handler.MFormHandler;
 
 /**
  * <pre>
- * 流水號
+ * 流水號維護
  * </pre>
  * 
  * @since 2012/10/25
@@ -46,13 +46,25 @@ public class SequenceHandler extends MFormHandler {
     @Resource
     private SequenceService seqSrv;
 
+    /**
+     * 流水號維護 grid
+     * 
+     * @param search
+     * @param params
+     * @return
+     */
     @HandlerType(HandlerTypeEnum.GRID)
     public MapGridResult query(SearchSetting search, Request params) {
-
-        Page<Map<String, Object>> page = seqSrv.findPage(search.getFirstResult(), search.getMaxResults());
+        Page<Map<String, Object>> page = seqSrv.findPage(search, params);
         return new MapGridResult(page.getContent(), page.getTotalRow());
     }
 
+    /**
+     * get new sequence number
+     * 
+     * @param params
+     * @return
+     */
     public Result getNewSeq(Request params) {
         AjaxFormResult result = new AjaxFormResult();
         String seqNode = params.get("seqNode");
