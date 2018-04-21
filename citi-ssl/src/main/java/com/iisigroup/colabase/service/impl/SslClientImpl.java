@@ -154,6 +154,7 @@ public class SslClientImpl implements SslClient {
           listForRecordInfos.add("Request: data = " + jsonStr);
         } catch (IOException e) {
           listForRecordInfos.add("Output data Exception = " + e.toString());
+          logger.warn("Output data Exception = " + e.toString());
           throw e;
         }
       }
@@ -208,18 +209,21 @@ public class SslClientImpl implements SslClient {
     } finally {
       final ResponseContent renewResponseContent = responseContent;
         // 由於有可能上層method標記為@NonTransactional，會導致與DB有交易的方法會失敗，另開執行緒執行。
-        Thread thread = new Thread(new Runnable() {
-            @Override
+      Thread thread = new Thread(new Runnable() {
+        @Override
             public void run() {
+              logger.debug("==== after send dual ssl request process start ====");
               requestContent.afterSendRequest(renewResponseContent);
+              logger.debug("==== after send dual ssl request process end ====");
             }
         });
         thread.start();
+      long endTime = new Date().getTime();
+      long diffTime = endTime - startTime;
+      logger.debug("[clientSendRequest] done. All cause time: " + diffTime + " ms");
+      logger.debug("==== send dual ssl request end ====");
     }
-    long endTime = new Date().getTime();
-    long diffTime = endTime - startTime;
-    logger.debug("[clientSendRequest] done. All cause time: " + diffTime + " ms");
-    logger.debug("==== send dual ssl request end ====");
+
     return responseContent;
   }
 

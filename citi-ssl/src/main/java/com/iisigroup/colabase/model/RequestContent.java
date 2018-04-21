@@ -32,10 +32,19 @@ public abstract class RequestContent {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * 是否用建構式產生的key store and trust store
+     */
     private boolean isUseOwnKeyAndTrustStore = true;
 
+    /**
+     * millisecond
+     */
     private int timeout;
 
+    /**
+     * 重試次數
+     */
     private int retryTimes = 0;
 
     private String targetUrl;
