@@ -10,14 +10,15 @@
 package com.iisigroup.cap.base.dao.impl;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-
-import javax.persistence.Query;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
 import com.iisigroup.cap.base.dao.RemindsDao;
 import com.iisigroup.cap.base.model.Reminds;
+import com.iisigroup.cap.base.support.RemindsRowMapper;
 import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
 
 /**
@@ -36,14 +37,11 @@ import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
 public class RemindsDaoImpl extends GenericDaoImpl<Reminds> implements RemindsDao {
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<Reminds> findCurrentRemindItem(String[] styleTyp, String locale) {
-        Query query = getEntityManager().createNativeQuery(
-                "select s.* from CFG_remind r inner join CFG_reminds s on r.oid = s.pid where datediff('SECOND', current timestamp, r.STARTDATE) < s.STYLE*s.unit+30 and datediff('SECOND', current timestamp, r.STARTDATE) >= s.STYLE*s.unit and s.YNFLAG = '0' and s.STYLETYP in (:styleTyp) and r.LOCALE = :locale",
-                Reminds.class);
-        query.setParameter("styleTyp", Arrays.asList(styleTyp));
-        query.setParameter("locale", locale);
-        return (List<Reminds>) query.getResultList();
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("styleTyp", Arrays.asList(styleTyp));
+        param.put("locale", locale);
+        return getNamedJdbcTemplate().query("reminds_findCurrentRemindItem", "", param, new RemindsRowMapper());
     }
 
     @Override

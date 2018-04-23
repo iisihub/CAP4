@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import com.iisigroup.cap.auth.dao.RoleDao;
 import com.iisigroup.cap.auth.model.DefaultRole;
+import com.iisigroup.cap.auth.support.RoleRowMapper;
 import com.iisigroup.cap.db.constants.SearchMode;
 import com.iisigroup.cap.db.dao.SearchSetting;
 import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
@@ -40,15 +41,12 @@ import com.iisigroup.cap.security.model.Role;
 @Repository
 public class RoleDaoImpl extends GenericDaoImpl<DefaultRole> implements RoleDao {
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<Role> findBySysTypeAndPath(String sysType, String path) {
-        Query query = getEntityManager().createNativeQuery(
-                "select r.* from DEF_ROLE r inner join DEF_ROLEFUNC rf on rf.ROLECODE=r.CODE inner join DEF_FUNC func on rf.FUNCCODE=func.CODE where r.SYSTYPE= ?1 and r.STATUS='0' and func.PATH= ?2",
-                DefaultRole.class);
-        query.setParameter(1, sysType);
-        query.setParameter(2, path);
-        return (List<Role>) query.getResultList();
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("sysType", sysType);
+        param.put("path", path);
+        return getNamedJdbcTemplate().query("role_findBySysTypeAndPath", "", param, new RoleRowMapper());
     }
 
     @Override

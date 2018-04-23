@@ -115,5 +115,58 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="Sequence.insert">
             <value><![CDATA[INSERT INTO cfg_Sequence (seqNode, NEXTSEQ, ROUNDS,updateTime ) VALUES (:seqNode,:nextSeq,:rounds,:updateTime)]]></value>
         </entry>
+        <entry key="role_findBySysTypeAndPath">
+            <value><![CDATA[
+                SELECT r.* 
+                FROM   def_role r 
+                       INNER JOIN def_rolefunc rf 
+                               ON rf.rolecode = r.code 
+                       INNER JOIN def_func func 
+                               ON rf.funccode = func.code 
+                WHERE  r.systype = :sysType 
+                       AND r.status = '0' 
+                       AND func.path = :path 
+            ]]></value>
+        </entry>
+        <entry key="role_getRoleByUser">
+            <value><![CDATA[
+                SELECT r.* 
+                FROM   def_role r 
+                       inner join def_userrole ur 
+                                  inner join def_user u 
+                                          ON u.code = ur.usercode 
+                               ON r.code = ur.rolecode 
+                WHERE  r.status = '0' 
+                       AND u.code = :code 
+            ]]></value>
+        </entry>
+        <entry key="remind_getCalendarData">
+            <value><![CDATA[
+                SELECT DISTINCT r.* 
+                FROM   cfg_remind r 
+                       INNER JOIN cfg_reminds s 
+                               ON r.oid = s.pid 
+                WHERE  r.enddate > :start 
+                       AND r.startdate < :end 
+                       AND ( s.scopepid = :userId 
+                              OR r.scopepid = :userId ) 
+                       AND r.locale = :locale 
+            ]]></value>
+        </entry>
+        <entry key="reminds_findCurrentRemindItem">
+            <value><![CDATA[
+                SELECT s.* 
+                FROM   cfg_remind r 
+                       INNER JOIN cfg_reminds s 
+                               ON r.oid = s.pid 
+                WHERE  Datediff('SECOND', CURRENT TIMESTAMP, r.startdate) < 
+                       s.STYLE * s.unit + 30 
+                       AND Datediff('SECOND', CURRENT TIMESTAMP, r.startdate) >= 
+                           s.STYLE * s.unit 
+                       AND s.ynflag = '0' 
+                       AND s.styletyp IN ( :styleTyp ) 
+                       AND r.LOCALE = :locale 
+            ]]></value>
+        </entry>
     </util:map>
 </beans>

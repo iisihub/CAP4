@@ -5,20 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Query;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.iisigroup.cap.auth.dao.UserDao;
-import com.iisigroup.cap.auth.model.DefaultRole;
 import com.iisigroup.cap.auth.model.DefaultUser;
+import com.iisigroup.cap.auth.support.RoleRowMapper;
 import com.iisigroup.cap.db.constants.SearchMode;
 import com.iisigroup.cap.db.dao.SearchSetting;
 import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
 import com.iisigroup.cap.db.model.Page;
 import com.iisigroup.cap.jdbc.support.CapSqlStatement;
 import com.iisigroup.cap.security.dao.SecUserDao;
+import com.iisigroup.cap.security.model.Role;
 import com.iisigroup.cap.security.model.User;
 import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapDate;
@@ -45,14 +44,11 @@ public class UserDaoImpl extends GenericDaoImpl<DefaultUser> implements SecUserD
         return findUniqueOrNone(search);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public List<DefaultRole> getRoleByUser(User user) {
-        Query query = getEntityManager().createNativeQuery(
-                "select r.* from DEF_ROLE r inner join DEF_USERROLE ur inner join DEF_USER u on u.code=ur.USERCODE on r.CODE=ur.ROLECODE where r.STATUS='0' and u.code=?1", DefaultRole.class);
-        // TODO: systemtype
-        query.setParameter(1, user.getCode());
-        return query.getResultList();
+    public List<Role> getRoleByUser(User user) {
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("code", user.getCode());
+        return getNamedJdbcTemplate().query("role_getRoleByUser", "", param, new RoleRowMapper());
     }
 
     @Override

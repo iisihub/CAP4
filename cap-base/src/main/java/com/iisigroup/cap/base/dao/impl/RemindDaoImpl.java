@@ -10,14 +10,15 @@
 package com.iisigroup.cap.base.dao.impl;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
-
-import javax.persistence.Query;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
 import com.iisigroup.cap.base.dao.RemindDao;
 import com.iisigroup.cap.base.model.Remind;
+import com.iisigroup.cap.base.support.RemindRowMapper;
 import com.iisigroup.cap.db.constants.SearchMode;
 import com.iisigroup.cap.db.dao.SearchSetting;
 import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
@@ -44,16 +45,13 @@ public class RemindDaoImpl extends GenericDaoImpl<Remind> implements RemindDao {
         return findUniqueOrNone(search);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<Remind> getCalendarData(String userId, Timestamp start, Timestamp end, String locale) {
-        Query query = getEntityManager().createNativeQuery(
-                "select distinct r.* from CFG_remind r inner join CFG_reminds s on r.oid = s.pid where r.endDate > :start and r.startDate < :end and (s.scopePid=:userId or r.scopePid=:userId) and r.LOCALE = :locale",
-                Remind.class);
-        query.setParameter("start", start);
-        query.setParameter("end", end);
-        query.setParameter("userId", userId);
-        query.setParameter("locale", locale);
-        return (List<Remind>) query.getResultList();
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("start", start);
+        param.put("end", end);
+        param.put("userId", userId);
+        param.put("locale", locale);
+        return getNamedJdbcTemplate().query("remind_getCalendarData", "", param, new RemindRowMapper());
     }
 }
