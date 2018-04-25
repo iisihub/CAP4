@@ -923,8 +923,6 @@ $.holdReady(true);
                         if (!this.is('form')) {
                             return !this.__validationEngine(method);
                         }
-                    } else {
-                        return;
                     }
                     return this.__validationEngine.apply(this, arguments);
                 },
