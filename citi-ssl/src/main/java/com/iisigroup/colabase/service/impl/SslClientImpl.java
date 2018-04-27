@@ -9,6 +9,7 @@ import java.util.*;
 
 import javax.net.ssl.*;
 
+import com.iisigroup.cap.utils.CapSystemConfig;
 import com.iisigroup.colabase.model.RequestContent;
 import com.iisigroup.colabase.model.ResponseContent;
 import com.iisigroup.colabase.service.SslClient;
@@ -18,7 +19,11 @@ import org.slf4j.LoggerFactory;
 
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SslClientImpl implements SslClient {
 
 
@@ -26,13 +31,33 @@ public class SslClientImpl implements SslClient {
 
   private SSLSocketFactory sslSocketFactory;
 
+  private boolean isInit = false;
+
+  @Autowired
+  private CapSystemConfig systemConfig;
+
   public SslClientImpl() {
   }
 
   public SslClientImpl(String keyStorePath, String keyStorePWD, String trustStorePath) throws
           CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
-      sslSocketFactory = getSSLSocketFactory(keyStorePath, keyStorePWD, trustStorePath);
+    sslSocketFactory = getSSLSocketFactory(keyStorePath, keyStorePWD, trustStorePath);
+    isInit = true;
+  }
+
+  private void initSslSocketFactory(){
+    if(sslSocketFactory == null) {
+      String keyStorePath = systemConfig.getProperty("keyStorePath");
+      String trustStorePath = systemConfig.getProperty("trustStorePath");
+      String keyStorePWD = systemConfig.getProperty("keyStorePWD");
+      try {
+        sslSocketFactory = getSSLSocketFactory(keyStorePath, keyStorePWD, trustStorePath);
+        isInit = true;
+      } catch (CertificateException | UnrecoverableKeyException | KeyStoreException | NoSuchAlgorithmException | IOException | KeyManagementException e) {
+        logger.error("init SslSocketFactory fail >>> " + e.getCause());
+      }
     }
+  }
 
   /**
    *
@@ -42,6 +67,8 @@ public class SslClientImpl implements SslClient {
      */
   @Override
   public ResponseContent sendRequest(RequestContent requestContent) throws IOException {
+    if(!isInit)
+      this.initSslSocketFactory();
     for (int i = 0; i <= requestContent.getRetryTimes(); i++) {
       try {
         ResponseContent responseContent = this.clientSendRequest(requestContent);
@@ -106,8 +133,14 @@ public class SslClientImpl implements SslClient {
 
       HttpsURLConnection connection = (HttpsURLConnection) new URL(targetURL).openConnection();
       // 設定 HttpsURLConnection 的 SSLSocketFactory
-      if(isUseOwnSslFactory)
-        connection.setSSLSocketFactory(sslSocketFactory);
+      if(isUseOwnSslFactory) {
+        if(isInit) {
+          connection.setSSLSocketFactory(sslSocketFactory);
+        } else {
+          logger.debug("OwnSslFactory is not init. cancel use own ssl factory.");
+          isUseOwnSslFactory = false;
+        }
+      }
       logger.debug("Request: use own ssl factory = " + isUseOwnSslFactory);
       logger.debug("Request: need retry status = " + Arrays.toString(requestContent.getRetryHttpStatus()));
 
