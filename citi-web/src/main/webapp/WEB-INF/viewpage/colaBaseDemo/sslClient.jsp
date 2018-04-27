@@ -32,7 +32,7 @@
         <input type="text" id="targetUrl" name="targetUrl"
                value="https://127.0.0.1:8443/mutual-authentication-server/v1/tw/onboarding/customers/deduplicationFlag">
         <br/>
-        自定義Header JSON字串
+        自定義Header JSON字串 ex: {"accept": ["application/json", "otherType"]}
         <textarea rows="20" cols="100" id="ownHeader" name="ownHeader"></textarea>
         傳送JSON字串
         <textarea rows="20" cols="100" id="ownData" name="ownData"></textarea>
