@@ -9,6 +9,7 @@ import com.iisigroup.colabase.demo.sslclient.model.DemoRequestContent;
 import com.iisigroup.colabase.model.RequestContent;
 import com.iisigroup.colabase.model.ResponseContent;
 import com.iisigroup.colabase.service.SslClient;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,10 +76,10 @@ public class SslClientHandler extends MFormHandler {
         HashMap<String, List<String>> result = new HashMap<>();
         for (Object key  : jsonObject.keySet()) {
             Object o = jsonObject.get(key);
-            if(o instanceof String[]) {
+            if(o instanceof JSONArray) {
                 List<String> values = new ArrayList<>();
-                for (int i = 0 ; i < ((String[]) o).length ; i++) {
-                    values.add(((String[]) o)[i]);
+                for (int i = 0 ; i < ((JSONArray) o).size() ; i++) {
+                    values.add(String.valueOf(((JSONArray) o).get(i)));
                 }
                 result.put(key.toString(), values);
             } else {
