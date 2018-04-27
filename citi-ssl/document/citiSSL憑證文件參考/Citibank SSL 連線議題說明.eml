@@ -1,0 +1,473 @@
+Received: from hk2pr02cu005.internal.outlook.com (2a01:111:e400:7911::20) by
+ KL1PR0601MB1430.apcprd06.prod.outlook.com with HTTP via
+ PS1PR0601CA0100.APCPRD06.PROD.OUTLOOK.COM; Wed, 8 Nov 2017 19:23:53 +0000
+Received: from HKXPR06MB0567.apcprd06.prod.outlook.com
+ ([fe80::41aa:a1ba:96c2:6c41]) by HKXPR06MB0567.apcprd06.prod.outlook.com
+ ([fe80::41aa:a1ba:96c2:6c41%15]) with mapi id 15.20.0197.022; Wed, 8 Nov 2017
+ 19:23:52 +0000
+From: =?big5?B?vEKracXvKFl1bmdsaW4gTGl1KQ==?= <Yunglin.Liu@iisigroup.com>
+To: =?big5?B?pr+6za7cKFRpbSBDaGlhbmcp?= <Tim.Chiang@iisigroup.com>,
+	=?big5?B?sWm558TJKENhdGh5IENoYW5nKQ==?= <cathy.chang@iisigroup.com>,
+	=?big5?B?s6+sZqbQKEFuZHkgQ2hlbik=?= <andy.chen@iisigroup.com>,
+	=?big5?B?tF6ozrz8KEppYXlpbmcgUGVuZyk=?= <jiaying.peng@iisigroup.com>,
+	=?big5?B?qkyofLuoKFJvZ2VyIExpbik=?= <roger.lin@iisigroup.com>,
+	=?big5?B?pvOrYbClKEpvaG5zb24gSG8p?= <johnson.ho@iisigroup.com>,
+	=?big5?B?uK2sRqtDKFJpY2hhcmQgWWVoKQ==?= <richard.yeh@iisigroup.com>
+CC: =?big5?B?s6+kr631KEdhcnkgQ2hlbik=?= <Gary.Chen@iisigroup.com>,
+	=?big5?B?tsCpe7LeKFNtYW5vIEh1YW5nKQ==?= <smano.huang@iisigroup.com>,
+	=?big5?B?qkyq2qexKE1laSBMaW4p?= <mei.lin@iisigroup.com>,
+	=?big5?B?pP2/2bK7KFN1bmtpc3QgV2FuZyk=?= <Sunkist.wang@iisigroup.com>
+Subject: =?big5?B?Q2l0aWJhbmsgU1NMILNzvXXEs8NEu6Gp+g==?=
+Thread-Topic: =?big5?B?Q2l0aWJhbmsgU1NMILNzvXXEs8NEu6Gp+g==?=
+Thread-Index: AQHTWMTc61xNZroK2Eqar0ERduIlYw==
+Date: Wed, 8 Nov 2017 19:23:52 +0000
+Message-ID: <SIXPR06MB0576FD6B9FE0B25E72436A5FE0560@SIXPR06MB0576.apcprd06.prod.outlook.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: yes
+X-MS-Exchange-Organization-SCL: -1
+X-MS-TNEF-Correlator: <SIXPR06MB0576FD6B9FE0B25E72436A5FE0560@SIXPR06MB0576.apcprd06.prod.outlook.com>
+X-MS-Exchange-Organization-MessageDirectionality: Originating
+X-MS-Exchange-Organization-AuthSource: HKXPR06MB0567.apcprd06.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Internal
+X-MS-Exchange-Organization-AuthMechanism: 04
+X-Originating-IP: [1.34.62.185]
+X-MS-Exchange-Organization-Network-Message-Id: b65ea562-3f1e-4a3d-0924-08d526de3f0e
+X-MS-PublicTrafficType: Email
+X-Microsoft-Exchange-Diagnostics: 1;HKXPR06MB0567;35:Bn/pZ9/iXlR6kqBMK4/mdteyQYe3ApaFZJm7yznW/BKoc8c2J/khzL00iwfnMnMzz63ky7qYWq6bPOyBokLCQQ==;20:BV3fpRensZzSkGiuORnpQGDoOvEgrZWdJsSfaTArpvvbVaIj2uDGIaU8uE9krdXswmodHFymK39h5CoImgKmNsUNtO+1M4liObxaLOrtvy71a3IuRSDIoUEU1md6daxIA6npP8DGELVSuIolGwcKGOEeTxwZOWwTKsrS/sdZWA58w14OG9/JgI1H3mVnlm0AYPP8kNi8V1CYMegiQvP9b6wgnz4MxBU+peb/5OjyJ2wtvpbxQtLjseRrb+NJXlRlQBhimw+3OH2JNbHgRTyzafcBdjv2sgKJ9E8oj/Zpj2x7lgGP+6gYy28BiT5NHu7bOTZ2wwuBJiiiFdWxSp8r/Q==
+X-MS-Exchange-Antispam-SRFA-Diagnostics: SSOS;SSOR;
+X-MS-Exchange-Organization-AVStamp-Service: 1.0
+X-MS-Exchange-Organization-Antispam-Report: SFV:SKI;SCL:-1;
+X-Forefront-Antispam-Report: SFV:SKI;SCL:-1;
+Return-Path: Yunglin.Liu@iisigroup.com
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:01.6795710
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.0197.022
+X-Microsoft-Exchange-Diagnostics: 1;KL1PR0601MB1430;9:Qz88sDkJa0qXIz+Ram++ZymV6CXTLjmLpQ4xJ4tqjJRoFXF/lTiUCP/iiyL2HdZW+UvRTQ4UJbJSpFLollo+aeX0vfl/qQw6wtxwp98ufe0j9Pl9lSt6WW4tG6NGXBa0
+X-Microsoft-Exchange-Diagnostics: 1;KL1PR0601MB1430;27:2TF40wrkLVfcDCRM7QLUndXAHc9G/G7BCXILNU2OuyGWuETLmyGWPT5tIYgH7APLEOSXVUMT++XgoSYw9ynK9gpy+fjLWjDyH/bRsIgHhUwex2v5fnEKDD1DWp8TntzZ
+Content-type: multipart/mixed;
+	boundary="B_3593073203_128750026"
+MIME-Version: 1.0
+
+--B_3593073203_128750026
+Content-type: multipart/alternative;
+	boundary="B_3593073203_614495881"
+
+--B_3593073203_614495881
+Content-type: text/plain;
+	charset="UTF-8"
+Content-transfer-encoding: quoted-printable
+
+Dear all,
+
+=E6=9C=89=E9=91=91=E6=96=BC=E5=BE=88=E5=A4=9A=E7=B3=BB=E7=B5=B1=E9=83=BD=E8=A6=81=E4=BD=BF=E7=94=A8=EF=BC=8C=E7=84=B6=E5=BE=8C=E6=AF=8F=E6=AC=A1=E9=83=BD=E6=9C=89=E4=B8=8D=E5=90=8C=E7=9A=84=E4=BA=BA=E5=9C=A8=E8=A9=A2=E5=95=8F=
+=E7=9B=B8=E5=90=8C=E7=9A=84=E4=BA=8B=E6=83=85=EF=BC=8C=E7=B5=90=E6=9E=9C=E7=8F=BE=E5=9C=A8=E6=AF=8F=E5=80=8B=E7=B3=BB=E7=B5=B1=E7=9A=84=E5=81=9A=E6=B3=95=E5=8F=88=E9=83=BD=E4=B8=8D=E7=9B=A1=E7=9B=B8=E5=90=8C=EF=BC=8C=E5=85=B6=E5=
+=AF=A6=E6=87=89=E8=A9=B2=E6=9C=89=E7=B5=B1=E4=B8=80=E7=9A=84=E5=81=9A=E6=B3=95=EF=BC=8C=E4=BB=A5=E5=85=8D=E9=80=A0=E6=88=90=E7=B3=BB=E7=B5=B1=E4=BA=92=E7=9B=B8=E5=BD=B1=E9=9F=BF=E6=88=96=E6=98=AF=E7=B6=AD=E8=AD=B7=E4=B8=8A=E7=9A=
+=84=E5=9B=B0=E9=9B=A3=EF=BC=8C=E5=9B=A0=E6=AD=A4=E5=9C=A8=E6=AD=A4=E7=B5=B1=E4=B8=80=E8=AA=AA=E6=98=8E=E5=A6=82=E4=B8=8B=E3=80=82
+
+=E6=A0=B9=E6=93=9A=E4=B8=8D=E5=90=8C=E7=9A=84=E9=80=A3=E7=B7=9A=E9=9C=80=E6=B1=82=EF=BC=8C=E5=88=86=E6=88=90=E5=9B=9B=E9=A1=9E=EF=BC=9A
+
+1. COLA =E7=A8=8B=E5=BC=8F(on WAS)=E9=80=8F=E9=81=8E https client =E5=91=BC=E5=8F=AB=E8=8A=B1=E6=97=97=E5=85=A7=E9=83=A8=E7=9A=84 Server=EF=BC=8C=E5=96=
+=AE=E5=90=91 SSL
+(1) =E6=AF=8F=E4=B8=80=E5=8F=B0 Server =E9=83=BD=E6=87=89=E8=A9=B2=E6=98=AF=E4=BD=BF=E7=94=A8 Citbank MSPKI =E7=B3=BB=E7=B5=B1=E7=B0=BD=E7=99=BC=E7=9A=84 SSL =E6=
+=86=91=E8=AD=89
+(2) COLA =E4=B8=8D=E9=9C=80=E8=A6=81=E5=8C=AF=E5=85=A5=E7=89=B9=E5=AE=9A Server =E7=9A=84=E6=86=91=E8=AD=89=EF=BC=8C=E8=80=8C=E6=98=AF=E5=8C=AF=E5=85=A5 Citibank MSP=
+KI =E7=9A=84=E4=B8=8A=E5=B1=A4 CA/RA =E6=86=91=E8=AD=89=E3=80=82=E6=89=80=E6=9C=89=E4=B8=8A=E5=B1=A4=E6=86=91=E8=AD=89=E5=8F=AF=E5=9C=A8 https://catecollaborati=
+on.citigroup.net/domains/security/isp_standards/dpstds/stdshmpgs/MicrosoftPK=
+I.aspx =E4=B8=8B=E8=BC=89=E3=80=82=E6=AD=A4=E7=B6=B2=E5=9D=80=E6=8F=90=E4=BE=9B=E5=BE=88=E5=A4=9A=E7=A8=AE=E6=A0=BC=E5=BC=8F=EF=BC=8CJava =E7=A8=8B=E5=BC=8F=E5=B0=B1=E4=B8=8B=E8=BC=89 Sun JK=
+S =E6=9C=83=E6=AF=94=E8=BC=83=E6=96=B9=E4=BE=BF=E3=80=82
+(3) =E5=B0=8D WAS =E4=BE=86=E8=AA=AA=EF=BC=8C=E5=8F=AF=E4=BB=A5=E5=9C=A8=E5=85=A9=E5=80=8B=E5=9C=B0=E6=96=B9=E8=A8=AD=E5=AE=9A=E5=85=A8=E5=9F=9F=E7=9A=84 CA =E6=86=91=E8=AD=89=EF=BC=9A
+a. =E4=B8=80=E5=80=8B=E6=98=AF WAS =E7=9A=84 /jre/lib/security/cacerts=EF=BC=9B
+b. =E4=B8=80=E5=80=8B=E6=98=AF=E9=80=8F=E9=81=8E WAS console =E5=8F=AF=E4=BB=A5=E7=9C=8B=E5=88=B0=E7=9A=84 truststore=E3=80=82(WAS =E6=9C=AC=E8=BA=AB=E7=9A=84 =
+truststore =E6=98=AF=E7=A9=BA=E7=9A=84=EF=BC=8C=E6=89=80=E4=BB=A5=E5=8F=AF=E4=BB=A5=E7=9B=B4=E6=8E=A5=E6=8F=9B=E6=8E=89=EF=BC=8C=E4=B8=8D=E7=84=B6=E5=B0=B1=E5=BE=97=E7=94=A8 keytool =E7=9A=
+=84 importkeystore =E9=80=B2=E8=A1=8C=E5=8C=AF=E5=85=A5)
+=E7=84=B6=E5=BE=8C=E5=B0=87=E4=B8=8A=E5=B1=A4 CA =E6=86=91=E8=AD=89=E7=9A=84 jks =E5=8C=AF=E5=85=A5=E5=88=B0=E5=89=8D=E8=BF=B0=E5=85=B6=E4=B8=AD=E4=B8=80=E5=80=8B=E5=9C=B0=E6=96=B9=EF=BC=8C=E5=BB=BA=E8=AD=B0=
+=E6=98=AF WAS =E7=9A=84 truststore =E8=80=8C=E9=9D=9E jre/lib/security/cacerts=E3=80=82(=E5=9B=A0=E7=82=BA WAS =E7=9A=84 jre=
+ =E6=98=AF=E5=8F=AF=E4=BB=A5=E9=80=8F=E9=81=8E fixpack =E5=8D=87=E7=B4=9A=E7=9A=84=EF=BC=8C=E5=8D=87=E7=B4=9A=E5=BE=8C cacerts =E5=B0=B1=E6=9C=83=E8=A2=AB=E6=8F=9B=E6=8E=89)
+(4) DEV(SIT)=E3=80=81UAT=E3=80=81PROD(COB) =E7=9A=84=E4=B8=8A=E5=B1=A4=E6=86=91=E8=AD=89=E4=B8=8D=E5=90=8C=EF=BC=8C=E6=89=80=E4=BB=A5 COLA PROD(COB=
+) =E7=9A=84 WAS =E8=A6=81=E4=BD=BF=E7=94=A8 PROD =E7=9A=84=E4=B8=8A=E5=B1=A4=E6=86=91=E8=AD=89=EF=BC=8CCOLA UAT =E8=A6=81=E5=90=8C=E6=99=82=E6=9C=89 DEV(SIT)=E3=80=81=
+UAT =E7=9A=84=E4=B8=8A=E5=B1=A4=E6=86=91=E8=AD=89(=E5=9B=A0=E7=82=BA=E5=85=B6=E4=BB=96 Server =E5=8F=AF=E8=83=BD=E6=9C=83=E5=88=86 SIT =E5=92=8C UAT=EF=BC=8Cex. ESB)
+(5) =E7=9B=AE=E5=89=8D UPL call ESB =E5=8F=AF=E4=BB=A5=E9=81=8B=E4=BD=9C=E5=B0=B1=E6=98=AF=E5=9B=A0=E7=82=BA=E8=A8=AD=E5=AE=9A=E4=BA=86 (3) b.
+(6) Code Review=EF=BC=8C=E8=A8=AD=E5=AE=9A=E5=AE=8C=E4=B8=8A=E8=BF=B0=E6=AD=A5=E9=A9=9F=E4=B9=8B=E5=BE=8C=EF=BC=8C=E5=8F=AA=E8=A6=81 https =E9=80=A3=E7=B7=9A=E5=B0=8D=E8=B1=A1 s=
+erver =E6=98=AF=E4=BD=BF=E7=94=A8 Citibank =E5=85=A7=E9=83=A8 MSPKI =E7=B0=BD=E7=99=BC=E7=9A=84 SSL =E6=86=91=E8=AD=89=EF=BC=8C=E5=9C=A8 WAS =E4=B8=8A=E5=B0=B1=E6=
+=9C=83=E5=AE=8C=E6=88=90=E6=86=91=E8=AD=89=E7=9A=84=E6=AA=A2=E6=A0=B8=EF=BC=8C=E6=89=80=E4=BB=A5=E7=A8=8B=E5=BC=8F=E4=B8=8D=E9=9C=80=E8=A6=81=E7=89=B9=E5=88=A5=E8=99=95=E7=90=86=E5=92=8C truststore =E7=9B=
+=B8=E9=97=9C=E7=9A=84=E9=83=A8=E5=88=86=EF=BC=9A
+a. Review =E6=89=80=E6=9C=89=E7=A8=8B=E5=BC=8F=EF=BC=8C=E6=9C=89=E5=9C=A8=E7=A8=8B=E5=BC=8F=E4=B8=AD=E8=A8=AD=E5=AE=9A javax.net.ssl.trustStore=E3=80=81j=
+avax.net.ssl.trustStorePassword=E3=80=81javax.net.ssl.trustStoreType =E7=AD=89 System pr=
+operties =E7=9A=84=E9=83=A8=E5=88=86=EF=BC=8C=E4=B8=80=E5=BE=8B=E7=A7=BB=E9=99=A4=E3=80=82
+b. =E7=A8=8B=E5=BC=8F=E4=B8=AD=E6=9C=89 new javax.net.ssl.TrustManager =E4=BE=86=E5=BB=BA=E6=A7=8B javax.net.ssl.SSLS=
+ocketFactory =E7=9A=84=E9=83=A8=E5=88=86=EF=BC=8C=E4=B8=8D=E7=AE=A1=E6=98=AF ignore SSL =E6=86=91=E8=AD=89=E6=AA=A2=E6=9F=A5=E3=80=81=E9=82=84=E6=98=AF=E8=BC=89=E5=85=A5=E5=A4=96=
+=E9=83=A8 truststore =E7=9A=84=E5=AF=AB=E6=B3=95=EF=BC=8C=E4=B8=80=E5=BE=8B=E7=A7=BB=E9=99=A4=E3=80=82
+
+2. COLA =E7=A8=8B=E5=BC=8F(on WAS)=E9=80=8F=E9=81=8E https client =E5=91=BC=E5=8F=AB=E8=8A=B1=E6=97=97=E5=85=A7=E9=83=A8=E7=9A=84 Server=EF=BC=8C=E9=9B=
+=99=E5=90=91 SSL
+(1) =E4=B8=8A=E8=BF=B0 1. =E7=9A=84=E9=83=A8=E5=88=86=E5=AE=8C=E5=85=A8=E7=9B=B8=E3=80=82
+(2) =E9=9C=80=E8=A8=AD=E5=AE=9A javax.net.ssl.keyStore=E3=80=81javax.net.ssl.keyStorePassword =E5=85=A9=E5=80=
+=8B System properties=EF=BC=8C=E5=BB=BA=E8=AD=B0=E6=98=AF=E8=A8=AD=E5=AE=9A=E5=9C=A8 WAS =E4=B8=8A=EF=BC=8C=E8=80=8C=E4=B8=8D=E6=98=AF=E6=AF=8F=E5=80=8B=E7=B3=BB=E7=B5=B1=E8=87=AA=E8=
+=A1=8C=E8=A8=AD=E5=AE=9A=E3=80=82
+(3) =E6=AD=A4 keystore =E5=AD=98=E6=94=BE=E7=9A=84=E6=98=AF=E4=BB=A3=E8=A1=A8 COLA Server =E7=9A=84 SSL Private Key =E5=92=8C=E6=86=91=E8=
+=AD=89(=E4=B8=80=E6=A8=A3=E9=80=8F=E9=81=8E MSPKI =E7=94=B3=E8=AB=8B)
+(4) =E6=AD=A4 keystore =E7=9A=84=E8=A3=BD=E4=BD=9C=E7=A8=8B=E5=BA=8F=E5=A6=82=E9=99=84=E4=BB=B6(cert_steps.txt)=EF=BC=8C=E6=AF=8F=E5=8F=B0 Server =E5=
+=8F=AA=E8=A6=81=E5=81=9A=E4=B8=80=E6=AC=A1=EF=BC=8C=E6=88=96=E6=98=AF=E4=B8=80=E6=AC=A1=E6=80=A7=E5=90=8C=E6=99=82=E7=94=A2=E7=94=9F RSA Key =E4=B8=A6=E7=94=B3=E8=AB=8B=E6=89=80=E6=9C=89 PROD=E3=80=81=
+UAT Server =E7=9A=84 SSL =E6=86=91=E8=AD=89=EF=BC=8C=E6=94=BE=E5=88=B0=E5=90=8C=E4=B8=80=E5=80=8B keystore=EF=BC=8C=E6=97=A5=E5=BE=8C=E4=B8=8A=E7=89=88=E8=87=B3 PROD =
+=E4=BB=8D=E5=8F=AF=E4=BD=BF=E7=94=A8=E5=90=8C=E4=B8=80=E5=80=8B keystore=E3=80=82
+(5) =E6=AD=A4=E8=99=95=E4=B8=8D=E5=BB=BA=E8=AD=B0=E5=8C=AF=E5=85=A5=E5=88=B0 WAS keystore =E7=9A=84=E5=8E=9F=E5=9B=A0=E6=98=AF=EF=BC=8CWAS =E7=9A=84 keystore =E5=
+=B7=B2=E6=9C=89 dummy =E7=9A=84 key =E5=8F=8A=E5=B0=8D=E6=87=89=E7=9A=84 SSL =E6=86=91=E8=AD=89=EF=BC=8C=E4=B8=94=E7=9B=AE=E5=89=8D=E6=96=B0=E5=8A=A0=E5=9D=A1 Web Server =
+=E5=B7=B2=E7=B6=93=E5=9C=A8=E4=BD=BF=E7=94=A8=E3=80=82
+
+3. =E8=8A=B1=E6=97=97=E5=85=A7=E9=83=A8 Server =E9=80=8F=E9=81=8E https =E5=91=BC=E5=8F=AB COLA (=E7=8F=BE=E8=A1=8C API =E5=B0=88=E6=A1=88)
+(1) WAS =E9=A0=90=E8=A8=AD SSL port =E6=98=AF 9443(AP)=E3=80=819043(admin console)=EF=BC=8C=E4=BD=BF=E7=94=A8=E7=9A=84=E9=83=BD=E6=98=
+=AF WAS =E9=A0=90=E8=A8=AD=E7=9A=84 dummy SSL =E6=86=91=E8=AD=89=E5=8F=8A Private Key=E3=80=82
+(2) =E8=A6=81=E8=AE=93=E5=85=B6=E4=BB=96 Server =E5=8F=AF=E4=BB=A5=E9=80=8F=E9=81=8E https =E5=91=BC=E5=8F=AB COLA =E5=8F=88=E4=B8=8D=E5=BD=B1=E9=9F=BF=E7=8F=BE=E8=A1=8C W=
+AS dummy SSL =E9=81=8B=E4=BD=9C=EF=BC=8C=E5=89=87=E9=9C=80=E8=A6=81=E5=9C=A8 WAS =E5=BB=BA=E7=AB=8B=E5=8F=A6=E4=B8=80=E7=B5=84 SSL =E8=A8=AD=E5=AE=9A=EF=BC=8C=E6=8C=87=E5=AE=9A=E4=BD=
+=BF=E7=94=A8 2. =E7=94=A2=E7=94=9F=E7=9A=84 Private key =E5=92=8C=E7=94=B3=E8=AB=8B=E4=B8=8B=E4=BE=86=E7=9A=84 SSL =E6=86=91=E8=AD=89=EF=BC=8C=E4=B8=A6=E4=BD=BF=E7=94=A8=E5=88=A5=E6=96=
+=BC 9443=E3=80=819043 =E7=9A=84 port=E3=80=82
+(3) =E7=9B=AE=E5=89=8D API =E5=B0=88=E6=A1=88=E5=B7=B2=E7=B6=93=E5=81=9A=E4=BA=86=E4=B8=8A=E8=BF=B0=E8=A8=AD=E5=AE=9A=EF=BC=8C=E8=8B=A5=E6=9C=89=E5=85=B6=E4=BB=96=E5=B0=88=E6=A1=88=E4=B9=9F=E6=9C=83=E8=A2=AB=
+=E5=85=B6=E4=BB=96 server =E5=91=BC=E5=8F=AB=EF=BC=8C=E5=89=87=E4=B9=9F=E9=A0=88=E9=83=A8=E7=BD=B2=E5=88=B0=E5=B0=8D=E6=87=89=E5=88=B0 (2) =E8=A8=AD=E5=AE=9A=E7=9A=84=E8=99=9B=E6=93=AC=E4=B8=BB=E6=A9=9F=
+=E4=B8=8A=E3=80=82
+
+4. =E5=89=8D=E4=B8=89=E9=BB=9E=E9=83=BD=E6=98=AF=E9=87=9D=E5=B0=8D=E9=83=A8=E7=BD=B2=E5=88=B0 WAS =E4=B8=8A=E7=9A=84=E7=A8=8B=E5=BC=8F=EF=BC=8C=E5=9B=A0=E6=87=89=E6=B8=AC=E8=A9=A6=E9=9C=80=E6=B1=82=E7=9A=84 =
+command line =E7=A8=8B=E5=BC=8F=E5=89=87=E4=BE=9D=E7=8F=BE=E8=A1=8C=E5=81=9A=E6=B3=95=E5=8D=B3=E5=8F=AF=E3=80=82
+
+=E8=8B=A5=E6=9C=89=E5=95=8F=E9=A1=8C=E6=88=96=E6=98=AF=E8=A6=BA=E5=BE=97=E6=9C=89=E9=8C=AF=E7=9A=84=E5=9C=B0=E6=96=B9=E8=AB=8B=E6=8F=90=E5=87=BA=EF=BC=8C=E5=8F=AF=E5=86=8D=E8=A8=8E=E8=AB=96=E6=88=96=E5=AE=89=E6=8E=92=E8=AA=AA=
+=E6=98=8E=E3=80=82
+=E5=B8=8C=E6=9C=9B=E6=AF=8F=E5=80=8B=E4=BA=BA=E9=83=BD=E8=83=BD=E7=A2=BA=E5=88=87=E4=BA=86=E8=A7=A3=E9=81=8B=E4=BD=9C=E7=9A=84=E6=A9=9F=E5=88=B6=EF=BC=8C=E8=80=8C=E4=B8=8D=E6=98=AF=E7=A8=8B=E5=BC=8F=E5=8F=AF=E4=BB=A5=E8=B7=91=
+=E5=B0=B1=E5=A5=BD=E4=BA=86......
+=E8=83=BD=E5=9C=A8=E8=8A=B1=E6=97=97=E9=81=87=E5=88=B0=E9=80=99=E6=A8=A3=E7=9A=84=E7=92=B0=E5=A2=83=EF=BC=8C=E6=98=AF=E5=BE=88=E9=9B=A3=E5=BE=97=E7=9A=84=E6=A9=9F=E6=9C=83=E3=80=82
+
+Best regards,
+
+=E3=80=80=E3=80=80=E5=8A=89=E5=8B=87=E9=BA=9F Yunglin Liu
+
+=E3=80=80=E3=80=80=E8=B3=87=E6=8B=93=E5=AE=8F=E5=AE=87=E5=9C=8B=E9=9A=9B=E8=82=A1=E4=BB=BD=E6=9C=89=E9=99=90=E5=85=AC=E5=8F=B8
+=E3=80=80=E3=80=80International  Integrated Systems, Inc. (IISI)
+=E3=80=80=E3=80=80=E6=B0=91=E7=94=9F=E8=BE=A6=E5=85=AC=E5=AE=A4=EF=BC=9A10547=E5=8F=B0=E5=8C=97=E5=B8=82=E6=B0=91=E7=94=9F=E6=9D=B1=E8=B7=AF=E5=9B=9B=E6=AE=B5133=E8=99=9F11=E6=A8=93
+=E3=80=80=E3=80=8011F, No. 133, Sec. 4, Minsheng E. Rd., Taipei, 10574, Taiwan, R. O. C=
+.
+
+
+--B_3593073203_614495881
+Content-type: text/html;
+	charset="UTF-8"
+Content-transfer-encoding: quoted-printable
+
+<html><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+<style type=3D"text/css" style=3D"display:none;"><!-- P {margin-top:0;margi=
+n-bottom:0;} --></style>
+</head>
+<body dir=3D"ltr">
+<div id=3D"divtagdefaultwrapper" style=3D"font-size:12pt;color:#000000;font=
+-family:Calibri,Helvetica,sans-serif;" dir=3D"ltr">
+<p>Dear all,<br>
+<br>
+=E6=9C=89=E9=91=91=E6=96=BC=E5=BE=88=E5=A4=9A=E7=B3=BB=E7=B5=B1=E9=83=BD=E8=
+=A6=81=E4=BD=BF=E7=94=A8=EF=BC=8C=E7=84=B6=E5=BE=8C=E6=AF=8F=E6=AC=A1=E9=83=
+=BD=E6=9C=89=E4=B8=8D=E5=90=8C=E7=9A=84=E4=BA=BA=E5=9C=A8=E8=A9=A2=E5=95=8F=
+=E7=9B=B8=E5=90=8C=E7=9A=84=E4=BA=8B=E6=83=85=EF=BC=8C=E7=B5=90=E6=9E=9C=E7=
+=8F=BE=E5=9C=A8=E6=AF=8F=E5=80=8B=E7=B3=BB=E7=B5=B1=E7=9A=84=E5=81=9A=E6=B3=
+=95=E5=8F=88=E9=83=BD=E4=B8=8D=E7=9B=A1=E7=9B=B8=E5=90=8C=EF=BC=8C=E5=85=B6=
+=E5=AF=A6=E6=87=89=E8=A9=B2=E6=9C=89=E7=B5=B1=E4=B8=80=E7=9A=84=E5=81=9A=E6=
+=B3=95=EF=BC=8C=E4=BB=A5=E5=85=8D=E9=80=A0=E6=88=90=E7=B3=BB=E7=B5=B1=E4=BA=
+=92=E7=9B=B8=E5=BD=B1=E9=9F=BF=E6=88=96=E6=98=AF=E7=B6=AD=E8=AD=B7=E4=B8=8A=
+=E7=9A=84=E5=9B=B0=E9=9B=A3=EF=BC=8C=E5=9B=A0=E6=AD=A4=E5=9C=A8=E6=AD=A4=E7=
+=B5=B1=E4=B8=80=E8=AA=AA=E6=98=8E=E5=A6=82=E4=B8=8B=E3=80=82<br>
+<br>
+=E6=A0=B9=E6=93=9A=E4=B8=8D=E5=90=8C=E7=9A=84=E9=80=A3=E7=B7=9A=E9=9C=80=E6=
+=B1=82=EF=BC=8C=E5=88=86=E6=88=90=E5=9B=9B=E9=A1=9E=EF=BC=9A</p>
+<div>1. COLA =E7=A8=8B=E5=BC=8F(on WAS)=E9=80=8F=E9=81=8E https client =E5=
+=91=BC=E5=8F=AB=E8=8A=B1=E6=97=97=E5=85=A7=E9=83=A8=E7=9A=84 Server=EF=BC=
+=8C=E5=96=AE=E5=90=91 SSL</div>
+<p></p>
+<blockquote style=3D"margin: 0 0 0 40px; border: none; padding: 0px;">
+<p></p>
+<div>(1) =E6=AF=8F=E4=B8=80=E5=8F=B0 Server =E9=83=BD=E6=87=89=E8=A9=B2=E6=
+=98=AF=E4=BD=BF=E7=94=A8 Citbank MSPKI =E7=B3=BB=E7=B5=B1=E7=B0=BD=E7=99=BC=
+=E7=9A=84 SSL =E6=86=91=E8=AD=89</div>
+<p></p>
+<p></p>
+<div>(2) COLA =E4=B8=8D=E9=9C=80=E8=A6=81=E5=8C=AF=E5=85=A5=E7=89=B9=E5=AE=
+=9A Server =E7=9A=84=E6=86=91=E8=AD=89=EF=BC=8C=E8=80=8C=E6=98=AF=E5=8C=AF=
+=E5=85=A5 Citibank MSPKI =E7=9A=84=E4=B8=8A=E5=B1=A4 CA/RA =E6=86=91=E8=AD=
+=89=E3=80=82=E6=89=80=E6=9C=89=E4=B8=8A=E5=B1=A4=E6=86=91=E8=AD=89=E5=8F=AF=
+=E5=9C=A8 https://catecollaboration.citigroup.net/domains/security/isp_stan=
+dards/dpstds/stdshmpgs/MicrosoftPKI.aspx =E4=B8=8B=E8=BC=89=E3=80=82=E6=AD=
+=A4=E7=B6=B2=E5=9D=80=E6=8F=90=E4=BE=9B=E5=BE=88=E5=A4=9A=E7=A8=AE=E6=A0=BC=
+=E5=BC=8F=EF=BC=8CJava =E7=A8=8B=E5=BC=8F=E5=B0=B1=E4=B8=8B=E8=BC=89 Sun JK=
+S =E6=9C=83=E6=AF=94=E8=BC=83=E6=96=B9=E4=BE=BF=E3=80=82</div>
+<p></p>
+<p></p>
+<div>(3) =E5=B0=8D WAS =E4=BE=86=E8=AA=AA=EF=BC=8C=E5=8F=AF=E4=BB=A5=E5=9C=
+=A8=E5=85=A9=E5=80=8B=E5=9C=B0=E6=96=B9=E8=A8=AD=E5=AE=9A=E5=85=A8=E5=9F=9F=
+=E7=9A=84 CA =E6=86=91=E8=AD=89=EF=BC=9A</div>
+<p></p>
+</blockquote>
+<blockquote style=3D"margin: 0 0 0 40px; border: none; padding: 0px;">
+<blockquote style=3D"margin: 0 0 0 40px; border: none; padding: 0px;">
+<p></p>
+<div>a. =E4=B8=80=E5=80=8B=E6=98=AF WAS =E7=9A=84 /jre/lib/security/cacerts=
+=EF=BC=9B</div>
+<p></p>
+</blockquote>
+<blockquote style=3D"margin: 0 0 0 40px; border: none; padding: 0px;">
+<p></p>
+<div>b. =E4=B8=80=E5=80=8B=E6=98=AF=E9=80=8F=E9=81=8E WAS console =E5=8F=AF=
+=E4=BB=A5=E7=9C=8B=E5=88=B0=E7=9A=84 truststore=E3=80=82(WAS =E6=9C=AC=E8=
+=BA=AB=E7=9A=84 truststore =E6=98=AF=E7=A9=BA=E7=9A=84=EF=BC=8C=E6=89=80=E4=
+=BB=A5=E5=8F=AF=E4=BB=A5=E7=9B=B4=E6=8E=A5=E6=8F=9B=E6=8E=89=EF=BC=8C=E4=B8=
+=8D=E7=84=B6=E5=B0=B1=E5=BE=97=E7=94=A8 keytool =E7=9A=84 importkeystore =
+=E9=80=B2=E8=A1=8C=E5=8C=AF=E5=85=A5)</div>
+<p></p>
+</blockquote>
+<blockquote style=3D"margin: 0 0 0 40px; border: none; padding: 0px;">
+<p></p>
+<div>=E7=84=B6=E5=BE=8C=E5=B0=87=E4=B8=8A=E5=B1=A4 CA =E6=86=91=E8=AD=89=E7=
+=9A=84 jks =E5=8C=AF=E5=85=A5=E5=88=B0=E5=89=8D=E8=BF=B0=E5=85=B6=E4=B8=AD=
+=E4=B8=80=E5=80=8B=E5=9C=B0=E6=96=B9=EF=BC=8C=E5=BB=BA=E8=AD=B0=E6=98=AF WA=
+S =E7=9A=84 truststore =E8=80=8C=E9=9D=9E jre/lib/security/cacerts=E3=80=82=
+(=E5=9B=A0=E7=82=BA WAS =E7=9A=84 jre =E6=98=AF=E5=8F=AF=E4=BB=A5=E9=80=8F=
+=E9=81=8E fixpack =E5=8D=87=E7=B4=9A=E7=9A=84=EF=BC=8C=E5=8D=87=E7=B4=9A=E5=
+=BE=8C cacerts =E5=B0=B1=E6=9C=83=E8=A2=AB=E6=8F=9B=E6=8E=89)</div>
+<p></p>
+</blockquote>
+</blockquote>
+<blockquote style=3D"margin: 0 0 0 40px; border: none; padding: 0px;">
+<p></p>
+<div>(4) DEV(SIT)=E3=80=81UAT=E3=80=81PROD(COB) =E7=9A=84=E4=B8=8A=E5=B1=A4=
+=E6=86=91=E8=AD=89=E4=B8=8D=E5=90=8C=EF=BC=8C=E6=89=80=E4=BB=A5 COLA PROD(C=
+OB) =E7=9A=84 WAS =E8=A6=81=E4=BD=BF=E7=94=A8 PROD =E7=9A=84=E4=B8=8A=E5=B1=
+=A4=E6=86=91=E8=AD=89=EF=BC=8CCOLA UAT =E8=A6=81=E5=90=8C=E6=99=82=E6=9C=89=
+ DEV(SIT)=E3=80=81UAT =E7=9A=84=E4=B8=8A=E5=B1=A4=E6=86=91=E8=AD=89(=E5=9B=
+=A0=E7=82=BA=E5=85=B6=E4=BB=96 Server =E5=8F=AF=E8=83=BD=E6=9C=83=E5=88=86 =
+SIT =E5=92=8C UAT=EF=BC=8Cex. ESB)</div>
+<p></p>
+<p></p>
+<div>(5) =E7=9B=AE=E5=89=8D UPL call ESB =E5=8F=AF=E4=BB=A5=E9=81=8B=E4=BD=
+=9C=E5=B0=B1=E6=98=AF=E5=9B=A0=E7=82=BA=E8=A8=AD=E5=AE=9A=E4=BA=86 (3) b.</=
+div>
+<p></p>
+<p></p>
+<div>(6) Code Review=EF=BC=8C=E8=A8=AD=E5=AE=9A=E5=AE=8C=E4=B8=8A=E8=BF=B0=
+=E6=AD=A5=E9=A9=9F=E4=B9=8B=E5=BE=8C=EF=BC=8C=E5=8F=AA=E8=A6=81 https =E9=
+=80=A3=E7=B7=9A=E5=B0=8D=E8=B1=A1 server =E6=98=AF=E4=BD=BF=E7=94=A8 Citiba=
+nk =E5=85=A7=E9=83=A8 MSPKI =E7=B0=BD=E7=99=BC=E7=9A=84 SSL =E6=86=91=E8=AD=
+=89=EF=BC=8C=E5=9C=A8 WAS =E4=B8=8A=E5=B0=B1=E6=9C=83=E5=AE=8C=E6=88=90=E6=
+=86=91=E8=AD=89=E7=9A=84=E6=AA=A2=E6=A0=B8=EF=BC=8C=E6=89=80=E4=BB=A5=E7=A8=
+=8B=E5=BC=8F=E4=B8=8D=E9=9C=80=E8=A6=81=E7=89=B9=E5=88=A5=E8=99=95=E7=90=86=
+=E5=92=8C truststore =E7=9B=B8=E9=97=9C=E7=9A=84=E9=83=A8=E5=88=86=EF=BC=9A=
+</div>
+<p></p>
+</blockquote>
+<blockquote style=3D"margin: 0 0 0 40px; border: none; padding: 0px;">
+<blockquote style=3D"margin: 0 0 0 40px; border: none; padding: 0px;">
+<p></p>
+<div>a. Review =E6=89=80=E6=9C=89=E7=A8=8B=E5=BC=8F=EF=BC=8C=E6=9C=89=E5=9C=
+=A8=E7=A8=8B=E5=BC=8F=E4=B8=AD=E8=A8=AD=E5=AE=9A javax.net.ssl.trustStore=
+=E3=80=81javax.net.ssl.trustStorePassword=E3=80=81javax.net.ssl.trustStoreT=
+ype =E7=AD=89 System properties =E7=9A=84=E9=83=A8=E5=88=86=EF=BC=8C=E4=B8=
+=80=E5=BE=8B=E7=A7=BB=E9=99=A4=E3=80=82</div>
+<p></p>
+</blockquote>
+<blockquote style=3D"margin: 0 0 0 40px; border: none; padding: 0px;">
+<p></p>
+<div>b. =E7=A8=8B=E5=BC=8F=E4=B8=AD=E6=9C=89 new javax.net.ssl.TrustManager=
+ =E4=BE=86=E5=BB=BA=E6=A7=8B javax.net.ssl.SSLSocketFactory =E7=9A=84=E9=83=
+=A8=E5=88=86=EF=BC=8C=E4=B8=8D=E7=AE=A1=E6=98=AF ignore SSL =E6=86=91=E8=AD=
+=89=E6=AA=A2=E6=9F=A5=E3=80=81=E9=82=84=E6=98=AF=E8=BC=89=E5=85=A5=E5=A4=96=
+=E9=83=A8 truststore =E7=9A=84=E5=AF=AB=E6=B3=95=EF=BC=8C=E4=B8=80=E5=BE=8B=
+=E7=A7=BB=E9=99=A4=E3=80=82</div>
+<p></p>
+</blockquote>
+</blockquote>
+<p></p>
+<div></div>
+<div></div>
+<div></div>
+<div><br>
+</div>
+<div>2. COLA =E7=A8=8B=E5=BC=8F(on WAS)=E9=80=8F=E9=81=8E https client =E5=
+=91=BC=E5=8F=AB=E8=8A=B1=E6=97=97=E5=85=A7=E9=83=A8=E7=9A=84 Server=EF=BC=
+=8C=E9=9B=99=E5=90=91 SSL</div>
+<blockquote style=3D"margin: 0 0 0 40px; border: none; padding: 0px;">
+<div>(1) =E4=B8=8A=E8=BF=B0 1. =E7=9A=84=E9=83=A8=E5=88=86=E5=AE=8C=E5=85=
+=A8=E7=9B=B8=E3=80=82</div>
+<div>(2) =E9=9C=80=E8=A8=AD=E5=AE=9A javax.net.ssl.keyStore=E3=80=81javax.n=
+et.ssl.keyStorePassword =E5=85=A9=E5=80=8B System properties=EF=BC=8C=E5=BB=
+=BA=E8=AD=B0=E6=98=AF=E8=A8=AD=E5=AE=9A=E5=9C=A8 WAS =E4=B8=8A=EF=BC=8C=E8=
+=80=8C=E4=B8=8D=E6=98=AF=E6=AF=8F=E5=80=8B=E7=B3=BB=E7=B5=B1=E8=87=AA=E8=A1=
+=8C=E8=A8=AD=E5=AE=9A=E3=80=82</div>
+<div>(3) =E6=AD=A4 keystore =E5=AD=98=E6=94=BE=E7=9A=84=E6=98=AF=E4=BB=A3=
+=E8=A1=A8 COLA Server =E7=9A=84 SSL Private Key =E5=92=8C=E6=86=91=E8=AD=89=
+(=E4=B8=80=E6=A8=A3=E9=80=8F=E9=81=8E MSPKI =E7=94=B3=E8=AB=8B)</div>
+<div>(4) =E6=AD=A4 keystore =E7=9A=84=E8=A3=BD=E4=BD=9C=E7=A8=8B=E5=BA=8F=
+=E5=A6=82=E9=99=84=E4=BB=B6(cert_steps.txt)=EF=BC=8C=E6=AF=8F=E5=8F=B0 Serv=
+er =E5=8F=AA=E8=A6=81=E5=81=9A=E4=B8=80=E6=AC=A1=EF=BC=8C=E6=88=96=E6=98=AF=
+=E4=B8=80=E6=AC=A1=E6=80=A7=E5=90=8C=E6=99=82=E7=94=A2=E7=94=9F RSA Key =E4=
+=B8=A6=E7=94=B3=E8=AB=8B=E6=89=80=E6=9C=89 PROD=E3=80=81UAT Server =E7=9A=
+=84 SSL =E6=86=91=E8=AD=89=EF=BC=8C=E6=94=BE=E5=88=B0=E5=90=8C=E4=B8=80=E5=
+=80=8B keystore=EF=BC=8C=E6=97=A5=E5=BE=8C=E4=B8=8A=E7=89=88=E8=87=B3 PROD =
+=E4=BB=8D=E5=8F=AF=E4=BD=BF=E7=94=A8=E5=90=8C=E4=B8=80=E5=80=8B keystore=E3=
+=80=82</div>
+<div>(5) =E6=AD=A4=E8=99=95=E4=B8=8D=E5=BB=BA=E8=AD=B0=E5=8C=AF=E5=85=A5=E5=
+=88=B0 WAS keystore =E7=9A=84=E5=8E=9F=E5=9B=A0=E6=98=AF=EF=BC=8CWAS =E7=9A=
+=84 keystore =E5=B7=B2=E6=9C=89 dummy =E7=9A=84 key =E5=8F=8A=E5=B0=8D=E6=
+=87=89=E7=9A=84 SSL =E6=86=91=E8=AD=89=EF=BC=8C=E4=B8=94=E7=9B=AE=E5=89=8D=
+=E6=96=B0=E5=8A=A0=E5=9D=A1 Web Server =E5=B7=B2=E7=B6=93=E5=9C=A8=E4=BD=BF=
+=E7=94=A8=E3=80=82</div>
+</blockquote>
+<div></div>
+<div><br>
+</div>
+<div>3. =E8=8A=B1=E6=97=97=E5=85=A7=E9=83=A8 Server =E9=80=8F=E9=81=8E http=
+s =E5=91=BC=E5=8F=AB COLA (=E7=8F=BE=E8=A1=8C API =E5=B0=88=E6=A1=88)</div>
+<blockquote style=3D"margin: 0 0 0 40px; border: none; padding: 0px;">
+<div>(1) WAS =E9=A0=90=E8=A8=AD SSL port =E6=98=AF 9443(AP)=E3=80=819043(ad=
+min console)=EF=BC=8C=E4=BD=BF=E7=94=A8=E7=9A=84=E9=83=BD=E6=98=AF WAS =E9=
+=A0=90=E8=A8=AD=E7=9A=84 dummy SSL =E6=86=91=E8=AD=89=E5=8F=8A Private Key=
+=E3=80=82</div>
+<div>(2) =E8=A6=81=E8=AE=93=E5=85=B6=E4=BB=96 Server =E5=8F=AF=E4=BB=A5=E9=
+=80=8F=E9=81=8E https =E5=91=BC=E5=8F=AB COLA =E5=8F=88=E4=B8=8D=E5=BD=B1=
+=E9=9F=BF=E7=8F=BE=E8=A1=8C WAS dummy SSL =E9=81=8B=E4=BD=9C=EF=BC=8C=E5=89=
+=87=E9=9C=80=E8=A6=81=E5=9C=A8 WAS =E5=BB=BA=E7=AB=8B=E5=8F=A6=E4=B8=80=E7=
+=B5=84 SSL =E8=A8=AD=E5=AE=9A=EF=BC=8C=E6=8C=87=E5=AE=9A=E4=BD=BF=E7=94=A8 =
+2. =E7=94=A2=E7=94=9F=E7=9A=84 Private key =E5=92=8C=E7=94=B3=E8=AB=8B=E4=
+=B8=8B=E4=BE=86=E7=9A=84 SSL =E6=86=91=E8=AD=89=EF=BC=8C=E4=B8=A6=E4=BD=BF=
+=E7=94=A8=E5=88=A5=E6=96=BC 9443=E3=80=819043 =E7=9A=84 port=E3=80=82</div>
+<div>(3) =E7=9B=AE=E5=89=8D API =E5=B0=88=E6=A1=88=E5=B7=B2=E7=B6=93=E5=81=
+=9A=E4=BA=86=E4=B8=8A=E8=BF=B0=E8=A8=AD=E5=AE=9A=EF=BC=8C=E8=8B=A5=E6=9C=89=
+=E5=85=B6=E4=BB=96=E5=B0=88=E6=A1=88=E4=B9=9F=E6=9C=83=E8=A2=AB=E5=85=B6=E4=
+=BB=96 server =E5=91=BC=E5=8F=AB=EF=BC=8C=E5=89=87=E4=B9=9F=E9=A0=88=E9=83=
+=A8=E7=BD=B2=E5=88=B0=E5=B0=8D=E6=87=89=E5=88=B0 (2) =E8=A8=AD=E5=AE=9A=E7=
+=9A=84=E8=99=9B=E6=93=AC=E4=B8=BB=E6=A9=9F=E4=B8=8A=E3=80=82</div>
+</blockquote>
+<div></div>
+<div><br>
+</div>
+<div>4. =E5=89=8D=E4=B8=89=E9=BB=9E=E9=83=BD=E6=98=AF=E9=87=9D=E5=B0=8D=E9=
+=83=A8=E7=BD=B2=E5=88=B0 WAS =E4=B8=8A=E7=9A=84=E7=A8=8B=E5=BC=8F=EF=BC=8C=
+=E5=9B=A0=E6=87=89=E6=B8=AC=E8=A9=A6=E9=9C=80=E6=B1=82=E7=9A=84 command lin=
+e =E7=A8=8B=E5=BC=8F=E5=89=87=E4=BE=9D=E7=8F=BE=E8=A1=8C=E5=81=9A=E6=B3=95=
+=E5=8D=B3=E5=8F=AF=E3=80=82</div>
+<div><span style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; fon=
+t-size: 12pt;"><br>
+=E8=8B=A5=E6=9C=89=E5=95=8F=E9=A1=8C=E6=88=96=E6=98=AF=E8=A6=BA=E5=BE=97=E6=
+=9C=89=E9=8C=AF=E7=9A=84=E5=9C=B0=E6=96=B9=E8=AB=8B=E6=8F=90=E5=87=BA=EF=BC=
+=8C=E5=8F=AF=E5=86=8D=E8=A8=8E=E8=AB=96=E6=88=96=E5=AE=89=E6=8E=92=E8=AA=AA=
+=E6=98=8E=E3=80=82<br>
+=E5=B8=8C=E6=9C=9B=E6=AF=8F=E5=80=8B=E4=BA=BA=E9=83=BD=E8=83=BD=E7=A2=BA=E5=
+=88=87=E4=BA=86=E8=A7=A3=E9=81=8B=E4=BD=9C=E7=9A=84=E6=A9=9F=E5=88=B6=EF=BC=
+=8C=E8=80=8C=E4=B8=8D=E6=98=AF=E7=A8=8B=E5=BC=8F=E5=8F=AF=E4=BB=A5=E8=B7=91=
+=E5=B0=B1=E5=A5=BD=E4=BA=86......<br>
+=E8=83=BD=E5=9C=A8=E8=8A=B1=E6=97=97=E9=81=87=E5=88=B0=E9=80=99=E6=A8=A3=E7=
+=9A=84=E7=92=B0=E5=A2=83=EF=BC=8C=E6=98=AF=E5=BE=88=E9=9B=A3=E5=BE=97=E7=9A=
+=84=E6=A9=9F=E6=9C=83=E3=80=82<br>
+<br>
+Best regards,</span><br>
+</div>
+<p></p>
+<div id=3D"Signature">
+<div id=3D"divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size: 12pt; colo=
+r: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-family: Calibri=
+, Arial, Helvetica, sans-serif, EmojiFont, &quot;Apple Color Emoji&quot;, &=
+quot;Segoe UI Emoji&quot;, NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &qu=
+ot;Android Emoji&quot;, EmojiSymbols;">
+<div><span style=3D"font-family:Calibri,Arial,Helvetica,sans-serif; font-si=
+ze:12pt"></span>
+<div><span style=3D"font-family:Calibri,Arial,Helvetica,sans-serif; font-si=
+ze:12pt">=E3=80=80=E3=80=80=E5=8A=89=E5=8B=87=E9=BA=9F Yunglin Liu</span></=
+div>
+<span style=3D"font-family:Calibri,Arial,Helvetica,sans-serif; font-size:12=
+pt"></span>
+<div><br>
+<span style=3D"font-family:Calibri,Arial,Helvetica,sans-serif; font-size:12=
+pt"></span></div>
+<span style=3D"font-family:Calibri,Arial,Helvetica,sans-serif; font-size:12=
+pt"></span>
+<div><span style=3D"font-family:Calibri,Arial,Helvetica,sans-serif; font-si=
+ze:12pt">=E3=80=80=E3=80=80=E8=B3=87=E6=8B=93=E5=AE=8F=E5=AE=87=E5=9C=8B=E9=
+=9A=9B=E8=82=A1=E4=BB=BD=E6=9C=89=E9=99=90=E5=85=AC=E5=8F=B8</span></div>
+<div><span style=3D"font-family:Calibri,Arial,Helvetica,sans-serif; font-si=
+ze:12pt"><span style=3D"font-family:Calibri,Arial,Helvetica,sans-serif; fon=
+t-size:12pt">=E3=80=80=E3=80=80</span><span style=3D"font-family:Calibri,Ar=
+ial,Helvetica,sans-serif; font-size:12pt">International
+ Integrated Systems, Inc. (IISI)</span><br>
+</span></div>
+<span style=3D"font-family:Calibri,Arial,Helvetica,sans-serif; font-size:12=
+pt"></span>
+<div><span style=3D"font-family:Calibri,Arial,Helvetica,sans-serif; font-si=
+ze:12pt">=E3=80=80=E3=80=80=E6=B0=91=E7=94=9F=E8=BE=A6=E5=85=AC=E5=AE=A4=EF=
+=BC=9A10547=E5=8F=B0=E5=8C=97=E5=B8=82=E6=B0=91=E7=94=9F=E6=9D=B1=E8=B7=AF=
+=E5=9B=9B=E6=AE=B5133=E8=99=9F11=E6=A8=93</span></div>
+<span style=3D"font-family:Calibri,Arial,Helvetica,sans-serif; font-size:12=
+pt"></span>
+<div><span style=3D"font-family:Calibri,Arial,Helvetica,sans-serif; font-si=
+ze:12pt">=E3=80=80=E3=80=8011F, No. 133, Sec. 4, Minsheng E. Rd., Taipei, 1=
+0574, Taiwan, R. O. C.</span></div>
+</div>
+<p></p>
+</div>
+</div>
+</div>
+</body>
+</html>
+
+
+--B_3593073203_614495881--
+
+--B_3593073203_128750026
+Content-type: text/plain; name="cert_steps.txt";
+ x-mac-creator="4F50494D"
+Content-disposition: attachment;
+	filename="cert_steps.txt"
+Content-transfer-encoding: base64
+
+Y2FjZXJ0cyBwQHNzdzByZA0KDQovL3VhdA0Ka2V5dG9vbCAtZ2Vua2V5cGFpciAta2V5c3RvcmUg
+Y2FjZXJ0cyAtYWxpYXMgYXBhY2N0bHR3dWF0MTQ1LmFwYWMubnNyb290Lm5ldCAta2V5YWxnIFJT
+QSAta2V5c2l6ZSAyMDQ4IC1zaWdhbGcgU0hBMjU2d2l0aFJTQSAtZG5hbWUgIkNOPWFwYWNjdGx0
+d3VhdDE0NS5hcGFjLm5zcm9vdC5uZXQsT1U9MTU5OTczLE9VPURCLE89Q2l0aWdyb3VwIEluYy4s
+Qz1UVyINCg0Ka2V5dG9vbCAtY2VydHJlcSAta2V5c3RvcmUgY2FjZXJ0cyAtYWxpYXMgYXBhY2N0
+bHR3dWF0MTQ1LmFwYWMubnNyb290Lm5ldCAtc2lnYWxnIFNIQTI1NndpdGhSU0EgLWZpbGUgY2Vy
+dHJlcS5hcGFjY3RsdHd1YXQxNDUuMjAxNjExMjktMS50eHQNCg0KLy8gbmVlZCB0byBpbXBvcnQg
+Q0EgY2VydGlmaWNhdGUgZmlyc3QgKG9yIGltcG9ydCBuZXdlc3QgQ0EgY2VydHMgamtzIGZyb20g
+TVNQS0kgc2l0ZSkNCmtleXRvb2wgLWltcG9ydGNlcnQgLWtleXN0b3JlIGNhY2VydHMgLWFsaWFz
+IGNpdGlpbnRlcm5hbGRldmljZWNhMDEgLXRydXN0Y2FjZXJ0cyAtZmlsZSBJbnRlcm5hbENBX1VB
+VF9iNjQvQ2l0aUludGVybmFsRGV2aWNlQ0EwMV9VQVRfYjY0LmNlcg0Ka2V5dG9vbCAtaW1wb3J0
+Y2VydCAta2V5c3RvcmUgY2FjZXJ0cyAtYWxpYXMgY2l0aWludGVybmFscm9vdGNhIC10cnVzdGNh
+Y2VydHMgLWZpbGUgSW50ZXJuYWxDQV9VQVRfYjY0L0NpdGlJbnRlcm5hbFJvb3RDQV9VQVRfYjY0
+LmNlcg0Ka2V5dG9vbCAtaW1wb3J0Y2VydCAta2V5c3RvcmUgY2FjZXJ0cyAtYWxpYXMgY2l0aWlu
+dGVybmFscGFucm9vdGNhIC10cnVzdGNhY2VydHMgLWZpbGUgSW50ZXJuYWxDQV9VQVRfYjY0L0Np
+dGlJbnRlcm5hbFBBTlJvb3RDQV9VQVRfYjY0LmNlcg0Ka2V5dG9vbCAtaW1wb3J0Y2VydCAta2V5
+c3RvcmUgY2FjZXJ0cyAtYWxpYXMgY2l0aWludGVybmFscG9saWN5Y2EgLXRydXN0Y2FjZXJ0cyAt
+ZmlsZSBJbnRlcm5hbENBX1VBVF9iNjQvQ2l0aUludGVybmFsUG9saWN5Q0FfVUFUX2I2NC5jZXIN
+Ci8vIGltcG9ydCBzc2wgY2VydA0Ka2V5dG9vbCAtaW1wb3J0Y2VydCAta2V5c3RvcmUgY2FjZXJ0
+cyAtYWxpYXMgYXBhY2N0bHR3dWF0MTQ1LmFwYWMubnNyb290Lm5ldCAtdHJ1c3RjYWNlcnRzIC1m
+aWxlIGFwYWNjdGx0d3VhdDE0NS5jZXINCg0KDQoNCg0KDQoNCg0KDQovL3Byb2QNClBSRDogYXBh
+Y2N0bHR3YXAxNDUNCmtleXRvb2wgLWdlbmtleXBhaXIgLWtleXN0b3JlIGNhY2VydHMgLWFsaWFz
+IGFwYWNjdGx0d2FwMTQ1LmFwYWMubnNyb290Lm5ldCAta2V5YWxnIFJTQSAta2V5c2l6ZSAyMDQ4
+IC1zaWdhbGcgU0hBMjU2d2l0aFJTQSAtZG5hbWUgIkNOPWFwYWNjdGx0d2FwMTQ1LmFwYWMubnNy
+b290Lm5ldCxPVT0xNTk5NzMsT1U9REIsTz1DaXRpZ3JvdXAgSW5jLixDPVRXIg0KDQprZXl0b29s
+IC1jZXJ0cmVxIC1rZXlzdG9yZSBjYWNlcnRzIC1hbGlhcyBhcGFjY3RsdHdhcDE0NS5hcGFjLm5z
+cm9vdC5uZXQgLXNpZ2FsZyBTSEEyNTZ3aXRoUlNBIC1maWxlIGNlcnRyZXEuYXBhY2N0bHR3YXAx
+NDUuMjAxNjExMjktMS50eHQNCg0KLy8gbmVlZCB0byBpbXBvcnQgQ0EgY2VydGlmaWNhdGUgZmly
+c3QgKG9yIGltcG9ydCBuZXdlc3QgQ0EgY2VydHMgamtzIGZyb20gTVNQS0kgc2l0ZSkNCmtleXRv
+b2wgLWltcG9ydGNlcnQgLWtleXN0b3JlIGNhY2VydHMgLWFsaWFzIGNpdGlpbnRlcm5hbGRldmlj
+ZWNhMDMgLXRydXN0Y2FjZXJ0cyAtZmlsZSBJbnRlcm5hbENBX1BST0QvSW50ZXJuYWxfRGV2aWNl
+X0NBMDMuY2VyDQprZXl0b29sIC1pbXBvcnRjZXJ0IC1rZXlzdG9yZSBjYWNlcnRzIC1hbGlhcyBj
+aXRpaW50ZXJuYWxyb290Y2FfcHJvZCAtdHJ1c3RjYWNlcnRzIC1maWxlIEludGVybmFsQ0FfUFJP
+RC9pbmVybmFsX1Jvb3RfQ0EuY2VyDQprZXl0b29sIC1pbXBvcnRjZXJ0IC1rZXlzdG9yZSBjYWNl
+cnRzIC1hbGlhcyBjaXRpaW50ZXJuYWxwb2xpY3ljYV9wcm9kIC10cnVzdGNhY2VydHMgLWZpbGUg
+SW50ZXJuYWxDQV9QUk9EL0ludGVybmFsX1BvbGljeV9DQS5jZXINCi8vIGltcG9ydCBzc2wgY2Vy
+dA0Ka2V5dG9vbCAtaW1wb3J0Y2VydCAta2V5c3RvcmUgY2FjZXJ0cyAtYWxpYXMgYXBhY2N0bHR3
+YXAxNDUuYXBhYy5uc3Jvb3QubmV0IC10cnVzdGNhY2VydHMgLWZpbGUgYXBhY2N0bHR3YXAxNDUu
+Y2VyDQoNCg0KDQoNCg0KDQoNCg0KLy9jb2INCkNPQjogYXBhY2N0bHR3ZHIxNDUNCmtleXRvb2wg
+LWdlbmtleXBhaXIgLWtleXN0b3JlIGNhY2VydHMgLWFsaWFzIGFwYWNjdGx0d2RyMTQ1LmFwYWMu
+bnNyb290Lm5ldCAta2V5YWxnIFJTQSAta2V5c2l6ZSAyMDQ4IC1zaWdhbGcgU0hBMjU2d2l0aFJT
+QSAtZG5hbWUgIkNOPWFwYWNjdGx0d2RyMTQ1LmFwYWMubnNyb290Lm5ldCxPVT0xNTk5NzMsT1U9
+REIsTz1DaXRpZ3JvdXAgSW5jLixDPVRXIg0KDQprZXl0b29sIC1jZXJ0cmVxIC1rZXlzdG9yZSBj
+YWNlcnRzIC1hbGlhcyBhcGFjY3RsdHdkcjE0NS5hcGFjLm5zcm9vdC5uZXQgLXNpZ2FsZyBTSEEy
+NTZ3aXRoUlNBIC1maWxlIGNlcnRyZXEuYXBhY2N0bHR3ZHIxNDUuMjAxNjExMjktMS50eHQNCg0K
+Ly8gbmVlZCB0byBpbXBvcnQgQ0EgY2VydGlmaWNhdGUgZmlyc3QgLSBzYW1lIGFzIHByb2R1Y3Rp
+b24NCmtleXRvb2wgLWltcG9ydGNlcnQgLWtleXN0b3JlIGNhY2VydHMgLWFsaWFzIGFwYWNjdGx0
+d2RyMTQ1LmFwYWMubnNyb290Lm5ldCAtdHJ1c3RjYWNlcnRzIC1maWxlIGFwYWNjdGx0d2RyMTQ1
+LmNlcg0KDQo=
+
+--B_3593073203_128750026--
