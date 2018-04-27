@@ -36,7 +36,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         </entry>
         <entry key="paging.querySql">
             <value><![CDATA[select * from ( select source.*, ROWNUM() ROWNM from (
-	@{['sourceSQL']} ) source ) rows where ROWNM > :startRow and ROWNUM <= :endRow]]></value>
+	@{['sourceSQL']} ) source ) rows where ROWNM > :startRow and ROWNM <= :endRow]]></value>
         </entry>
         <entry key="paging.totalPage">
             <value><![CDATA[select count(1) as TOTAL from (@{['sourceSQL']}) rows]]></value>
@@ -49,7 +49,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         </entry>
         <entry key="paging.querySql">
             <value><![CDATA[select * from ( select source.*, ROW_NUMBER() ROWNM from (
-	@{['sourceSQL']} ) source ) rows where ROWNM > :startRow and ROWNUM <= :endRow]]></value>
+	@{['sourceSQL']} ) source ) rows where ROWNM > :startRow and ROWNM <= :endRow]]></value>
         </entry>
         <entry key="paging.totalPage">
             <value><![CDATA[select count(1) as TOTAL from (@{['sourceSQL']}) rows]]></value>
