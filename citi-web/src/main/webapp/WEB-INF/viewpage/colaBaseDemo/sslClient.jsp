@@ -11,14 +11,6 @@
         .mainBody .longInput {
             width: 100%;
         }
-
-        .mainBody .radioInput {
-            width: 5%;
-        }
-        #targetUrl {
-            width: 100%;
-        }
-
     </style>
 </head>
 <body>
@@ -29,7 +21,7 @@
     <form id="sslClientForm" autocomplete="off" method="post">
         <h3>SSL雙向驗證測試頁</h3>
         targetUrl: <br/>
-        <input type="text" id="targetUrl" name="targetUrl"
+        <input type="text" id="targetUrl" name="targetUrl" class="longInput"
                value="https://127.0.0.1:8443/mutual-authentication-server/v1/tw/onboarding/customers/deduplicationFlag">
         <br/>
         自定義Header JSON字串 ex: {"accept": ["application/json", "otherType"]}
@@ -40,17 +32,11 @@
         <br/>
     </form>
     <fieldset style="font-size: 1.5em; margin-top: 20px;">
-        <legend>轉檔結果</legend>
+        <legend>回應結果</legend>
         <div id="resultBoard" style="color: red; width: 650px; display: block; word-wrap: break-word;">
             <%--success !--%>
         </div>
     </fieldset>
-
-
-    <div id="inputTemplate" style="display: none">
-        <input class="longInput" type="text" name="inputFile" maxlength="200"
-               placeholder="請輸入要轉檔的Folder path"/>
-    </div>
 </div>
 </body>
 </html>
