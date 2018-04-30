@@ -52,6 +52,10 @@
             <groupId>com.iisigroup.colabase</groupId>
             <artifactId>citi-pdf</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.iisigroup.colabase</groupId>
+            <artifactId>citi-address</artifactId>
+        </dependency>
         <!-- optional -->
         <dependency>
             <groupId>com.iisigroup.colabase</groupId>
