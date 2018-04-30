@@ -1,4 +1,4 @@
-package com.iisigroup.colabase.service.impl;
+package com.iisigroup.colabase.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,15 +7,20 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.iisigroup.colabase.service.AddressSplitterService;
-import org.springframework.stereotype.Service;
+public class AddressSplitterUtil {
+  private static String village = "";
 
-@Service
-public class AddressSplitterServiceImpl implements AddressSplitterService {
-  private String village = "";
+  private static AddressSplitterUtil instance;
 
-  @Override
-  public Map<String, String> splitAddress(List<String> roadList, String otherAddress) {
+  private AddressSplitterUtil() {
+
+  }
+
+  static {
+    instance = new AddressSplitterUtil();
+  }
+
+  public static Map<String, String> splitAddress(List<String> roadList, String otherAddress) {
     Map<String, String> result = new HashMap<>();
 
     ArrayList<String> lastAddress = new ArrayList<>();
@@ -31,7 +36,7 @@ public class AddressSplitterServiceImpl implements AddressSplitterService {
 
     //判斷 roadFunction 是否存在 (otherAddress)
 
-    roadLocation = roadFunction(otherAddress, roadList);
+    roadLocation = instance.roadFunction(otherAddress, roadList);
 
     if (roadLocation.size() == 0) {
 
@@ -45,7 +50,7 @@ public class AddressSplitterServiceImpl implements AddressSplitterService {
       Address_A2 = Address_A1.replaceFirst(roadList.get(roadLocation.get(0)), "");
 
       if (roadList.get(roadLocation.get(0)).contains("段")) {
-        String Section_String = getSection(roadList.get(roadLocation.get(0)));
+        String Section_String = instance.getSection(roadList.get(roadLocation.get(0)));
         if (!Section_String.equals("")) {
 
           String Road_String = roadList.get(roadLocation.get(0)).split(Section_String + "段")[0];
@@ -73,7 +78,7 @@ public class AddressSplitterServiceImpl implements AddressSplitterService {
 
       if (Address_A2.contains("鄰")) {
 
-        String neighborhood_String = getKeyValue(Address_A2, "鄰");
+        String neighborhood_String = instance.getKeyValue(Address_A2, "鄰");
 
         Address_A3 = Address_A2.replaceFirst(neighborhood_String + "鄰", "");
 
@@ -93,7 +98,7 @@ public class AddressSplitterServiceImpl implements AddressSplitterService {
 
       }
 
-      lastAddress = splitLAString(Address_A3);
+      lastAddress = instance.splitLAString(Address_A3);
 
       result.put("lane", lastAddress.get(0));
       result.put("alley", lastAddress.get(1));
