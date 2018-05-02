@@ -9,6 +9,9 @@ import java.util.*;
 
 import javax.net.ssl.*;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.iisigroup.cap.utils.CapSystemConfig;
 import com.iisigroup.colabase.model.RequestContent;
 import com.iisigroup.colabase.model.ResponseContent;
@@ -17,10 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -209,7 +209,8 @@ public class SslClientImpl implements SslClient {
         listForRecordInfos.add("Response: Header Key = " + entry.getKey() + ", Value = " + entry.getValue());
       }
 
-      JSONObject responseJson = new JSONObject();
+      JsonObject responseJson = new JsonObject();
+      Gson gson = new Gson();
       StringBuilder responseBodySB = new StringBuilder();
       try (
         BufferedReader reader = new BufferedReader(new InputStreamReader(is))
@@ -221,11 +222,11 @@ public class SslClientImpl implements SslClient {
 
         requestContent.showResponseJsonStrLog(responseBodySB.toString());
         if(responseBodySB.length()!=0) {
-            responseJson = JSONObject.fromObject(responseBodySB.toString());
+            responseJson = gson.fromJson(responseBodySB.toString(), JsonObject.class);
         }
         listForRecordInfos.add("Response Body : " + responseJson.toString());
-      } catch(JSONException e) {
-        responseJson = new JSONObject();
+      } catch(JsonSyntaxException e) {
+        responseJson = new JsonObject();
         listForRecordInfos.add("Response Body: " + responseBodySB);
         listForRecordInfos.add("Response Exception: " + e);
       } catch (IOException e) {
@@ -235,7 +236,7 @@ public class SslClientImpl implements SslClient {
       responseContent = new ResponseContent(statusCode, headers, responseJson);
     } catch (Exception e) {
       if(responseContent == null) {
-        responseContent = new ResponseContent(statusCode, new HashMap<String, List<String>>(), new JSONObject());
+        responseContent = new ResponseContent(statusCode, new HashMap<String, List<String>>(), new JsonObject());
         responseContent.setException(e);
       }
       throw e;

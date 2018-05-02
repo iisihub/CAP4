@@ -1,6 +1,6 @@
 package com.iisigroup.colabase.model;
 
-import net.sf.json.JSONObject;
+import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +51,7 @@ public abstract class RequestContent {
 
     private HTTPMethod httpMethod;
 
-    private JSONObject requestContent;
+    private JsonObject requestContent;
 
     private Map<String, List<String>> requestHeaders;
 
@@ -121,11 +121,11 @@ public abstract class RequestContent {
         this.httpMethod = httpMethod;
     }
 
-    public JSONObject getRequestContent() {
+    public JsonObject getRequestContent() {
         return requestContent;
     }
 
-    public void setRequestContent(JSONObject requestContent) {
+    public void setRequestContent(JsonObject requestContent) {
         this.requestContent = requestContent;
     }
 

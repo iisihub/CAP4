@@ -1,21 +1,22 @@
 package com.iisigroup.colabase.model;
 
+import com.google.gson.JsonObject;
+
 import java.util.List;
 import java.util.Map;
 
-import net.sf.json.JSONObject;
 
 public class ResponseContent {
     private int statusCode;
     private Map<String, List<String>> headers;
-    private JSONObject responseJson;
+    private JsonObject responseJson;
     private Exception exception;
     
     public ResponseContent() {
         
     }
 
-    public ResponseContent(int statusCode, Map<String, List<String>> headers, JSONObject responseJson) {
+    public ResponseContent(int statusCode, Map<String, List<String>> headers, JsonObject responseJson) {
         this.statusCode = statusCode;
         this.headers = headers;
         this.responseJson = responseJson;
@@ -30,7 +31,7 @@ public class ResponseContent {
         this.statusCode = statusCode;
     }
 
-    public void setResponseJson(JSONObject responseJson) {
+    public void setResponseJson(JsonObject responseJson) {
         this.responseJson = responseJson;
     }
 
@@ -57,7 +58,7 @@ public class ResponseContent {
      * 
      * @return JSONObject
      */
-    public JSONObject getResponseJson() {
+    public JsonObject getResponseJson() {
         return responseJson;
     }
 

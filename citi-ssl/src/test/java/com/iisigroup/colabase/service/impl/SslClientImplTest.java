@@ -1,10 +1,10 @@
 package com.iisigroup.colabase.service.impl;
 
+import com.google.gson.JsonObject;
 import com.iisigroup.colabase.demo.sslclient.model.DemoRequestContent;
 import com.iisigroup.colabase.model.RequestContent;
 import com.iisigroup.colabase.model.ResponseContent;
 import com.iisigroup.colabase.service.SslClient;
-import net.sf.json.JSONObject;
 import org.apache.log4j.varia.NullAppender;
 import org.junit.Assert;
 import org.junit.Before;
@@ -67,8 +67,8 @@ public class SslClientImplTest {
         requestContent.setTimeout(30000);
         requestContent.setTargetUrl(targetUrl);
         requestContent.setRetryHttpStatus(new int[]{404});
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("testData1", "testValue");
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("testData1", "testValue");
         requestContent.setRequestContent(jsonObject);
 
         return requestContent;

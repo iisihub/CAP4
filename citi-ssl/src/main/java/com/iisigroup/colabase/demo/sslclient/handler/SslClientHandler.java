@@ -1,5 +1,10 @@
 package com.iisigroup.colabase.demo.sslclient.handler;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
@@ -9,16 +14,13 @@ import com.iisigroup.colabase.demo.sslclient.model.DemoRequestContent;
 import com.iisigroup.colabase.model.RequestContent;
 import com.iisigroup.colabase.model.ResponseContent;
 import com.iisigroup.colabase.service.SslClient;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -46,12 +48,13 @@ public class SslClientHandler extends MFormHandler {
         AjaxFormResult result = new AjaxFormResult();
         StringBuilder resultStr = new StringBuilder();
         String targetUrl = request.get("targetUrl");
-        final JSONObject obj;
-        final HashMap<String, List<String>> header;
+        final JsonObject obj;
+        final Map<String, List<String>> header;
         RequestContent requestContent;
         ResponseContent responseContent;
         try {
-            obj = JSONObject.fromObject(request.get("jsonData"));
+            Gson gson = new Gson();
+            obj = gson.fromJson(request.get("jsonData"), JsonObject.class);
             header = getHeader(request.get("headerData"));
             requestContent = getDummyContent(targetUrl, header, obj);
             if(header == null) {
@@ -60,7 +63,7 @@ public class SslClientHandler extends MFormHandler {
                 responseContent = sslClient.sendRequest(requestContent);
             }
             resultStr.append(responseContent);
-        } catch (JSONException e) {
+        } catch (JsonSyntaxException e) {
             resultStr.append("please check your JSON format");
         } catch (IOException e) {
             resultStr.append( e.getCause());
@@ -69,27 +72,16 @@ public class SslClientHandler extends MFormHandler {
         return result;
     }
 
-    private HashMap<String, List<String>> getHeader(String jsonStr){
+    private Map<String, List<String>> getHeader(String jsonStr){
         if(CapString.isEmpty(jsonStr))
             return null;
-        JSONObject jsonObject = JSONObject.fromObject(jsonStr);
-        HashMap<String, List<String>> result = new HashMap<>();
-        for (Object key  : jsonObject.keySet()) {
-            Object o = jsonObject.get(key);
-            if(o instanceof JSONArray) {
-                List<String> values = new ArrayList<>();
-                for (int i = 0 ; i < ((JSONArray) o).size() ; i++) {
-                    values.add(String.valueOf(((JSONArray) o).get(i)));
-                }
-                result.put(key.toString(), values);
-            } else {
-                throw new JSONException("wrong json format");
-            }
-        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<Map<String, List<String>>>() {}.getType();
+        Map<String, List<String>> result = gson.fromJson(jsonStr, type);
         return result;
     }
 
-    private RequestContent getDummyContent(String targetUrl, HashMap<String, List<String>> headers, JSONObject jsonData){
+    private RequestContent getDummyContent(String targetUrl, Map<String, List<String>> headers, JsonObject jsonData){
         RequestContent requestContent = new DemoRequestContent();
         requestContent.setRequestHeaders(headers);
         requestContent.setHttpMethod(RequestContent.HTTPMethod.POST);
