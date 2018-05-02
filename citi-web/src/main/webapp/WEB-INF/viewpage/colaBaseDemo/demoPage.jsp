@@ -28,6 +28,9 @@
                     <td><button id="netUseUtilBtn" class="orangeBtn" type="button">NetUseUtil</button></td>
                     <td><button id="sslClientBtn" class="orangeBtn" type="button">SSL Client</button></td>
                 </tr>
+                <tr>
+                    <td><button id="pdfBtn" class="orangeBtn" type="button">PDF</button></td>
+                </tr>
             </table>
         </fieldset>
     </div>

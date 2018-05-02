@@ -24,5 +24,9 @@ pageInit(function() {
       window.setCloseConfirm(false);
       window.location.href = url('page/colaBaseDemo/sslClient')
     });
+    $("#pdfBtn").on('click', function(e) {
+      window.setCloseConfirm(false);
+      window.location.href = url('page/colaBaseDemo/pdf')
+    });
   });
 });
