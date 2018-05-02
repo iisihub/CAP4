@@ -1,5 +1,7 @@
 package com.iisigroup.colabase.util;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +9,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * address format util
+ * @author $8000
+ */
 public class AddressSplitterUtil {
   private static String village = "";
 
@@ -172,6 +178,7 @@ public class AddressSplitterUtil {
   }
 
 
+  //fixme
   private ArrayList<String> splitLAString(String LAString) {
 
     ArrayList<String> LAStringList = new ArrayList<String>();
@@ -375,24 +382,12 @@ public class AddressSplitterUtil {
   }
 
   private boolean isNumeric(String str) {
-
     Pattern pattern = Pattern.compile("[0-9]*");
-
     Matcher isNum = pattern.matcher(str);
-
-    if (!isNum.matches()) {
-
-      return false;
-
-    } else {
-
-
-      return true;
-
-    }
-
+    return isNum.matches();
   }
 
+  //Fixme
   private String getKeyValue(String Address, String KeyWord) {
 
     String TempString = "";
@@ -427,6 +422,7 @@ public class AddressSplitterUtil {
 
   }
 
+  //Fixme
   private String getKeyValueRevert(String Address, String KeyWord, String KeyWord2) {
 
     String TempString = "";
@@ -453,6 +449,7 @@ public class AddressSplitterUtil {
 
   }
 
+  //Fixme
   private String reSearchFunction(String Address, Integer c) { //20170420
 
     Boolean Startflag = true;
@@ -482,35 +479,138 @@ public class AddressSplitterUtil {
 
   }
 
-  private String getSection(String Address) {
+  /**
+   * 取得地址“段”
+   * @param address address with 段 and 路
+   * @return number between 路 and 段
+     */
+  private String getSection(String address) {
+    try {
+      //全形數字
+      String regExpFullStr = "[^\\uFF10-\\uFF19]*([\\uFF10-\\uFF19]+)段$";
+      Pattern fullPattern = Pattern.compile(regExpFullStr);
+      Matcher fullMatcher = fullPattern.matcher(address);
+      if(fullMatcher.find()) {
+        int formatNum = instance.transStrToNumber(fullMatcher.group(1));
+        return String.valueOf(formatNum);
+      }
+      //一般數字
+      String regExpNormStr = "[^0-9]*([0-9]+)段$";
+      Pattern norPattern = Pattern.compile(regExpNormStr);
+      Matcher norMatcher = norPattern.matcher(address);
+      if(norMatcher.find()) {
+        return norMatcher.group(1);
+      }
+      //中文數字
+      String regExpChinStr = "[^一二三四五六七八九十]*([一二三四五六七八九十]+)段$";
+      Pattern chinPattern = Pattern.compile(regExpChinStr);
+      Matcher chinMatcher = chinPattern.matcher(address);
+      if(chinMatcher.find()) {
+        int formatNum = instance.transStrToNumber(chinMatcher.group(1));
+        return String.valueOf(formatNum);
+      }
+    } catch (NumberFormatException e) {
+      return "";
+    }
+    return "";
 
-    String tempnumber = "";
-    Boolean Startflag = true;
+//    String tempnumber = "";
+//    Boolean Startflag = true;
+//
+//    for (int r = address.length(); r > 0; r--) {
+//
+//      char c = address.charAt(r - 1);
+//
+//      if (Startflag) {
+//        if (String.valueOf(c).equals("０") | String.valueOf(c).equals("１") | String.valueOf(c).equals("２") | String.valueOf(c).equals("３") | String.valueOf(c).equals("４") | String.valueOf(c).equals("５") | String.valueOf(c).equals("６") | String.valueOf(c).equals("７") | String.valueOf(c).equals("８") | String.valueOf(c).equals("９")) {
+//
+//          tempnumber = String.valueOf(c) + tempnumber;
+//
+//        } else {
+//
+//          Startflag = false;
+//        }
+//      }
+//
+//      if (String.valueOf(c).equals("段")) {
+//
+//        Startflag = true;
+//
+//      }
+//
+//    }
+//
+//    return tempnumber;
 
-    for (int r = Address.length(); r > 0; r--) {
+  }
 
-      char c = Address.charAt(r - 1);
-
-      if (Startflag) {
-        if (String.valueOf(c).equals("０") | String.valueOf(c).equals("１") | String.valueOf(c).equals("２") | String.valueOf(c).equals("３") | String.valueOf(c).equals("４") | String.valueOf(c).equals("５") | String.valueOf(c).equals("６") | String.valueOf(c).equals("７") | String.valueOf(c).equals("８") | String.valueOf(c).equals("９")) {
-
-          tempnumber = String.valueOf(c) + tempnumber;
-
+  /**
+   * 大寫數字轉換小寫
+   * 及中文數字辨識 目前支援如下ex: 五十, 五十五, 二九五五 (不含百千等詞)
+   * @param numberStr chinese numbers
+   * @return normal number ex: 123
+     */
+  private int transStrToNumber(String numberStr) {
+    try {
+      return Integer.parseInt(numberStr);
+    } catch (NumberFormatException e) {
+      // for 中文數字辨識 目前支援如下ex: 五十, 五十五, 二九五
+      String regExpChinStr = "([一二三四五六七八九]?)(十+)([一二三四五六七八九]?)$|([一二三四五六七八九]+)";
+      Pattern chinPattern = Pattern.compile(regExpChinStr);
+      Matcher chinMatcher = chinPattern.matcher(numberStr);
+      if(chinMatcher.find()) {
+        if(!StringUtils.isBlank(chinMatcher.group(4))) { //ex: 二九五
+          numberStr = chinMatcher.group(4);
+          String formatNumStr = "";
+          for (int i = 0 ; i < numberStr.length(); i++) {
+            formatNumStr += instance.matchChinStrToNumber(String.valueOf(numberStr.charAt(i)));
+          }
+          return Integer.parseInt(formatNumStr);
         } else {
-
-          Startflag = false;
+          String temp = "";
+          if(StringUtils.isBlank(chinMatcher.group(3))) { //ex: 五十
+            temp += instance.matchChinStrToNumber(chinMatcher.group(1));
+            temp += "0";
+          } else { //ex: 五十五
+            temp += instance.matchChinStrToNumber(chinMatcher.group(1));
+            temp += instance.matchChinStrToNumber(chinMatcher.group(3));
+          }
+          return Integer.parseInt(temp);
         }
       }
-
-      if (String.valueOf(c).equals("段")) {
-
-        Startflag = true;
-
-      }
-
     }
+    throw new NumberFormatException();
+  }
 
-    return tempnumber;
-
+  /**
+   * 中文數字對照阿拉伯數字 ex: 八 -> 8
+   * @param chineseStr number needs to match
+   * @return result
+     */
+  private String matchChinStrToNumber(String chineseStr) {
+    switch (chineseStr) {
+      case "ㄧ":
+        return "1";
+      case "二":
+        return "2";
+      case "三":
+        return "3";
+      case "四":
+        return "4";
+      case "五":
+        return "5";
+      case "六":
+        return "6";
+      case "七":
+        return "7";
+      case "八":
+        return "8";
+      case "九":
+        return "9";
+      case "十":
+        return "0";
+      default:
+        return "";
+    }
   }
 }
