@@ -56,6 +56,10 @@
             <groupId>com.iisigroup.colabase</groupId>
             <artifactId>citi-address</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.iisigroup.colabase</groupId>
+            <artifactId>citi-edm</artifactId>
+        </dependency>
         <!-- optional -->
         <dependency>
             <groupId>com.iisigroup.colabase</groupId>

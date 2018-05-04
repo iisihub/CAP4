@@ -28,5 +28,9 @@ pageInit(function() {
       window.setCloseConfirm(false);
       window.location.href = url('page/colaBaseDemo/pdf')
     });
+    $("#edmBtn").on('click', function(e) {
+    	window.setCloseConfirm(false);
+    	window.location.href = url('page/colaBaseDemo/edm')
+    });
   });
 });
