@@ -18,7 +18,7 @@
                 <Set name="driverClass">com.microsoft.sqlserver.jdbc.SQLServerDriver</Set>
                 <Set name="jdbcUrl">jdbc:sqlserver://localhost:1433;DatabaseName=XCOLA;SelectMethod=direct</Set>
                 <Set name="user">sa</Set>
-                <Set name="password">sa123456</Set>
+                <Set name="password">p@ssw0rd</Set>
             </New>
         </Arg>
     </New>
