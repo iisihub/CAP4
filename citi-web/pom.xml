@@ -121,7 +121,7 @@
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>sqljdbc</artifactId>
             <version>4.0</version>
-            <scope>provided</scope>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
     <build>
