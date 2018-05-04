@@ -66,7 +66,7 @@ public class SslClientHandler extends MFormHandler {
         } catch (JsonSyntaxException e) {
             resultStr.append("please check your JSON format");
         } catch (IOException e) {
-            resultStr.append( e.getCause());
+            resultStr.append( e.getMessage());
         }
         result.set("result", resultStr.toString());
         return result;
