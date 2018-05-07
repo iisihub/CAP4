@@ -12,13 +12,24 @@
     <script>
           loadScript('js/colaBaseDemo/pdf');
         </script>
-    <div style="height: 460px;">
-        <form id="otpForm" autocomplete="off" method="post">
-            <h3>PDF</h3>
-	        <input id="pdfPath" type="text" maxlength="2" placeholder="請輸入PDF產生路徑" value=""/>
+    <div style="height: 560px;">
+        <form id="pdfForm" autocomplete="off" method="post">
+            <h3>Input Demo PDF Content</h3>
+            <input id="custName" type="text" maxlength="20" placeholder="請輸入姓名" value=""/>
+            <br />
+            <input id="idNo" type="text" maxlength="10" placeholder="請輸入身分證字號" value=""/>
+            <br />
+            <input id="mPhone" type="text" maxlength="10" placeholder="請輸入手機號碼" value=""/>
+             <br />
+            <hr/>
+            <h3>Generate PDF</h3>
+	        <input id="pdfPath" type="text" placeholder="請輸入PDF產生路徑" value=""/>
+            <br />
+	        <input id="pdfName" type="text" placeholder="請輸入PDF檔案名稱" value=""/>
+            <br />
+	        <input id="pdfPwd" type="password" maxlength="20" placeholder="請輸入PDF加密密碼" value=""/>
+            <br />
             <button id="genPDF" class="sendbtn" type="button" style="">產生PDF</button>
-            <br /> 
-            <hr>
             <button id="dwnPDF" class="sendbtn" type="button" style="background: red;">下載PDF</button>
             <br />
             <fieldset>
