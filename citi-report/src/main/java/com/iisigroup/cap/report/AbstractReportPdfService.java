@@ -37,7 +37,7 @@ import com.iisigroup.cap.report.constants.ReportParamEnum;
 import com.iisigroup.cap.report.factory.ItextFontFactory;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.cap.utils.CapSystemConfig;
-import com.itextpdf.text.pdf.BaseFont;
+import com.lowagie.text.pdf.BaseFont;
 
 import freemarker.template.Template;
 
@@ -91,9 +91,9 @@ public abstract class AbstractReportPdfService implements ReportService {
             t.process(reportData, writer);
 
             /**
-             * 1.FOR 非使用 JDK 1.7 避免找不到TransformerFactoryImpl 所以指定org.apache.xalanz裡的實作 2.當使用 org.apache.xalan.processor.TransformerFactoryImpl 會發生org.w3c.dom.DOMException: NAMESPACE_ERR:
+             * FOR 非使用 JDK 1.7 會找不到TransformerFactory，會發生java.lang.AbstractMethodError錯誤，因此指定使用com.sun.org.apache.xalan.internal裡的實作
              */
-            System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.xsltc.trax.TransformerFactoryImpl");
+            // System.setProperty("javax.xml.transform.TransformerFactory", "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
 
             // process core-render
             Document document = XMLResource.load(new ByteArrayInputStream(templateOut.toByteArray())).getDocument();

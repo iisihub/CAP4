@@ -191,9 +191,9 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      */
     private void genByRender(OutputStream out, byte[] pdfContent, String encrypt) throws Exception {
         // local test plz unMarked this code, but no commit to SVN
-        // System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.xsltc.trax.TransformerFactoryImpl");
+        // System.setProperty("javax.xml.transform.TransformerFactory", "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
         /**
-         * just start your local test use VM Arguments : -Djavax.xml.transform.TransformerFactory="org.apache.xalan.xsltc.trax.TransformerFactoryImpl"
+         * just start your local test use VM Arguments : -Djavax.xml.transform.TransformerFactory="com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl"
          */
         // System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl");
 

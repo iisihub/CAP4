@@ -11,40 +11,15 @@
  */
 package com.iisigroup.colabase.edm.service.impl;
 
-import com.iisigroup.cap.component.Request;
-import com.iisigroup.cap.component.Result;
-import com.iisigroup.cap.component.impl.AjaxFormResult;
-import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
-import com.iisigroup.colabase.edm.report.CCBasePageReport;
-import com.iisigroup.colabase.edm.service.EDMService;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.pdf.PdfWriter;
-
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-
-import java.awt.Color;
-import java.awt.Font;
 import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
@@ -61,22 +36,21 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.mail.internet.MimeUtility;
-import javax.mail.util.ByteArrayDataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.Document;
 
-import com.iisigroup.cap.utils.CapDate;
-import com.iisigroup.cap.utils.CapMath;
+import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.component.Result;
+import com.iisigroup.cap.component.impl.AjaxFormResult;
+import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
 import com.iisigroup.cap.utils.CapString;
-import com.iisigroup.cap.utils.CapSystemConfig;
+import com.iisigroup.colabase.edm.report.CCBasePageReport;
+import com.iisigroup.colabase.edm.service.EDMService;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;

@@ -11,6 +11,7 @@
  */
 package com.iisigroup.colabase.edm.report;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 
@@ -19,9 +20,8 @@ import org.apache.commons.logging.LogFactory;
 
 import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapString;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
 
 /**
  * <pre>
@@ -54,7 +54,7 @@ public class ItextFontFactory {
 	}
 
 	public Font getFont(String fontname, String fontType, String encoding,
-			boolean embedded, float size, int style, BaseColor color) {
+			boolean embedded, float size, int style, Color color) {
 		try {
 			return FontFactory.getFont(getFontPath(fontname, fontType),
 					encoding, embedded, size, style, color);
