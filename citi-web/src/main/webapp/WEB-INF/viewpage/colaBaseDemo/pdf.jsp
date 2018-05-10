@@ -20,7 +20,7 @@
             <input id="idNo" type="text" maxlength="10" placeholder="請輸入身分證字號" value=""/>
             <br />
             <input id="mPhone" type="text" maxlength="10" placeholder="請輸入手機號碼" value=""/>
-             <br />
+            <br />
             <hr/>
             <h3>Generate PDF</h3>
 	        <input id="pdfPath" type="text" placeholder="請輸入PDF產生路徑" value=""/>
@@ -34,11 +34,11 @@
             <br />
             <hr/>
             <h3>Merge PDF</h3>
-	        <input id="mgPDFPath1" type="text" placeholder="請輸入要合併的PDF1路徑" value="/Users/cathy/Downloads/testPDF/test1.pdf"/>
+	        <input id="mgPDFPath1" type="text" placeholder="請輸入要合併的PDF1路徑" value=""/>
             <br />
-	        <input id="mgPDFPath2" type="text" placeholder="請輸入要合併的PDF2路徑" value="/Users/cathy/Downloads/testPDF/test2.pdf"/>
+	        <input id="mgPDFPath2" type="text" placeholder="請輸入要合併的PDF2路徑" value=""/>
             <br />    
-	        <input id="genMgPDFPath" type="text" placeholder="請輸入要合併後PDF產生路徑" value="/Users/cathy/Downloads/testPDF"/>
+	        <input id="genMgPDFPath" type="text" placeholder="請輸入要合併後PDF產生路徑" value=""/>
             <br />    
             <input id="genMgPDFName" type="text" placeholder="請輸入要合併後PDF檔案名稱" value=""/>
             <br />
