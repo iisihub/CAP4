@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.Document;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 import org.xhtmlrenderer.pdf.PDFEncryption;
@@ -35,7 +34,11 @@ import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.colabase.pdf.report.CCBasePageReport;
 import com.iisigroup.colabase.pdf.service.PDFService;
+import com.lowagie.text.Document;
 import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfCopy;
+import com.lowagie.text.pdf.PdfImportedPage;
+import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
 
 import freemarker.template.Configuration;
@@ -51,21 +54,34 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
     @Autowired
     private ItextFontFactory fontFactory;
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.colabase.pdf.service.PDFService#processPdf(com.iisigroup.cap.component.Request, java.util.Map, java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean,
+     * java.lang.String)
+     */
     @Override
     public Result processPdf(Request request, Map<String, Object> dataMap, String templateName, String pdfPath, String pdfName, Boolean isDownloadPDF, String encryptPassword) {
         ByteArrayDownloadResult pdfContent = processPDFContent(request, dataMap, templateName, PDFType.FTL);
         return processPdf(request, pdfPath, pdfName, pdfContent, isDownloadPDF, encryptPassword);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.colabase.pdf.service.PDFService#processPdf(com.iisigroup.cap.component.Request, java.lang.String, java.lang.String, com.iisigroup.cap.component.impl.ByteArrayDownloadResult,
+     * java.lang.Boolean, java.lang.String)
+     */
     @Override
     public Result processPdf(Request request, String pdfPath, String pdfName, ByteArrayDownloadResult pdfContent, Boolean isDownloadPDF, String encryptPassword) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         OutputStream os = null;
         // PDF名稱
-        String convertTimestampToString = CapDate.convertTimestampToString(CapDate.getCurrentTimestamp(), "yyyyMMdd_hhmm_ss");
-        String outputFileName = "PDF" + UNDER_LINE + convertTimestampToString + ".pdf";
+        String outputFileName = "";
         if (!CapString.isEmpty(pdfName)) {
             outputFileName = pdfName + ".pdf";
+        } else {
+            outputFileName = defalutPDFName();
         }
         try {
             // 加密密碼，建立PDF名稱並產出
@@ -98,14 +114,6 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         }
     }
 
-    /**
-     * Process PDF Content
-     * 
-     * @param request
-     * @param templateName
-     *            FTL 樣版名稱；若為FTL格式則需填入樣板名稱
-     * @return
-     */
     @Override
     public ByteArrayDownloadResult processPDFContent(Request request, Map<String, Object> dataMap, String templateName, PDFType pdfType) {
         ByteArrayDownloadResult pdfContent = null;
@@ -118,6 +126,49 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             pdfContent = (ByteArrayDownloadResult) request.getObject(PDFType.HTML.getPdfType());
         }
         return pdfContent;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.colabase.pdf.service.PDFService#mergePDFFiles(java.lang.String[], java.lang.String, java.lang.String)
+     */
+    @Override
+    public Result mergePDFFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName) {
+        Document document = new Document();
+        OutputStream outputStream = null;
+        try {
+            // PDF名稱
+            String outputMergeFileName = "";
+            if (!CapString.isEmpty(mergerPDFName)) {
+                outputMergeFileName = mergerPDFName + ".pdf";
+            } else {
+                outputMergeFileName = defalutPDFName();
+            }
+            document = new Document(new PdfReader(filesPath[0]).getPageSize(1));
+            outputStream = new FileOutputStream(mergerPDFPath + File.separator + outputMergeFileName);
+            PdfCopy copy = new PdfCopy(document, outputStream);
+            document.open();
+            for (int i = 0; i < filesPath.length; i++) {
+                PdfReader reader = new PdfReader(filesPath[i]);
+                int n = reader.getNumberOfPages();
+                for (int j = 1; j <= n; j++) {
+                    document.newPage();
+                    PdfImportedPage page = copy.getImportedPage(reader, j);
+                    copy.addPage(page);
+                }
+            }
+            document.close();
+        } catch (Exception e) {
+            logger.debug(e.getMessage(), e);
+            throw new CapException(e.getMessage(), e.getClass());
+        } finally {
+            if (document.isOpen()) {
+                document.close();
+            }
+            IOUtils.closeQuietly(outputStream);
+        }
+        return new AjaxFormResult();
     }
 
     /**
@@ -157,9 +208,9 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      */
     private ByteArrayDownloadResult processPDFTemplate(Request request, String templateName, Map<String, Object> contentMap) {
         ByteArrayOutputStream out = null;
-        Writer writer = null;
         OutputStreamWriter wr = null;
         FileInputStream is = null;
+        Writer writer = null;
         try {
             if (templateName != null) {
                 Configuration config = getFmConfg().getConfiguration();
@@ -175,10 +226,13 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             return new ByteArrayDownloadResult(request, out.toByteArray(), ContextTypeEnum.text.toString());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+            throw new CapException(e.getMessage(), e.getClass());
         } finally {
+            IOUtils.closeQuietly(out);
+            IOUtils.closeQuietly(wr);
             IOUtils.closeQuietly(is);
+            IOUtils.closeQuietly(writer);
         }
-        return null;
     }
 
     /**
@@ -190,14 +244,13 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * @throws Exception
      */
     private void genByRender(OutputStream out, byte[] pdfContent, String encrypt) throws Exception {
-        // local test plz unMarked this code, but no commit to SVN
-        // System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.xsltc.trax.TransformerFactoryImpl");
         /**
-         * just start your local test use VM Arguments : -Djavax.xml.transform.TransformerFactory="org.apache.xalan.xsltc.trax.TransformerFactoryImpl"
+         * just start your local test use VM Arguments : -Djavax.xml.transform.TransformerFactory="org.apache.xalan.xsltc.trax.TransformerFactoryImpl" to SVN
          */
-        // System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl");
+        // local test please unmark below code, but don't commit unmark code to remote server
+        // System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.xsltc.trax.TransformerFactoryImpl");
 
-        Document document = XMLResource.load(new ByteArrayInputStream(pdfContent)).getDocument();
+        org.w3c.dom.Document document = XMLResource.load(new ByteArrayInputStream(pdfContent)).getDocument();
         ITextRenderer iTextRenderer = new ITextRenderer();
         ITextFontResolver fontResolver = iTextRenderer.getFontResolver();
         fontResolver.addFont(fontFactory.getFontPath("MSJH.TTF", ""), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);//// 微軟正黑體
@@ -215,10 +268,20 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             logger.debug("[genByRender] create pdf with no password");
         }
 
-        // iTextRenderer.setDocumentFromString(new String(pdfContent, "UTF-8"));
         iTextRenderer.setDocument(document, null);
         iTextRenderer.layout();
         iTextRenderer.createPDF(out);
+    }
+
+    /**
+     * 若無指定PDF檔案名稱，則預設給定檔案PDF_yyyyMMdd_hhmm_ss.pdf
+     * 
+     * @return defaultPDFName
+     */
+    private String defalutPDFName() {
+        String convertTimestampToString = CapDate.convertTimestampToString(CapDate.getCurrentTimestamp(), "yyyyMMdd_hhmm_ss");
+        String defaultPDFName = "PDF" + UNDER_LINE + convertTimestampToString + ".pdf";
+        return defaultPDFName;
     }
 
 }

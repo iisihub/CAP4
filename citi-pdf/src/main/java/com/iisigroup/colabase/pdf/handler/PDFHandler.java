@@ -114,4 +114,31 @@ public class PDFHandler extends MFormHandler {
         return result;
     }
 
+    /**
+     * 合併PDF
+     * 
+     * @param request
+     * @return
+     */
+    public Result mergePDF(Request request) {
+        AjaxFormResult result = new AjaxFormResult();
+        String mgPDFPath1 = request.get("mgPDFPath1", "");
+        String mgPDFPath2 = request.get("mgPDFPath2", "");
+        String genMgPDFPath = request.get("genMgPDFPath", "");
+        String genMgPDFName = request.get("genMgPDFName", "");
+        String[] filesPath = { mgPDFPath1, mgPDFPath2 };
+        if (!CapString.isEmpty(genMgPDFPath)) {
+            try {
+                pdfService.mergePDFFiles(filesPath, genMgPDFPath, genMgPDFName);
+                result.set("pdfReslut", "ok");
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.set("pdfReslut", e.getMessage());
+            }
+        } else {
+            result.set("pdfReslut", "No Merge PDF Path.");
+        }
+        return result;
+    }
+
 }

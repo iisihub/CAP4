@@ -12,7 +12,7 @@
     <script>
           loadScript('js/colaBaseDemo/pdf');
         </script>
-    <div style="height: 560px;">
+    <div style="height: auto;">
         <form id="pdfForm" autocomplete="off" method="post">
             <h3>Input Demo PDF Content</h3>
             <input id="custName" type="text" maxlength="20" placeholder="請輸入姓名" value=""/>
@@ -32,6 +32,17 @@
             <button id="genPDF" class="sendbtn" type="button" style="">產生PDF</button>
             <button id="dwnPDF" class="sendbtn" type="button" style="background: red;">下載PDF</button>
             <br />
+            <hr/>
+            <h3>Merge PDF</h3>
+	        <input id="mgPDFPath1" type="text" placeholder="請輸入要合併的PDF1路徑" value="/Users/cathy/Downloads/testPDF/test1.pdf"/>
+            <br />
+	        <input id="mgPDFPath2" type="text" placeholder="請輸入要合併的PDF2路徑" value="/Users/cathy/Downloads/testPDF/test2.pdf"/>
+            <br />    
+	        <input id="genMgPDFPath" type="text" placeholder="請輸入要合併後PDF產生路徑" value="/Users/cathy/Downloads/testPDF"/>
+            <br />    
+            <input id="genMgPDFName" type="text" placeholder="請輸入要合併後PDF檔案名稱" value=""/>
+            <br />
+            <button id="mergePDF" class="sendbtn" type="button" style="">合併PDF</button>
             <fieldset>
                 <legend>
                     <h3>Message</h3>

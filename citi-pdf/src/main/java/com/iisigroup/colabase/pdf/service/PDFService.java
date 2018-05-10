@@ -62,5 +62,30 @@ public interface PDFService {
      */
     public Result processPdf(Request request, Map<String, Object> dataMap, String templateName, String pdfPath, String pdfName, Boolean isDownloadPDF, String encryptPassword);
 
+    /**
+     * Process PDF Content
+     * 
+     * @param request
+     * @param dataMap
+     *            PDF欄位值資料Map
+     * @param templateName
+     *            FTL樣版名稱
+     * @param pdfType
+     *            PDF套入樣板格式
+     * @return
+     */
     public ByteArrayDownloadResult processPDFContent(Request request, Map<String, Object> dataMap, String templateName, PDFType pdfType);
+
+    /**
+     * Merge PDF Files
+     * 
+     * @param filesPath
+     *            要合併多個PDF路徑位置
+     * @param mergerPDFPath
+     *            合併後PDF的路徑位置
+     * @param mergerPDFName
+     *            合併後PDF名稱
+     * @return
+     */
+    public Result mergePDFFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName);
 }

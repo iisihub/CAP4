@@ -17,6 +17,13 @@ pageInit(function() {
       downloadPDF();
     });
 
+    // 合併PDF檔案
+    $("#mergePDF").on('click', function(e) {
+      e.preventDefault()
+      window.setCloseConfirm(false);
+      mergePDF();
+    });
+
     /**
      * 產生PDF
      */
@@ -27,7 +34,7 @@ pageInit(function() {
       var pdfPath = $("#pdfPath").val();
       var pdfName = $("#pdfName").val();
       var pdfPwd = $("#pdfPwd").val();
-      if(custName && custName && mPhone){
+      if (custName && custName && mPhone) {
         $.ajax({
           url : url('demopdfhandler/generatePDF'),
           type : 'post',
@@ -53,7 +60,7 @@ pageInit(function() {
             $("#pdfResultMsg").val(pdfResultMsg);
           }
         });
-      }else{
+      } else {
         $("#pdfResultMsg").val("請輸入PDF內容！");
       }
     }
@@ -91,6 +98,40 @@ pageInit(function() {
           $("#pdfResultMsg").val(pdfResultMsg);
         }
       });
+    }
+
+    /**
+     * 合併PDF
+     */
+    function mergePDF() {
+      var mgPDFPath1 = $("#mgPDFPath1").val();
+      var mgPDFPath2 = $("#mgPDFPath2").val();
+      var genMgPDFPath = $("#genMgPDFPath").val();
+      var genMgPDFName = $("#genMgPDFName").val();
+      if (mgPDFPath1 && mgPDFPath2) {
+        $.ajax({
+          url : url('demopdfhandler/mergePDF'),
+          type : 'post',
+          dataType : 'json',
+          data : {
+            mgPDFPath1 : mgPDFPath1,
+            mgPDFPath2 : mgPDFPath2,
+            genMgPDFPath : genMgPDFPath,
+            genMgPDFName : genMgPDFName
+          },
+          success : function(d) {
+            var pdfResultMsg;
+            if (d.pdfReslut == "ok") {
+              pdfResultMsg = "PDF合併成功！產生路徑： " + genMgPDFPath;
+            } else {
+              pdfResultMsg = "PDF產生失敗！ Error Message: " + d.pdfReslut;
+            }
+            $("#pdfResultMsg").val(pdfResultMsg);
+          }
+        });
+      } else {
+        $("#pdfResultMsg").val("請輸入PDF合併資訊！");
+      }
     }
 
   });
