@@ -2,30 +2,23 @@ package com.iisigroup.colabase.va.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.net.URLDecoder;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FileUtils;
+import org.bouncycastle.asn1.x509.Certificate;
 import org.bouncycastle.asn1.x509.CertificateList;
+import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.TBSCertList.CRLEntry;
-import org.bouncycastle.asn1.x509.X509CertificateStructure;
-import org.bouncycastle.asn1.x509.X509Extension;
 import org.bouncycastle.cert.CertException;
 import org.bouncycastle.cert.ocsp.OCSPReq;
 import org.bouncycastle.cert.ocsp.OCSPResp;
@@ -34,6 +27,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.iisigroup.cap.base.CapSystemProperties;
+import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.db.dao.SearchSetting;
+import com.iisigroup.cap.exception.CapException;
+import com.iisigroup.cap.utils.CapDate;
+import com.iisigroup.cap.utils.CapSystemConfig;
 import com.iisigroup.colabase.va.crypto.CryptoLibrary;
 import com.iisigroup.colabase.va.crypto.ICSCChecker;
 import com.iisigroup.colabase.va.crypto.PKCS7Verify;
@@ -46,13 +45,6 @@ import com.iisigroup.colabase.va.model.CrlCert;
 import com.iisigroup.colabase.va.model.TransLog;
 import com.iisigroup.colabase.va.service.VAService;
 import com.iisigroup.colabase.va.util.CommonCryptUtils;
-import com.iisigroup.cap.base.CapSystemProperties;
-import com.iisigroup.cap.component.Request;
-import com.iisigroup.cap.db.dao.SearchSetting;
-import com.iisigroup.cap.exception.CapException;
-import com.iisigroup.cap.exception.CapMessageException;
-import com.iisigroup.cap.utils.CapDate;
-import com.iisigroup.cap.utils.CapSystemConfig;
 
 @Service
 public class VAServiceImpl implements VAService {
@@ -288,7 +280,7 @@ public class VAServiceImpl implements VAService {
                 rc = "E001, PKCS7格式錯誤";
                 break;
             }
-            X509CertificateStructure signerCert = verifier.getSignerCert();
+            Certificate signerCert = verifier.getSignerCert();
             ret = CryptoLibrary.verifyCertChain(signerCert);
             if (!ret) {
                 rc = "E002, 驗證憑證鏈錯誤";
@@ -321,7 +313,7 @@ public class VAServiceImpl implements VAService {
         return rc;
     }
 
-    private void checkICSC(X509CertificateStructure ee, String personalId) throws SecurityException {
+    private void checkICSC(Certificate ee, String personalId) throws SecurityException {
         String ip = verPathDao.findByVerPathId("ICSC_IP").getParmValue();
         String port = verPathDao.findByVerPathId("ICSC_PORT").getParmValue();
         String uri = verPathDao.findByVerPathId("ICSC_URI").getParmValue();
@@ -350,7 +342,7 @@ public class VAServiceImpl implements VAService {
         }
     }
 
-    private void checkOCSP(X509CertificateStructure signerCert) {
+    private void checkOCSP(Certificate signerCert) {
         OCSPReq req = CryptoLibrary.generateOCSPRequest(CryptoLibrary.getCACert(signerCert), signerCert);
         if (req == null) {
             LOGGER.error("generateOCSPRequest fail.");
@@ -367,7 +359,7 @@ public class VAServiceImpl implements VAService {
             LOGGER.error("analyseOCSPResponse fail. rc = " + ret1);
             throw new SecurityException("W009");
         }
-        X509CertificateStructure signOCSP = CryptoLibrary.verifyOCSPResp(resp);
+        Certificate signOCSP = CryptoLibrary.verifyOCSPResp(resp);
         boolean ret = CryptoLibrary.verifyCertChain(signOCSP);
         if (!ret) {
             LOGGER.error("verifyCertChain fail.");
@@ -375,7 +367,7 @@ public class VAServiceImpl implements VAService {
         }
     }
 
-    private int verifyCertCRL(X509CertificateStructure signerCert) {
+    private int verifyCertCRL(Certificate signerCert) {
         int crlType = getCrlType(signerCert);
         if (crlCertDao.findCrlCountsByCertType(crlType) == 0) {
             return CryptoLibrary.ERROR_CERT_CRL_VERIFY_NOCRL;
@@ -392,7 +384,7 @@ public class VAServiceImpl implements VAService {
      * @param signerCert
      * @return
      */
-    private int getCrlType(X509CertificateStructure signerCert) {
+    private int getCrlType(Certificate signerCert) {
         String algorithm = String.valueOf(signerCert.getSignatureAlgorithm().getAlgorithm());
         if (algorithm.equals("1.2.840.113549.1.1.11")) {    // SHA256withRSA
             return 2;
@@ -414,7 +406,7 @@ public class VAServiceImpl implements VAService {
         for (CAInfo info : list) {
             String certData = info.getCertData();
             // 載入 CA 憑證到記憶體
-            X509CertificateStructure caCert = CryptoLibrary.loadCaCerts(CryptoLibrary.base64Decode(certData));
+            Certificate caCert = CryptoLibrary.loadCaCerts(CryptoLibrary.base64Decode(certData));
             if (caCert == null) {
                 LOGGER.error("LoadCaCerts fail : " + info.getCaName());
             }
@@ -446,7 +438,7 @@ public class VAServiceImpl implements VAService {
         for (CAInfo info : list) {
             String certData = info.getCertData();
             // 載入 CA 憑證到記憶體
-            X509CertificateStructure caCert = CryptoLibrary.loadCaCerts(CryptoLibrary.base64Decode(certData));
+            Certificate caCert = CryptoLibrary.loadCaCerts(CryptoLibrary.base64Decode(certData));
             if (caCert == null) {
                 LOGGER.error("LoadCaCerts fail : " + info.getCaName());
             }
@@ -580,8 +572,8 @@ public class VAServiceImpl implements VAService {
                 // 撤銷時間
                 crlCert.setExpireDate(crlEntry.getRevocationDate().getDate());
                 // CRL 理由代碼
-                X509Extension reasonCode = crlEntry.getExtensions().getExtension(X509Extension.reasonCode);
-                crlCert.setCertStatus(String.valueOf(reasonCode.getParsedValue().getEncoded()[2]));
+                Extension reasonCode = crlEntry.getExtensions().getExtension(Extension.reasonCode);
+                crlCert.setCertStatus(String.valueOf(reasonCode.getParsedValue().toASN1Primitive().getEncoded()[2]));
                 crlCerts.add(crlCert);
             }
 
@@ -614,8 +606,8 @@ public class VAServiceImpl implements VAService {
         }
     }
 
-    public X509CertificateStructure loadCaCerts(byte[] p7bcertchain) throws CertException {
-        X509CertificateStructure caCert = CryptoLibrary.loadCaCerts(p7bcertchain);
+    public Certificate loadCaCerts(byte[] p7bcertchain) throws CertException {
+        Certificate caCert = CryptoLibrary.loadCaCerts(p7bcertchain);
         if (caCert == null) {
             throw new CertException("There is no valid CA cert.");
         } else {
@@ -627,7 +619,7 @@ public class VAServiceImpl implements VAService {
         return caCert;
     }
 
-    public String getCertInfoByType(X509CertificateStructure cert, CertInfoType type) {
+    public String getCertInfoByType(Certificate cert, CertInfoType type) {
         String result = null;
         switch (type) {
         case CERT_TYPE:
@@ -674,7 +666,7 @@ public class VAServiceImpl implements VAService {
         return result;
     }
 
-    public X509CertificateStructure getSignerCert(String p7b) {
+    public Certificate getSignerCert(String p7b) {
         PKCS7Verify verifier = new PKCS7Verify();
         if (verifier.verify(CryptoLibrary.base64Decode(p7b))) {
             return verifier.getSignerCert();

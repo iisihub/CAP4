@@ -2,10 +2,8 @@ package com.iisigroup.colabase.va.service;
 
 import java.util.Date;
 
-import org.bouncycastle.asn1.x509.X509CertificateStructure;
+import org.bouncycastle.asn1.x509.Certificate;
 import org.bouncycastle.cert.CertException;
-
-import com.iisigroup.cap.component.Request;
 
 public interface VAService {
 
@@ -28,7 +26,7 @@ public interface VAService {
      * @param p7b
      * @return
      */
-    X509CertificateStructure getSignerCert(String p7b);
+    Certificate getSignerCert(String p7b);
     
     /**
      * 
@@ -96,7 +94,7 @@ public interface VAService {
      * @param p7bcertchain
      * @return
      */
-    X509CertificateStructure loadCaCerts(byte[] p7bcertchain) throws CertException;
+    Certificate loadCaCerts(byte[] p7bcertchain) throws CertException;
 
     /**
      * 根據憑證資訊種類取得對應資訊
@@ -107,7 +105,7 @@ public interface VAService {
      *            CertInfoType
      * @return
      */
-    String getCertInfoByType(X509CertificateStructure cert, CertInfoType type);
+    String getCertInfoByType(Certificate cert, CertInfoType type);
 
     /**
      * hash

@@ -11,7 +11,7 @@ import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bouncycastle.asn1.x509.X509CertificateStructure;
+import org.bouncycastle.asn1.x509.Certificate;
 
 /**
  * 提供自然人憑證(MOICA)身份驗證功能 使用該功能需已成功申請內政部憑證及已開通驗證功能
@@ -109,7 +109,7 @@ public class ICSCChecker {
      *            欲驗證之身份證字號
      * @return 0為成功，其他參考ErrorCode
      */
-    public int checkMOICAICSC(X509CertificateStructure ee, String ID, Proxy proxy) {
+    public int checkMOICAICSC(Certificate ee, String ID, Proxy proxy) {
         int ret = 0;
         do {
             String SN = null;

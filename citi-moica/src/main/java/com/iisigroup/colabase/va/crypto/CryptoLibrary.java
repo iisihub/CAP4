@@ -30,32 +30,35 @@ import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1OutputStream;
 import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.ASN1String;
 import org.bouncycastle.asn1.DERBitString;
 import org.bouncycastle.asn1.DERIA5String;
-import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DEROctetString;
-import org.bouncycastle.asn1.DERString;
 import org.bouncycastle.asn1.cms.ContentInfo;
 import org.bouncycastle.asn1.cms.SignedData;
 import org.bouncycastle.asn1.ocsp.OCSPObjectIdentifiers;
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
-import org.bouncycastle.asn1.pkcs.RSAPrivateKeyStructure;
+import org.bouncycastle.asn1.pkcs.RSAPrivateKey;
+import org.bouncycastle.asn1.pkcs.RSAPublicKey;
+import org.bouncycastle.asn1.x500.RDN;
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.asn1.x509.AccessDescription;
 import org.bouncycastle.asn1.x509.AuthorityInformationAccess;
 import org.bouncycastle.asn1.x509.AuthorityKeyIdentifier;
 import org.bouncycastle.asn1.x509.CRLDistPoint;
+import org.bouncycastle.asn1.x509.Certificate;
 import org.bouncycastle.asn1.x509.CertificateList;
 import org.bouncycastle.asn1.x509.DistributionPoint;
 import org.bouncycastle.asn1.x509.DistributionPointName;
+import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.Extensions;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.KeyUsage;
-import org.bouncycastle.asn1.x509.RSAPublicKeyStructure;
 import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
-import org.bouncycastle.asn1.x509.TBSCertificateStructure;
-import org.bouncycastle.asn1.x509.X509CertificateStructure;
-import org.bouncycastle.asn1.x509.X509Extension;
-import org.bouncycastle.asn1.x509.X509Extensions;
+import org.bouncycastle.asn1.x509.TBSCertificate;
 import org.bouncycastle.asn1.x509.X509Name;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.ocsp.BasicOCSPResp;
@@ -191,7 +194,7 @@ public final class CryptoLibrary {
      *            憑證
      * @return 若有在定義內(MOEACA、MOICA、GCA、XCA、GTESTCA)或輸出 NULL
      */
-    public static String getCertType(X509CertificateStructure cert) {
+    public static String getCertType(Certificate cert) {
         String ret = null;
         do {
 
@@ -404,7 +407,7 @@ public final class CryptoLibrary {
         ASN1InputStream ais = null;
         try {
             ais = new ASN1InputStream(data);
-            RSAPublicKeyStructure pubKS = new RSAPublicKeyStructure((ASN1Sequence) ais.readObject());
+            RSAPublicKey pubKS = RSAPublicKey.getInstance(ais.readObject());
             ret = new RSAKeyParameters(false, pubKS.getModulus(), pubKS.getPublicExponent());
         } catch (Exception e) {
         } finally {
@@ -429,7 +432,7 @@ public final class CryptoLibrary {
         ASN1InputStream ais = null;
         try {
             ais = new ASN1InputStream(data);
-            RSAPrivateKeyStructure priKS = new RSAPrivateKeyStructure((ASN1Sequence) ais.readObject());
+            RSAPrivateKey priKS = RSAPrivateKey.getInstance(ais.readObject());
             ret = new RSAPrivateCrtKeyParameters(priKS.getModulus(), priKS.getPublicExponent(), priKS.getPrivateExponent(), priKS.getPrime1(), priKS.getPrime2(), priKS.getExponent1(),
                     priKS.getExponent2(), priKS.getCoefficient());
         } catch (Exception e) {
@@ -451,13 +454,13 @@ public final class CryptoLibrary {
      * @return
      */
     public static byte[] getRSAPubKey(RSAKeyParameters rsaKey) throws Exception {
-        RSAPublicKeyStructure pubKS = null;
+        RSAPublicKey pubKS = null;
         byte[] ret = null;
         try {
             if (rsaKey.isPrivate()) {
-                pubKS = new RSAPublicKeyStructure(rsaKey.getModulus(), ((RSAPrivateCrtKeyParameters) rsaKey).getPublicExponent());
+                pubKS = new RSAPublicKey(rsaKey.getModulus(), ((RSAPrivateCrtKeyParameters) rsaKey).getPublicExponent());
             } else {
-                pubKS = new RSAPublicKeyStructure(rsaKey.getModulus(), rsaKey.getExponent());
+                pubKS = new RSAPublicKey(rsaKey.getModulus(), rsaKey.getExponent());
             }
             ret = pubKS.getEncoded();
         } catch (Exception e) {
@@ -473,11 +476,11 @@ public final class CryptoLibrary {
      */
     public static byte[] getRSAPriKey(RSAKeyParameters rsaKey) {
         byte[] ret = null;
-        RSAPrivateKeyStructure priKS = null;
+        RSAPrivateKey priKS = null;
         try {
             if (rsaKey.isPrivate()) {
                 RSAPrivateCrtKeyParameters rsaPri = (RSAPrivateCrtKeyParameters) rsaKey;
-                priKS = new RSAPrivateKeyStructure(rsaPri.getModulus(), rsaPri.getPublicExponent(), rsaPri.getExponent(), rsaPri.getP(), rsaPri.getQ(), rsaPri.getDP(), rsaPri.getDQ(),
+                priKS = new RSAPrivateKey(rsaPri.getModulus(), rsaPri.getPublicExponent(), rsaPri.getExponent(), rsaPri.getP(), rsaPri.getQ(), rsaPri.getDP(), rsaPri.getDQ(),
                         rsaPri.getQInv());
                 ret = priKS.getEncoded();
             }
@@ -637,8 +640,8 @@ public final class CryptoLibrary {
      *            (DER格式之PKCS7)
      * @return
      */
-    public static X509CertificateStructure[] getP7bCerts(byte[] p7bDer) {
-        X509CertificateStructure[] ret = null;
+    public static Certificate[] getP7bCerts(byte[] p7bDer) {
+        Certificate[] ret = null;
         do {
             ASN1InputStream ais = null;
             try {
@@ -657,9 +660,9 @@ public final class CryptoLibrary {
                 }
                 SignedData p7b = SignedData.getInstance(p7bContent.getContent());
                 int certs = p7b.getCertificates().size();
-                ret = new X509CertificateStructure[certs];
+                ret = new Certificate[certs];
                 for (int i = 0; i < certs; i++) {
-                    ret[i] = X509CertificateStructure.getInstance(p7b.getCertificates().getObjectAt(i));
+                    ret[i] = Certificate.getInstance(p7b.getCertificates().getObjectAt(i));
                 }
             } catch (Exception e) {
                 ret = null;
@@ -682,8 +685,8 @@ public final class CryptoLibrary {
      *            (DER格式之X509憑證)
      * @return
      */
-    public static X509CertificateStructure getX509Cert(byte[] x509der) {
-        X509CertificateStructure ret = null;
+    public static Certificate getX509Cert(byte[] x509der) {
+        Certificate ret = null;
         do {
             ASN1InputStream ais = null;
             try {
@@ -696,7 +699,7 @@ public final class CryptoLibrary {
                     byte[] der = base64Decode(new String(x509der));
                     ais = new ASN1InputStream(der);
                 }
-                ret = new X509CertificateStructure((ASN1Sequence) ais.readObject());
+                ret = Certificate.getInstance((ASN1Sequence) ais.readObject());
             } catch (Exception e) {
                 ret = null;
             } finally {
@@ -717,7 +720,7 @@ public final class CryptoLibrary {
      * @param x509der
      * @return
      */
-    public static String getX509CertString(X509CertificateStructure x509der) {
+    public static String getX509CertString(Certificate x509der) {
         String ret = null;
         do {
             try {
@@ -736,20 +739,20 @@ public final class CryptoLibrary {
      * @param eeCert
      * @return
      */
-    public static boolean verifyCertChain(X509CertificateStructure eeCert) {
+    public static boolean verifyCertChain(Certificate eeCert) {
         boolean ret = false;
         do {
 
             String certAKI = CryptoLibrary.getX509AuthorityKeyIdentifier(eeCert);
             if (caCertsList.containsKey(certAKI)) {
-                X509CertificateStructure caCert = (X509CertificateStructure) caCertsList.get(certAKI);
+                Certificate caCert = (Certificate) caCertsList.get(certAKI);
                 if (CryptoLibrary.verifyCert(eeCert, caCert)) {
                     ret = true;
                 } else {
                     ret = false;
                 }
             } else if (rootCertsList.containsKey(certAKI)) {
-                X509CertificateStructure caCert = (X509CertificateStructure) rootCertsList.get(certAKI);
+                Certificate caCert = (Certificate) rootCertsList.get(certAKI);
                 if (!CryptoLibrary.verifyCert(eeCert, caCert)) {
                     ret = true;
                 } else {
@@ -769,16 +772,16 @@ public final class CryptoLibrary {
      * @param eeCert
      * @return
      */
-    public static X509CertificateStructure getCACert(X509CertificateStructure eeCert) {
-        X509CertificateStructure ret = null;
+    public static Certificate getCACert(Certificate eeCert) {
+        Certificate ret = null;
         do {
 
             String certAKI = CryptoLibrary.getX509AuthorityKeyIdentifier(eeCert);
             if (caCertsList.containsKey(certAKI)) {
-                ret = (X509CertificateStructure) caCertsList.get(certAKI);
+                ret = (Certificate) caCertsList.get(certAKI);
 
             } else if (rootCertsList.containsKey(certAKI)) {
-                ret = (X509CertificateStructure) rootCertsList.get(certAKI);
+                ret = (Certificate) rootCertsList.get(certAKI);
 
             } else {
                 ret = null;
@@ -833,17 +836,17 @@ public final class CryptoLibrary {
                 }
                 String issuerCN = "";
                 X509CRLObject crlObj = new X509CRLObject(crl);
-                X509Extensions crlExt = crl.getTBSCertList().getExtensions();
+                Extensions crlExt = crl.getTBSCertList().getExtensions();
                 issuerCN = CryptoLibrary.getExtensionsAuthorityKeyIdentifier(crlExt);
                 if (caCertsList.containsKey(issuerCN)) {
-                    X509CertificateStructure caCert = (X509CertificateStructure) caCertsList.get(issuerCN);
+                    Certificate caCert = (Certificate) caCertsList.get(issuerCN);
                     if (CryptoLibrary.verifyCRL(crlObj, caCert)) {
                         ret = true;
                     } else {
                         ret = false;
                     }
                 } else if (rootCertsList.containsKey(issuerCN)) {
-                    X509CertificateStructure caCert = (X509CertificateStructure) rootCertsList.get(issuerCN);
+                    Certificate caCert = (Certificate) rootCertsList.get(issuerCN);
                     if (!CryptoLibrary.verifyCRL(crlObj, caCert)) {
                         ret = true;
                     } else {
@@ -903,7 +906,7 @@ public final class CryptoLibrary {
      *            要驗CRL之憑證物件
      * @return
      */
-    public static int verifyCertCRL(X509CertificateStructure eeCert) {
+    public static int verifyCertCRL(Certificate eeCert) {
         int ret = 0;
         do {
 
@@ -933,7 +936,7 @@ public final class CryptoLibrary {
      * @param cert
      * @return
      */
-    public static X509Certificate getX509Cert(X509CertificateStructure cert) {
+    public static X509Certificate getX509Cert(Certificate cert) {
         X509Certificate ret = null;
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
@@ -954,10 +957,10 @@ public final class CryptoLibrary {
      * @param cert
      * @return
      */
-    public static X509CertificateStructure getX509Cert(X509Certificate cert) {
-        X509CertificateStructure ret = null;
+    public static Certificate getX509Cert(X509Certificate cert) {
+        Certificate ret = null;
         try {
-            ret = X509CertificateStructure.getInstance(cert.getEncoded());
+            ret = Certificate.getInstance(cert.getEncoded());
         } catch (Exception e) {
         }
         return ret;
@@ -971,7 +974,7 @@ public final class CryptoLibrary {
      *            (若為null則與目前時間比較)
      * @return
      */
-    public static int checkCertDateValid(X509CertificateStructure cert, Date date) {
+    public static int checkCertDateValid(Certificate cert, Date date) {
         int ret = 0;
         try {
             X509Certificate cert1 = CryptoLibrary.getX509Cert(cert);
@@ -996,7 +999,7 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static String getX509Serial(X509CertificateStructure x509Cert) {
+    public static String getX509Serial(Certificate x509Cert) {
         return x509Cert.getTBSCertificate().getSerialNumber().getPositiveValue().toString(16).toUpperCase();
     }
 
@@ -1006,7 +1009,7 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static int getX509Serial_10(X509CertificateStructure x509Cert) {
+    public static int getX509Serial_10(Certificate x509Cert) {
         return Integer.parseInt(x509Cert.getTBSCertificate().getSerialNumber().getPositiveValue().toString(10));
     }
 
@@ -1016,10 +1019,17 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static String getX509CN(X509CertificateStructure x509Cert) {
+    public static String getX509CN(Certificate x509Cert) {
         String ret = null;
-        ret = x509Cert.getSubject().getValues(X509Name.CN).toString();
-        if (ret.startsWith("[")) {
+        X500Name x500name = x509Cert.getSubject();
+        RDN[] rdns = x500name.getRDNs(BCStyle.CN);
+        if(rdns.length > 0) {
+            RDN rdn = x500name.getRDNs(BCStyle.CN)[0];
+            // TODO check if work
+            ret = rdn.toString();
+            LOGGER.debug("CN String (toString) vs. (IETFUtils)" + ret + " vs. " + IETFUtils.valueToString(rdn.getFirst().getValue()));
+        }
+        if (ret != null && ret.startsWith("[")) {
             ret = ret.substring(1, ret.length() - 1);
         }
         return ret;
@@ -1031,7 +1041,7 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static String getX509Subject(X509CertificateStructure x509Cert) {
+    public static String getX509Subject(Certificate x509Cert) {
         return x509Cert.getSubject().toString();
     }
 
@@ -1041,7 +1051,7 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static String getX509Issuer(X509CertificateStructure x509Cert) {
+    public static String getX509Issuer(Certificate x509Cert) {
         return x509Cert.getIssuer().toString();
     }
 
@@ -1051,7 +1061,7 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static String getX509NotBefore(X509CertificateStructure x509Cert) {
+    public static String getX509NotBefore(Certificate x509Cert) {
         return CryptoLibrary.certDateToGMT8(x509Cert.getStartDate().getTime().substring(0, 14));
     }
 
@@ -1061,7 +1071,7 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static String getX509NotAfter(X509CertificateStructure x509Cert) {
+    public static String getX509NotAfter(Certificate x509Cert) {
         return CryptoLibrary.certDateToGMT8(x509Cert.getEndDate().getTime().substring(0, 14));
     }
 
@@ -1071,7 +1081,7 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static String getX509Finger(X509CertificateStructure x509Cert) {
+    public static String getX509Finger(Certificate x509Cert) {
         String ret = null;
         try {
             byte[] x509 = x509Cert.getEncoded();
@@ -1087,30 +1097,30 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static DERBitString getX509KeyUsage(X509CertificateStructure x509Cert) {
+    public static DERBitString getX509KeyUsage(Certificate x509Cert) {
         DERBitString ret = null;
         do {
-            TBSCertificateStructure tbsCert = x509Cert.getTBSCertificate();
-            if (tbsCert.getVersion() != 3) {
+            TBSCertificate tbsCert = x509Cert.getTBSCertificate();
+            if (tbsCert.getVersion().getValue().intValue() != 3) {
                 break;
             }
-            X509Extensions ext = tbsCert.getExtensions();
+            Extensions ext = tbsCert.getExtensions();
             if (ext == null) {
                 break;
             }
 
             java.util.Enumeration en = ext.oids();
             while (en.hasMoreElements()) {
-                DERObjectIdentifier oid = (DERObjectIdentifier) en.nextElement();
-                X509Extension extVal = ext.getExtension(oid);
+                ASN1ObjectIdentifier oid = (ASN1ObjectIdentifier) en.nextElement();
+                Extension extVal = ext.getExtension(oid);
 
-                ASN1OctetString oct = extVal.getValue();
+                ASN1OctetString oct = extVal.getExtnValue();
                 ASN1InputStream extIn = null;
 
-                if (oid.equals(X509Extensions.KeyUsage)) {
+                if (oid.equals(Extension.keyUsage)) {
                     try {
                         extIn = new ASN1InputStream(new ByteArrayInputStream(oct.getOctets()));
-                        ret = KeyUsage.getInstance(extIn.readObject());
+                        ret = new DERBitString(extIn.readObject());
                     } catch (Exception e) {
                     } finally {
                         if (extIn != null) {
@@ -1133,7 +1143,7 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static byte[] getX509KeyUsageBytes(X509CertificateStructure x509Cert) {
+    public static byte[] getX509KeyUsageBytes(Certificate x509Cert) {
         byte[] ret = null;
         DERBitString bitstr = getX509KeyUsage(x509Cert);
         if (bitstr != null) {
@@ -1142,13 +1152,13 @@ public final class CryptoLibrary {
         return ret;
     }
 
-    public static List<URL> getURLs(X509CertificateStructure cert1) {
+    public static List<URL> getURLs(Certificate cert1) {
         X509Certificate cert = CryptoLibrary.getX509Cert(cert1);
 
         List<URL> urls = new LinkedList<URL>();
 
         // Retrieves the raw ASN1 data of the CRL Dist Points X509 extension
-        byte[] cdp = cert.getExtensionValue(X509Extensions.CRLDistributionPoints.getId());
+        byte[] cdp = cert.getExtensionValue(Extension.cRLDistributionPoints.getId());
         if (cdp != null) {
             try {
                 // Wraps the raw data in a container class
@@ -1164,7 +1174,7 @@ public final class CryptoLibrary {
                     for (GeneralName name : gns.getNames()) {
                         // Only retrieve URLs
                         if (name.getTagNo() == GeneralName.uniformResourceIdentifier) {
-                            DERString s = (DERString) name.getName();
+                            ASN1String s = (ASN1String) name.getName();
                             urls.add(new URL(s.getString()));
                         }
                     }
@@ -1184,7 +1194,7 @@ public final class CryptoLibrary {
      * @param exts
      * @return
      */
-    public static String getExtensionsCrlDistributionPoint(X509Extensions exts) {
+    public static String getExtensionsCrlDistributionPoint(Extensions exts) {
         String ret = "";
         CRLDistPoint dp = null;
         DistributionPoint[] dps = null;
@@ -1199,12 +1209,12 @@ public final class CryptoLibrary {
 
             java.util.Enumeration en = exts.oids();
             while (en.hasMoreElements()) {
-                DERObjectIdentifier oid = (DERObjectIdentifier) en.nextElement();
-                X509Extension extVal = exts.getExtension(oid);
+                ASN1ObjectIdentifier oid = (ASN1ObjectIdentifier) en.nextElement();
+                Extension extVal = exts.getExtension(oid);
 
-                ASN1OctetString oct = extVal.getValue();
+                ASN1OctetString oct = extVal.getExtnValue();
 
-                if (oid.equals(X509Extensions.CRLDistributionPoints)) {
+                if (oid.equals(Extension.cRLDistributionPoints)) {
                     ASN1InputStream extIn = null;
                     try {
                         extIn = new ASN1InputStream(new ByteArrayInputStream(oct.getOctets()));
@@ -1250,11 +1260,11 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static String getX509CrlDistributionPoint(X509CertificateStructure x509Cert) {
+    public static String getX509CrlDistributionPoint(Certificate x509Cert) {
         String ret = "";
         do {
-            TBSCertificateStructure tbsCert = x509Cert.getTBSCertificate();
-            if (tbsCert.getVersion() != 3) {
+            TBSCertificate tbsCert = x509Cert.getTBSCertificate();
+            if (tbsCert.getVersion().getValue().intValue() != 3) {
                 break;
             }
             ret = CryptoLibrary.getExtensionsCrlDistributionPoint(tbsCert.getExtensions());
@@ -1268,7 +1278,7 @@ public final class CryptoLibrary {
      * @param exts
      * @return
      */
-    public static String getExtensionsAuthorityKeyIdentifier(X509Extensions exts) {
+    public static String getExtensionsAuthorityKeyIdentifier(Extensions exts) {
         String ret = "";
 
         do {
@@ -1278,12 +1288,12 @@ public final class CryptoLibrary {
 
             java.util.Enumeration en = exts.oids();
             while (en.hasMoreElements()) {
-                DERObjectIdentifier oid = (DERObjectIdentifier) en.nextElement();
-                X509Extension extVal = exts.getExtension(oid);
+                ASN1ObjectIdentifier oid = (ASN1ObjectIdentifier) en.nextElement();
+                Extension extVal = exts.getExtension(oid);
 
-                ASN1OctetString oct = extVal.getValue();
+                ASN1OctetString oct = extVal.getExtnValue();
 
-                if (oid.equals(X509Extensions.AuthorityKeyIdentifier)) {
+                if (oid.equals(Extension.authorityKeyIdentifier)) {
                     ASN1InputStream extIn = null;
                     try {
                         extIn = new ASN1InputStream(new ByteArrayInputStream(oct.getOctets()));
@@ -1311,7 +1321,7 @@ public final class CryptoLibrary {
      * @param exts
      * @return
      */
-    public static String getExtensionsSubjectKeyIdentifier(X509Extensions exts) {
+    public static String getExtensionsSubjectKeyIdentifier(Extensions exts) {
         String ret = "";
 
         do {
@@ -1321,12 +1331,12 @@ public final class CryptoLibrary {
 
             java.util.Enumeration en = exts.oids();
             while (en.hasMoreElements()) {
-                DERObjectIdentifier oid = (DERObjectIdentifier) en.nextElement();
-                X509Extension extVal = exts.getExtension(oid);
+                ASN1ObjectIdentifier oid = (ASN1ObjectIdentifier) en.nextElement();
+                Extension extVal = exts.getExtension(oid);
 
-                ASN1OctetString oct = extVal.getValue();
+                ASN1OctetString oct = extVal.getExtnValue();
 
-                if (oid.equals(X509Extensions.SubjectKeyIdentifier)) {
+                if (oid.equals(Extension.subjectKeyIdentifier)) {
                     ASN1InputStream extIn = null;
                     try {
                         extIn = new ASN1InputStream(new ByteArrayInputStream(oct.getOctets()));
@@ -1354,11 +1364,11 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static String getX509AuthorityKeyIdentifier(X509CertificateStructure x509Cert) {
+    public static String getX509AuthorityKeyIdentifier(Certificate x509Cert) {
         String ret = "";
         do {
-            TBSCertificateStructure tbsCert = x509Cert.getTBSCertificate();
-            if (tbsCert.getVersion() != 3) {
+            TBSCertificate tbsCert = x509Cert.getTBSCertificate();
+            if (tbsCert.getVersion().getValue().intValue() != 3) {
                 break;
             }
             ret = CryptoLibrary.getExtensionsAuthorityKeyIdentifier(tbsCert.getExtensions());
@@ -1372,11 +1382,11 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static String getExtensionsSubjectKeyIdentifier(X509CertificateStructure x509Cert) {
+    public static String getExtensionsSubjectKeyIdentifier(Certificate x509Cert) {
         String ret = "";
         do {
-            TBSCertificateStructure tbsCert = x509Cert.getTBSCertificate();
-            if (tbsCert.getVersion() != 3) {
+            TBSCertificate tbsCert = x509Cert.getTBSCertificate();
+            if (tbsCert.getVersion().getValue().intValue() != 3) {
                 break;
             }
             ret = CryptoLibrary.getExtensionsSubjectKeyIdentifier(tbsCert.getExtensions());
@@ -1390,10 +1400,10 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static RSAPublicKeyStructure getX509PublicKey(X509CertificateStructure x509Cert) {
-        RSAPublicKeyStructure ret = null;
+    public static RSAPublicKey getX509PublicKey(Certificate x509Cert) {
+        RSAPublicKey ret = null;
         try {
-            ret = new RSAPublicKeyStructure((ASN1Sequence) x509Cert.getSubjectPublicKeyInfo().getPublicKey());
+            ret = RSAPublicKey.getInstance(x509Cert.getSubjectPublicKeyInfo().getPublicKey());
         } catch (Exception e) {
         }
         return ret;
@@ -1406,7 +1416,7 @@ public final class CryptoLibrary {
      * @param caCert
      * @return
      */
-    public static boolean verifyCert(X509CertificateStructure x509Cert, X509CertificateStructure caCert) {
+    public static boolean verifyCert(Certificate x509Cert, Certificate caCert) {
         boolean ret = false;
         java.security.PublicKey caKey = null;
         X509CertificateObject ca = null;
@@ -1431,7 +1441,7 @@ public final class CryptoLibrary {
      * @param caCert
      * @return
      */
-    public static boolean verifyCRL(X509CRLObject crl, X509CertificateStructure caCert) {
+    public static boolean verifyCRL(X509CRLObject crl, Certificate caCert) {
         boolean ret = false;
         java.security.PublicKey caKey = null;
         X509CertificateObject ca = null;
@@ -1462,9 +1472,9 @@ public final class CryptoLibrary {
      * @param p7bcertchain
      * @return
      */
-    public static X509CertificateStructure loadCaCerts(byte[] p7bcertchain) {
-        X509CertificateStructure caCert = null;
-        X509CertificateStructure[] certs = null;
+    public static Certificate loadCaCerts(byte[] p7bcertchain) {
+        Certificate caCert = null;
+        Certificate[] certs = null;
         do {
             try {
                 certs = CryptoLibrary.getP7bCerts(p7bcertchain);
@@ -1472,7 +1482,7 @@ public final class CryptoLibrary {
                 break;
             }
             for (int j = 0; j < certs.length; j++) {
-                X509CertificateStructure thisCert = certs[j];
+                Certificate thisCert = certs[j];
                 String certSubject = CryptoLibrary.getX509Subject(thisCert);
                 String certIssuer = CryptoLibrary.getX509Issuer(thisCert);
                 String certSKI = CryptoLibrary.getExtensionsSubjectKeyIdentifier(thisCert.getTBSCertificate().getExtensions());
@@ -1510,14 +1520,14 @@ public final class CryptoLibrary {
         Enumeration elms = caCertsList.elements();
         boolean done = true;
         while (elms.hasMoreElements()) {
-            X509CertificateStructure caCert = null;
-            X509CertificateStructure thisCert = (X509CertificateStructure) elms.nextElement();
+            Certificate caCert = null;
+            Certificate thisCert = (Certificate) elms.nextElement();
             String certSKI = CryptoLibrary.getExtensionsSubjectKeyIdentifier(thisCert.getTBSCertificate().getExtensions());
             String certAKI = CryptoLibrary.getExtensionsAuthorityKeyIdentifier(thisCert.getTBSCertificate().getExtensions());
             if (caCertsList.containsKey(certAKI)) {
-                caCert = (X509CertificateStructure) caCertsList.get(certAKI);
+                caCert = (Certificate) caCertsList.get(certAKI);
             } else if (rootCertsList.containsKey(certAKI)) {
-                caCert = (X509CertificateStructure) rootCertsList.get(certAKI);
+                caCert = (Certificate) rootCertsList.get(certAKI);
             } else if (!rootCertsList.containsKey(certAKI)) {
                 caCertsList.remove(certSKI);
                 continue;
@@ -1561,7 +1571,7 @@ public final class CryptoLibrary {
             Vector crlSerialList = new Vector();
             boolean crlFalure = false;
             try {
-                X509Extensions crlExt = crl.getTBSCertList().getExtensions();
+                Extensions crlExt = crl.getTBSCertList().getExtensions();
                 String keyIdentifier = CryptoLibrary.getExtensionsAuthorityKeyIdentifier(crlExt);
                 if (keyIdentifier.length() > 0) {
                     issuerCN = keyIdentifier;
@@ -1685,13 +1695,13 @@ public final class CryptoLibrary {
      * @param certst
      * @return
      */
-    public static String getAIALocation(X509CertificateStructure certst) {
+    public static String getAIALocation(Certificate certst) {
         AuthorityInformationAccess authorityInformationAccess = null;
         String OCSPUrl = null;
         do {
             ASN1InputStream asn1InOctets = null;
             try {
-                DEROctetString aiaDEROctetString = (DEROctetString) certst.getTBSCertificate().getExtensions().getExtension(X509Extensions.AuthorityInfoAccess).getValue();
+                DEROctetString aiaDEROctetString = (DEROctetString) certst.getTBSCertificate().getExtensions().getExtension(Extension.authorityInfoAccess).getExtnValue();
                 asn1InOctets = new ASN1InputStream(aiaDEROctetString.getOctets());
                 ASN1Sequence aiaASN1Sequence = (ASN1Sequence) asn1InOctets.readObject();
                 authorityInformationAccess = AuthorityInformationAccess.getInstance(aiaASN1Sequence);
@@ -1736,7 +1746,7 @@ public final class CryptoLibrary {
      * @param cert
      * @return
      */
-    public static String getEnterpriseId(X509CertificateStructure cert) {
+    public static String getEnterpriseId(Certificate cert) {
         String ret = null;
         do {
             if (cert == null) {
@@ -1745,7 +1755,7 @@ public final class CryptoLibrary {
 
             try {
                 ASN1ObjectIdentifier xx = new ASN1ObjectIdentifier("2.5.29.9");
-                DEROctetString aiaDEROctetString = (DEROctetString) cert.getTBSCertificate().getExtensions().getExtension(xx).getValue();
+                DEROctetString aiaDEROctetString = (DEROctetString) cert.getTBSCertificate().getExtensions().getExtension(xx).getExtnValue();
                 byte[] arrayOfByte1 = aiaDEROctetString.getEncoded();
                 if (arrayOfByte1 == null) {
                     break;
@@ -1771,7 +1781,7 @@ public final class CryptoLibrary {
      * @param cert
      * @return
      */
-    public static String getPersonId(X509CertificateStructure cert) {
+    public static String getPersonId(Certificate cert) {
         String ret = null;
         do {
             if (cert == null) {
@@ -1779,7 +1789,7 @@ public final class CryptoLibrary {
             }
             try {
                 ASN1ObjectIdentifier xx = new ASN1ObjectIdentifier("2.5.29.9");
-                DEROctetString aiaDEROctetString = (DEROctetString) cert.getTBSCertificate().getExtensions().getExtension(xx).getValue();
+                DEROctetString aiaDEROctetString = (DEROctetString) cert.getTBSCertificate().getExtensions().getExtension(xx).getExtnValue();
 
                 byte[] arrayOfByte1 = aiaDEROctetString.getEncoded();
                 if (arrayOfByte1 == null) {
@@ -1809,7 +1819,7 @@ public final class CryptoLibrary {
      *            要驗證之憑證
      * @return
      */
-    public static OCSPReq generateOCSPRequest(X509CertificateStructure uca, X509CertificateStructure ee) {
+    public static OCSPReq generateOCSPRequest(Certificate uca, Certificate ee) {
         OCSPReq Req = null;
         do {
             try {
@@ -1823,12 +1833,8 @@ public final class CryptoLibrary {
                 // create a nonce to avoid replay attack
                 BigInteger nonce = BigInteger.valueOf(System.currentTimeMillis());
 
-                Vector<ASN1ObjectIdentifier> objectIdentifiers = new Vector<ASN1ObjectIdentifier>();
-                Vector<X509Extension> values = new Vector<X509Extension>();
-
-                objectIdentifiers.add(OCSPObjectIdentifiers.id_pkix_ocsp_nonce);
-                values.add(new X509Extension(false, new DEROctetString(nonce.toByteArray())));
-                ocspGen.setRequestExtensions(new X509Extensions(objectIdentifiers, values));
+                Extension ex = new Extension(OCSPObjectIdentifiers.id_pkix_ocsp_nonce, false, new DEROctetString(nonce.toByteArray()));
+                ocspGen.setRequestExtensions(new Extensions (ex));
                 Req = ocspGen.build();
             } catch (Exception e) {
                 break;
@@ -1889,8 +1895,8 @@ public final class CryptoLibrary {
             try {
                 BasicOCSPResp basicResponse = (BasicOCSPResp) response.getResponseObject();
                 SingleResp[] responses = basicResponse.getResponses();
-                byte[] reqNonce = request.getExtension(OCSPObjectIdentifiers.id_pkix_ocsp_nonce).getValue().getOctets();
-                byte[] respNonce = basicResponse.getExtension(OCSPObjectIdentifiers.id_pkix_ocsp_nonce).getValue().getOctets();
+                byte[] reqNonce = request.getExtension(OCSPObjectIdentifiers.id_pkix_ocsp_nonce).getExtnValue().getOctets();
+                byte[] respNonce = basicResponse.getExtension(OCSPObjectIdentifiers.id_pkix_ocsp_nonce).getExtnValue().getOctets();
 
                 if (reqNonce == null || Arrays.equals(reqNonce, respNonce)) {
                     for (int i = 0; i != responses.length; i++) {
@@ -1918,8 +1924,8 @@ public final class CryptoLibrary {
      * @param resp
      * @return
      */
-    public static X509CertificateStructure verifyOCSPResp(OCSPResp resp) {
-        X509CertificateStructure cert = null;
+    public static Certificate verifyOCSPResp(OCSPResp resp) {
+        Certificate cert = null;
         do {
             try {
                 BasicOCSPResp basic = (BasicOCSPResp) resp.getResponseObject();

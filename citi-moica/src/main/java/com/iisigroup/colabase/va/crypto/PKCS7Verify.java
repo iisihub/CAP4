@@ -7,12 +7,15 @@ import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.bouncycastle.asn1.x509.X509CertificateStructure;
+import org.bouncycastle.asn1.x509.Certificate;
+import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cms.CMSProcessableByteArray;
 import org.bouncycastle.cms.CMSSignedData;
 import org.bouncycastle.cms.SignerId;
 import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.SignerInformationStore;
+import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
+import org.bouncycastle.util.Store;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,8 +83,8 @@ public class PKCS7Verify {
      * 
      * @return
      */
-    public X509CertificateStructure getSignerCert() {
-        X509CertificateStructure ret = null;
+    public Certificate getSignerCert() {
+        Certificate ret = null;
         if (signercert != null) {
             ret = CryptoLibrary.getX509Cert(signercert);
         }
@@ -104,17 +107,18 @@ public class PKCS7Verify {
             try {
                 CryptoLibrary.checkProvider();
                 CMSSignedData cms = new CMSSignedData(new CMSProcessableByteArray(Data_Bytes), Sig_Bytes);
-                CertStore certStore = cms.getCertificatesAndCRLs("Collection", "BC");
+                Store<X509CertificateHolder> certStore = cms.getCertificates();
                 SignedContent = Data_Bytes;
                 SignerInformationStore signers = cms.getSignerInfos();
                 Collection c = signers.getSigners();
                 Iterator it = c.iterator();
                 while (it.hasNext()) {
                     signer = (SignerInformation) it.next();
-                    Collection certCollection = certStore.getCertificates(signer.getSID());
-                    Iterator certIt = certCollection.iterator();
-                    signercert = (X509Certificate) certIt.next();
-                    ret = signer.verify(signercert, "BC");
+                    // TODO check if work
+                    Collection<X509CertificateHolder> certCollection = certStore.getMatches(signer.getSID());
+                    Iterator<X509CertificateHolder> certIt = certCollection.iterator();
+                    X509CertificateHolder cert = (X509CertificateHolder) certIt.next();
+                    ret = signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert));
                     if (ret != true) {
                         continue;
                     } else
@@ -142,7 +146,7 @@ public class PKCS7Verify {
             try {
                 CryptoLibrary.checkProvider();
                 aSignedData = new CMSSignedData(SignedData);
-                CertStore certs = aSignedData.getCertificatesAndCRLs("Collection", "BC");
+                Store<X509CertificateHolder> certStore = aSignedData.getCertificates();
                 SignerInformationStore signers = aSignedData.getSignerInfos();
                 SignedContent = (byte[]) aSignedData.getSignedContent().getContent();
                 Collection c = signers.getSigners();
@@ -150,10 +154,10 @@ public class PKCS7Verify {
                 while (it.hasNext()) {
                     signer = (SignerInformation) it.next();
                     SignerId signerId = signer.getSID();
-                    Collection certCollection = certs.getCertificates(signerId);
-                    Iterator certIt = certCollection.iterator();
-                    signercert = (X509Certificate) certIt.next();
-                    ret = signer.verify(signercert, "BC");
+                    Collection<X509CertificateHolder> certCollection = certStore.getMatches(signer.getSID());
+                    Iterator<X509CertificateHolder> certIt = certCollection.iterator();
+                    X509CertificateHolder cert = (X509CertificateHolder) certIt.next();
+                    ret = signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert));
                     if (ret != true) {
                         continue;
                     } else
