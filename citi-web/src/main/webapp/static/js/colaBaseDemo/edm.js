@@ -5,7 +5,7 @@ pageInit(function() {
 		$("#sendEdmBtn").click(function() {
 			var datas = {
 			  eamilAccount : $('#eamilAccount').val(),
-			  edmFtlFile : $('#edmFtlFile').val(),
+			  edmFtlPath : $('#edmFtlPath').val(),
 			  edmCustomerName : $('#edmCustomerName').val(),
 			  edmProject : $('#edmProject').val()
 			};

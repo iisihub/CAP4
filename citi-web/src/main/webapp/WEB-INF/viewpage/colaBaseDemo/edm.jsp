@@ -62,7 +62,7 @@
 					寄送地址 <input type="text" id="eamilAccount" name="eamilAccount" />
 				</div>
 				<div>
-					選擇ftl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="edmFtlFile" name="edmFtlFile" />
+					選擇ftl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="edmFtlPath" name="edmFtlPath" />
 				</div>
 				<div>
 					客戶姓名 <input type="text" id="edmCustomerName" name="edmCustomerName" />

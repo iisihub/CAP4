@@ -76,12 +76,9 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
      * @see com.iisigroup.colabase.edm.service.EDMService#sendEDM(com.iisigroup.cap.component.Request)
      */
     @Override
-    public void sendEDM(Request request) {
-        HttpServletRequest sreq = (HttpServletRequest) request.getServletRequest();
-        HttpSession session = sreq.getSession(false);
+    public void sendEDM(Request request, String edmFtlPath, Map<String, Object> dataMap) {
 
-        // TODO choose template
-        request.put("edm", EDM_TEMPLATE_1);
+        request.put("edm", edmFtlPath);
         request.put("apUrl", "smtp.gmail.com");
 
         ByteArrayDownloadResult pdfContent = processTemplate_email(request);

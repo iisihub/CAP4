@@ -11,6 +11,8 @@
  */
 package com.iisigroup.colabase.edm.service;
 
+import java.util.Map;
+
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 
@@ -29,7 +31,7 @@ public interface EDMService {
      * 寄送EDM from
      * @param request
      */
-    void sendEDM(Request request);
+    void sendEDM(Request request, String edmFtlPath, Map<String, Object> dataMap);
     
     /**
      * 寄送EDM from
