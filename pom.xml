@@ -119,6 +119,11 @@
                 <artifactId>citi-edm</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-import</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <modules>
@@ -140,6 +145,7 @@
         <module>citi-pdf</module>
         <module>citi-address</module>
         <module>citi-edm</module>
+        <module>citi-import</module>
     </modules>
     <profiles>
         <profile>

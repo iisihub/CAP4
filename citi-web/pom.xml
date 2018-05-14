@@ -60,6 +60,10 @@
             <groupId>com.iisigroup.colabase</groupId>
             <artifactId>citi-edm</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.iisigroup.colabase</groupId>
+            <artifactId>citi-import</artifactId>
+        </dependency>
         <!-- optional -->
         <dependency>
             <groupId>com.iisigroup.colabase</groupId>
