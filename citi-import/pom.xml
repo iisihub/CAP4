@@ -18,5 +18,11 @@
             <groupId>com.iisigroup.colabase</groupId>
             <artifactId>citi-base</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>sqljdbc</artifactId>
+            <version>4.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
