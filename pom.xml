@@ -124,6 +124,11 @@
                 <artifactId>citi-import</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-json</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <modules>
@@ -146,6 +151,7 @@
         <module>citi-address</module>
         <module>citi-edm</module>
         <module>citi-import</module>
+        <module>citi-json</module>
     </modules>
     <profiles>
         <profile>
