@@ -16,6 +16,7 @@
     <persistence-unit name="pu-cap-sql">
         <!-- base -->
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <class>com.iisigroup.cap.base.model.SysParm</class>
         <!-- VA -->
         <class>com.iisigroup.colabase.va.model.CAInfo</class>
         <class>com.iisigroup.colabase.va.model.TransLog</class>

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.iisigroup.colabase</groupId>
@@ -101,6 +102,11 @@
             </dependency>
             <dependency>
                 <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-loan</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.iisigroup.colabase</groupId>
                 <artifactId>citi-ssl</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -146,6 +152,7 @@
         <module>citi-net</module>
         <module>citi-zip</module>
         <module>citi-moica</module>
+        <module>citi-loan</module>
         <module>citi-ssl</module>
         <module>citi-pdf</module>
         <module>citi-address</module>
