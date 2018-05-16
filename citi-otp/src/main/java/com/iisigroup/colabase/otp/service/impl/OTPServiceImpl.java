@@ -70,11 +70,11 @@ public class OTPServiceImpl implements OTPService {
                 otpMap.put(OTP, otp);
                 String otpSmsMsg = MessageFormat.format(SMS_MSG, otp, otpTimeoutSeconds);
                 otpMap.put(OTP_SMS_MSG, otpSmsMsg);
-                logger.debug("=========OTP message=========", otpSmsMsg);
+                logger.debug(otpSmsMsg, "=========OTP message========={}");
                 if (!CapString.isEmpty(otp) && !CapString.isEmpty(otpSmsMsg)) {
                     String msg = sendOTPbySMS(mobilePhone, otpSmsMsg);
                     otpMap.put(IS_SEND_OTP, "true");
-                    logger.debug("=========send OTP by SMS=========", msg);
+                    logger.debug(msg, "=========send OTP by SMS========={}");
                 }
             }
         } catch (Exception e) {
@@ -123,7 +123,7 @@ public class OTPServiceImpl implements OTPService {
         Random rnd = new Random();
         long nextInt = rnd.nextInt(999999) + (long) 1;
         String otp = OTP_DECIMAL_FMT.format(nextInt);
-        logger.debug("=========OTP number =========", otp);
+        logger.debug(otp, "=========OTP number ========= {} ");
         return otp;
     }
 
@@ -136,7 +136,7 @@ public class OTPServiceImpl implements OTPService {
     public String sendOTPbySMS(String mobilePhone, String message) {
         if (!StringUtils.isEmpty(mobilePhone) && mobilePhone.startsWith("09")) {
             mobilePhone = "+886" + mobilePhone.substring(1, mobilePhone.length());
-            logger.debug("send SMS mobile phone number:", mobilePhone);
+            logger.debug(mobilePhone, "send SMS mobile phone number: {}");
         } else if (StringUtils.isEmpty(mobilePhone)) {
             throw new CapException("There is no mobile phone number.", getClass());
         } else if (!mobilePhone.startsWith("+886")) {
@@ -184,9 +184,12 @@ public class OTPServiceImpl implements OTPService {
             proxyHost = null;
             proxyPort = "-1";
         }
-
-        try (@SuppressWarnings("null")
-        BufferedReader recv = new BufferedReader(new InputStreamReader(s.getInputStream())); BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), "BIG5"))) {
+        // HTTPS
+        s = HttpsConnectionOpener.openConnection("https", host, port, entry, timeout, "true".equalsIgnoreCase(proxyEnable), proxyHost, proxyPort);
+        if (s == null) {
+            throw new CapException("The httpd connection couldn't be opened ", getClass());
+        }
+        try (BufferedReader recv = new BufferedReader(new InputStreamReader(s.getInputStream())); BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), "BIG5"))) {
             String tempMessage = "[MSISDN]\n";
             tempMessage += "List=" + mobilePhone + "\n";
             tempMessage += "[MESSAGE]\nText=";
@@ -195,17 +198,13 @@ public class OTPServiceImpl implements OTPService {
             message += "DCS=" + encoding + "\n";
             message += "[END]";
             // HTTPS
-            s = HttpsConnectionOpener.openConnection("https", host, port, entry, timeout, "true".equalsIgnoreCase(proxyEnable), proxyHost, proxyPort);
-            if (s == null) {
-                throw new CapException("The httpd connection couldn't be opened ", getClass());
-            }
             s.setRequestMethod("POST");
             s.addRequestProperty("Authorization", "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes())));
             s.addRequestProperty("CONTENT-LENGTH", Integer.toString(message.getBytes().length));
             int count = 0;
             int length = message.length() + count;
-            logger.debug("length=", length);
-            logger.debug("sending message:\n", message);
+            logger.debug(String.valueOf(length), "length={}");
+            logger.debug(message, "sending message:\n{}");
             writer.write(message);
             writer.flush();
             String line = null;
