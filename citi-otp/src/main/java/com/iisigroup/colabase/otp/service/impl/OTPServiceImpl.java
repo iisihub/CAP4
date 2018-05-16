@@ -121,7 +121,7 @@ public class OTPServiceImpl implements OTPService {
     @Override
     public String generateOTP() {
         Random rnd = new Random();
-        long nextInt = rnd.nextInt(999999) + 1;
+        long nextInt = rnd.nextInt(999999) + (long) 1;
         String otp = OTP_DECIMAL_FMT.format(nextInt);
         logger.debug("=========OTP number =========", otp);
         return otp;
@@ -185,7 +185,8 @@ public class OTPServiceImpl implements OTPService {
             proxyPort = "-1";
         }
 
-        try (BufferedReader recv = new BufferedReader(new InputStreamReader(s.getInputStream())); BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), "BIG5"))) {
+        try (@SuppressWarnings("null")
+        BufferedReader recv = new BufferedReader(new InputStreamReader(s.getInputStream())); BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), "BIG5"))) {
             String tempMessage = "[MSISDN]\n";
             tempMessage += "List=" + mobilePhone + "\n";
             tempMessage += "[MESSAGE]\nText=";
