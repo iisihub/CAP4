@@ -17,6 +17,6 @@ public @interface ApiRequest {
      * @return
      */
     String path() default "";
-    String defaultVaule() default "";
+    String defaultValue() default "";
     boolean noValueNoSend() default false;
 }

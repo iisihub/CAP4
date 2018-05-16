@@ -24,7 +24,8 @@ public abstract class RequestContent implements RequestFather{
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
-     * 是否用建構式產生的key store and trust store
+     * 是否使用自己的key store and trust store
+     * key and trust store file path defined in config.properties
      */
     private boolean isUseOwnKeyAndTrustStore = true;
 
@@ -63,10 +64,15 @@ public abstract class RequestContent implements RequestFather{
      */
     private int[] retryHttpStatus;
 
+    /**
+     * !!! do not use this map yourself
+     */
     private Map<String, Object> arrayMap = new HashMap<>();
 
+    /**
+     * !!! do not use this list yourself
+     */
     private List<String> noSendList = new ArrayList<>();
-
 
     @Override
     public String getJsonString() {

@@ -22,7 +22,7 @@ public class RequestProxy implements MethodInterceptor {
         proxy = new RequestProxy();
     }
 
-    private static RequestProxy proxy;
+    private static final RequestProxy proxy;
 
     private RequestProxy() {
 
