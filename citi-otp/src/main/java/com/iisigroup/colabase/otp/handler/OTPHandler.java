@@ -11,7 +11,6 @@
  */
 package com.iisigroup.colabase.otp.handler;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,15 +43,14 @@ public class OTPHandler extends MFormHandler {
 
     @Autowired
     private OTPService otpService;
-    // private static int SEND_COUNT = 0;
     // 前端送來的參數
-    public static String USER_OTP = "USER_OTP";// USER輸入的OTP
-    public static String MOBILE_PHONE = "MOBILE_PHONE";// 手機號碼
-    public static String OTP_TIMOUT_SECONDS = "OTP_TIMOUT_SECONDS";// OTP TIME OUT 秒數
-    public static String IS_RESEND_OTP = "IS_RESEND_OTP";// OTP TIME OUT 秒數
-    public static String OTP_MAX_RETRY = "OTP_MAX_RETRY";// OTP 重送最大次數
+    public static final String USER_OTP = "USER_OTP";// USER輸入的OTP
+    public static final String MOBILE_PHONE = "MOBILE_PHONE";// 手機號碼
+    public static final String OTP_TIMOUT_SECONDS = "OTP_TIMOUT_SECONDS";// OTP TIME OUT 秒數
+    public static final String IS_RESEND_OTP = "IS_RESEND_OTP";// OTP TIME OUT 秒數
+    public static final String OTP_MAX_RETRY = "OTP_MAX_RETRY";// OTP 重送最大次數
     // 回前端的參數
-    private static String IS_VERIFY = "isVerify";
+    private static final String IS_VERIFY = "isVerify";
 
     /**
      * 發/重送OTP密碼
@@ -61,9 +59,9 @@ public class OTPHandler extends MFormHandler {
      * @return
      * @throws CapException
      */
-    public Result sendOTP(Request request) throws CapException {
+    public Result sendOTP(Request request) {
         AjaxFormResult result = new AjaxFormResult();
-        Map<String, String> otpMap = new HashMap<>();
+        Map<String, String> otpMap = null;
         String mobilePhone = request.get(MOBILE_PHONE);
         int otpTimeoutSeconds = Integer.parseInt(request.get(OTP_TIMOUT_SECONDS, "0"));
         boolean isResendOTP = Boolean.parseBoolean(request.get(IS_RESEND_OTP, "false"));
@@ -113,7 +111,7 @@ public class OTPHandler extends MFormHandler {
      * @return
      * @throws CapException
      */
-    public Result invalidateSession(Request request) throws CapException {
+    public Result invalidateSession(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         otpService.invalidateSession(request);
         return result;
@@ -126,13 +124,13 @@ public class OTPHandler extends MFormHandler {
      * @return
      * @throws CapException
      */
-    public Result verifyOTP(Request request) throws CapException {
+    public Result verifyOTP(Request request){
         AjaxFormResult result = new AjaxFormResult();
         HttpSession session = ((HttpServletRequest) request.getServletRequest()).getSession(false);
-        String OTP = (String) session.getAttribute(OTPServiceImpl.OTP);
+        String otp = (String) session.getAttribute(OTPServiceImpl.OTP);
         String userOtp = request.get(USER_OTP);
-        if (!CapString.isEmpty(OTP)) {
-            boolean isVerify = otpService.verifyOTP(userOtp, OTP);
+        if (!CapString.isEmpty(otp)) {
+            boolean isVerify = otpService.verifyOTP(userOtp, otp);
             result.set(IS_VERIFY, isVerify);
         }
         return result;

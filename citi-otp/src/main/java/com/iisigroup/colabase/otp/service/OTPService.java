@@ -45,7 +45,7 @@ public interface OTPService {
      * @return SMS Server 回傳的結果，記在 AP log 即可，無論成功失敗都不影響交易。
      * @throws CapException
      */
-    String sendOTPbySMS(String mobilePhone, String message) throws CapException;
+    String sendOTPbySMS(String mobilePhone, String message);
 
     /**
      * 限制OTP密碼重送次數
@@ -63,7 +63,7 @@ public interface OTPService {
      * @param OTP
      * @return
      */
-    boolean verifyOTP(String userOtp, String OTP);
+    boolean verifyOTP(String userOtp, String otp);
 
     /**
      * Invalidate Session

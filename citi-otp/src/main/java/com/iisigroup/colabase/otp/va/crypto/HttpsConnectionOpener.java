@@ -1,15 +1,21 @@
 package com.iisigroup.colabase.otp.va.crypto;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import java.net.Proxy;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Https Connection Opener
@@ -23,6 +29,7 @@ import javax.net.ssl.X509TrustManager;
  */
 public class HttpsConnectionOpener implements Runnable {
 
+    private final static Logger logger = LoggerFactory.getLogger(HttpsConnectionOpener.class);
     private String protocol;
     private String host;
     private String port;
@@ -64,7 +71,7 @@ public class HttpsConnectionOpener implements Runnable {
                 connection = this.getHttpConnection(protocol, host, port, null);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("run error", e);
         }
 
     }
@@ -76,6 +83,7 @@ public class HttpsConnectionOpener implements Runnable {
         try {
             t.join(timeout);
         } catch (InterruptedException exception) {
+            logger.error("openConnection error", exception);
         }
         return opener.getConnection();
     }
@@ -84,7 +92,7 @@ public class HttpsConnectionOpener implements Runnable {
         return connection;
     }
 
-    private HttpsURLConnection getHttpConnection(String protocol, String host, String port, Proxy proxy) throws Exception {
+    private HttpsURLConnection getHttpConnection(String protocol, String host, String port, Proxy proxy) throws NoSuchAlgorithmException, KeyManagementException, IOException {
         String str = protocol + "://" + host + ":" + port + entry;
         URL localURL = new URL(str);
         HttpsURLConnection localHttpsURLConnection;

@@ -34,18 +34,18 @@ public class OTPServiceImpl implements OTPService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     // Session 計算OTP傳送次數
-    public static String SESSION_RETRY_COUNT = "retryCount";
+    public static final String SESSION_RETRY_COUNT = "retryCount";
     // OTP回傳參數
-    public static String OTP = "otp";
-    public static String OTP_SMS_MSG = "otpSmsMsg";
-    public static String OTP_RETRY_MSG = "retryMsg";
-    public static String IS_MAX_RETRY = "isMaxRetry";
-    public static String IS_SEND_OTP = "isSendOTP";
+    public static final String OTP = "otp";
+    public static final String OTP_SMS_MSG = "otpSmsMsg";
+    public static final String OTP_RETRY_MSG = "retryMsg";
+    public static final String IS_MAX_RETRY = "isMaxRetry";
+    public static final String IS_SEND_OTP = "isSendOTP";
     // OTP回傳的訊息
-    private static String RETRY_MSG = "若密碼失效請按『重送OTP簡訊動態密碼』重送，最多可重送{0}次，你已重送了{1}次。";
-    private static String MAX_RETRY_MSG = "已達可重送次數{0}次限制。";
+    private static final String RETRY_MSG = "若密碼失效請按『重送OTP簡訊動態密碼』重送，最多可重送{0}次，你已重送了{1}次。";
+    private static final String MAX_RETRY_MSG = "已達可重送次數{0}次限制。";
     // SMS Msg
-    private static String SMS_MSG = "您的「簡訊動態密碼OTP」為{0}，密碼將於{1}秒後失效。請於網頁輸入密碼完成申請。";
+    private static final String SMS_MSG = "您的「簡訊動態密碼OTP」為{0}，密碼將於{1}秒後失效。請於網頁輸入密碼完成申請。";
     // SMS Setting
     private static final String SMS_HOST = "sms-pp.sapmobileservices.com";
     private static final String SMS_ENTRY = "/citi/citi_tw_ua97201/citi_tw_ua97201.sms";
@@ -93,21 +93,21 @@ public class OTPServiceImpl implements OTPService {
     public Map<String, String> resendOTP(String mobilePhone, int otpTimeoutSeconds, int otpMaxRetry, boolean isResendOTP, int retryCount) {
         Map<String, String> resendOtpMap = new HashMap<>();
         boolean isMaxRetry = false;
-        // 重送OTP
-        if (isResendOTP) {
-            resendOtpMap.put(OTP_RETRY_MSG, MessageFormat.format(RETRY_MSG, new Object[] { otpMaxRetry, retryCount }));
-            resendOtpMap.put(IS_MAX_RETRY, String.valueOf(isMaxRetry));
-            // 限制重送次數
-            isMaxRetry = limitOTPRetryCount(retryCount, otpMaxRetry);
-            if (isMaxRetry) {
-                String retryMsg = MessageFormat.format(MAX_RETRY_MSG, new Object[] { otpMaxRetry });
-                resendOtpMap.put(IS_MAX_RETRY, String.valueOf(isMaxRetry));
-                resendOtpMap.put(OTP_RETRY_MSG, retryMsg);
-                return resendOtpMap;
-            }
-            resendOtpMap.putAll(genAndSendOTP(mobilePhone, otpTimeoutSeconds));
-        }
         try {
+            // 重送OTP
+            if (isResendOTP) {
+                resendOtpMap.put(OTP_RETRY_MSG, MessageFormat.format(RETRY_MSG, new Object[] { otpMaxRetry, retryCount }));
+                resendOtpMap.put(IS_MAX_RETRY, String.valueOf(isMaxRetry));
+                // 限制重送次數
+                isMaxRetry = limitOTPRetryCount(retryCount, otpMaxRetry);
+                if (isMaxRetry) {
+                    String retryMsg = MessageFormat.format(MAX_RETRY_MSG, new Object[] { otpMaxRetry });
+                    resendOtpMap.put(IS_MAX_RETRY, String.valueOf(isMaxRetry));
+                    resendOtpMap.put(OTP_RETRY_MSG, retryMsg);
+                    return resendOtpMap;
+                }
+                resendOtpMap.putAll(genAndSendOTP(mobilePhone, otpTimeoutSeconds));
+            }
         } catch (Exception e) {
             logger.warn("Resend OTP password error.", e);
         }
@@ -133,7 +133,7 @@ public class OTPServiceImpl implements OTPService {
      * @see com.iisigroup.colabase.otp.service.OTPService#sendOTPbySMS(java.lang.String, java.lang.String)
      */
     @Override
-    public String sendOTPbySMS(String mobilePhone, String message) throws CapException {
+    public String sendOTPbySMS(String mobilePhone, String message) {
         if (!StringUtils.isEmpty(mobilePhone) && mobilePhone.startsWith("09")) {
             mobilePhone = "+886" + mobilePhone.substring(1, mobilePhone.length());
             logger.debug("send SMS mobile phone number:" + mobilePhone);
@@ -145,7 +145,7 @@ public class OTPServiceImpl implements OTPService {
         if (StringUtils.isBlank(message)) {
             throw new CapException("Message is blank.", getClass());
         }
-        StringBuffer answer = new StringBuffer();
+        StringBuilder answer = new StringBuilder();
         String host = SMS_HOST;
         String entry = SMS_ENTRY;
         String port = SMS_PORT;
@@ -218,17 +218,26 @@ public class OTPServiceImpl implements OTPService {
         } catch (Exception e) {
             logger.error("proxy doesn't set.", e);
         } finally {
-            s.disconnect();
+            if (s != null) {
+                try {
+                    s.disconnect();
+                } catch (Exception e) {
+                    logger.error("sendOTPbySMS error", e);
+                }
+            }
             if (writer != null) {
                 try {
                     writer.close();
                 } catch (IOException e) {
+                    logger.error("sendOTPbySMS error", e);
                 }
             }
             if (recv != null) {
                 try {
                     recv.close();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                    logger.error("sendOTPbySMS error", e);
                 }
             }
         }
