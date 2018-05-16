@@ -2,7 +2,6 @@ package com.iisigroup.colabase.otp.service.impl;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
@@ -51,7 +50,7 @@ public class OTPServiceImpl implements OTPService {
     private static final String SMS_ENTRY = "/citi/citi_tw_ua97201/citi_tw_ua97201.sms";
     private static final String SMS_PORT = "443";
     private static final String SMS_USERNAME = "citi_tw_ua97201";
-    private static final String SMS_PASSWORD = "PeGdmtkD";
+    private static final String SMS_PASS_WORD = "PeGdmtkD";
     private static final String SMS_ENCODING = "BIG5";
     private static final String PROXY_ENABLE = "true";
     private static final String PROXY_HOST = "sgproxy-app.wlb.apac.nsroot.net";
@@ -69,13 +68,13 @@ public class OTPServiceImpl implements OTPService {
             if (!CapString.isEmpty(mobilePhone) && mobilePhone.startsWith("09")) {
                 String otp = generateOTP();
                 otpMap.put(OTP, otp);
-                String otpSmsMsg = MessageFormat.format(SMS_MSG, new Object[] { otp, otpTimeoutSeconds });
+                String otpSmsMsg = MessageFormat.format(SMS_MSG, otp, otpTimeoutSeconds);
                 otpMap.put(OTP_SMS_MSG, otpSmsMsg);
-                logger.debug("=========OTP message=========" + otpSmsMsg);
+                logger.debug("=========OTP message=========", otpSmsMsg);
                 if (!CapString.isEmpty(otp) && !CapString.isEmpty(otpSmsMsg)) {
                     String msg = sendOTPbySMS(mobilePhone, otpSmsMsg);
                     otpMap.put(IS_SEND_OTP, "true");
-                    logger.debug("=========send OTP by SMS=========" + msg);
+                    logger.debug("=========send OTP by SMS=========", msg);
                 }
             }
         } catch (Exception e) {
@@ -96,12 +95,12 @@ public class OTPServiceImpl implements OTPService {
         try {
             // 重送OTP
             if (isResendOTP) {
-                resendOtpMap.put(OTP_RETRY_MSG, MessageFormat.format(RETRY_MSG, new Object[] { otpMaxRetry, retryCount }));
+                resendOtpMap.put(OTP_RETRY_MSG, MessageFormat.format(RETRY_MSG, otpMaxRetry, retryCount));
                 resendOtpMap.put(IS_MAX_RETRY, String.valueOf(isMaxRetry));
                 // 限制重送次數
                 isMaxRetry = limitOTPRetryCount(retryCount, otpMaxRetry);
                 if (isMaxRetry) {
-                    String retryMsg = MessageFormat.format(MAX_RETRY_MSG, new Object[] { otpMaxRetry });
+                    String retryMsg = MessageFormat.format(MAX_RETRY_MSG, otpMaxRetry);
                     resendOtpMap.put(IS_MAX_RETRY, String.valueOf(isMaxRetry));
                     resendOtpMap.put(OTP_RETRY_MSG, retryMsg);
                     return resendOtpMap;
@@ -122,8 +121,9 @@ public class OTPServiceImpl implements OTPService {
     @Override
     public String generateOTP() {
         Random rnd = new Random();
-        String otp = OTP_DECIMAL_FMT.format(rnd.nextInt(999999) + 1);
-        logger.debug("=========OTP number =========" + otp);
+        long nextInt = rnd.nextInt(999999) + 1;
+        String otp = OTP_DECIMAL_FMT.format(nextInt);
+        logger.debug("=========OTP number =========", otp);
         return otp;
     }
 
@@ -136,7 +136,7 @@ public class OTPServiceImpl implements OTPService {
     public String sendOTPbySMS(String mobilePhone, String message) {
         if (!StringUtils.isEmpty(mobilePhone) && mobilePhone.startsWith("09")) {
             mobilePhone = "+886" + mobilePhone.substring(1, mobilePhone.length());
-            logger.debug("send SMS mobile phone number:" + mobilePhone);
+            logger.debug("send SMS mobile phone number:", mobilePhone);
         } else if (StringUtils.isEmpty(mobilePhone)) {
             throw new CapException("There is no mobile phone number.", getClass());
         } else if (!mobilePhone.startsWith("+886")) {
@@ -150,16 +150,14 @@ public class OTPServiceImpl implements OTPService {
         String entry = SMS_ENTRY;
         String port = SMS_PORT;
         String username = SMS_USERNAME;
-        String password = SMS_PASSWORD;
+        String password = SMS_PASS_WORD;
         String encoding = SMS_ENCODING;
         String proxyEnable = PROXY_ENABLE;
         String proxyHost = PROXY_HOST;
         String proxyPort = PROXY_PORT;
 
         int timeout = 3000;
-        BufferedReader recv = null;
         HttpsURLConnection s = null;
-        BufferedWriter writer = null;
         if (StringUtils.isBlank(host)) {
             throw new CapException("sms.host is blank.", getClass());
         }
@@ -187,7 +185,7 @@ public class OTPServiceImpl implements OTPService {
             proxyPort = "-1";
         }
 
-        try {
+        try (BufferedReader recv = new BufferedReader(new InputStreamReader(s.getInputStream())); BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), "BIG5"))) {
             String tempMessage = "[MSISDN]\n";
             tempMessage += "List=" + mobilePhone + "\n";
             tempMessage += "[MESSAGE]\nText=";
@@ -205,12 +203,10 @@ public class OTPServiceImpl implements OTPService {
             s.addRequestProperty("CONTENT-LENGTH", Integer.toString(message.getBytes().length));
             int count = 0;
             int length = message.length() + count;
-            logger.debug("length=" + length);
-            logger.debug("sending message:\n" + message);
-            writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), "BIG5"));
+            logger.debug("length=", length);
+            logger.debug("sending message:\n", message);
             writer.write(message);
             writer.flush();
-            recv = new BufferedReader(new InputStreamReader(s.getInputStream()));
             String line = null;
             while ((line = recv.readLine()) != null) {
                 answer.append(line).append("\n");
@@ -219,26 +215,7 @@ public class OTPServiceImpl implements OTPService {
             logger.error("proxy doesn't set.", e);
         } finally {
             if (s != null) {
-                try {
-                    s.disconnect();
-                } catch (Exception e) {
-                    logger.error("sendOTPbySMS error", e);
-                }
-            }
-            if (writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    logger.error("sendOTPbySMS error", e);
-                }
-            }
-            if (recv != null) {
-                try {
-                    recv.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    logger.error("sendOTPbySMS error", e);
-                }
+                s.disconnect();
             }
         }
 

@@ -2,7 +2,6 @@ package com.iisigroup.colabase.otp.va.crypto;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-
 import java.net.Proxy;
 import java.net.URL;
 import java.security.KeyManagementException;
@@ -29,7 +28,7 @@ import org.slf4j.LoggerFactory;
  */
 public class HttpsConnectionOpener implements Runnable {
 
-    private final static Logger logger = LoggerFactory.getLogger(HttpsConnectionOpener.class);
+    private final Logger logger = LoggerFactory.getLogger(HttpsConnectionOpener.class);
     private String protocol;
     private String host;
     private String port;
@@ -82,8 +81,8 @@ public class HttpsConnectionOpener implements Runnable {
         t.start();
         try {
             t.join(timeout);
-        } catch (InterruptedException exception) {
-            logger.error("openConnection error", exception);
+        } catch (Exception e) {
+            Thread.currentThread().interrupt();
         }
         return opener.getConnection();
     }
@@ -104,13 +103,15 @@ public class HttpsConnectionOpener implements Runnable {
         if ("https".equalsIgnoreCase(protocol)) {
             TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
                 public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return null;
+                    return new X509Certificate[0];
                 }
 
                 public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                    // Do nothing.
                 }
 
                 public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                    // Do nothing.
                 }
             } };
             SSLContext sc = SSLContext.getInstance("SSL");
