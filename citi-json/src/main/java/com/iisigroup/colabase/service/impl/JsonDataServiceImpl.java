@@ -270,7 +270,120 @@ public class JsonDataServiceImpl implements JsonDataService {
      */
     @Override
     public JsonObject removeUnnecessaryNode(RequestContent requestContent) {
+        List<String> noSendList;
+        try {
+            Field noSendListField = RequestContent.class.getDeclaredField(NO_SEND_LIST_KEY);
+            noSendListField.setAccessible(true);
+            noSendList = (List<String>) noSendListField.get(requestContent);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new IllegalArgumentException("instance can not found field: noSendList object");
+        }
+        JsonObject jsonObject = (JsonObject)deepCopy(requestContent.getRequestContent());
+        for (String path : noSendList) {
+            this.cleanTargetJson(path, jsonObject);
+        }
+        //清除所有empty jsonObject
+        this.cleanEmptyJsonObject(jsonObject);
+        return jsonObject;
+    }
 
+    /**
+     * 根據指定路徑去找出元素，並移除該值為空的元素
+     * @param pathChain path
+     * @param jsonObject jsonObject
+     */
+    private void cleanTargetJson(String pathChain, JsonObject jsonObject) {
+        String[] paths = pathChain.split(PATH_SPLIT_MARK);
+        String targetKey = paths[paths.length - 1];
+        if(pathChain.contains(ARRAY_MARK)) {
+            // Array 處理
+            JsonArray jsonArray = new JsonArray();
+            getTargetJsonArray(pathChain, jsonObject, jsonArray);
+            for (JsonElement jsonElement : jsonArray) {
+                JsonElement checkEle = ((JsonObject) jsonElement).get(targetKey);
+                if (checkEle != null && !"".equals(checkEle.getAsString())) {
+                    continue;
+                }
+                ((JsonObject)jsonElement).remove(targetKey);
+            }
+        } else {
+            JsonObject jsonElement = this.getJsonElement(jsonObject, pathChain, new HashMap<>());
+            JsonElement checkEle = jsonElement.get(targetKey);
+            if (checkEle != null && !"".equals(checkEle.getAsString()))
+                return;
+            jsonElement.remove(targetKey);
+        }
+    }
+
+    /**
+     * 取得指定路徑的所有JsonArray中的JsonObject
+     * ex: phone[{name:"Ted"}, {name:"Mary"}] -> {name:"Ted"}, {name:"Mary"}
+     * @param pathChain path
+     * @param jsonObject jsonObject
+     * @param jsonArray 儲存找到的JsonObject
+     */
+    private void getTargetJsonArray(String pathChain, JsonObject jsonObject, JsonArray jsonArray) {
+        String[] paths = pathChain.split(PATH_SPLIT_MARK);
+
+        if(paths[0].contains(ARRAY_MARK)) {
+            String path = paths[0].replace(ARRAY_MARK, "");
+            JsonArray elements = jsonObject.getAsJsonArray(path);
+            if(paths.length == 2) {
+                jsonArray.addAll(elements);
+                return;
+            }
+            String newPath = pathChain.substring(pathChain.indexOf(ARRAY_MARK) + 3);
+            for (JsonElement element : elements) {
+                getTargetJsonArray(newPath, (JsonObject)element, jsonArray);
+            }
+        } else { //primitive type
+            String newPath = pathChain.substring(pathChain.indexOf(".") + 1);
+            JsonObject jsonElement = (JsonObject) jsonObject.get(paths[0]);
+            getTargetJsonArray(newPath, jsonElement, jsonArray);
+        }
+    }
+
+    /**
+     * 掃描json結構，移除為空的元素
+     * @param jsonElement suggest start from JsonObject
+     */
+    private void cleanEmptyJsonObject(JsonElement jsonElement) {
+        if (jsonElement.isJsonPrimitive())
+            return;
+        JsonObject jsonObject = (JsonObject) jsonElement;
+        Set<Map.Entry<String, JsonElement>> entries = jsonObject.entrySet();
+        Iterator<Map.Entry<String, JsonElement>> iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, JsonElement> entry = iterator.next();
+            JsonElement value = entry.getValue();
+            String key = entry.getKey();
+            if (value.isJsonPrimitive())
+                continue;
+            if (value.isJsonArray()) { // JsonArray process
+                JsonArray array = ((JsonArray) value);
+                for (int i = 0; i < array.size(); i++) {
+                    // 檢查jsonArray 內的元素，如果是jsonObject，則檢查是否為{}元素
+                    JsonElement jsonEle = array.get(i);
+                    if (jsonEle.isJsonObject()) {
+                        if (((JsonObject) jsonEle).entrySet().size() == 0) {
+                            array.remove(i);
+                            continue;
+                        }
+                    }
+                    cleanEmptyJsonObject(jsonEle);
+                }
+                // 最後如果array變為空則把自己再刪掉
+                if (array.size() == 0) {
+                    iterator.remove();
+                    continue;
+                }
+                continue;
+            }
+            int size = ((JsonObject) value).entrySet().size();
+            if (size > 0)
+                continue;
+            iterator.remove();
+        }
     }
 
     @Override

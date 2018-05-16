@@ -44,8 +44,13 @@ class RequestProxy implements MethodInterceptor {
 
     @Override
     public Object intercept(Object object, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-        if(method.getName().contains("set")) {
+
+        String methodName = method.getName();
+        if(methodName.contains("set")) {
             RequestFactory.setValueToJsonContent(object, method, args);
+        }
+        if ("getJsonString".equals(methodName)) {
+            return RequestFactory.processNoSendField((RequestContent) object);
         }
         return methodProxy.invokeSuper(object, args);
     }

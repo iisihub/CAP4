@@ -74,6 +74,11 @@ public abstract class RequestContent implements RequestFather{
      */
     private List<String> noSendList = new ArrayList<>();
 
+    /**
+     * !!! 取json字串時使用本方法
+     * 實作no value no send的功能
+     * @return 去掉no value no send 的字串
+     */
     @Override
     public String getJsonString() {
         return requestContent.toString();

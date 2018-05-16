@@ -143,4 +143,9 @@ public class RequestFactory {
         result += methodName.substring(4);
         return result;
     }
+
+    public static String processNoSendField(RequestContent instance) {
+        JsonObject jsonObject = jsonDataService.removeUnnecessaryNode(instance);
+        return jsonObject.toString();
+    }
 }
