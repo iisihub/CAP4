@@ -22,6 +22,7 @@ import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
+import com.iisigroup.cap.report.factory.ItextFontFactory;
 import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.colabase.pdf.service.PDFService;
@@ -41,6 +42,12 @@ public class PDFHandler extends MFormHandler {
 
     @Autowired
     private PDFService pdfService;
+    @Autowired
+    private ItextFontFactory fontFactory;
+    private static final String DEFAULT_FONT = "MSJH.TTF";// 微軟正黑體
+    private static final String TEST_SIGN_WORDING = "線上簽名驗證完成";
+    private static final String DATE_FORMAT = "yyyy/MM/dd";
+    private static final String FTL_TEMPLETE_NAME = "PDF_TEMPLETE.ftl";
 
     /**
      * 產生PDF
@@ -57,19 +64,21 @@ public class PDFHandler extends MFormHandler {
         String idNo = request.get("idNo", "");
         String mPhone = request.get("mPhone", "");
         String colabaseDemoPath = "colabaseDemo" + File.separator;
-        String templateName = colabaseDemoPath + "PDF_TEMPLETE.ftl";
+        String templateName = colabaseDemoPath + FTL_TEMPLETE_NAME;
         Boolean isDownlownPDF = false;
+        String font = "";
         // 給PDF值
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put("custName", custName);
         dataMap.put("idNo", idNo);
         dataMap.put("mPhone", mPhone);
-        dataMap.put("applyDate", CapDate.getCurrentDate("yyyy/MM/dd"));
-        dataMap.put("onlineSign", "線上簽名驗證完成");
+        dataMap.put("applyDate", CapDate.getCurrentDate(DATE_FORMAT));
+        dataMap.put("onlineSign", TEST_SIGN_WORDING);
         // PDF產生結果
         if (!CapString.isEmpty(pdfPath)) {
             try {
-                pdfService.processPdf(request, dataMap, templateName, pdfPath, pdfName, isDownlownPDF, pdfPwd);
+                font = fontFactory.getFontPath(DEFAULT_FONT, "");
+                pdfService.processPdf(request, dataMap, templateName, pdfPath, pdfName, isDownlownPDF, pdfPwd, font);
                 result.set("pdfReslut", "ok");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -95,18 +104,20 @@ public class PDFHandler extends MFormHandler {
         String idNo = request.get("idNo", "");
         String mPhone = request.get("mPhone", "");
         String colabaseDemoPath = "colabaseDemo" + File.separator;
-        String templateName = colabaseDemoPath + "PDF_TEMPLETE.ftl";
+        String templateName = colabaseDemoPath + FTL_TEMPLETE_NAME;
         Boolean isDownlownPDF = true;
+        String font = "";
         // 給PDF值
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put("custName", custName);
         dataMap.put("idNo", idNo);
         dataMap.put("mPhone", mPhone);
-        dataMap.put("applyDate", CapDate.getCurrentDate("yyyy/MM/dd"));
-        dataMap.put("onlineSign", "線上簽名驗證完成");
+        dataMap.put("applyDate", CapDate.getCurrentDate(DATE_FORMAT));
+        dataMap.put("onlineSign", TEST_SIGN_WORDING);
         // PDF產生結果
         try {
-            return pdfService.processPdf(request, dataMap, templateName, "", pdfName, isDownlownPDF, pdfPwd);
+            font = fontFactory.getFontPath(DEFAULT_FONT, "");
+            return pdfService.processPdf(request, dataMap, templateName, "", pdfName, isDownlownPDF, pdfPwd, font);
         } catch (Exception e) {
             e.printStackTrace();
             result.set("pdfReslut", e.getMessage());
@@ -137,6 +148,30 @@ public class PDFHandler extends MFormHandler {
             }
         } else {
             result.set("pdfReslut", "No Merge PDF Path.");
+        }
+        return result;
+    }
+
+    /**
+     * 分割PDF
+     * 
+     * @param request
+     * @return
+     */
+    public Result partitionPDF(Request request) {
+        AjaxFormResult result = new AjaxFormResult();
+        String partPDFPath = request.get("partPDFPath", "");
+        int partPDFStartPage = Integer.parseInt(request.get("partPDFStartPage", "0"));
+        if (!CapString.isEmpty(partPDFPath)) {
+            try {
+                pdfService.partitionPdfFile(partPDFPath, partPDFStartPage);
+                result.set("pdfReslut", "ok");
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.set("pdfReslut", e.getMessage());
+            }
+        } else {
+            result.set("pdfReslut", "No Partition PDF Path.");
         }
         return result;
     }

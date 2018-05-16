@@ -43,6 +43,14 @@
             <input id="genMgPDFName" type="text" placeholder="請輸入要合併後PDF檔案名稱" value=""/>
             <br />
             <button id="mergePDF" class="sendbtn" type="button" style="">合併PDF</button>
+            <br />
+            <hr/>
+            <h3>Partition PDF</h3>
+	        <input id="partPDFPath" type="text" placeholder="請輸入欲分割的PDF路徑" value=""/>
+            <br />
+	        <input id="partPDFStartPage" type="text" placeholder="請輸入PDF欲分割之頁數" value=""/>
+            <br />
+            <button id="partitionPDF" class="sendbtn" type="button" style="">分割PDF</button>
             <fieldset>
                 <legend>
                     <h3>Message</h3>

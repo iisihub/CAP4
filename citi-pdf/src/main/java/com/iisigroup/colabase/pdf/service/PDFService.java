@@ -37,10 +37,12 @@ public interface PDFService {
      *            是否為直接下載PDF
      * @param encryptPassword
      *            PDF加密密碼，不加密則空
+     * @param font
+     *            PDF字型
      * @return
      * @throws CapException
      */
-    public Result processPdf(Request request, String pdfPath, String pdfName, ByteArrayDownloadResult pdfContent, Boolean isDownlownPDF, String encryptPassword);
+    public Result processPdf(Request request, String pdfPath, String pdfName, ByteArrayDownloadResult pdfContent, Boolean isDownlownPDF, String encryptPassword, String font);
 
     /**
      * 產生申請書PDF；若為FTL樣版可一起將PDF欄位值資料dataMap處理
@@ -58,9 +60,11 @@ public interface PDFService {
      *            是否為直接下載PDF
      * @param encryptPassword
      *            PDF加密密碼；不加密則空
+     * @param font
+     *            PDF字型
      * @return
      */
-    public Result processPdf(Request request, Map<String, Object> dataMap, String templateName, String pdfPath, String pdfName, Boolean isDownloadPDF, String encryptPassword);
+    public Result processPdf(Request request, Map<String, Object> dataMap, String templateName, String pdfPath, String pdfName, Boolean isDownloadPDF, String encryptPassword, String font);
 
     /**
      * Process PDF Content
@@ -88,4 +92,15 @@ public interface PDFService {
      * @return
      */
     public Result mergePDFFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName);
+
+    /**
+     * 將Pdf檔案分割為多頁
+     * 
+     * @param filePath
+     *            欲分割PDF檔案路徑
+     * @param partitionPageNum
+     *            分割頁數
+     * @return
+     */
+    public Result partitionPdfFile(String filePath, int partitionPageNum);
 }

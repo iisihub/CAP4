@@ -1,5 +1,3 @@
-var otpTimer;
-
 pageInit(function() {
   $(document).ready(function() {
     var form = $("#pdfForm");
@@ -22,6 +20,13 @@ pageInit(function() {
       e.preventDefault()
       window.setCloseConfirm(false);
       mergePDF();
+    });
+
+    // 分割PDF檔案
+    $("#partitionPDF").on('click', function(e) {
+      e.preventDefault()
+      window.setCloseConfirm(false);
+      partitionPDF()();
     });
 
     /**
@@ -124,13 +129,43 @@ pageInit(function() {
             if (d.pdfReslut == "ok") {
               pdfResultMsg = "PDF合併成功！產生路徑： " + genMgPDFPath;
             } else {
-              pdfResultMsg = "PDF產生失敗！ Error Message: " + d.pdfReslut;
+              pdfResultMsg = "PDF合併失敗！ Error Message: " + d.pdfReslut;
             }
             $("#pdfResultMsg").val(pdfResultMsg);
           }
         });
       } else {
         $("#pdfResultMsg").val("請輸入PDF合併資訊！");
+      }
+    }
+
+    /**
+     * 分割PDF
+     */
+    function partitionPDF() {
+      var partPDFPath = $("#partPDFPath").val();
+      var partPDFStartPage = $("#partPDFStartPage").val();
+      if (partPDFPath && partPDFStartPage) {
+        $.ajax({
+          url : url('demopdfhandler/partitionPDF'),
+          type : 'post',
+          dataType : 'json',
+          data : {
+            partPDFPath : partPDFPath,
+            partPDFStartPage : partPDFStartPage
+          },
+          success : function(d) {
+            var pdfResultMsg;
+            if (d.pdfReslut == "ok") {
+              pdfResultMsg = "PDF分割成功！產生路徑： " + partPDFPath.substring(0, partPDFPath.lastIndexOf("/"));
+            } else {
+              pdfResultMsg = "PDF分割失敗！ Error Message: " + d.pdfReslut;
+            }
+            $("#pdfResultMsg").val(pdfResultMsg);
+          }
+        });
+      } else {
+        $("#pdfResultMsg").val("請輸入分割PDF資訊！");
       }
     }
 
