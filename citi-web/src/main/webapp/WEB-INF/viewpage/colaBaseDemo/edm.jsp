@@ -59,16 +59,16 @@
 		<div class="leftBox">
 			<form id="edmForm" autocomplete="off" method="post">
 				<div>
-					寄送地址 <input type="text" id="eamilAccount" name="eamilAccount" />
+					寄送地址 <input type="text" id="mailAddress" name="mailAddress" value="johnson.ho@iisigroup.com"/>
 				</div>
 				<div>
-					選擇ftl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="edmFtlPath" name="edmFtlPath" />
+					選擇ftl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="edmFtlPath" name="edmFtlPath" value="edm1.ftl"/>
 				</div>
 				<div>
-					客戶姓名 <input type="text" id="edmCustomerName" name="edmCustomerName" />
+					客戶姓名 <input type="text" id="edmCustomerName" name="edmCustomerName" value="姜森"/>
 				</div>
 				<div>
-					選擇方案 <input type="text" id="edmProject" name="edmProject" />
+					選擇方案 <input type="text" id="edmProject" name="edmProject" value="隨時清償"/>
 				</div>
 			</form>
 			<button id="sendEdmBtn" class="sendbtn" type="button">送出</button>
@@ -83,10 +83,10 @@
 			<div class="leftBox">
 				<form id="ftlForm" autocomplete="off" method="post">
 					<div>
-						選擇檔案 <input type="text" id="ftlFile" name="ftlFile" />
+						選擇檔案 <input type="text" id="sourceFileName" name="sourceFileName" value="A1.htm"/>
 					</div>
 					<div>
-						輸出目錄 <input type="text" id="ftlOutPath" name="ftlOutPath" />
+						輸出目錄 <input type="text" id="ftlDestination" name="ftlDestination" value="D:/COLA/ftl/A1.ftl"/>
 					</div>
 				</form>
 				<button id="sendFtlBtn" class="sendbtn" type="button">送出</button>

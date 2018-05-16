@@ -15,6 +15,7 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
@@ -39,7 +40,9 @@ import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -78,54 +81,36 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
     @Override
     public void sendEDM(Request request, String edmFtlPath, Map<String, Object> dataMap) {
 
-        request.put("edm", edmFtlPath);
-        request.put("apUrl", "smtp.gmail.com");
+        //TODO 夾帶檔案，測試PDF
+        ByteArrayDownloadResult pdfContent = processTemplate_email(request, edmFtlPath, dataMap);
 
-        ByteArrayDownloadResult pdfContent = processTemplate_email(request);
-
-        // mail edm to user
-//        logger.info("[pcl][mail] mail.enable is " + Boolean.valueOf(getSysConfig().getProperty("mail.enable", "true")));
-
-        //TODO mail enable getSysConfig().getProperty("mail.enable", "true")
-        if (Boolean.valueOf(true)) {
-            //TODO custmail
-            String eamilAccount = CapString.trimNull(request.get("eamilAccount"));
-            final String _AL_MAP = "_al_map";
-//            Map<String, Object> map = new HashMap<String, Object>();
-//            if (request.containsKey(_AL_MAP)) {
-//                map = (Map<String, Object>) request.getObject(_AL_MAP);
-//                eamilAccount = (String) map.get("custMail");
-//            }
-            logger.info("[pcl][mail] emailAccount is '" + eamilAccount + "'");
-            if (!CapString.isEmpty(eamilAccount)) {
-
-                sendEDM(eamilAccount, pdfContent.getByteArray(), request.get("apUrl"), request);
+        logger.info("[mail] mail.enable is " + Boolean.valueOf(getSysConfig().getProperty("mail.enable", "true")));
+        String enable = getSysConfig().getProperty("mail.enable", "true");
+        
+        if (Boolean.valueOf(enable)) {
+            String mailAddress = CapString.trimNull(request.get("mailAddress"));
+            logger.info("[mail] emailAccount is '" + mailAddress + "'");
+            if (!CapString.isEmpty(mailAddress)) {
+                sendEDM(mailAddress, pdfContent.getByteArray(), request);
             }
         }
-//        String ATTR_OTP = "OTP";
-//        if (request.containsKey(ATTR_OTP) && (session.getAttribute(ATTR_OTP) != null)) {
-//            session.removeAttribute(ATTR_OTP);
-//        }
-        // if(request.containsKey(ATTR_P5_OTP) && (session.getAttribute(ATTR_P5_OTP) != null)){
-        // session.removeAttribute(ATTR_P5_OTP);
-        // }
     }
     
     /* (non-Javadoc)
      * @see com.iisigroup.colabase.edm.service.EDMService#sendEDM(java.lang.String, byte[], java.lang.String, com.iisigroup.cap.component.Request)
      */
     @Override
-    public Result sendEDM(String mailAddress, byte[] datas, String apUrl, Request request) {
+    public Result sendEDM(String mailAddress, byte[] datas, Request request) {
         AjaxFormResult result = new AjaxFormResult();
 
         try {
-            //TODO 客製化參數
-            final String FROM_ADDRESS = "citi@imta.citicorp.com"; // "eService@mail.booc.com.tw";
-            final String FROM_PERSON = "花旗（台灣）銀行"; // "花旗（台灣）銀行";
-            final String EDM_HOST = "smtp.gmail.com"; // "imta.citicorp.com";
-            final String EDM_USR = "css123456tw@gmail.com"; // "";
-            final String EDM_PWD = "kvzulwkqdoiprtfb"; // "";
-            String EDM_SUBJECT = "花旗(台灣)銀行 圓滿貸線上申請確認通知函"; // "花旗（台灣）銀行 信用卡申請通知";
+            final String FROM_ADDRESS = getSysConfig().getProperty("fromAddress", "citi@imta.citicorp.com");
+            final String FROM_PERSON = getSysConfig().getProperty("fromPerson", "花旗（台灣）銀行");
+            final String EDM_HOST = getSysConfig().getProperty("edmHost", "smtp.gmail.com");
+            final String EDM_USR = getSysConfig().getProperty("edmUsr", "css123456tw@gmail.com");
+            final String EDM_PWD = getSysConfig().getProperty("edmPwd", "kvzulwkqdoiprtfb");
+            String EDM_SUBJECT = getSysConfig().getProperty("edmSubject", "花旗(台灣)銀行 圓滿貸線上申請確認通知函");
+            
             if (CapString.isEmpty(EDM_SUBJECT)) {
                 EDM_SUBJECT = "Citi Cola Notification";
             }
@@ -163,15 +148,9 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
             BodyPart messageBodyPart = new MimeBodyPart();
 
             if (html != null) {
-                String htmlTxt = html.toString();
-                // Replace WEBCONTEXT & CBOL_COLA_HOST
-                if (!CapString.isEmpty(apUrl)) {
-                    htmlTxt = htmlTxt.replace("{WEBCONTEXT}", apUrl);
-                    htmlTxt = htmlTxt.replace("{PCL_CBOL_HOST}", apUrl);
-                }
 
-                /* TODO Process Image path */
-                String imagePath = getSysConfig().getProperty("emailFileLocation", "images");
+                String imagePath = getSysConfig().getProperty("edmImageFileLocation", "/ftl/colabaseDemo/edmImages/");
+                imagePath = getClass().getResource(imagePath).getPath();
 
                 messageBodyPart.setContent(html.toString(), "text/html;charset=utf-8");
                 // add it
@@ -183,7 +162,6 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
                 int index = org.indexOf(keyword);
                 int end = 0;
                 while (index >= 0) {
-                    System.out.println("Index : " + index);
                     end = org.indexOf("\"", index + keyword.length());
                     String fileName = org.substring(index + keyword.length(), end);
                     messageBodyPart = new MimeBodyPart();
@@ -220,44 +198,10 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
                 HttpSession session = ((HttpServletRequest) request.getServletRequest()).getSession();
                 File sendFile;
                 MimeBodyPart filePart = new MimeBodyPart();
-                if (true) {
-                    //TODO send file
-                    sendFile = new File("C:/Users/KaiYu/Desktop/EI follow-up.txt");
-                    filePart.attachFile(sendFile);
-                    multipart.addBodyPart(filePart);
-                } 
-//                else {
-//                  //PDF加密
-//                    ByteArrayOutputStream buffOutputStream = null;
-//                    String idNO = (String) session.getAttribute(CCConstants.SESSION_CUSTID);
-//                    byte[] userPass = idNO.getBytes();
-//                    byte[] ownerPass = null;
-//
-//                    PdfReader reader = new PdfReader(String.valueOf(session.getAttribute(CCConstants.TEMP_PDF_PATH)));
-//                    PdfReader.unethicalreading = true;
-//                    PdfStamper stamper;
-//                    buffOutputStream = new ByteArrayOutputStream();
-//
-//                    try {
-//                        /*
-//                         * Reader Temp-PDF to set encryption.
-//                         */
-//                        stamper = new PdfStamper(reader, buffOutputStream);
-//                        stamper.setEncryption(userPass, ownerPass, PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128 | PdfWriter.DO_NOT_ENCRYPT_METADATA);
-//                        stamper.close();
-//                        reader.close();
-//                    } catch (DocumentException e) {
-//                        // TODO Auto-generated catch block
-//                        logger.debug("==== Download PDF is not success ====");
-//                        e.printStackTrace();
-//                    }
-//                    byte[] bytes = buffOutputStream.toByteArray();
-//                    DataSource ds = new ByteArrayDataSource(bytes, "application/pdf");
-//                    filePart.setDataHandler(new DataHandler(ds));
-//                    //TODO file name
-//                    filePart.setFileName(MimeUtility.encodeText("圓滿貸申請書暨約定書.pdf", "UTF-8", "B"));
-//                    multipart.addBodyPart(filePart);
-//                }
+                //send file
+                sendFile = new File("C:/Users/KaiYu/Desktop/EI follow-up.txt");
+                filePart.attachFile(sendFile);
+                multipart.addBodyPart(filePart);
             }
 
             // put everything together
@@ -281,31 +225,26 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
         return result;
     }
     
-    private ByteArrayDownloadResult processTemplate_email(Request request) {
+    private ByteArrayDownloadResult processTemplate_email(Request request, String edmFtlPath, Map<String, Object> dataMap) {
         ByteArrayOutputStream out = null;
         Writer writer = null;
         OutputStreamWriter wr = null;
         FileInputStream is = null;
         try {
-            String templateKeyId = request.get("edm", EDM_TEMPLATE_1);
-
             Configuration config = getFmConfg().getConfiguration();
-
-            Template t = config.getTemplate(templateKeyId);
+            Template t = config.getTemplate(edmFtlPath);
+            
             out = new ByteArrayOutputStream();
             wr = new OutputStreamWriter(out, getSysConfig().getProperty(PageReportParam.defaultEncoding.toString(), DEFAULT_ENCORDING));
             writer = new BufferedWriter(wr);
-            final String _AL_MAP = "_al_map";
-            // Map<String, Object> map = new HashMap<String, Object>();
-            Map<String, Object> map = excute_email(request);
-            // if (request.containsKey(_AL_MAP)) {
-            // map = (Map<String, Object>) request.getObject(_AL_MAP);
-            // } else {
-            // map = excute_email(request);
-            // request.put(_AL_MAP, map);
-            // }
+            
+            Map<String, Object> map = new HashMap<String, Object>();
+            for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
+                map.put(entry.getKey(), CapString.trimNull(entry.getValue()));
+            }
+            
             if (logger.isDebugEnabled()) {
-                logger.debug("[freemarker] Template name: " + templateKeyId + ", data: " + map.toString());
+                logger.debug("[freemarker] Template name: " + edmFtlPath + ", data: " + map.toString());
             }
             t.process(map, writer);
 
@@ -319,57 +258,120 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
         return null;
     }
     
-    /**
-     *
-     * @param request
-     * @return
+
+    /* (non-Javadoc)
+     * @see com.iisigroup.colabase.edm.service.EDMService#ftlToEDM(com.iisigroup.cap.component.Request)
      */
-    private Map<String, Object> excute_email(Request request) {
+    @Override
+    public void htmlToFtl(Request request, String sourceFileName, String ftlDestination) {
+        
+        File sourceFile = new File(getClass().getResource(getSysConfig().getProperty("edmFileLocation", "/ftl/report/")).getPath() + sourceFileName);
+        File destinationFile = new File(ftlDestination);
+        
+        final StringBuffer buffer = new StringBuffer();
+        try {
+            String str = FileUtils.readFileToString(sourceFile, "MS950");
+            int start;
+            int pos = 0;
 
-        Map<String, Object> m = new HashMap<String, Object>();
-        HttpSession session = ((HttpServletRequest) request.getServletRequest()).getSession();
-        Map<String, Object> _ar = new HashMap<String, Object>();
-        // session可能是null
-//        if (session != null && session.getAttribute(CCConstants.ATTR_REDIRECT) != null) {
-//            _ar = (Map<String, Object>) session.getAttribute(CCConstants.ATTR_REDIRECT);
-//        }
+            while ((start = str.indexOf("${", pos)) != -1) {
+                buffer.append(str.substring(pos, start));
+                if (str.charAt(start + 1) == '$') {
+                    buffer.append("$");
+                    pos = start + 2;
+                    continue;
+                }
+                pos = start;
+                final int startVariableName = start + 2;
+                final int endVariableName = str.indexOf('}', startVariableName);
 
-        // put session parameter.
-        for (Map.Entry<String, Object> entry : _ar.entrySet()) {
-            m.put(entry.getKey(), CapString.trimNull(entry.getValue()));
+                if (endVariableName != -1) {
+                    String variableName = getVariableName(str.substring(startVariableName, endVariableName));
+                    boolean fix = variableName.startsWith("<#");
+                    buffer.append(fix ? "" : "${").append(variableName).append(fix ? "" : "}");
+                    pos = endVariableName + 1;
+                } else {
+                    break;
+                }
+            }
+            if (pos < str.length()) {
+                buffer.append(str.substring(pos));
+            }
+            String ftl = setListVariable(buffer.toString());
+            FileUtils.writeStringToFile(destinationFile, ftl);
+        } catch (IOException e) {
+            logger.error("htmlToFtlNotification:" + e.getMessage(), e);
         }
+    }
+    
+    public String setListVariable(String xml) {
+        final StringBuffer buffer = new StringBuffer();
+        try {
+            int start, pos = 0;
 
-        // 難字處理，改成圖片呈現
-        // m.put("chineseNameMask", CapString.trimNull(m.get("firstNM"), " ").substring(0, 1));
-//        String feeFormate = amountFormat(String.valueOf(_ar.get("fee")));
-//        m.put("fee", feeFormate);
-        if ("0".equals(m.get("acChoose"))) {
-//            m.put("otherAccountTitleMask", "花旗(台灣)銀行 " + m.get("nowBranchCode"));
-//            String otherAccountNumber = CapString.trimNull(m.get("nowAccountNumber"), "------------    ");
-//            m.put("otherAccountNumberMask", "************" + otherAccountNumber.substring(otherAccountNumber.length() - 4, otherAccountNumber.length()));
-//            m.put("otherFeeMask", "$ 0");
-        } else {
-             // NTB不會有花旗本行
-//             m.put("edmChineseName",m.get("firstNM").toString().substring(0,1));
-//             m.put("otherAccountTitleMask",m.get("otherAccountTitle").toString().concat(" ").concat(m.get("otherBranchCode").toString()));
-//             // m.put("otherAccountTitleMask", m.get("otherAccountTitle"));
-//             String otherAccountNumber = CapString.trimNull(m.get("otherAccountNumber"), "------------    ");
-//             m.put("otherAccountNumberMask", "************" + otherAccountNumber.substring(otherAccountNumber.length() - 4, otherAccountNumber.length()));
-//             if (CapString.trimNull(m.get("otherAccountTitle")).startsWith("021")) {
-//             m.put("otherFeeMask", "$ 0");
-//             } else {
-//             m.put("otherFeeMask", "$ 50");
-//             }
+            while ((start = xml.indexOf("${", pos)) != -1) {
+
+                int startVariableName = start + 2;
+                int endVariableName = xml.indexOf('}', startVariableName);
+                String variableName = xml.substring(startVariableName, endVariableName);
+                if (variableName.startsWith("<")) {
+                    buffer.append(xml.substring(pos, start)).append(variableName);
+                    pos = endVariableName + 1;
+                } else if (variableName.startsWith("w:")) {
+                    int p = variableName.indexOf('<');
+                    String tag = "<" + variableName.substring(2, p) + " ";
+                    startVariableName = xml.lastIndexOf(tag, start);
+                    buffer.append(xml.substring(pos, startVariableName));
+                    buffer.append(variableName.substring(p));
+                    buffer.append(xml.substring(startVariableName, start));
+                    pos = endVariableName + 1;
+                } else if (variableName.startsWith("/w:")) {
+                    buffer.append(xml.substring(pos, start));
+                    int p = variableName.indexOf('<');
+                    String tag = "</" + variableName.substring(3, p) + ">";
+                    startVariableName = xml.indexOf(tag, endVariableName + 1);
+                    buffer.append(xml.substring(endVariableName + 1, startVariableName));
+                    buffer.append(tag).append(variableName.substring(p));
+                    pos = startVariableName + tag.length();
+                } else {
+                    buffer.append(xml.substring(pos, endVariableName + 1));
+                    pos = endVariableName + 1;
+                }
+            }
+            if (pos < xml.length()) {
+                buffer.append(xml.substring(pos));
+            }
+        } catch (Exception e) {
+            logger.error("setListVariableNotification:" + e.getMessage(), e);
         }
+        return buffer.toString();
+    }// ;
 
-        return m;
+    public String getVariableName(String str) {
+        String temp = "<span>" + str + "</span>";
+        final StringBuffer buf1 = new StringBuffer();
+
+        int s1;
+        int p1 = 0;
+        while ((s1 = temp.indexOf("<span>", p1)) != -1) {
+            p1 = temp.indexOf("</span>", s1 + 6);
+            if (p1 == -1) {
+                break;
+            }
+            buf1.append(temp.substring(s1 + 6, p1));
+            p1 = p1 + 6;
+        }
+        String rtn = StringEscapeUtils.unescapeXml(buf1.toString());
+        rtn = rtn.replaceAll("\r\n", " ");
+        System.out.println("variable=" + rtn);
+        return rtn;
     }
 
     /* (non-Javadoc)
      * @see com.iisigroup.colabase.edm.service.EDMService#ftlToEDM(com.iisigroup.cap.component.Request)
      */
     @Override
-    public void ftlToEDM(Request request) {
+    public void xmlToFtl(Request request, String sourceFileName, String ftlDestination) {
         // TODO Auto-generated method stub
         
     }

@@ -4,7 +4,7 @@ pageInit(function() {
 		// edm
 		$("#sendEdmBtn").click(function() {
 			var datas = {
-			  eamilAccount : $('#eamilAccount').val(),
+			  mailAddress : $('#mailAddress').val(),
 			  edmFtlPath : $('#edmFtlPath').val(),
 			  edmCustomerName : $('#edmCustomerName').val(),
 			  edmProject : $('#edmProject').val()
@@ -23,8 +23,8 @@ pageInit(function() {
 		// ftl
 		$("#sendFtlBtn").click(function() {
 			var datas = {
-			  ftlFile : $('#ftlFile').val(),
-			  ftlOutPath : $('#ftlOutPath').val(),
+				sourceFileName : $('#sourceFileName').val(),
+				ftlDestination : $('#ftlDestination').val(),
 			};
 
 			$.ajax({

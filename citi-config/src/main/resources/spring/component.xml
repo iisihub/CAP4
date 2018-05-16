@@ -58,6 +58,6 @@
             </props>
         </property>
     </bean>
-    <bean id="init" class="com.iisigroup.colabase.va.util.LoadAllCaCertAndCRLBean">
-    </bean>
+<!--     <bean id="init" class="com.iisigroup.colabase.va.util.LoadAllCaCertAndCRLBean"> -->
+<!--     </bean> -->
 </beans>

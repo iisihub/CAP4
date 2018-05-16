@@ -40,13 +40,18 @@ public interface EDMService {
      * @param String
      * @param request
      */
-    Result sendEDM(String mailAddress, byte[] datas, String apUrl, Request request);
+    Result sendEDM(String mailAddress, byte[] datas, Request request);
     
     /**
-     * 檔案轉成EDM格式
+     * html檔案轉成ftl格式
      * @param request
      */
-    void ftlToEDM(Request request);
+    void htmlToFtl(Request request, String sourceFileName, String ftlDestination);
+    /**
+     * xml檔案轉成ftl格式
+     * @param request
+     */
+    void xmlToFtl(Request request, String sourceFileName, String ftlDestination);
 
 
 }
