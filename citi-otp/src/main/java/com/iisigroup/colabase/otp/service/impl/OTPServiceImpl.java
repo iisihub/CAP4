@@ -178,7 +178,7 @@ public class OTPServiceImpl implements OTPService {
         }
         if ("true".equalsIgnoreCase(proxyEnable)) {
             if (StringUtils.isBlank(proxyHost) || StringUtils.isBlank(proxyPort)) {
-                logger.error("proxy doesn't set.", getClass());
+                logger.warn("proxy doesn't set.", getClass());
             }
         } else {
             proxyHost = null;
@@ -203,7 +203,9 @@ public class OTPServiceImpl implements OTPService {
             s.addRequestProperty("CONTENT-LENGTH", Integer.toString(message.getBytes().length));
             int count = 0;
             int length = message.length() + count;
-            logger.debug(String.valueOf(length), "length={}");
+            if (length > 0) {
+                logger.debug(String.valueOf(length), "length={}");
+            }
             logger.debug(message, "sending message:\n{}");
             writer.write(message);
             writer.flush();
