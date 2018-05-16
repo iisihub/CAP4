@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.iisigroup.colabase.annotation.JsonTemp;
 import com.iisigroup.colabase.util.RequestFactory;
 import com.iisigroup.colabase.annotation.ApiRequest;
 import com.iisigroup.colabase.model.RequestContent;
@@ -30,6 +29,8 @@ public class JsonDataServiceImpl implements JsonDataService {
     private final String ARRAY_MARK = "[]";
     private final String LAST_PROCESS_KEY = "lastProcess";
     private final String ARRAY_MAP_KEY = "arrayMap";
+    private final String NO_SEND_LIST_KEY = "noSendList";
+    private final String PATH_SPLIT_MARK = "\\.";
 
     public JsonDataServiceImpl() {
     }
@@ -47,7 +48,7 @@ public class JsonDataServiceImpl implements JsonDataService {
         if (fieldAnnotation == null)
             return;
         String path = fieldAnnotation.path();
-        String[] paths = path.split("\\.");
+        String[] paths = path.split(PATH_SPLIT_MARK);
         this.countArray(path, arrayMap);
         JsonObject jsonElement = getJsonElement(requestJson, path, arrayMap);
         jsonElement.addProperty(paths[paths.length - 1], value);
@@ -94,7 +95,7 @@ public class JsonDataServiceImpl implements JsonDataService {
      * @return 包含最後一個節點的jsonObject
      */
     private JsonObject getJsonElement(JsonObject jsonObject, String eleNameChain, Map<String, Object> arrayMap) {
-        String[] paths = eleNameChain.split("\\.");
+        String[] paths = eleNameChain.split(PATH_SPLIT_MARK);
         String path = paths[0];
         if(path.contains(ARRAY_MARK) && paths.length > 1) {
             path = path.replace(ARRAY_MARK, "");
@@ -102,10 +103,14 @@ public class JsonDataServiceImpl implements JsonDataService {
             jsonObject = this.getJsonArrayElement(jsonObject, path, arrayMap);
             return this.getJsonElement(jsonObject, newPath, arrayMap);
         }
-        if(paths.length == 1)
-            return jsonObject;
-        String newPath = eleNameChain.substring(eleNameChain.indexOf(".") + 1);
         JsonElement jsonElement = jsonObject.get(path);
+        if (jsonElement == null) { //check path是否有效
+            throw new IllegalArgumentException("can not found element by path: " + path);
+        }
+        if(paths.length == 1) {
+            return jsonObject;
+        }
+        String newPath = eleNameChain.substring(eleNameChain.indexOf(".") + 1);
         return this.getJsonElement((JsonObject)jsonElement, newPath, arrayMap);
     }
 
@@ -119,18 +124,21 @@ public class JsonDataServiceImpl implements JsonDataService {
     private JsonObject getJsonArrayElement(JsonObject jsonObject, String arrayName, Map<String, Object> arrayMap) {
         JsonArray jsonArray = jsonObject.getAsJsonArray(arrayName);
         if(jsonArray == null)
-            throw new IllegalArgumentException("eleName did not found any json array");
+            throw new IllegalArgumentException("can not found any json array by arrayName: " + arrayName);
 
         String lastProcess = (String)arrayMap.get(LAST_PROCESS_KEY);
-        String[] paths = lastProcess.split("\\.");
-        Integer count = (Integer) arrayMap.get(lastProcess);
+        Integer count = (Integer) arrayMap.get(lastProcess);;
+        if(count == null) {
+            count = 0;
+        }
+        String[] paths = lastProcess.split(PATH_SPLIT_MARK);
 
         //目標array
         String markPath = paths[paths.length - 2].replace(ARRAY_MARK, "");
         if(arrayName.equals(markPath)) {
             String arrayKey = arrayName + ARRAY_MARK;
             if(count == 0) {
-                arrayMap.putIfAbsent(arrayKey, deepCopy(jsonArray.get(0)));
+//                arrayMap.putIfAbsent(arrayKey, deepCopy(jsonArray.get(0)));
                 return (JsonObject) jsonArray.get(0);
             } else {
                 if(jsonArray.size() - 1 == count)
@@ -226,15 +234,37 @@ public class JsonDataServiceImpl implements JsonDataService {
                 continue;
             this.setParamToJsonContent(reqInstance, key, value);
         }
-        //must clean arrayMap
+        //must clean arrayMap to empty
+        Map<String, Object> arrayMap = getArrayMap(reqInstance);
+        arrayMap.clear();
+    }
+
+    private Map<String, Object> getArrayMap(RequestContent instance) {
         try {
             Field field = RequestContent.class.getDeclaredField(ARRAY_MAP_KEY);
             field.setAccessible(true);
-            Map<String, Object> arrayMap = (Map<String, Object>) field.get(reqInstance);
-            arrayMap.clear();
+            return  (Map<String, Object>) field.get(instance);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new IllegalStateException("can not found array map while set default value");
         }
+    }
+
+    @Override
+    public <T extends RequestContent> void copyDefaultArrayObject(T reqInstance, List<String> allPathList) {
+        JsonObject requestContent = reqInstance.getRequestContent();
+
+        Map<String, Object> arrayMap = this.getArrayMap(reqInstance);
+        for (String path : allPathList) {
+            if(!path.contains(ARRAY_MARK))
+                continue;
+            String[] paths = path.split(PATH_SPLIT_MARK);
+            arrayMap.put(LAST_PROCESS_KEY, path);
+            JsonObject jsonElement = this.getJsonElement(requestContent, path, arrayMap);
+            Object copy = this.deepCopy(jsonElement);
+            String arrayName = paths[paths.length - 2];
+            arrayMap.putIfAbsent(arrayName, copy);
+        }
+        arrayMap.remove(LAST_PROCESS_KEY);
     }
 
 

@@ -17,6 +17,8 @@ public interface JsonDataService {
 
     <T extends RequestContent> void setDefaultValue(T reqInstance, Map<String, String> valueMap);
 
+    <T extends RequestContent> void copyDefaultArrayObject(T reqInstance, List<String> allPathList);
+
     <T extends RequestContent> void removeUnnecessaryNode(T requestContent);
 
     JsonObject getJsonStr(RequestContent requestContent);

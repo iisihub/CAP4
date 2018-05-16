@@ -10,6 +10,7 @@ import com.iisigroup.colabase.service.impl.JsonDataServiceImpl;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,12 +29,13 @@ public class RequestFactory {
 
     private static final String REQUEST_CONTENT_KEY = "requestContent";
     private static final String NO_SEND_LIST_KEY = "noSendList";
+    private static final String ALL_PATH_LIST_KEY = "allPathList";
 
     static {
         jsonDataService = new JsonDataServiceImpl();
     }
 
-    private static JsonDataService jsonDataService;
+    private static final JsonDataService jsonDataService;
 
     private RequestFactory() {
 
@@ -49,6 +51,13 @@ public class RequestFactory {
         return instance;
     }
 
+    /**
+     * process to init jsonObject then clean, set default value and copy default array
+     * @param requestClass original class from user
+     * @param instance after proxy object
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
     static <T extends RequestContent> void initJsonObject(Class<T> requestClass, T instance) throws NoSuchFieldException, IllegalAccessException {
         Field jsonObjField = RequestContent.class.getDeclaredField(REQUEST_CONTENT_KEY);
         jsonObjField.setAccessible(true);
@@ -71,13 +80,16 @@ public class RequestFactory {
 
         Map<String, String> valueMap = new HashMap<>();
         List<String> noSendList = getListToInstance(instance);
-        setDefaultValueMapAndNoSendList(valueMap, noSendList, instance.getClass());
+        List<String> allPathList = new ArrayList<>();
+        setApiRequstInfo(valueMap, noSendList, allPathList, instance.getClass());
 
         // clean current jsonObject
         jsonDataService.cleanJsonObjectData(instance);
         // set default value to it
         jsonDataService.setDefaultValue(instance, valueMap);
-        String s = "";
+        //TODO set default array copy to map
+        jsonDataService.copyDefaultArrayObject(instance, allPathList);
+
     }
 
     private static <T extends RequestContent> List<String> getListToInstance(T instance) {
@@ -90,7 +102,7 @@ public class RequestFactory {
         }
     }
 
-    private static void setDefaultValueMapAndNoSendList(Map<String, String> valueMap, List<String> noVnoSLinst, Class<?> tClass) {
+    private static void setApiRequstInfo(Map<String, String> valueMap, List<String> noVnoSLinst, List<String> allPathList, Class<?> tClass) {
         if(tClass == RequestContent.class)
             return;
 
@@ -101,13 +113,16 @@ public class RequestFactory {
                 continue;
             }
             String path = annotation.path();
-            String defValue = annotation.defaultVaule();
+            if("".equals(path))
+                throw new IllegalStateException("path could not be empty in annotation, issue field: " + field.getName());
+            allPathList.add(path);
+            String defValue = annotation.defaultValue();
             boolean isNoSend = annotation.noValueNoSend();
             valueMap.put(field.getName(), defValue);
             if(isNoSend)
                 noVnoSLinst.add(path);
         }
-        setDefaultValueMapAndNoSendList(valueMap, noVnoSLinst, tClass.getSuperclass());
+        setApiRequstInfo(valueMap, noVnoSLinst, allPathList, tClass.getSuperclass());
     }
 
 
