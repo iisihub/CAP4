@@ -16,7 +16,7 @@ import net.sf.cglib.proxy.MethodProxy;
  *          </ul>
  * @since 2018/5/11
  */
-public class RequestProxy implements MethodInterceptor {
+class RequestProxy implements MethodInterceptor {
 
     static {
         proxy = new RequestProxy();

@@ -37,10 +37,6 @@ public class RequestFactory {
 
     private static final JsonDataService jsonDataService;
 
-    private RequestFactory() {
-
-    }
-
     public static <T extends RequestContent> T getInstance(Class<T> requestClass) {
         T instance;
         try {

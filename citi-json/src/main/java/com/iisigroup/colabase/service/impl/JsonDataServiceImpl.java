@@ -36,7 +36,7 @@ public class JsonDataServiceImpl implements JsonDataService {
     }
 
     @Override
-    public <T extends RequestContent> void setParamToJsonContent(T requestContent, String fieldName, String value) {
+    public void setParamToJsonContent(RequestContent requestContent, String fieldName, String value) {
         Map<String, Object> arrayMap;
         try {
             arrayMap =  (Map<String, Object>)RequestFactory.getFieldObject(requestContent, ARRAY_MAP_KEY);
@@ -80,6 +80,7 @@ public class JsonDataServiceImpl implements JsonDataService {
                         Integer.parseInt(String.valueOf(arrayMap.get(key)));
                         arrayMap.put(key, null);
                     } catch (NumberFormatException e) {
+                        //do nothing
                     }
                 }
             }
@@ -107,11 +108,14 @@ public class JsonDataServiceImpl implements JsonDataService {
         if (jsonElement == null) { //check path是否有效
             throw new IllegalArgumentException("can not found element by path: " + path);
         }
+        if(jsonElement instanceof JsonArray) {
+            throw new IllegalStateException("eleNameChain: " + eleNameChain + " is wrong! Can not get JsonObject.");
+        }
         if(paths.length == 1) {
             return jsonObject;
         }
         String newPath = eleNameChain.substring(eleNameChain.indexOf(".") + 1);
-        return this.getJsonElement((JsonObject)jsonElement, newPath, arrayMap);
+        return this.getJsonElement((JsonObject) jsonElement, newPath, arrayMap);
     }
 
     /**
@@ -127,7 +131,7 @@ public class JsonDataServiceImpl implements JsonDataService {
             throw new IllegalArgumentException("can not found any json array by arrayName: " + arrayName);
 
         String lastProcess = (String)arrayMap.get(LAST_PROCESS_KEY);
-        Integer count = (Integer) arrayMap.get(lastProcess);;
+        Integer count = (Integer) arrayMap.get(lastProcess);
         if(count == null) {
             count = 0;
         }
@@ -192,8 +196,12 @@ public class JsonDataServiceImpl implements JsonDataService {
         return field.getAnnotation(ApiRequest.class);
     }
 
+    /**
+     * 清空JsonObject內既有的值，保持個元素都是空值
+     * @param reqInstance instance
+     */
     @Override
-    public <T extends RequestContent> void cleanJsonObjectData(T reqInstance) {
+    public void cleanJsonObjectData(RequestContent reqInstance) {
         this.cleanJsonObject(reqInstance.getRequestContent());
     }
 
@@ -213,21 +221,8 @@ public class JsonDataServiceImpl implements JsonDataService {
         }
     }
 
-    private <T extends RequestContent> Class<T> getMainClass(Class<?> reqClass) {
-        if(RequestContent.class == reqClass)
-            throw new IllegalArgumentException("can not found any with JsonTemp annotation class");
-
-        Field[] fields = reqClass.getDeclaredFields();
-        for (Field field : fields) {
-            if(field.getAnnotation(JsonTemp.class) != null) { //main class must have @JsonTemp for jsonTempStr
-                return (Class<T>) reqClass;
-            }
-        }
-        return this.getMainClass(reqClass.getSuperclass());
-    }
-
     @Override
-    public <T extends RequestContent> void setDefaultValue(T reqInstance, Map<String, String> valueMap) {
+    public void setDefaultValue(RequestContent reqInstance, Map<String, String> valueMap) {
         for (String key : valueMap.keySet()) {
             String value = valueMap.get(key).trim();
             if("".equals(value))
@@ -249,8 +244,9 @@ public class JsonDataServiceImpl implements JsonDataService {
         }
     }
 
+
     @Override
-    public <T extends RequestContent> void copyDefaultArrayObject(T reqInstance, List<String> allPathList) {
+    public void copyDefaultArrayObject(RequestContent reqInstance, List<String> allPathList) {
         JsonObject requestContent = reqInstance.getRequestContent();
 
         Map<String, Object> arrayMap = this.getArrayMap(reqInstance);
@@ -268,8 +264,12 @@ public class JsonDataServiceImpl implements JsonDataService {
     }
 
 
+    /**
+     * 根據提供的物件，取出noSendList，並移除該list所指定的路徑其值為空的元素
+     * @param requestContent instance
+     */
     @Override
-    public <T extends RequestContent> void removeUnnecessaryNode(T requestContent) {
+    public JsonObject removeUnnecessaryNode(RequestContent requestContent) {
 
     }
 

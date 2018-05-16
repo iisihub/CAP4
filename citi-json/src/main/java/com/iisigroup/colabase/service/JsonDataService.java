@@ -11,15 +11,15 @@ import java.util.Map;
  */
 public interface JsonDataService {
 
-    <T extends RequestContent> void setParamToJsonContent(T requestContent, String fieldName, String value);
+    void setParamToJsonContent(RequestContent requestContent, String fieldName, String value);
 
-    <T extends RequestContent> void cleanJsonObjectData(T reqInstance);
+    void cleanJsonObjectData(RequestContent reqInstance);
 
-    <T extends RequestContent> void setDefaultValue(T reqInstance, Map<String, String> valueMap);
+    void setDefaultValue(RequestContent reqInstance, Map<String, String> valueMap);
 
-    <T extends RequestContent> void copyDefaultArrayObject(T reqInstance, List<String> allPathList);
+    void copyDefaultArrayObject(RequestContent reqInstance, List<String> allPathList);
 
-    <T extends RequestContent> void removeUnnecessaryNode(T requestContent);
+    JsonObject removeUnnecessaryNode(RequestContent requestContent);
 
     JsonObject getJsonStr(RequestContent requestContent);
 
