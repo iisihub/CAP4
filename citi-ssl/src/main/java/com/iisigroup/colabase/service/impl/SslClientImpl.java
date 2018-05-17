@@ -112,7 +112,7 @@ public class SslClientImpl implements SslClient {
   private ResponseContent clientSendRequest(RequestContent requestContent) throws IOException {
     logger.debug("==== send dual ssl request start ====");
     long startTime = new Date().getTime();
-    ArrayList<String> listForRecordInfos = new ArrayList<>();
+    ArrayList<String> recordInfo = new ArrayList<>();
 
     ResponseContent responseContent = null;
     int statusCode = 0;
@@ -129,7 +129,7 @@ public class SslClientImpl implements SslClient {
       logger.debug("start time = " + time);
       logger.debug("Request: target = " + targetURL);
       // add listForRecordInfos
-      listForRecordInfos.add("Request: time = " + time);
+      recordInfo.add("Request: time = " + time);
 
       HttpsURLConnection connection = (HttpsURLConnection) new URL(targetURL).openConnection();
       // 設定 HttpsURLConnection 的 SSLSocketFactory
@@ -152,7 +152,7 @@ public class SslClientImpl implements SslClient {
       logger.debug("Request: Method = " + requestMethod);
 
       // add listForRecordInfos
-      listForRecordInfos.add("Request: Method = " + requestMethod);
+      recordInfo.add("Request: Method = " + requestMethod);
 
       connection.setDoInput(true);
       if (!RequestContent.HTTPMethod.GET.equals(method)) {
@@ -170,7 +170,7 @@ public class SslClientImpl implements SslClient {
           logger.debug("Request Header Key: " + requestHeaderKey + ", Value: " + requestHeaderValue);
 
           // add listForRecordInfos
-          listForRecordInfos.add("Request: " + requestHeaderKey + " = " + requestHeaderValue);
+          recordInfo.add("Request: " + requestHeaderKey + " = " + requestHeaderValue);
         }
       }
       requestContent.showRequestJsonStrLog(jsonStr);
@@ -184,9 +184,9 @@ public class SslClientImpl implements SslClient {
           output.flush();
 
           // add listForRecordInfos
-          listForRecordInfos.add("Request: data = " + jsonStr);
+          recordInfo.add("Request: data = " + jsonStr);
         } catch (IOException e) {
-          listForRecordInfos.add("Output data Exception = " + e.toString());
+          recordInfo.add("Output data Exception = " + e.toString());
           logger.warn("Output data Exception = " + e.toString());
           throw e;
         }
@@ -206,7 +206,7 @@ public class SslClientImpl implements SslClient {
         logger.debug("Response Header Key: " + entry.getKey() + ", Value: " + entry.getValue());
 
         // add listForRecordInfos
-        listForRecordInfos.add("Response: Header Key = " + entry.getKey() + ", Value = " + entry.getValue());
+        recordInfo.add("Response: Header Key = " + entry.getKey() + ", Value = " + entry.getValue());
       }
 
       JsonObject responseJson = new JsonObject();
@@ -224,19 +224,19 @@ public class SslClientImpl implements SslClient {
         if(responseBodySB.length()!=0) {
             responseJson = gson.fromJson(responseBodySB.toString(), JsonObject.class);
         }
-        listForRecordInfos.add("Response Body : " + responseJson.toString());
+        recordInfo.add("Response Body : " + responseJson.toString());
       } catch(JsonSyntaxException e) {
         responseJson = new JsonObject();
-        listForRecordInfos.add("Response Body: " + responseBodySB);
-        listForRecordInfos.add("Response Exception: " + e);
+        recordInfo.add("Response Body: " + responseBodySB);
+        recordInfo.add("Response Exception: " + e);
       } catch (IOException e) {
         throw e;
       }
 
-      responseContent = new ResponseContent(statusCode, headers, responseJson);
+      responseContent = new ResponseContent(statusCode, headers, responseJson, recordInfo);
     } catch (Exception e) {
       if(responseContent == null) {
-        responseContent = new ResponseContent(statusCode, new HashMap<String, List<String>>(), new JsonObject());
+        responseContent = new ResponseContent(statusCode, new HashMap<>(), new JsonObject(), recordInfo);
         responseContent.setException(e);
       }
       throw e;
