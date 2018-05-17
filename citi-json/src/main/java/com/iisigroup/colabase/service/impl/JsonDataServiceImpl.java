@@ -211,6 +211,9 @@ public class JsonDataServiceImpl implements JsonDataService {
                 jsonObject.add(entry.getKey(), new JsonPrimitive(""));
             } else if(value instanceof JsonArray){
                 for (JsonElement jsonElement : ((JsonArray) value)) {
+                    if (jsonElement.isJsonNull()) {
+                        throw new IllegalStateException("please check your jsonTemp string, can no clean origin value");
+                    }
                     this.cleanJsonObject((JsonObject) jsonElement);
                 }
             } else {
