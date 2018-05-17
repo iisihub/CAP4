@@ -17,9 +17,7 @@ import com.google.gson.JsonObject;
  *          </ul>
  * @since 2018/4/9
  */
-public abstract class RequestAbstract implements Request {
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+public abstract class JsonAbstract implements Json {
 
     /**
      * 請求內容JsonObject型態表示
@@ -40,16 +38,6 @@ public abstract class RequestAbstract implements Request {
     @Override
     public String getJsonString() {
         return requestContent.toString();
-    }
-
-    /**
-     * 紀錄request中的json字串
-     * 如果有針對特殊的呼叫(如送base64字串)導致過長，要自行override
-     * @param jsonStr
-     */
-    @Override
-    public void showRequestJsonStrLog(String jsonStr) {
-        logger.debug("Request: SendData = " + jsonStr);
     }
 
     @Override

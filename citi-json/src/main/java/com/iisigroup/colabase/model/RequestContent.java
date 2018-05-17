@@ -1,5 +1,8 @@
 package com.iisigroup.colabase.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.Map;
 
@@ -10,22 +13,10 @@ import java.util.Map;
  *          </ul>
  * @since 2018/5/17
  */
-public abstract class RequestContent extends RequestAbstract {
+public abstract class RequestContent extends JsonAbstract implements Request{
 
-    enum HTTPMethod {
-        GET("GET"), POST("POST"), PUT("PUT");
 
-        private String methodName;
-
-        HTTPMethod(String methodName) {
-            this.methodName = methodName;
-        }
-
-        @Override
-        public String toString() {
-            return methodName;
-        }
-    }
+    private static final Logger logger = LoggerFactory.getLogger(RequestContent.class);
 
     /**
      * 是否使用自己的key store and trust store
@@ -39,7 +30,7 @@ public abstract class RequestContent extends RequestAbstract {
     private int timeout;
 
     /**
-     * 重試次數 (millisecond)
+     * 重試次數
      */
     private int retryTimes = 0;
 
@@ -63,6 +54,15 @@ public abstract class RequestContent extends RequestAbstract {
      */
     private int[] retryHttpStatus;
 
+    /**
+     * 紀錄request中的json字串
+     * 如果有針對特殊的呼叫(如送base64字串)導致過長，要自行override
+     * @param jsonStr
+     */
+    @Override
+    public void showRequestJsonStrLog(String jsonStr) {
+        logger.debug("Request: SendData = " + jsonStr);
+    }
 
     public boolean isUseOwnKeyAndTrustStore() {
         return isUseOwnKeyAndTrustStore;
