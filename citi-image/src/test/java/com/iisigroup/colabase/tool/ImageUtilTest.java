@@ -59,7 +59,7 @@ public class ImageUtilTest {
 
     @Test
     public void test_rotate_to_tiff() throws Exception {
-        imageFileBuilder.rotate(ImageBuilder.Orientation.Portrait);
+        imageFileBuilder.rotate(ImageBuilder.Orientation.PORTRAIT);
         imageFileBuilder.writeToFiles(placeFolder, true);
         assertNotNull(new File(placeFolder, testFileName));
     }

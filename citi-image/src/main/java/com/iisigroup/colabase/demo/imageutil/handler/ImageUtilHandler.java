@@ -30,10 +30,7 @@ import java.util.List;
 @Controller("demoimageutilhandler")
 public class ImageUtilHandler extends MFormHandler {
 
-    public ImageUtilHandler() {
-        String sss = "";
-
-    }
+    private static final String RESULT_KEY = "result";
 
     public Result demo(Request params) {
 
@@ -43,7 +40,7 @@ public class ImageUtilHandler extends MFormHandler {
 
         File outputFolder = new File(params.get("outputFilePath"));
         if (!outputFolder.exists() || !outputFolder.isDirectory()) {
-            result.set("result", "please make sure your output folder path is correct.");
+            result.set(RESULT_KEY, "please make sure your output folder path is correct.");
             return result;
         }
         ImageBuilder imageBuilder = null;
@@ -52,7 +49,7 @@ public class ImageUtilHandler extends MFormHandler {
         case "0":
             File folder = new File(params.get("inputFolderPath"));
             if (!folder.exists() || !folder.isDirectory()) {
-                result.set("result", "please make sure your folder path is correct.");
+                result.set(RESULT_KEY, "please make sure your folder path is correct.");
                 return result;
             }
             imageBuilder = ImageUtil.fromSrc(folder);
@@ -64,7 +61,7 @@ public class ImageUtilHandler extends MFormHandler {
             for (String path : filesPath) {
                 File file = new File(path);
                 if (!file.exists()) {
-                    result.set("result", "file: " + file.getName() + " is not exists. Please check the file.");
+                    result.set(RESULT_KEY, "file: " + file.getName() + " is not exists. Please check the file.");
                     return result;
                 }
                 files.add(file);
@@ -72,16 +69,16 @@ public class ImageUtilHandler extends MFormHandler {
             imageBuilder = ImageUtil.fromSrc(files);
             break;
         default:
-            result.set("result", "please choose a input type!");
+            result.set(RESULT_KEY, "please choose a input type!");
             return result;
         }
         try {
             imageBuilder.writeToFiles(outputFolder, "tiff", true);
         } catch (IOException e) {
-            result.set("result", "output file fail, make sure path is correct.");
+            result.set(RESULT_KEY, "output file fail, make sure path is correct.");
         }
         if (outputFolder.exists()) {
-            result.set("result", "trans file is success created in " + outputFolder.getAbsolutePath());
+            result.set(RESULT_KEY, "trans file is success created in " + outputFolder.getAbsolutePath());
         }
         return result;
     }
@@ -91,11 +88,11 @@ public class ImageUtilHandler extends MFormHandler {
         String inputFilePath = params.get("inputFilePath", "");
         File file = new File(inputFilePath);
         if (!file.exists() || file.isDirectory()) {
-            result.set("result", "please make sure your file is exists or not a directory.");
+            result.set(RESULT_KEY, "please make sure your file is exists or not a directory.");
             return result;
         }
         String base64Str = ImageUtil.convertImageToBase64String(file);
-        result.set("result", base64Str);
+        result.set(RESULT_KEY, base64Str);
         return result;
     }
 

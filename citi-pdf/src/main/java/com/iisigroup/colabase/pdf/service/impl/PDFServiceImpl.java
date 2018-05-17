@@ -1,11 +1,13 @@
 package com.iisigroup.colabase.pdf.service.impl;
 
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -17,6 +19,7 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -29,15 +32,21 @@ import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.report.constants.ContextTypeEnum;
+import com.iisigroup.cap.report.factory.ItextFontFactory;
 import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.colabase.pdf.report.CCBasePageReport;
 import com.iisigroup.colabase.pdf.service.PDFService;
 import com.lowagie.text.Document;
+import com.lowagie.text.Element;
+import com.lowagie.text.PageSize;
 import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfCopy;
+import com.lowagie.text.pdf.PdfGState;
 import com.lowagie.text.pdf.PdfImportedPage;
 import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 import com.lowagie.text.pdf.PdfWriter;
 
 import freemarker.template.Configuration;
@@ -46,7 +55,10 @@ import freemarker.template.Template;
 @Service
 public class PDFServiceImpl extends CCBasePageReport implements PDFService {
 
-    private static Logger logger = LoggerFactory.getLogger(PDFServiceImpl.class);
+    @Autowired
+    private ItextFontFactory fontFactory;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final String DEFAULT_FONT = "MSJH.TTF";// 微軟正黑體
     private static final String UNDER_LINE = "_";
     private static final String DEFAULT_ENCORDING = "utf-8";
 
@@ -78,6 +90,12 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             outputFileName = pdfName + ".pdf";
         } else {
             outputFileName = defalutPDFName();
+        }
+        if (!CapString.isEmpty(font)) {
+            try {
+                font = fontFactory.getFontPath(DEFAULT_FONT, "");
+            } catch (IOException e) {
+            }
         }
         try {
             // 加密密碼，建立PDF名稱並產出
@@ -186,7 +204,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             int n = reader.getNumberOfPages();
 
             if (n < partitionPageNum) {
-                System.out.println("The document does not have " + partitionPageNum + " pages to partition !");
+                logger.debug(String.valueOf(partitionPageNum), "The document does not have  {}  pages to partition !");
                 return null;
             }
 
@@ -238,6 +256,59 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         return new AjaxFormResult();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.colabase.pdf.service.PDFService#addWatermark(java.lang.String, java.lang.String, java.lang.String)
+     */
+    public void addWatermark(String inputFilePath, String outputFilePath, String watermark) throws Exception {
+        Float opacity = 0.7f;// 透明度0.7
+        int degree = 15;// 15度角
+        BaseFont font = null;
+        float fontSize = 24;
+        try {
+            font = this.getBaseMSJHFont();// 設定字型
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        this.addWatermark(inputFilePath, outputFilePath, watermark, font, fontSize, opacity, degree);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.colabase.pdf.service.PDFService#addWatermark(java.lang.String, java.lang.String, java.lang.String, com.lowagie.text.pdf.BaseFont, float, java.lang.Float, int)
+     */
+    public void addWatermark(String inputFilePath, String outputFilePath, String watermark, BaseFont font, float fontSize, Float opacity, int degree) throws Exception {
+        FileInputStream inputStream = new FileInputStream(inputFilePath);
+        FileOutputStream outputStream = new FileOutputStream(outputFilePath);
+        Document document = new Document(PageSize.A4);
+        PdfReader pdfReader = new PdfReader(inputStream);
+        PdfStamper pdfStamper = new PdfStamper(pdfReader, outputStream);
+        PdfContentByte pageContent = null;
+        try {
+            if (font == null || pdfStamper == null) {
+                return;
+            }
+            for (int i = 1, pdfPageSize = pdfReader.getNumberOfPages() + 1; i < pdfPageSize; i++) {
+                pageContent = pdfStamper.getOverContent(i);// pdfContent所加入的浮水印會在PDF內容最上層
+                pageContent.saveState();
+                pageContent.setGState(this.getPdfGState(opacity));
+                pageContent.beginText();
+                pageContent.setColorFill(Color.LIGHT_GRAY);
+                pageContent.setFontAndSize(font, fontSize);
+                pageContent.showTextAligned(Element.ALIGN_CENTER, watermark, document.getPageSize().getWidth() / 2, document.getPageSize().getHeight() / 2, degree);
+                pageContent.endText();
+            }
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
+        } finally {
+            pageContent = null;
+            font = null;
+        }
+        pdfStamper.close();
+    }
+
     /**
      * 針對要帶入pdf中的值做處理
      * 
@@ -259,7 +330,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             dataMap.put(entry.getKey(), CapString.trimNull(entry.getValue()));
             logData = logData.concat(entry.getKey() + "=" + MapUtils.getString(dataMap, entry.getKey(), "") + " , ");
         }
-        logger.debug("excute >>> all data : " + logData);
+        logger.debug(logData, "excute >>> all data : {}");
         return dataMap;
     }
 
@@ -286,7 +357,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
                 wr = new OutputStreamWriter(out, getSysConfig().getProperty(PageReportParam.defaultEncoding.toString(), DEFAULT_ENCORDING));
                 writer = new BufferedWriter(wr);
                 if (logger.isDebugEnabled()) {
-                    logger.debug("[processPDFTemplate] freemarker template name: " + templateName + ", content data: " + contentMap.toString());
+                    logger.debug(templateName, contentMap.toString(), "[processPDFTemplate] freemarker template name: {} , content data: {}");
                 }
                 t.process(contentMap, writer);
             }
@@ -335,7 +406,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             pdfEncryption.setUserPassword(encrypt.getBytes());
             pdfEncryption.setAllowedPrivileges(PdfWriter.ALLOW_PRINTING);
             iTextRenderer.setPDFEncryption(pdfEncryption);
-            logger.debug("[genByRender] create pdf with password: " + encrypt);
+            logger.debug(encrypt, "[genByRender] create pdf with password: {}");
         } else {
             logger.debug("[genByRender] create pdf with no password");
         }
@@ -348,12 +419,44 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
     /**
      * 若無指定PDF檔案名稱，則預設給定檔案PDF_yyyyMMdd_hhmm_ss.pdf
      * 
-     * @return defaultPDFName
+     * @return defalutPDFName
      */
     private String defalutPDFName() {
         String convertTimestampToString = CapDate.convertTimestampToString(CapDate.getCurrentTimestamp(), "yyyyMMdd_hhmm_ss");
         String defaultPDFName = "PDF" + UNDER_LINE + convertTimestampToString + ".pdf";
         return defaultPDFName;
+    }
+
+    /**
+     * Get BaseFont 微軟正黑體
+     *
+     * @return
+     * @throws Exception
+     */
+    private BaseFont getBaseMSJHFont() throws Exception {
+        return BaseFont.createFont(getMSJHFont(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+    }
+
+    /**
+     * Get String 微軟正黑體
+     * 
+     * @return
+     * @throws Exception
+     */
+    private String getMSJHFont() throws Exception {
+        return fontFactory.getFontPath(DEFAULT_FONT, "");
+    }
+
+    /**
+     * Get PdfGState 取得透明度
+     *
+     * @return
+     */
+    private PdfGState getPdfGState(Float opacity) {
+        PdfGState graphicState = new PdfGState();
+        graphicState.setFillOpacity(opacity);
+        graphicState.setStrokeOpacity(opacity);
+        return graphicState;
     }
 
 }

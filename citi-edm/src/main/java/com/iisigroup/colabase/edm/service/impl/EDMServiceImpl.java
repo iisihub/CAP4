@@ -59,7 +59,8 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 /**<pre>
- * TODO Write a short description on the purpose of the program
+ * 1.實作html/xml → ftl
+ * 2.實作ftl  → 發送EDM
  * </pre>
  * @since  2018年4月30日
  * @author Johnson Ho
@@ -70,10 +71,9 @@ import freemarker.template.Template;
 @Service
 public class EDMServiceImpl extends CCBasePageReport implements EDMService{
     
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logRecord = LoggerFactory.getLogger(getClass());
     
-    final String DEFAULT_ENCORDING = "UTF-8";
-    final String EDM_TEMPLATE_1 = "report/edm1.ftl";
+    final static String DEFAULT_ENCORDING = "UTF-8";
     
     /* (non-Javadoc)
      * @see com.iisigroup.colabase.edm.service.EDMService#sendEDM(com.iisigroup.cap.component.Request)
@@ -81,17 +81,19 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
     @Override
     public void sendEDM(Request request, String edmFtlPath, Map<String, Object> dataMap) {
 
-        //TODO 夾帶檔案，測試PDF
         ByteArrayDownloadResult pdfContent = processTemplate_email(request, edmFtlPath, dataMap);
 
-        logger.info("[mail] mail.enable is " + Boolean.valueOf(getSysConfig().getProperty("mail.enable", "true")));
         String enable = getSysConfig().getProperty("mail.enable", "true");
+        logRecord.info("[EDM] mail.enable is : {0}" + Boolean.valueOf(getSysConfig().getProperty("mail.enable", "true")));
         
         if (Boolean.valueOf(enable)) {
             String mailAddress = CapString.trimNull(request.get("mailAddress"));
-            logger.info("[mail] emailAccount is '" + mailAddress + "'");
-            if (!CapString.isEmpty(mailAddress)) {
+            logRecord.info("[EDM] emailAccount is : {0}" + mailAddress);
+            if (!CapString.isEmpty(mailAddress) && pdfContent != null) {
                 sendEDM(mailAddress, pdfContent.getByteArray(), request);
+            }else{
+                logRecord.error("[EDM] pdfContent is null: {0}" + (pdfContent == null));
+                throw new NullPointerException();
             }
         }
     }
@@ -209,15 +211,15 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
             msg.setSentDate(new Date());
 
             Transport.send(msg);
-            logger.info("[pcl][mail] email send!");
+            logRecord.info("[EDM] email send!");
         } catch (MessagingException me) {
-            logger.debug("sendEmailNotification:" + me.getMessage(), me);
+            logRecord.debug("sendEmailNotification:" + me.getMessage(), me);
         } catch (UnsupportedEncodingException e) {
-            logger.debug("sendEmailNotification:" + e.getMessage(), e);
+            logRecord.debug("sendEmailNotification:" + e.getMessage(), e);
         } catch (RuntimeException e) {
-            logger.error("sendEmailNotification:" + e.getMessage(), e);
+            logRecord.error("sendEmailNotification:" + e.getMessage(), e);
         } catch (Exception e) {
-            logger.error("sendEmailNotification:" + e.getMessage(), e);
+            logRecord.error("sendEmailNotification:" + e.getMessage(), e);
         } catch (NoSuchMethodError e) {
             e.printStackTrace();
         }
@@ -243,15 +245,15 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
                 map.put(entry.getKey(), CapString.trimNull(entry.getValue()));
             }
             
-            if (logger.isDebugEnabled()) {
-                logger.debug("[freemarker] Template name: " + edmFtlPath + ", data: " + map.toString());
+            if (logRecord.isDebugEnabled()) {
+                logRecord.debug("[freemarker] Template name: " + edmFtlPath + ", data: " + map.toString());
             }
             t.process(map, writer);
 
             //TODO encoding parameter
             return new ByteArrayDownloadResult(request, out.toByteArray(), "text/html");
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            logRecord.error(e.getMessage(), e);
         } finally {
             IOUtils.closeQuietly(is);
         }
@@ -300,7 +302,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
             String ftl = setListVariable(buffer.toString());
             FileUtils.writeStringToFile(destinationFile, ftl);
         } catch (IOException e) {
-            logger.error("htmlToFtlNotification:" + e.getMessage(), e);
+            logRecord.error("htmlToFtlNotification:" + e.getMessage(), e);
         }
     }
     
@@ -342,7 +344,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
                 buffer.append(xml.substring(pos));
             }
         } catch (Exception e) {
-            logger.error("setListVariableNotification:" + e.getMessage(), e);
+            logRecord.error("setListVariableNotification:" + e.getMessage(), e);
         }
         return buffer.toString();
     }// ;
@@ -363,7 +365,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
         }
         String rtn = StringEscapeUtils.unescapeXml(buf1.toString());
         rtn = rtn.replaceAll("\r\n", " ");
-        System.out.println("variable=" + rtn);
+        logRecord.debug("variable=" + rtn);
         return rtn;
     }
 

@@ -3,7 +3,6 @@ package com.iisigroup.colabase.tool;
 import com.levigo.jbig2.JBIG2ImageReader;
 import com.twelvemonkeys.image.ResampleOp;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
@@ -39,6 +38,10 @@ public class ImageUtil {
         }
     }
 
+    private ImageUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+
     private static class Builder implements ImageBuilder {
 
         private static final String OUTPUT_PREFIX = "output_";
@@ -51,7 +54,7 @@ public class ImageUtil {
             this.imageDataList = imageDataList;
         }
 
-        private final String BUILDER_CLOSE_ERROR_MESSAGE = "Builder is closed!";
+        private static final String BUILDER_CLOSE_ERROR_MESSAGE = "Builder is closed!";
 
         @Override
         public void close() {
@@ -137,7 +140,7 @@ public class ImageUtil {
                     BufferedImage imagePage = imagePages[i];
 
                     int rotate;
-                    if (orientation == PORTRAIT) {
+                    if (orientation == Orientation.PORTRAIT) {
                         rotate = imagePage.getWidth() > imagePage.getHeight() ? 90 : 0;
                     } else {
                         rotate = imagePage.getWidth() < imagePage.getHeight() ? 90 : 0;
@@ -277,10 +280,8 @@ public class ImageUtil {
                 throw new UnsupportedOperationException(BUILDER_CLOSE_ERROR_MESSAGE);
             }
 
-            if (checkDestLocationIsExists(destLocation)) {
-                if (!checkDestLocationIsDirectory(destLocation)) {
-                    throw new UnsupportedOperationException(DESTINATION_ERROR_MESSAGE);
-                }
+            if (checkDestLocationIsExists(destLocation) && !checkDestLocationIsDirectory(destLocation)) {
+                throw new UnsupportedOperationException(DESTINATION_ERROR_MESSAGE);
             }
 
             List<File> newImageFileList = new ArrayList<>();
@@ -467,7 +468,7 @@ public class ImageUtil {
                 imageDataList.add(imageData);
             }
         } catch (UnsupportedOperationException e) {
-            LOGGER.warn(e.getMessage() + " Try to read as PDF...");
+            LOGGER.warn("{} Try to read as PDF...", e.getMessage());
             ImageIO.scanForPlugins();
             // PDF
             try (PDDocument document = PDDocument.load(imageFile)) {
@@ -483,7 +484,6 @@ public class ImageUtil {
                 ImageData imageData = new ImageData(imageFile.getName().replaceFirst("\\.[^.]+$", ""), "TIFF", imagePages);
                 imageDataList.add(imageData);
             } catch (IOException ee) {
-                // System.out.println(ee.getMessage() + " Skipped file: " + imageFile.getPath());
                 LOGGER.error(ee.getMessage() + " Skipped file: " + imageFile.getPath(), ee);
             }
         }
@@ -523,7 +523,7 @@ public class ImageUtil {
         return new ImageData(fileName, formatName, imagePages);
     }
 
-    private static byte[] writeImageToByteArray(String originImageType, BufferedImage[] imagePages) throws IOException {
+    public static byte[] writeImageToByteArray(String originImageType, BufferedImage[] imagePages) throws IOException {
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
         ImageOutputStream ios = ImageIO.createImageOutputStream(bao);
         writeImage(ios, originImageType, originImageType, -1, imagePages);
@@ -595,10 +595,7 @@ public class ImageUtil {
                 throw new UnsupportedOperationException("Only support to wirte the mulitpage file with TIFF or GIF");
             }
         } catch (IOException e) {
-            if (imageWriter != null) {
-                imageWriter.abort();
-            }
-
+            imageWriter.abort();
             throw e;
         } finally {
             if (imageWriter != null) {
@@ -636,8 +633,6 @@ public class ImageUtil {
         for (int i = 0; i < iss.length; i++) {
             InputStream is = iss[i];
             ImageInputStream iis = ImageIO.createImageInputStream(is);
-            // Test
-            // ImageIO.scanForPlugins();
             Iterator<ImageReader> imageReaderIterator = ImageIO.getImageReaders(iis);
 
             if (!imageReaderIterator.hasNext()) {
@@ -653,7 +648,7 @@ public class ImageUtil {
         return imageReaderList;
     }
 
-    private static ImageWriter getImageWriter(String imageType, ImageOutputStream ios) throws IOException {
+    private static ImageWriter getImageWriter(String imageType, ImageOutputStream ios) {
         Iterator<ImageWriter> imageWriterIterator = ImageIO.getImageWritersByFormatName(imageType);
 
         if (!imageWriterIterator.hasNext()) {

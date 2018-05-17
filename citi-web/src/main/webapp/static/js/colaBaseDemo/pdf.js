@@ -28,6 +28,12 @@ pageInit(function() {
       window.setCloseConfirm(false);
       partitionPDF()();
     });
+    // PDF加入浮水印
+    $("#waterMarkPDF").on('click', function(e) {
+      e.preventDefault()
+      window.setCloseConfirm(false);
+      waterMarkPDF()();
+    });
 
     /**
      * 產生PDF
@@ -166,6 +172,38 @@ pageInit(function() {
         });
       } else {
         $("#pdfResultMsg").val("請輸入分割PDF資訊！");
+      }
+    }
+
+    /**
+     * PDF加入浮水印
+     */
+    function waterMarkPDF() {
+      var wmPDFInputPath = $("#wmPDFInputPath").val();
+      var wmPDFOutputPath = $("#wmPDFOutputPath").val();
+      var wmNamePDF = $("#wmNamePDF").val();
+      if (wmPDFInputPath && wmPDFOutputPath && wmNamePDF) {
+        $.ajax({
+          url : url('demopdfhandler/pdfAddWatermark'),
+          type : 'post',
+          dataType : 'json',
+          data : {
+            wmPDFInputPath : wmPDFInputPath,
+            wmPDFOutputPath : wmPDFOutputPath,
+            wmNamePDF : wmNamePDF
+          },
+          success : function(d) {
+            var pdfResultMsg;
+            if (d.pdfReslut == "ok") {
+              pdfResultMsg = "PDF加入浮水印成功！產生路徑： " + wmPDFOutputPath;
+            } else {
+              pdfResultMsg = "PDF加入浮水印失敗！ Error Message: " + d.pdfReslut;
+            }
+            $("#pdfResultMsg").val(pdfResultMsg);
+          }
+        });
+      } else {
+        $("#pdfResultMsg").val("請輸入PDF加入浮水印資訊！");
       }
     }
 
