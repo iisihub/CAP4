@@ -2,13 +2,13 @@ package com.iisigroup.colabase.va.crypto;
 
 import java.security.PublicKey;
 import java.security.Signature;
-import java.security.cert.CertStore;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.bouncycastle.asn1.x509.Certificate;
 import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cms.CMSProcessableByteArray;
 import org.bouncycastle.cms.CMSSignedData;
 import org.bouncycastle.cms.SignerId;
@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  */
 @SuppressWarnings({ "rawtypes", "deprecation" })
 public class PKCS7Verify {
-	private static final Logger LOGGER = LoggerFactory.getLogger(PKCS7Verify.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PKCS7Verify.class);
     private byte[] SignedContent = null;
     private SignerInformation signer = null;
     private X509Certificate signercert = null;
@@ -125,7 +125,7 @@ public class PKCS7Verify {
                         break;
                 }
             } catch (Exception e) {
-            	LOGGER.error("PKCS7 VerifyDetachedError"+e.getLocalizedMessage(), e);
+                LOGGER.error("PKCS7 VerifyDetachedError" + e.getLocalizedMessage(), e);
                 ret = false;
             }
         } while (false);
@@ -157,6 +157,7 @@ public class PKCS7Verify {
                     Collection<X509CertificateHolder> certCollection = certStore.getMatches(signer.getSID());
                     Iterator<X509CertificateHolder> certIt = certCollection.iterator();
                     X509CertificateHolder cert = (X509CertificateHolder) certIt.next();
+                    signercert = new JcaX509CertificateConverter().setProvider("BC").getCertificate(cert);
                     ret = signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert));
                     if (ret != true) {
                         continue;
@@ -166,7 +167,7 @@ public class PKCS7Verify {
                 }
 
             } catch (Exception e) {
-            	LOGGER.error("PKCS7 VerifyError"+e.getLocalizedMessage(), e);
+                LOGGER.error("PKCS7 VerifyError" + e.getLocalizedMessage(), e);
                 ret = false;
             }
 
@@ -206,7 +207,7 @@ public class PKCS7Verify {
                 verify.update(data);
                 ret = verify.verify(signature);
             } catch (Exception ex) {
-            	LOGGER.error("PKCS1 VerifyError"+ex.getLocalizedMessage(), ex);
+                LOGGER.error("PKCS1 VerifyError" + ex.getLocalizedMessage(), ex);
             }
         } while (false);
         return ret;

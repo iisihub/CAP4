@@ -31,7 +31,6 @@ import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1OutputStream;
 import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.ASN1String;
-import org.bouncycastle.asn1.DERBitString;
 import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.cms.ContentInfo;
@@ -947,6 +946,7 @@ public final class CryptoLibrary {
             InputStream in = new ByteArrayInputStream(x509);
             ret = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(in);
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return ret;
     }
@@ -1097,11 +1097,11 @@ public final class CryptoLibrary {
      * @param x509Cert
      * @return
      */
-    public static DERBitString getX509KeyUsage(Certificate x509Cert) {
-        DERBitString ret = null;
+    public static KeyUsage getX509KeyUsage(Certificate x509Cert) {
+        KeyUsage ret = null;
         do {
             TBSCertificate tbsCert = x509Cert.getTBSCertificate();
-            if (tbsCert.getVersion().getValue().intValue() != 3) {
+            if (tbsCert.getVersionNumber() != 3) {
                 break;
             }
             Extensions ext = tbsCert.getExtensions();
@@ -1120,7 +1120,7 @@ public final class CryptoLibrary {
                 if (oid.equals(Extension.keyUsage)) {
                     try {
                         extIn = new ASN1InputStream(new ByteArrayInputStream(oct.getOctets()));
-                        ret = new DERBitString(extIn.readObject());
+                        ret = KeyUsage.getInstance(extIn.readObject());
                     } catch (Exception e) {
                     } finally {
                         if (extIn != null) {
@@ -1145,7 +1145,7 @@ public final class CryptoLibrary {
      */
     public static byte[] getX509KeyUsageBytes(Certificate x509Cert) {
         byte[] ret = null;
-        DERBitString bitstr = getX509KeyUsage(x509Cert);
+        KeyUsage bitstr = getX509KeyUsage(x509Cert);
         if (bitstr != null) {
             ret = bitstr.getBytes();
         }
@@ -1264,7 +1264,7 @@ public final class CryptoLibrary {
         String ret = "";
         do {
             TBSCertificate tbsCert = x509Cert.getTBSCertificate();
-            if (tbsCert.getVersion().getValue().intValue() != 3) {
+            if (tbsCert.getVersionNumber() != 3) {
                 break;
             }
             ret = CryptoLibrary.getExtensionsCrlDistributionPoint(tbsCert.getExtensions());
@@ -1368,7 +1368,7 @@ public final class CryptoLibrary {
         String ret = "";
         do {
             TBSCertificate tbsCert = x509Cert.getTBSCertificate();
-            if (tbsCert.getVersion().getValue().intValue() != 3) {
+            if (tbsCert.getVersionNumber() != 3) {
                 break;
             }
             ret = CryptoLibrary.getExtensionsAuthorityKeyIdentifier(tbsCert.getExtensions());
@@ -1386,7 +1386,7 @@ public final class CryptoLibrary {
         String ret = "";
         do {
             TBSCertificate tbsCert = x509Cert.getTBSCertificate();
-            if (tbsCert.getVersion().getValue().intValue() != 3) {
+            if (tbsCert.getVersionNumber() != 3) {
                 break;
             }
             ret = CryptoLibrary.getExtensionsSubjectKeyIdentifier(tbsCert.getExtensions());
@@ -1491,7 +1491,7 @@ public final class CryptoLibrary {
                         rootCertsList.put(certSKI, thisCert);
                     }
                 } else {
-                    DERBitString ku = CryptoLibrary.getX509KeyUsage(thisCert);
+                    KeyUsage ku = CryptoLibrary.getX509KeyUsage(thisCert);
                     if ((ku.getBytes()[0] & (byte) KeyUsage.keyCertSign) == (byte) KeyUsage.keyCertSign) {
                         if (!caCertsList.containsKey(certSKI)) {
                             caCertsList.put(certSKI, thisCert);
