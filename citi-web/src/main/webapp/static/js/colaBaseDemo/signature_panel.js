@@ -1,32 +1,34 @@
-window.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('DOMContentLoaded', function() {
   'use strict'
   var model = {
-    _canvas: null,
-    _isDrawing: false,
-    _isClean: true,
-    _lineColor: 'black',
-    _lineWidth: 1.5,
+    _canvas : null,
+    _isDrawing : false,
+    _isClean : true,
+    _lineColor : 'black',
+    _lineWidth : 1.5,
     /**
      * 檢查 fancybox 是否開啟
      */
-    _checkPopupOpen: function () {
+    _checkPopupOpen : function() {
       return $.fancybox.isOpen;
 
     },
     /**
      * 檢查簽名是否超出 Canvas 區域
      * 
-     * @param {number} userPositionX 輸入位置（頁面）水平座標
-     * @param {number} userPositionY 輸入位置（頁面）垂直座標
+     * @param {number}
+     *          userPositionX 輸入位置（頁面）水平座標
+     * @param {number}
+     *          userPositionY 輸入位置（頁面）垂直座標
      */
-    _checkIsOverRegion: function (userPositionX, userPositionY) {
+    _checkIsOverRegion : function(userPositionX, userPositionY) {
       var xOnCanvas = userPositionX - model._canvas.offsetLeft - model._canvas.style.borderWidth;
       var yOnCanvas = userPositionY - model._canvas.offsetTop - model._canvas.style.borderWidth;
 
       return ((xOnCanvas < 0 || xOnCanvas > model._canvas.width) || (yOnCanvas < 0 || yOnCanvas > model._canvas.height));
 
     },
-    _initCanvas: function () {
+    _initCanvas : function() {
       var canvasContext = model._canvas.getContext('2d');
 
       // 將 Canvas 背景填滿白色
@@ -36,7 +38,7 @@ window.addEventListener('DOMContentLoaded', function () {
       canvasContext.lineWidth = 1.5;
 
     },
-    prepareToDraw: function (canvas, userPositionX, userPositionY) {
+    prepareToDraw : function(canvas, userPositionX, userPositionY) {
       if (model._checkPopupOpen()) {
         return;
 
@@ -53,16 +55,15 @@ window.addEventListener('DOMContentLoaded', function () {
 
       var canvasContext = model._canvas.getContext('2d');
 
-
       canvasContext.beginPath();
       canvasContext.moveTo(userPositionX - model._canvas.offsetLeft, userPositionY - model._canvas.offsetTop);
 
     },
-    stopDraw: function () {
+    stopDraw : function() {
       model._isDrawing = false;
 
     },
-    draw: function (userPositionX, userPositionY) {
+    draw : function(userPositionX, userPositionY) {
       if (!model._isDrawing) {
         return;
 
@@ -82,7 +83,7 @@ window.addEventListener('DOMContentLoaded', function () {
       }
 
     },
-    cleanDraw: function (isShowAlert) {
+    cleanDraw : function(isShowAlert) {
       if (model._canvas === null) {
         return;
 
@@ -105,22 +106,22 @@ window.addEventListener('DOMContentLoaded', function () {
     /**
      * 開啟或關閉 fancybox
      */
-    switchPopup: function (isOn) {
+    switchPopup : function(isOn) {
       // 一率先嘗試關閉 fancybox，避免 $.fancybox.isOpen 沒有正確偵測
       $.fancybox.close();
 
       if (isOn) {
         $.fancybox.open({
-          href: '#msg',
-          type: 'inline',
-          height: '30',
-          width: '30',
-          autoSize: false,
-          closeBtn: false,
-          scrollOutside: false,
-          helpers: {
-            overlay: {
-              closeClick: false
+          href : '#msg',
+          type : 'inline',
+          height : '30',
+          width : '30',
+          autoSize : false,
+          closeBtn : false,
+          scrollOutside : false,
+          helpers : {
+            overlay : {
+              closeClick : false
             }
           }
         });
@@ -128,7 +129,7 @@ window.addEventListener('DOMContentLoaded', function () {
       }
 
     },
-    downloadCanvasImg: function () {
+    downloadCanvasImg : function() {
       if (model._isClean) {
         return;
 
@@ -146,23 +147,23 @@ window.addEventListener('DOMContentLoaded', function () {
   };
 
   var view = {
-    mainCanvas: document.getElementById('mainCanvas'),
-    cleanCanvasBtn: document.getElementById('cleanCanvasBtn'),
-    getCanvasImgBtn: document.getElementById('getCanvasImgBtn'),
-    showOverRegionAlert: function () {
+    mainCanvas : document.getElementById('mainCanvas'),
+    cleanCanvasBtn : document.getElementById('cleanCanvasBtn'),
+    getCanvasImgBtn : document.getElementById('getCanvasImgBtn'),
+    showOverRegionAlert : function() {
       alert('請於白色方框內簽名！');
 
     }
   };
 
   var controller = {
-    checkIsLandscape: function () {
+    checkIsLandscape : function() {
       var query = window.matchMedia('(orientation: landscape)');
 
       model.switchPopup(!query.matches);
 
     },
-    startDrawing: function (event) {
+    startDrawing : function(event) {
       event.preventDefault();
       var targetCanvas = event.target;
       var userX;
@@ -171,30 +172,30 @@ window.addEventListener('DOMContentLoaded', function () {
       var eventType = event.type;
 
       switch (eventType) {
-        case 'touchstart':
-          userX = event.touches.item(0).pageX;
-          userY = event.touches.item(0).pageY;
+      case 'touchstart':
+        userX = event.touches.item(0).pageX;
+        userY = event.touches.item(0).pageY;
 
-          model.prepareToDraw(targetCanvas, userX, userY);
+        model.prepareToDraw(targetCanvas, userX, userY);
 
-          break;
+        break;
 
-        case 'mousedown':
-          userX = event.pageX;
-          userY = event.pageY;
+      case 'mousedown':
+        userX = event.pageX;
+        userY = event.pageY;
 
-          model.prepareToDraw(targetCanvas, userX, userY);
+        model.prepareToDraw(targetCanvas, userX, userY);
 
-          break;
+        break;
 
       }
 
     },
-    stopDrawing: function () {
+    stopDrawing : function() {
       model.stopDraw();
 
     },
-    drawing: function (event) {
+    drawing : function(event) {
       event.preventDefault();
 
       var userX;
@@ -203,30 +204,30 @@ window.addEventListener('DOMContentLoaded', function () {
       var eventType = event.type;
 
       switch (eventType) {
-        case 'touchmove':
-          userX = event.touches.item(0).pageX;
-          userY = event.touches.item(0).pageY;
+      case 'touchmove':
+        userX = event.touches.item(0).pageX;
+        userY = event.touches.item(0).pageY;
 
-          model.draw(userX, userY);
+        model.draw(userX, userY);
 
-          break;
+        break;
 
-        case 'mousemove':
-          userX = event.pageX;
-          userY = event.pageY;
+      case 'mousemove':
+        userX = event.pageX;
+        userY = event.pageY;
 
-          model.draw(userX, userY);
+        model.draw(userX, userY);
 
-          break;
+        break;
 
       }
 
     },
-    cleanDrawing: function () {
+    cleanDrawing : function() {
       model.cleanDraw();
 
     },
-    getSignatureImg: function () {
+    getSignatureImg : function() {
       model.downloadCanvasImg();
 
     }
@@ -234,57 +235,57 @@ window.addEventListener('DOMContentLoaded', function () {
 
   (function pageInit() {
     // window.addEventListener('orientationchange', function () {
-    //   controller.checkIsLandscape();
+    // controller.checkIsLandscape();
 
     // });
 
     var portraitOrientationCheck = window.matchMedia("(orientation: portrait)");
-    portraitOrientationCheck.addListener(function () {
+    portraitOrientationCheck.addListener(function() {
       controller.checkIsLandscape();
 
     });
 
-    view.mainCanvas.addEventListener('touchstart', function (event) {
+    view.mainCanvas.addEventListener('touchstart', function(event) {
       controller.startDrawing(event);
 
     });
 
-    view.mainCanvas.addEventListener('touchend', function () {
+    view.mainCanvas.addEventListener('touchend', function() {
       controller.stopDrawing();
 
     });
 
-    view.mainCanvas.addEventListener('touchmove', function (event) {
+    view.mainCanvas.addEventListener('touchmove', function(event) {
       controller.drawing(event);
 
     });
 
-    view.mainCanvas.addEventListener('mousedown', function (event) {
+    view.mainCanvas.addEventListener('mousedown', function(event) {
       controller.startDrawing(event);
 
     });
 
-    view.mainCanvas.addEventListener('mouseup', function () {
+    view.mainCanvas.addEventListener('mouseup', function() {
       controller.stopDrawing();
 
     });
 
-    view.mainCanvas.addEventListener('mouseout', function () {
+    view.mainCanvas.addEventListener('mouseout', function() {
       controller.cleanDrawing();
 
     });
 
-    view.mainCanvas.addEventListener('mousemove', function (event) {
+    view.mainCanvas.addEventListener('mousemove', function(event) {
       controller.drawing(event);
 
     });
 
-    view.cleanCanvasBtn.addEventListener('click', function () {
+    view.cleanCanvasBtn.addEventListener('click', function() {
       controller.cleanDrawing();
 
     });
 
-    view.getCanvasImgBtn.addEventListener('click', function () {
+    view.getCanvasImgBtn.addEventListener('click', function() {
       controller.getSignatureImg();
 
     });
