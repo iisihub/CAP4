@@ -25,6 +25,10 @@ import org.slf4j.LoggerFactory;
 public class NetUseUtil {
     private static Logger logger = LoggerFactory.getLogger(NetUseUtil.class);
     private static String ALL_FREE_DRIVE_LETTERS = "ZYXWVUTSRQPONMLKJIHGFEDCBA";
+    
+    private static final String CHARSET_MS950 = "MS950";
+    private static final String COMMAND_NET_USE = "net use";
+    private static final String SPACE = " ";
 
     /**
      * 檢查是否已掛載目標的網路磁碟機，回傳其本地路徑
@@ -37,17 +41,17 @@ public class NetUseUtil {
         Process process = null;
         BufferedReader bf = null;
         try {
-            String command = "net use";
+            String command = COMMAND_NET_USE;
             String[] cmd = new String[] { "cmd", "/C", command };
             logger.debug("NetUseUtil mappingLocalPath(String netPath) = " + cmd);
             process = Runtime.getRuntime().exec(cmd);
-            bf = new BufferedReader(new InputStreamReader(process.getInputStream(), "MS950"));
+            bf = new BufferedReader(new InputStreamReader(process.getInputStream(), CHARSET_MS950));
             String line = "";
             String netServer = netPath.substring(0, netPath.indexOf("\\", 2));
             while ((line = bf.readLine()) != null) {
                 result += line + "\n";
                 // net use 顯示的資料要包含 netServer，且 netPath 要包含 net use 的遠端路徑資料中
-                if (line.toLowerCase().indexOf(netServer.toLowerCase()) > 0) {
+                if (line.toLowerCase().indexOf(netServer.toLowerCase()) >= 0) {
                     StringTokenizer st = new StringTokenizer(line, " ", false);
                     st.nextToken();
                     String driver = st.nextToken();
@@ -58,7 +62,7 @@ public class NetUseUtil {
                     if (index >= 0) {
 //                        localPath = driver + netPath.substring(index + path.length());
                         localPath = driver;
-                        logger.debug("net use result >> " +localPath);
+                        logger.debug("net mapping local result >> " +localPath);
                     }
                 }
             }
@@ -79,10 +83,12 @@ public class NetUseUtil {
         Process process = null;
         BufferedReader bf = null;
         try {
-            String command = "net use * /delete /y";
+            String command = COMMAND_NET_USE + SPACE + "* /delete /y";
             String[] cmd = new String[] { "cmd", "/C", command };
             process = Runtime.getRuntime().exec(cmd);
-            bf = new BufferedReader(new InputStreamReader(process.getInputStream(), "MS950"));
+            if (process != null) {
+                bf = new BufferedReader(new InputStreamReader(process.getInputStream(), CHARSET_MS950));
+            }
             String line = "";
             while ((line = bf.readLine()) != null) {
                 result += line + "\n";
@@ -107,11 +113,13 @@ public class NetUseUtil {
         BufferedReader bf = null;
         try {
             logger.debug("disconnectNetworkPath diskLetter >> " + diskLetter);
-            String command = "net use "+diskLetter+": /delete /y";
+            String command = COMMAND_NET_USE + SPACE + diskLetter + ": /delete /y";
             String[] cmd = new String[] { "cmd", "/C", command };
             logger.info("disConnect:" + command.toString());
             process = Runtime.getRuntime().exec(cmd);
-            bf = new BufferedReader(new InputStreamReader(process.getInputStream(), "MS950"));
+            if (process != null) {
+                bf = new BufferedReader(new InputStreamReader(process.getInputStream(), CHARSET_MS950));
+            }
             String line = "";
             while ((line = bf.readLine()) != null) {
                 result += line + "\n";
@@ -143,7 +151,7 @@ public class NetUseUtil {
         BufferedReader bf = null;
         try {
             StringBuffer command = new StringBuffer();
-            command.append("net use ").append(getFreeDriveLetter()).append(": ").append(netPath).append(" /user:");
+            command.append(COMMAND_NET_USE + SPACE).append(getFreeDriveLetter()).append(": ").append(netPath).append(" /user:");
             if (!"".equals(domain)) {
                 command.append(domain).append("\\");
             }
@@ -152,7 +160,9 @@ public class NetUseUtil {
             logger.info("connectDrive:" + command.toString());
             String[] cmd = new String[] { "cmd", "/C", command.toString() };
             process = Runtime.getRuntime().exec(cmd);
-            bf = new BufferedReader(new InputStreamReader(process.getInputStream(), "MS950"));
+            if (process != null) {
+                bf = new BufferedReader(new InputStreamReader(process.getInputStream(), CHARSET_MS950));
+            }
             String line = "";
             while ((line = bf.readLine()) != null) {
                 result += line + "\n";
@@ -186,7 +196,7 @@ public class NetUseUtil {
         BufferedReader bf = null;
         try {
             StringBuffer command = new StringBuffer();
-            command.append("net use ").append(drive).append(": ").append(netPath).append(" /user:");
+            command.append(COMMAND_NET_USE + SPACE).append(drive).append(": ").append(netPath).append(" /user:");
             if (!"".equals(domain)) {
                 command.append(domain).append("\\");
             }
@@ -200,7 +210,9 @@ public class NetUseUtil {
 //             System.out.println("*******test connectNetDisk *****" + cmd[1]);
 //             System.out.println("*******test connectNetDisk *****" + cmd[2]);
             process = Runtime.getRuntime().exec(cmd);
-            bf = new BufferedReader(new InputStreamReader(process.getInputStream(), "MS950"));
+            if (process != null) {
+                bf = new BufferedReader(new InputStreamReader(process.getInputStream(), CHARSET_MS950));
+            }
             String line = "";
             while ((line = bf.readLine()) != null) {
                 result += line + "\n";
