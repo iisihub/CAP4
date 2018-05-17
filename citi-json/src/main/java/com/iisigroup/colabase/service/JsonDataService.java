@@ -21,6 +21,4 @@ public interface JsonDataService {
 
     JsonObject removeUnnecessaryNode(JsonAbstract requestContent);
 
-    JsonObject getJsonStr(JsonAbstract requestContent);
-
 }

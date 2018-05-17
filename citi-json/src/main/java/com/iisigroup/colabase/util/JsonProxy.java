@@ -16,19 +16,46 @@ import net.sf.cglib.proxy.MethodProxy;
  *          </ul>
  * @since 2018/5/11
  */
-class RequestProxy implements MethodInterceptor {
+class JsonProxy implements MethodInterceptor {
 
     static {
-        proxy = new RequestProxy();
+        proxy = new JsonProxy();
     }
 
-    private static final RequestProxy proxy;
+    private static final JsonProxy proxy;
 
-    private RequestProxy() {
+    private JsonProxy() {
 
     }
 
-    static <T extends RequestContent> T getInstance(Class<T> requestClass) throws NoSuchFieldException,
+    static <T extends JsonAbstract> T getInstance(Class<T> requestClass, Object... objects) throws
+            NoSuchFieldException, IllegalAccessException{
+        T instance = getInstance(requestClass);
+        for (Object object : objects) {
+            Field field = getSameClassField(instance.getClass(), object.getClass());
+            if(field == null)
+                continue;
+            field.setAccessible(true);
+            field.set(instance, object);
+        }
+        return instance;
+    }
+
+    private static <T extends JsonAbstract> Field getSameClassField(Class<T> mainClass, Class<?> setClass) {
+        if(mainClass == JsonAbstract.class)
+            return null;
+        Field[] declaredFields = mainClass.getDeclaredFields();
+        for (Field field : declaredFields) {
+            if (setClass == field.getType()) {
+                return field;
+            } else {
+                return getSameClassField(mainClass, setClass.getSuperclass());
+            }
+        }
+        return getSameClassField((Class<T>) mainClass.getSuperclass(), setClass);
+    }
+
+    static <T extends JsonAbstract> T getInstance(Class<T> requestClass) throws NoSuchFieldException,
             IllegalAccessException {
         if(!checkJsonTemp(requestClass)) {
             throw new IllegalStateException("please check Request model defined jsonTemp with annotation @JsonTemp");
@@ -37,7 +64,7 @@ class RequestProxy implements MethodInterceptor {
         enhancer.setSuperclass(requestClass);
         enhancer.setCallback(proxy);
         T result = (T) enhancer.create();
-        RequestFactory.initJsonObject(requestClass, result);
+        JsonFactory.initJsonObject(requestClass, result);
         return result;
     }
 
@@ -47,10 +74,10 @@ class RequestProxy implements MethodInterceptor {
 
         String methodName = method.getName();
         if(methodName.contains("set")) {
-            RequestFactory.setValueToJsonContent(object, method, args);
+            JsonFactory.setValueToJsonContent(object, method, args);
         }
         if ("getJsonString".equals(methodName)) {
-            return RequestFactory.processNoSendField((JsonAbstract) object);
+            return JsonFactory.processNoSendField((JsonAbstract) object);
         }
         return methodProxy.invokeSuper(object, args);
     }

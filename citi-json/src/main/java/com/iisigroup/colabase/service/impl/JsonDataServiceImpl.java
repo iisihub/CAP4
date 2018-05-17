@@ -5,10 +5,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.iisigroup.colabase.model.JsonAbstract;
-import com.iisigroup.colabase.util.RequestFactory;
+import com.iisigroup.colabase.util.JsonFactory;
 import com.iisigroup.colabase.annotation.ApiRequest;
 import com.iisigroup.colabase.service.JsonDataService;
-import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -23,7 +22,6 @@ import java.util.regex.Pattern;
  *          </ul>
  * @since 2018/5/14
  */
-@Service
 public class JsonDataServiceImpl implements JsonDataService {
 
     private final String ARRAY_MARK = "[]";
@@ -39,7 +37,7 @@ public class JsonDataServiceImpl implements JsonDataService {
     public void setParamToJsonContent(JsonAbstract requestContent, String fieldName, String value) {
         Map<String, Object> arrayMap;
         try {
-            arrayMap =  (Map<String, Object>)RequestFactory.getFieldObject(requestContent, ARRAY_MAP_KEY);
+            arrayMap =  (Map<String, Object>) JsonFactory.getFieldObject(requestContent, ARRAY_MAP_KEY);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new IllegalStateException("can not found arrayMap in requestContent");
         }
@@ -50,7 +48,7 @@ public class JsonDataServiceImpl implements JsonDataService {
         String path = fieldAnnotation.path();
         String[] paths = path.split(PATH_SPLIT_MARK);
         this.countArray(path, arrayMap);
-        JsonObject jsonElement = getJsonElement(requestJson, path, arrayMap);
+        JsonObject jsonElement = this.getJsonElement(requestJson, path, arrayMap);
         jsonElement.addProperty(paths[paths.length - 1], value);
 
     }
@@ -70,7 +68,7 @@ public class JsonDataServiceImpl implements JsonDataService {
             arrayMap.put(path, (Integer)object + 1);
             //上層array擴增，底下所有的array計數要歸零
             String parentArrayName = path.substring(0, path.lastIndexOf("."));
-            parentArrayName = parentArrayName.replaceAll("\\[\\]", "\\\\[\\\\]");
+            parentArrayName = parentArrayName.replaceAll("\\[\\]", "\\\\[\\\\]"); //for next regExp string
             for (String key : arrayMap.keySet()) {
                 String regExpStr = parentArrayName + "\\..*\\[\\]\\..*";
                 Pattern pattern = Pattern.compile(regExpStr);
@@ -384,10 +382,5 @@ public class JsonDataServiceImpl implements JsonDataService {
                 continue;
             iterator.remove();
         }
-    }
-
-    @Override
-    public JsonObject getJsonStr(JsonAbstract requestContent) {
-        return null;
     }
 }

@@ -25,7 +25,7 @@ import static jdk.nashorn.internal.objects.NativeString.substring;
  *          </ul>
  * @since 2018/5/11
  */
-public class RequestFactory {
+public class JsonFactory {
 
     private static final String REQUEST_CONTENT_KEY = "requestContent";
     private static final String NO_SEND_LIST_KEY = "noSendList";
@@ -39,7 +39,17 @@ public class RequestFactory {
     public static <T extends JsonAbstract> T getInstance(Class<T> requestClass) {
         T instance;
         try {
-            instance = RequestProxy.getInstance(requestClass);
+            instance = JsonProxy.getInstance(requestClass);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new IllegalArgumentException("init instance exception. warp exception: " + e.getClass());
+        }
+        return instance;
+    }
+
+    public static <T extends JsonAbstract> T getInstance(Class<T> requestClass, Object... objects) {
+        T instance;
+        try {
+            instance = JsonProxy.getInstance(requestClass, objects);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new IllegalArgumentException("init instance exception. warp exception: " + e.getClass());
         }
@@ -128,12 +138,11 @@ public class RequestFactory {
         jsonDataService.setParamToJsonContent((JsonAbstract) object, fieldName, value);
     }
 
-    public static Object getFieldObject(Object requestObj, String fieldName) throws NoSuchFieldException,
-            IllegalAccessException {
+    public static Object getFieldObject(Object requestObj, String fieldName) throws NoSuchFieldException, IllegalAccessException {
         Class superclass = JsonAbstract.class;
-            Field reqContentField = superclass.getDeclaredField(fieldName);
-            reqContentField.setAccessible(true);
-            return reqContentField.get(requestObj);
+        Field reqContentField = superclass.getDeclaredField(fieldName);
+        reqContentField.setAccessible(true);
+        return reqContentField.get(requestObj);
     }
 
     private static String methodNameToFieldName(String methodName) {
@@ -143,7 +152,7 @@ public class RequestFactory {
         return result;
     }
 
-    public static String processNoSendField(JsonAbstract instance) {
+    static String processNoSendField(JsonAbstract instance) {
         JsonObject jsonObject = jsonDataService.removeUnnecessaryNode(instance);
         return jsonObject.toString();
     }
