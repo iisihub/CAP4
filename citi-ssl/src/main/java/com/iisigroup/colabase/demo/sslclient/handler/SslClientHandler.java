@@ -1,7 +1,6 @@
 package com.iisigroup.colabase.demo.sslclient.handler;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -41,9 +40,6 @@ public class SslClientHandler extends MFormHandler {
     @Autowired
     private SslClient sslClient;
 
-    public SslClientHandler() {
-    }
-
     public Result testSslClient(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         StringBuilder resultStr = new StringBuilder();
@@ -77,8 +73,7 @@ public class SslClientHandler extends MFormHandler {
             return null;
         Gson gson = new Gson();
         Type type = new TypeToken<Map<String, List<String>>>() {}.getType();
-        Map<String, List<String>> result = gson.fromJson(jsonStr, type);
-        return result;
+        return gson.fromJson(jsonStr, type);
     }
 
     private RequestContent getDummyContent(String targetUrl, Map<String, List<String>> headers, JsonObject jsonData){
