@@ -6,19 +6,15 @@ import java.util.List;
 
 public interface ImageBuilder {
     enum Orientation {
-        Portrait,
-        Landscape
+        /**
+         * 直式
+         */
+        PORTRAIT,
+        /**
+         * 橫式
+         */
+        LANDSCAPE
     }
-
-    /**
-     * 直式
-     */
-    Orientation PORTRAIT = Orientation.Portrait;
-
-    /**
-     * 橫式
-     */
-    Orientation LANDSCAPE = Orientation.Landscape;
 
     /**
      * 關閉 ImageBuilder，釋放快取記憶體。
@@ -189,10 +185,4 @@ public interface ImageBuilder {
      */
     List<File> writeToFiles(File destLocation, String fileType, float quality, boolean isCloseBuilderAfterWrote) throws IOException;
 
-    /**
-     * 轉換成 base64 字串。
-     *
-     * @return base64 字串 List
-     */
-    // List<String> convertToBase64();
 }

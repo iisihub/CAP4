@@ -2,6 +2,7 @@ package com.iisigroup.colabase.model;
 
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,15 +12,17 @@ public class ResponseContent {
     private Map<String, List<String>> headers;
     private JsonObject responseJson;
     private Exception exception;
-    
+    private List<String> records = new ArrayList<>();
+
     public ResponseContent() {
         
     }
 
-    public ResponseContent(int statusCode, Map<String, List<String>> headers, JsonObject responseJson) {
+    public ResponseContent(int statusCode, Map<String, List<String>> headers, JsonObject responseJson, List<String> records) {
         this.statusCode = statusCode;
         this.headers = headers;
         this.responseJson = responseJson;
+        this.records = records;
     }
     
 
@@ -68,6 +71,14 @@ public class ResponseContent {
 
     public void setException(Exception exception) {
         this.exception = exception;
+    }
+
+    public List<String> getRecords() {
+        return records;
+    }
+
+    public void setRecords(List<String> records) {
+        this.records = records;
     }
 
     @Override

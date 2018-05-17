@@ -22,20 +22,33 @@ public class DemoCopyFileHandler extends MFormHandler {
 
     @Autowired
     private CopyFileService copyFileSrv;
+    
+    private static final String PATH_1 = "path1";
+    private static final String DOMAIN_1 = "domain1";
+    private static final String USER_NAME_1 = "userName1";
+    private static final String USER_XWD_1 = "userXwd1";
+    private static final String EXPORT_PATH_1 = "exportFilePath1";
+    private static final String IMPORT_PATH_1 = "importFilePath1";
+    private static final String FILE_NAME_1 = "fileName1";
+    private static final String DRIVE_1 = "drive1";
+    private static final String DRIVE_LETTERS_1 = "driveLetters1";
+    
+    private static final String RESULT_MSG = "result";
+    private static final String ERROR_MSG = "error";
 
     public Result copyFileProcess(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
-        String path = request.get("path1");
-        String domain = request.get("domain1");
-        String userName = request.get("userName1");
-        String userXwd = request.get("userXwd1");
-        String exportFilePath = request.get("exportFilePath1");
-        String importFilePath = request.get("importFilePath1");
-        String fileName = request.get("fileName1");
+        String path = request.get(PATH_1);
+        String domain = request.get(DOMAIN_1);
+        String userName = request.get(USER_NAME_1);
+        String userXwd = request.get(USER_XWD_1);
+        String exportFilePath = request.get(EXPORT_PATH_1);
+        String importFilePath = request.get(IMPORT_PATH_1);
+        String fileName = request.get(FILE_NAME_1);
         try {
             copyFileSrv.copyFile(path, domain, userName, userXwd, exportFilePath, importFilePath, fileName);
         } catch (Exception e) {
-            result.set("error", e.getMessage());
+            result.set(ERROR_MSG, e.getMessage());
             logger.error("Copy File Process Error", e);
         }
         return result;
@@ -43,18 +56,18 @@ public class DemoCopyFileHandler extends MFormHandler {
 
     public Result mappingLocalPath(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
-        String path = request.get("path1");
+        String path = request.get(PATH_1);
         try {
             String pathValue = NetUseUtil.mappingLocalPath(path);
             if (!CapString.isEmpty(pathValue)) {
                 File diskDrive = new File(pathValue + File.separator);
                 if (diskDrive != null && diskDrive.canRead() && diskDrive.canWrite()) {
                     logger.debug("*****網路磁碟機已掛載於：" + pathValue.substring(0, 1) + ":" + File.separator);
-                    result.set("result", "網路磁碟機已掛載於：" + pathValue.substring(0, 1) + ":" + File.separator);
+                    result.set(RESULT_MSG, "網路磁碟機已掛載於：" + pathValue.substring(0, 1) + ":" + File.separator);
                 }
             }
         } catch (Exception e) {
-            result.set("error", e.getMessage());
+            result.set(ERROR_MSG, e.getMessage());
             logger.error("mappingLocalPath Error", e);
         }
         return result;
@@ -62,26 +75,26 @@ public class DemoCopyFileHandler extends MFormHandler {
 
     public Result connectDiskWithDrive(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
-        String path = request.get("path1");
-        String domain = request.get("domain1");
-        String userName = request.get("userName1");
-        String userXwd = request.get("userXwd1");
-        String diskLtr = request.get("drive1");
+        String path = request.get(PATH_1);
+        String domain = request.get(DOMAIN_1);
+        String userName = request.get(USER_NAME_1);
+        String userXwd = request.get(USER_XWD_1);
+        String diskLtr = request.get(DRIVE_1);
         int contNetDiskStat = -1;
         try {
             contNetDiskStat = NetUseUtil.connectNetworkDrive(path, diskLtr, domain, userName, userXwd);
             logger.debug("contNetDiskStat:" + contNetDiskStat);
             if (contNetDiskStat == 0) {
                 logger.debug("*****成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
-                result.set("result", "成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
+                result.set(RESULT_MSG, "成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
             } else if (contNetDiskStat != -1) {
-                result.set("result", "網路磁碟機連線已執行，請檢查網路磁碟機連線狀況。");
+                result.set(RESULT_MSG, "網路磁碟機連線已執行，請檢查網路磁碟機連線狀況。");
             } else {
                 logger.debug("*****網路磁碟機連線失敗");
-                result.set("result", "網路磁碟機連線失敗");
+                result.set(RESULT_MSG, "網路磁碟機連線失敗");
             }
         } catch (Exception e) {
-            result.set("error", e.getMessage());
+            result.set(ERROR_MSG, e.getMessage());
             logger.error("connectDiskWithDrive Error", e);
         }
         return result;
@@ -89,11 +102,11 @@ public class DemoCopyFileHandler extends MFormHandler {
 
     public Result connectDisk(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
-        String path = request.get("path1");
-        String domain = request.get("domain1");
-        String userName = request.get("userName1");
-        String userXwd = request.get("userXwd1");
-        String diskLtrs = request.get("driveLetters1");
+        String path = request.get(PATH_1);
+        String domain = request.get(DOMAIN_1);
+        String userName = request.get(USER_NAME_1);
+        String userXwd = request.get(USER_XWD_1);
+        String diskLtrs = request.get(DRIVE_LETTERS_1);
         String diskLtr = "";
         int contNetDiskStat = -1;
         try {
@@ -115,15 +128,15 @@ public class DemoCopyFileHandler extends MFormHandler {
             logger.debug("contNetDiskStat:" + contNetDiskStat);
             if (contNetDiskStat == 0) {
                 logger.debug("*****成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
-                result.set("result", "成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
+                result.set(RESULT_MSG, "成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
             } else if (contNetDiskStat != -1) {
-                result.set("result", "網路磁碟機連線已執行，請檢查網路磁碟機連線狀況。");
+                result.set(RESULT_MSG, "網路磁碟機連線已執行，請檢查網路磁碟機連線狀況。");
             } else {
                 logger.debug("*****網路磁碟機連線失敗");
-                result.set("result", "網路磁碟機連線失敗");
+                result.set(RESULT_MSG, "網路磁碟機連線失敗");
             }
         } catch (Exception e) {
-            result.set("error", e.getMessage());
+            result.set(ERROR_MSG, e.getMessage());
             logger.error("connectDisk Error", e);
         }
         return result;
@@ -131,10 +144,10 @@ public class DemoCopyFileHandler extends MFormHandler {
 
     public Result copyFile(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
-        String exportFilePath = request.get("exportFilePath1");
-        String importFilePath = request.get("importFilePath1");
-        String fileName = request.get("fileName1");
-        String diskLtr = request.get("drive1");
+        String exportFilePath = request.get(EXPORT_PATH_1);
+        String importFilePath = request.get(IMPORT_PATH_1);
+        String fileName = request.get(FILE_NAME_1);
+        String diskLtr = request.get(DRIVE_1);
         try {
             if (CapString.isEmpty(fileName)) {
                 throw new CapMessageException("讀取本機匯出的檔案名稱失敗", getClass());
@@ -176,14 +189,14 @@ public class DemoCopyFileHandler extends MFormHandler {
                 }
                 File newBackupFile = new File(exportFilePath + File.separator + fileName + ".bak");
                 FileUtils.moveFile(hostFilePath, newBackupFile);
-                result.set("result", "success !");
+                result.set(RESULT_MSG, "success !");
             } catch (IOException e) {
                 logger.debug("*****無法取得搬檔案 IOException");
                 e.printStackTrace();
                 throw new CapMessageException("複製匯入資料錯誤" + e.getLocalizedMessage(), getClass());
             }
         } catch (Exception e) {
-            result.set("error", e.getMessage());
+            result.set(ERROR_MSG, e.getMessage());
             logger.error("Copy File Error", e);
         }
         return result;
@@ -191,18 +204,18 @@ public class DemoCopyFileHandler extends MFormHandler {
 
     public Result disconnectNetworkPath(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
-        String diskLtr = request.get("drive1");
+        String diskLtr = request.get(DRIVE_1);
         int disContNetDiskStat = -1;
         try {
             disContNetDiskStat = NetUseUtil.disconnectNetworkPath(diskLtr);
             logger.debug("disContNetDiskStat:" + disContNetDiskStat);
             if (disContNetDiskStat == 0) {
-                result.set("result", "成功卸載網路磁碟機：" + diskLtr + ":" + File.separator);
+                result.set(RESULT_MSG, "成功卸載網路磁碟機：" + diskLtr + ":" + File.separator);
             } else if (disContNetDiskStat != -1) {
-                result.set("result", "您可能未在" + diskLtr + ":" + File.separator + "掛載網路磁碟機");
+                result.set(RESULT_MSG, "您可能未在" + diskLtr + ":" + File.separator + "掛載網路磁碟機");
             }
         } catch (Exception e) {
-            result.set("error", e.getMessage());
+            result.set(ERROR_MSG, e.getMessage());
             logger.error("disconnectNetworkPath Error", e);
         }
         return result;
@@ -215,10 +228,10 @@ public class DemoCopyFileHandler extends MFormHandler {
             disContNetDiskStat = NetUseUtil.disconnectAllNetworkPath();
             logger.debug("disContNetDiskStat:" + disContNetDiskStat);
             if (disContNetDiskStat == 0) {
-                result.set("result", "成功卸載所有網路磁碟機");
+                result.set(RESULT_MSG, "成功卸載所有網路磁碟機");
             }
         } catch (Exception e) {
-            result.set("error", e.getMessage());
+            result.set(ERROR_MSG, e.getMessage());
             logger.error("disconnectAllNetworkPath Error", e);
         }
         return result;

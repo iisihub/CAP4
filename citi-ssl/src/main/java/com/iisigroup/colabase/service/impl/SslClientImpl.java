@@ -54,7 +54,7 @@ public class SslClientImpl implements SslClient {
         sslSocketFactory = getSSLSocketFactory(keyStorePath, keyStorePWD, trustStorePath);
         isInit = true;
       } catch (CertificateException | UnrecoverableKeyException | KeyStoreException | NoSuchAlgorithmException | IOException | KeyManagementException e) {
-        logger.error("init SslSocketFactory fail >>> " + e.getCause());
+        logger.error("init SslSocketFactory fail >>> {}" , e.getCause());
       }
     }
   }
@@ -98,13 +98,13 @@ public class SslClientImpl implements SslClient {
   @Override
   public ResponseContent sendRequestWithDefaultHeader(RequestContent requestContent) throws IOException {
     Map<String, List<String>> requestHeaders = new HashMap<>();
-    requestHeaders.put("Accept", Arrays.asList(new String[]{"application/json"}));
-    requestHeaders.put("Content-Type", Arrays.asList(new String[]{"application/json; charset=UTF-8"}));
-    requestHeaders.put("uuid", Arrays.asList(new String[]{UUID.randomUUID().toString()}));
-    requestHeaders.put("channelId", Arrays.asList(new String[]{"COA"}));
-    requestHeaders.put("businessCode", Arrays.asList(new String[]{"GCB"}));
-    requestHeaders.put("countryCode", Arrays.asList(new String[]{"TW"}));
-    requestHeaders.put("consumerOrgCode", Arrays.asList(new String[]{"COLA"}));
+    requestHeaders.put("Accept", Collections.singletonList("application/json"));
+    requestHeaders.put("Content-Type", Collections.singletonList("application/json; charset=UTF-8"));
+    requestHeaders.put("uuid", Collections.singletonList(UUID.randomUUID().toString()));
+    requestHeaders.put("channelId", Collections.singletonList("COA"));
+    requestHeaders.put("businessCode", Collections.singletonList("GCB"));
+    requestHeaders.put("countryCode", Collections.singletonList("TW"));
+    requestHeaders.put("consumerOrgCode", Collections.singletonList("COLA"));
     requestContent.setRequestHeaders(requestHeaders);
     return this.sendRequest(requestContent);
   }
@@ -112,7 +112,7 @@ public class SslClientImpl implements SslClient {
   private ResponseContent clientSendRequest(RequestContent requestContent) throws IOException {
     logger.debug("==== send dual ssl request start ====");
     long startTime = new Date().getTime();
-    ArrayList<String> listForRecordInfos = new ArrayList<>();
+    ArrayList<String> recordInfo = new ArrayList<>();
 
     ResponseContent responseContent = null;
     int statusCode = 0;
@@ -126,10 +126,10 @@ public class SslClientImpl implements SslClient {
       Date date = Calendar.getInstance().getTime();
       SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
       String time = formatter.format(date);
-      logger.debug("start time = " + time);
-      logger.debug("Request: target = " + targetURL);
+      logger.debug("start time = {}",  time);
+      logger.debug("Request: target = {}", targetURL);
       // add listForRecordInfos
-      listForRecordInfos.add("Request: time = " + time);
+      recordInfo.add("Request: time = " + time);
 
       HttpsURLConnection connection = (HttpsURLConnection) new URL(targetURL).openConnection();
       // 設定 HttpsURLConnection 的 SSLSocketFactory
@@ -149,10 +149,10 @@ public class SslClientImpl implements SslClient {
 
       String requestMethod = method.toString();
       connection.setRequestMethod(requestMethod);
-      logger.debug("Request: Method = " + requestMethod);
+      logger.debug("Request: Method = {}" , requestMethod);
 
       // add listForRecordInfos
-      listForRecordInfos.add("Request: Method = " + requestMethod);
+      recordInfo.add("Request: Method = " + requestMethod);
 
       connection.setDoInput(true);
       if (!RequestContent.HTTPMethod.GET.equals(method)) {
@@ -167,10 +167,10 @@ public class SslClientImpl implements SslClient {
         for (String requestHeaderValue : requestHeaderValues) {
           connection.setRequestProperty(requestHeaderKey, requestHeaderValue);
 
-          logger.debug("Request Header Key: " + requestHeaderKey + ", Value: " + requestHeaderValue);
+          logger.debug("Request Header Key: {}, Value: {}",requestHeaderKey,  requestHeaderValue);
 
           // add listForRecordInfos
-          listForRecordInfos.add("Request: " + requestHeaderKey + " = " + requestHeaderValue);
+          recordInfo.add("Request: " + requestHeaderKey + " = " + requestHeaderValue);
         }
       }
       requestContent.showRequestJsonStrLog(jsonStr);
@@ -184,10 +184,10 @@ public class SslClientImpl implements SslClient {
           output.flush();
 
           // add listForRecordInfos
-          listForRecordInfos.add("Request: data = " + jsonStr);
+          recordInfo.add("Request: data = " + jsonStr);
         } catch (IOException e) {
-          listForRecordInfos.add("Output data Exception = " + e.toString());
-          logger.warn("Output data Exception = " + e.toString());
+          recordInfo.add("Output data Exception = " + e.toString());
+          logger.warn("Output data Exception = {}" , e.toString());
           throw e;
         }
       }
@@ -203,40 +203,19 @@ public class SslClientImpl implements SslClient {
 
       Map<String, List<String>> headers = connection.getHeaderFields();
       for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
-        logger.debug("Response Header Key: " + entry.getKey() + ", Value: " + entry.getValue());
+        logger.debug("Response Header Key: {}, Value: {}", entry.getKey(), entry.getValue());
 
         // add listForRecordInfos
-        listForRecordInfos.add("Response: Header Key = " + entry.getKey() + ", Value = " + entry.getValue());
+        recordInfo.add("Response: Header Key = " + entry.getKey() + ", Value = " + entry.getValue());
       }
 
       JsonObject responseJson = new JsonObject();
-      Gson gson = new Gson();
       StringBuilder responseBodySB = new StringBuilder();
-      try (
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is))
-      ) {
-        String tempStr;
-        while ((tempStr = reader.readLine()) != null) {
-          responseBodySB.append(tempStr);
-        }
-
-        requestContent.showResponseJsonStrLog(responseBodySB.toString());
-        if(responseBodySB.length()!=0) {
-            responseJson = gson.fromJson(responseBodySB.toString(), JsonObject.class);
-        }
-        listForRecordInfos.add("Response Body : " + responseJson.toString());
-      } catch(JsonSyntaxException e) {
-        responseJson = new JsonObject();
-        listForRecordInfos.add("Response Body: " + responseBodySB);
-        listForRecordInfos.add("Response Exception: " + e);
-      } catch (IOException e) {
-        throw e;
-      }
-
-      responseContent = new ResponseContent(statusCode, headers, responseJson);
+      responseJson = this.readResponse(is, requestContent, responseBodySB, responseJson, recordInfo);
+      responseContent = new ResponseContent(statusCode, headers, responseJson, recordInfo);
     } catch (Exception e) {
       if(responseContent == null) {
-        responseContent = new ResponseContent(statusCode, new HashMap<String, List<String>>(), new JsonObject());
+        responseContent = new ResponseContent(statusCode, new HashMap<>(), new JsonObject(), recordInfo);
         responseContent.setException(e);
       }
       throw e;
@@ -254,15 +233,38 @@ public class SslClientImpl implements SslClient {
         thread.start();
       long endTime = new Date().getTime();
       long diffTime = endTime - startTime;
-      logger.debug("[clientSendRequest] done. All cause time: " + diffTime + " ms");
+      logger.debug("[clientSendRequest] done. All cause time: {} ms", diffTime );
       logger.debug("==== send dual ssl request end ====");
     }
 
     return responseContent;
   }
 
+    private JsonObject readResponse(InputStream is, RequestContent requestContent, StringBuilder responseBodySB, JsonObject responseJson, ArrayList<String> recordInfo) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+            String tempStr;
+            while ((tempStr = reader.readLine()) != null) {
+                responseBodySB.append(tempStr);
+            }
+
+            requestContent.showResponseJsonStrLog(responseBodySB.toString());
+            Gson gson = new Gson();
+            if (responseBodySB.length() != 0) {
+                responseJson = gson.fromJson(responseBodySB.toString(), JsonObject.class);
+            }
+            recordInfo.add("Response Body : " + responseJson.toString());
+        } catch (JsonSyntaxException e) {
+            responseJson = new JsonObject();
+            recordInfo.add("Response Body: " + responseBodySB);
+            recordInfo.add("Response Exception: " + e);
+        } catch (IOException e) {
+            throw e;
+        }
+      return responseJson;
+    }
+
   private SSLSocketFactory getSSLSocketFactory(String keyStorePath, String keyStorePWD, String trustStorePath) throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
-    SSLSocketFactory sslSocketFactory;
+    SSLSocketFactory factory;
     try (
       InputStream keyStoreInputStream = new FileInputStream(keyStorePath);
       InputStream trustStoreInputStream = new FileInputStream(trustStorePath)
@@ -285,11 +287,9 @@ public class SslClientImpl implements SslClient {
       SSLContext sslContext = SSLContext.getInstance("TLS");
       sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), new SecureRandom());
 
-      sslSocketFactory = sslContext.getSocketFactory();
-    } catch (Exception e) {
-      throw e;
+      factory = sslContext.getSocketFactory();
     }
 
-    return sslSocketFactory;
+    return factory;
   }
 }

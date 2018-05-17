@@ -6,6 +6,7 @@ import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
 import com.iisigroup.cap.exception.CapException;
+import com.lowagie.text.pdf.BaseFont;
 
 public interface PDFService {
 
@@ -103,4 +104,29 @@ public interface PDFService {
      * @return
      */
     public Result partitionPdfFile(String filePath, int partitionPageNum);
+
+    /**
+     * PDF 加入浮水印
+     * 
+     * @param inputFilePath
+     * @param outputFilePath
+     * @param watermark
+     * @throws Exception
+     */
+    public void addWatermark(String inputFilePath, String outputFilePath, String watermark) throws Exception;
+
+    /**
+     * PDF 加入浮水印
+     * 
+     * @param inputFilePath
+     * @param outputFilePath
+     * @param watermark
+     * @param font
+     * @param fontSize
+     * @param opacity
+     * @param degree
+     * @throws Exception
+     */
+    public void addWatermark(String inputFilePath, String outputFilePath, String watermark, BaseFont font, float fontSize, Float opacity, int degree) throws Exception;
+
 }
