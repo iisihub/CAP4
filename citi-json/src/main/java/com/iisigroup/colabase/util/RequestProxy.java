@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import com.iisigroup.colabase.annotation.JsonTemp;
-import com.iisigroup.colabase.model.RequestContent;
+import com.iisigroup.colabase.model.RequestAbstract;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -50,7 +50,7 @@ class RequestProxy implements MethodInterceptor {
             RequestFactory.setValueToJsonContent(object, method, args);
         }
         if ("getJsonString".equals(methodName)) {
-            return RequestFactory.processNoSendField((RequestContent) object);
+            return RequestFactory.processNoSendField((RequestAbstract) object);
         }
         return methodProxy.invokeSuper(object, args);
     }

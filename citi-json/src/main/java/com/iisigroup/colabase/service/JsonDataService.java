@@ -1,7 +1,7 @@
 package com.iisigroup.colabase.service;
 
 import com.google.gson.JsonObject;
-import com.iisigroup.colabase.model.RequestContent;
+import com.iisigroup.colabase.model.RequestAbstract;
 
 import java.util.List;
 import java.util.Map;
@@ -11,16 +11,16 @@ import java.util.Map;
  */
 public interface JsonDataService {
 
-    void setParamToJsonContent(RequestContent requestContent, String fieldName, String value);
+    void setParamToJsonContent(RequestAbstract requestContent, String fieldName, String value);
 
-    void cleanJsonObjectData(RequestContent reqInstance);
+    void cleanJsonObjectData(RequestAbstract reqInstance);
 
-    void setDefaultValue(RequestContent reqInstance, Map<String, String> valueMap);
+    void setDefaultValue(RequestAbstract reqInstance, Map<String, String> valueMap);
 
-    void copyDefaultArrayObject(RequestContent reqInstance, List<String> allPathList);
+    void copyDefaultArrayObject(RequestAbstract reqInstance, List<String> allPathList);
 
-    JsonObject removeUnnecessaryNode(RequestContent requestContent);
+    JsonObject removeUnnecessaryNode(RequestAbstract requestContent);
 
-    JsonObject getJsonStr(RequestContent requestContent);
+    JsonObject getJsonStr(RequestAbstract requestContent);
 
 }

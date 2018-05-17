@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.iisigroup.colabase.annotation.ApiRequest;
 import com.iisigroup.colabase.annotation.JsonTemp;
-import com.iisigroup.colabase.model.RequestContent;
+import com.iisigroup.colabase.model.RequestAbstract;
 import com.iisigroup.colabase.service.JsonDataService;
 import com.iisigroup.colabase.service.impl.JsonDataServiceImpl;
 
@@ -37,7 +37,7 @@ public class RequestFactory {
 
     private static final JsonDataService jsonDataService;
 
-    public static <T extends RequestContent> T getInstance(Class<T> requestClass) {
+    public static <T extends RequestAbstract> T getInstance(Class<T> requestClass) {
         T instance;
         try {
             instance = RequestProxy.getInstance(requestClass);
@@ -54,8 +54,8 @@ public class RequestFactory {
      * @throws NoSuchFieldException
      * @throws IllegalAccessException
      */
-    static <T extends RequestContent> void initJsonObject(Class<T> requestClass, T instance) throws NoSuchFieldException, IllegalAccessException {
-        Field jsonObjField = RequestContent.class.getDeclaredField(REQUEST_CONTENT_KEY);
+    static <T extends RequestAbstract> void initJsonObject(Class<T> requestClass, T instance) throws NoSuchFieldException, IllegalAccessException {
+        Field jsonObjField = RequestAbstract.class.getDeclaredField(REQUEST_CONTENT_KEY);
         jsonObjField.setAccessible(true);
         Field jsonStrField = null;
         for (Field field : requestClass.getDeclaredFields()) {
@@ -88,9 +88,9 @@ public class RequestFactory {
 
     }
 
-    private static <T extends RequestContent> List<String> getListToInstance(T instance) {
+    private static <T extends RequestAbstract> List<String> getListToInstance(T instance) {
         try {
-            Field noSendList = RequestContent.class.getDeclaredField(NO_SEND_LIST_KEY);
+            Field noSendList = RequestAbstract.class.getDeclaredField(NO_SEND_LIST_KEY);
             noSendList.setAccessible(true);
             return (List<String>) noSendList.get(instance);
         } catch (NoSuchFieldException |IllegalAccessException e) {
@@ -99,7 +99,7 @@ public class RequestFactory {
     }
 
     private static void setApiRequstInfo(Map<String, String> valueMap, List<String> noVnoSLinst, List<String> allPathList, Class<?> tClass) {
-        if(tClass == RequestContent.class)
+        if(tClass == RequestAbstract.class)
             return;
 
         Field[] fields = tClass.getDeclaredFields();
@@ -126,12 +126,12 @@ public class RequestFactory {
         String value = String.valueOf(args.length > 0 ? args[0] : "");
         String methodName = method.getName();
         String fieldName = methodNameToFieldName(methodName);
-        jsonDataService.setParamToJsonContent((RequestContent) object, fieldName, value);
+        jsonDataService.setParamToJsonContent((RequestAbstract) object, fieldName, value);
     }
 
     public static Object getFieldObject(Object requestObj, String fieldName) throws NoSuchFieldException,
             IllegalAccessException {
-        Class superclass = RequestContent.class;
+        Class superclass = RequestAbstract.class;
             Field reqContentField = superclass.getDeclaredField(fieldName);
             reqContentField.setAccessible(true);
             return reqContentField.get(requestObj);
@@ -144,7 +144,7 @@ public class RequestFactory {
         return result;
     }
 
-    public static String processNoSendField(RequestContent instance) {
+    public static String processNoSendField(RequestAbstract instance) {
         JsonObject jsonObject = jsonDataService.removeUnnecessaryNode(instance);
         return jsonObject.toString();
     }

@@ -4,9 +4,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.iisigroup.colabase.model.RequestAbstract;
 import com.iisigroup.colabase.util.RequestFactory;
 import com.iisigroup.colabase.annotation.ApiRequest;
-import com.iisigroup.colabase.model.RequestContent;
 import com.iisigroup.colabase.service.JsonDataService;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +36,7 @@ public class JsonDataServiceImpl implements JsonDataService {
     }
 
     @Override
-    public void setParamToJsonContent(RequestContent requestContent, String fieldName, String value) {
+    public void setParamToJsonContent(RequestAbstract requestContent, String fieldName, String value) {
         Map<String, Object> arrayMap;
         try {
             arrayMap =  (Map<String, Object>)RequestFactory.getFieldObject(requestContent, ARRAY_MAP_KEY);
@@ -179,18 +179,18 @@ public class JsonDataServiceImpl implements JsonDataService {
     }
 
     /**
-     * get annotation mark on field, will lookup extends chain while to RequestContent.class(father class)
+     * get annotation mark on field, will lookup extends chain while to RequestAbstract.class(father class)
      * @param tClass target class
      * @param fieldName field name defined in child class
      * @return ApiRequest annotation
      */
-    private <T extends RequestContent> ApiRequest getFieldAnnotation(Class<T> tClass, String fieldName) {
+    private <T extends RequestAbstract> ApiRequest getFieldAnnotation(Class<T> tClass, String fieldName) {
         Field field;
         try {
             field = tClass.getDeclaredField(fieldName);
         } catch (NoSuchFieldException e) {
-            if(RequestContent.class == tClass)
-                throw new IllegalArgumentException("any class extends RequestContent, not have this fieldName: " + fieldName);
+            if(RequestAbstract.class == tClass)
+                throw new IllegalArgumentException("any class extends RequestAbstract, not have this fieldName: " + fieldName);
             return getFieldAnnotation((Class<T>) tClass.getSuperclass(), fieldName);
         }
         return field.getAnnotation(ApiRequest.class);
@@ -201,7 +201,7 @@ public class JsonDataServiceImpl implements JsonDataService {
      * @param reqInstance instance
      */
     @Override
-    public void cleanJsonObjectData(RequestContent reqInstance) {
+    public void cleanJsonObjectData(RequestAbstract reqInstance) {
         this.cleanJsonObject(reqInstance.getRequestContent());
     }
 
@@ -222,7 +222,7 @@ public class JsonDataServiceImpl implements JsonDataService {
     }
 
     @Override
-    public void setDefaultValue(RequestContent reqInstance, Map<String, String> valueMap) {
+    public void setDefaultValue(RequestAbstract reqInstance, Map<String, String> valueMap) {
         for (String key : valueMap.keySet()) {
             String value = valueMap.get(key).trim();
             if("".equals(value))
@@ -234,9 +234,9 @@ public class JsonDataServiceImpl implements JsonDataService {
         arrayMap.clear();
     }
 
-    private Map<String, Object> getArrayMap(RequestContent instance) {
+    private Map<String, Object> getArrayMap(RequestAbstract instance) {
         try {
-            Field field = RequestContent.class.getDeclaredField(ARRAY_MAP_KEY);
+            Field field = RequestAbstract.class.getDeclaredField(ARRAY_MAP_KEY);
             field.setAccessible(true);
             return  (Map<String, Object>) field.get(instance);
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -246,7 +246,7 @@ public class JsonDataServiceImpl implements JsonDataService {
 
 
     @Override
-    public void copyDefaultArrayObject(RequestContent reqInstance, List<String> allPathList) {
+    public void copyDefaultArrayObject(RequestAbstract reqInstance, List<String> allPathList) {
         JsonObject requestContent = reqInstance.getRequestContent();
 
         Map<String, Object> arrayMap = this.getArrayMap(reqInstance);
@@ -269,10 +269,10 @@ public class JsonDataServiceImpl implements JsonDataService {
      * @param requestContent instance
      */
     @Override
-    public JsonObject removeUnnecessaryNode(RequestContent requestContent) {
+    public JsonObject removeUnnecessaryNode(RequestAbstract requestContent) {
         List<String> noSendList;
         try {
-            Field noSendListField = RequestContent.class.getDeclaredField(NO_SEND_LIST_KEY);
+            Field noSendListField = RequestAbstract.class.getDeclaredField(NO_SEND_LIST_KEY);
             noSendListField.setAccessible(true);
             noSendList = (List<String>) noSendListField.get(requestContent);
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -387,7 +387,7 @@ public class JsonDataServiceImpl implements JsonDataService {
     }
 
     @Override
-    public JsonObject getJsonStr(RequestContent requestContent) {
+    public JsonObject getJsonStr(RequestAbstract requestContent) {
         return null;
     }
 }

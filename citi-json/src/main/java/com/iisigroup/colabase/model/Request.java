@@ -9,22 +9,7 @@ import com.google.gson.JsonObject;
  *          </ul>
  * @since 2018/5/11
  */
-public interface RequestFather {
-
-    enum HTTPMethod {
-        GET("GET"), POST("POST"), PUT("PUT");
-
-        private String methodName;
-
-        HTTPMethod(String methodName) {
-            this.methodName = methodName;
-        }
-
-        @Override
-        public String toString() {
-            return methodName;
-        }
-    }
+interface Request {
 
     void afterSendRequest(ResponseContent responseContent);
 

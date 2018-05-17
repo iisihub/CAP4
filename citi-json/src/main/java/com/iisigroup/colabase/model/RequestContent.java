@@ -1,27 +1,31 @@
 package com.iisigroup.colabase.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.gson.Gson;
-import com.iisigroup.colabase.annotation.JsonTemp;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.gson.JsonObject;
 
 /**
  * @author AndyChen
  * @version <ul>
- *          <li>2018/4/9 AndyChen,new
+ *          <li>2018/5/17 AndyChen,new
  *          </ul>
- * @since 2018/4/9
+ * @since 2018/5/17
  */
-public abstract class RequestContent implements RequestFather{
+public abstract class RequestContent extends RequestAbstract {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    enum HTTPMethod {
+        GET("GET"), POST("POST"), PUT("PUT");
+
+        private String methodName;
+
+        HTTPMethod(String methodName) {
+            this.methodName = methodName;
+        }
+
+        @Override
+        public String toString() {
+            return methodName;
+        }
+    }
 
     /**
      * 是否使用自己的key store and trust store
@@ -35,7 +39,7 @@ public abstract class RequestContent implements RequestFather{
     private int timeout;
 
     /**
-     * 重試次數
+     * 重試次數 (millisecond)
      */
     private int retryTimes = 0;
 
@@ -50,11 +54,6 @@ public abstract class RequestContent implements RequestFather{
     private HTTPMethod httpMethod;
 
     /**
-     * 請求內容JsonObject型態表示
-     */
-    private JsonObject requestContent;
-
-    /**
      * 請求Header
      */
     private Map<String, List<String>> requestHeaders;
@@ -64,35 +63,6 @@ public abstract class RequestContent implements RequestFather{
      */
     private int[] retryHttpStatus;
 
-    /**
-     * !!! do not use this map yourself
-     */
-    private Map<String, Object> arrayMap = new HashMap<>();
-
-    /**
-     * !!! do not use this list yourself
-     */
-    private List<String> noSendList = new ArrayList<>();
-
-    /**
-     * !!! 取json字串時使用本方法
-     * 實作no value no send的功能
-     * @return 去掉no value no send 的字串
-     */
-    @Override
-    public String getJsonString() {
-        return requestContent.toString();
-    }
-
-    /**
-     * 紀錄request中的json字串
-     * 如果有針對特殊的呼叫(如送base64字串)導致過長，要自行override
-     * @param jsonStr
-     */
-    @Override
-    public void showRequestJsonStrLog(String jsonStr) {
-        logger.debug("Request: SendData = " + jsonStr);
-    }
 
     public boolean isUseOwnKeyAndTrustStore() {
         return isUseOwnKeyAndTrustStore;
@@ -106,10 +76,6 @@ public abstract class RequestContent implements RequestFather{
         return timeout;
     }
 
-    /**
-     * setting timeout time
-     * @param timeout milliseconds
-     */
     public void setTimeout(int timeout) {
         this.timeout = timeout;
     }
@@ -138,17 +104,8 @@ public abstract class RequestContent implements RequestFather{
         this.httpMethod = httpMethod;
     }
 
-    @Override
-    public JsonObject getRequestContent() {
-        return requestContent;
-    }
-
-    public void setRequestContent(JsonObject requestContent) {
-        this.requestContent = requestContent;
-    }
-
     public Map<String, List<String>> getRequestHeaders() {
-        return this.requestHeaders;
+        return requestHeaders;
     }
 
     public void setRequestHeaders(Map<String, List<String>> requestHeaders) {
@@ -162,5 +119,4 @@ public abstract class RequestContent implements RequestFather{
     public void setRetryHttpStatus(int[] retryHttpStatus) {
         this.retryHttpStatus = retryHttpStatus;
     }
-
 }
