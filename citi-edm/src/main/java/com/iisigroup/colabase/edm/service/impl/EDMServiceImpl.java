@@ -58,47 +58,54 @@ import com.iisigroup.colabase.edm.service.EDMService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
-/**<pre>
+/**
+ * <pre>
  * 1.實作html/xml → ftl
  * 2.實作ftl  → 發送EDM
  * </pre>
- * @since  2018年4月30日
+ * 
+ * @since 2018年4月30日
  * @author Johnson Ho
- * @version <ul>
- *           <li>2018年4月30日,Johnson Ho,new
+ * @version
+ *          <ul>
+ *          <li>2018年4月30日,Johnson Ho,new
  *          </ul>
  */
 @Service
-public class EDMServiceImpl extends CCBasePageReport implements EDMService{
-    
+public class EDMServiceImpl extends CCBasePageReport implements EDMService {
+
     private final Logger logRecord = LoggerFactory.getLogger(getClass());
-    
-    final static String DEFAULT_ENCORDING = "UTF-8";
-    
-    /* (non-Javadoc)
+
+    static final String DEFAULT_ENCORDING = "UTF-8";
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.iisigroup.colabase.edm.service.EDMService#sendEDM(com.iisigroup.cap.component.Request)
      */
     @Override
     public void sendEDM(Request request, String edmFtlPath, Map<String, Object> dataMap) {
 
-        ByteArrayDownloadResult pdfContent = processTemplate_email(request, edmFtlPath, dataMap);
+        ByteArrayDownloadResult pdfContent = processTemplateEmail(request, edmFtlPath, dataMap);
 
         String enable = getSysConfig().getProperty("mail.enable", "true");
-        logRecord.info("[EDM] mail.enable is : {0}" + Boolean.valueOf(getSysConfig().getProperty("mail.enable", "true")));
-        
+        logRecord.info("[EDM] mail.enable is : {}", Boolean.valueOf(getSysConfig().getProperty("mail.enable", "true")));
+
         if (Boolean.valueOf(enable)) {
             String mailAddress = CapString.trimNull(request.get("mailAddress"));
-            logRecord.info("[EDM] emailAccount is : {0}" + mailAddress);
+            logRecord.info("[EDM] emailAccount is : {}", mailAddress);
             if (!CapString.isEmpty(mailAddress) && pdfContent != null) {
                 sendEDM(mailAddress, pdfContent.getByteArray(), request);
-            }else{
-                logRecord.error("[EDM] pdfContent is null: {0}" + (pdfContent == null));
+            } else {
+                logRecord.error("[EDM] pdfContent is null: {}", (pdfContent == null));
                 throw new NullPointerException();
             }
         }
     }
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.iisigroup.colabase.edm.service.EDMService#sendEDM(java.lang.String, byte[], java.lang.String, com.iisigroup.cap.component.Request)
      */
     @Override
@@ -111,10 +118,10 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
             final String EDM_HOST = getSysConfig().getProperty("edmHost", "smtp.gmail.com");
             final String EDM_USR = getSysConfig().getProperty("edmUsr", "css123456tw@gmail.com");
             final String EDM_PWD = getSysConfig().getProperty("edmPwd", "kvzulwkqdoiprtfb");
-            String EDM_SUBJECT = getSysConfig().getProperty("edmSubject", "花旗(台灣)銀行 圓滿貸線上申請確認通知函");
-            
-            if (CapString.isEmpty(EDM_SUBJECT)) {
-                EDM_SUBJECT = "Citi Cola Notification";
+            String edmSubject = getSysConfig().getProperty("edmSubject", "花旗(台灣)銀行 圓滿貸線上申請確認通知函");
+
+            if (CapString.isEmpty(edmSubject)) {
+                edmSubject = "Citi Cola Notification";
             }
 
             Properties props = new Properties();
@@ -141,9 +148,9 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
 
             InternetAddress fromAddr = new InternetAddress(FROM_ADDRESS, FROM_PERSON, "BIG5");
             msg.setFrom(fromAddr);
-            msg.setSubject(EDM_SUBJECT, "BIG5");
+            msg.setSubject(edmSubject, "BIG5");
             msg.setRecipient(Message.RecipientType.TO, new InternetAddress(mailAddress, false));
-            StringBuilder html = new StringBuilder(new String(datas, "UTF-8"));
+            StringBuilder html = new StringBuilder(new String(datas, DEFAULT_ENCORDING));
 
             MimeMultipart multipart = new MimeMultipart("related");
             // first part (the html)
@@ -164,30 +171,26 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
                 int index = org.indexOf(keyword);
                 int end = 0;
                 while (index >= 0) {
-                    end = org.indexOf("\"", index + keyword.length());
+                    end = org.indexOf('\"', index + keyword.length());
                     String fileName = org.substring(index + keyword.length(), end);
                     messageBodyPart = new MimeBodyPart();
-                    // DataSource fds = new URLDataSource(new URL(
-                    // "http://localhost:8082/cola/static/images/logo.jpg"));
 
                     DataSource fds = new FileDataSource(imagePath + File.separator + fileName);
                     messageBodyPart.setDataHandler(new DataHandler(fds));
                     messageBodyPart.setHeader("Content-ID", "<" + fileName + ">");
                     // add image to the multipart
-                    
+
                     multipart.addBodyPart(messageBodyPart);
                     index = org.indexOf(keyword, index + keyword.length());
                 }
                 String keyword2 = "background:url('cid:";
                 index = org.indexOf(keyword2);
-                end = 0;
+
                 while (index >= 0) {
-                    System.out.println("Index : " + index);
-                    end = org.indexOf("\"", index + keyword2.length());
+                    logRecord.info("[EDM] Index is : {}", index);
+                    end = org.indexOf('\"', index + keyword2.length());
                     String fileName = org.substring(index + keyword2.length(), end);
                     messageBodyPart = new MimeBodyPart();
-                    // DataSource fds = new URLDataSource(new URL(
-                    // "http://localhost:8082/cola/static/images/logo.jpg"));
                     DataSource fds = new FileDataSource(imagePath + File.separator + fileName);
                     messageBodyPart.setDataHandler(new DataHandler(fds));
                     messageBodyPart.setHeader("Content-ID", "<" + fileName + ">");
@@ -196,14 +199,17 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
 
                     index = org.indexOf(keyword2, index + keyword2.length());
                 }
-                //處理附加檔案
-                HttpSession session = ((HttpServletRequest) request.getServletRequest()).getSession();
+                // 處理附加檔案
                 File sendFile;
                 MimeBodyPart filePart = new MimeBodyPart();
-                //send file
-                sendFile = new File("C:/Users/KaiYu/Desktop/EI follow-up.txt");
-                filePart.attachFile(sendFile);
-                multipart.addBodyPart(filePart);
+                // send file
+                try {
+                    sendFile = new File(getSysConfig().getProperty("edmSendFileLocation"));
+                    filePart.attachFile(sendFile);
+                    multipart.addBodyPart(filePart);
+                } catch (Exception e) {
+                    logRecord.debug("sendEdmFileNotification:" + e.getMessage(), e);
+                }
             }
 
             // put everything together
@@ -212,64 +218,58 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
 
             Transport.send(msg);
             logRecord.info("[EDM] email send!");
-        } catch (MessagingException me) {
-            logRecord.debug("sendEmailNotification:" + me.getMessage(), me);
+        } catch (MessagingException e) {
+            logRecord.debug("MessagingException:" + e.getMessage(), e);
         } catch (UnsupportedEncodingException e) {
-            logRecord.debug("sendEmailNotification:" + e.getMessage(), e);
+            logRecord.debug("UnsupportedEncodingException:" + e.getMessage(), e);
         } catch (RuntimeException e) {
-            logRecord.error("sendEmailNotification:" + e.getMessage(), e);
+            logRecord.error("RuntimeException:" + e.getMessage(), e);
         } catch (Exception e) {
             logRecord.error("sendEmailNotification:" + e.getMessage(), e);
         } catch (NoSuchMethodError e) {
-            e.printStackTrace();
+            logRecord.error("NoSuchMethodError:" + e.getMessage(), e);
         }
 
         return result;
     }
-    
-    private ByteArrayDownloadResult processTemplate_email(Request request, String edmFtlPath, Map<String, Object> dataMap) {
-        ByteArrayOutputStream out = null;
-        Writer writer = null;
-        OutputStreamWriter wr = null;
-        FileInputStream is = null;
-        try {
+
+    private ByteArrayDownloadResult processTemplateEmail(Request request, String edmFtlPath, Map<String, Object> dataMap) {
+
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+                OutputStreamWriter wr = new OutputStreamWriter(out, getSysConfig().getProperty(PageReportParam.defaultEncoding.toString(), DEFAULT_ENCORDING));
+                Writer writer = new BufferedWriter(wr);
+                FileInputStream is = null;) {
             Configuration config = getFmConfg().getConfiguration();
             Template t = config.getTemplate(edmFtlPath);
-            
-            out = new ByteArrayOutputStream();
-            wr = new OutputStreamWriter(out, getSysConfig().getProperty(PageReportParam.defaultEncoding.toString(), DEFAULT_ENCORDING));
-            writer = new BufferedWriter(wr);
-            
+
             Map<String, Object> map = new HashMap<String, Object>();
             for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
                 map.put(entry.getKey(), CapString.trimNull(entry.getValue()));
             }
-            
+
             if (logRecord.isDebugEnabled()) {
-                logRecord.debug("[freemarker] Template name: " + edmFtlPath + ", data: " + map.toString());
+                logRecord.debug("[EDM] Template name: {}, data: {}", edmFtlPath, map.toString());
             }
             t.process(map, writer);
 
-            //TODO encoding parameter
-            return new ByteArrayDownloadResult(request, out.toByteArray(), "text/html");
+            return new ByteArrayDownloadResult(request, out.toByteArray(), getSysConfig().getProperty("edmEncoding", "text/html"));
         } catch (Exception e) {
             logRecord.error(e.getMessage(), e);
-        } finally {
-            IOUtils.closeQuietly(is);
         }
         return null;
     }
-    
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.iisigroup.colabase.edm.service.EDMService#ftlToEDM(com.iisigroup.cap.component.Request)
      */
     @Override
     public void htmlToFtl(Request request, String sourceFileName, String ftlDestination) {
-        
+
         File sourceFile = new File(getClass().getResource(getSysConfig().getProperty("edmFileLocation", "/ftl/report/")).getPath() + sourceFileName);
         File destinationFile = new File(ftlDestination);
-        
+
         final StringBuffer buffer = new StringBuffer();
         try {
             String str = FileUtils.readFileToString(sourceFile, "MS950");
@@ -305,7 +305,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
             logRecord.error("htmlToFtlNotification:" + e.getMessage(), e);
         }
     }
-    
+
     public String setListVariable(String xml) {
         final StringBuffer buffer = new StringBuffer();
         try {
@@ -369,13 +369,15 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService{
         return rtn;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.iisigroup.colabase.edm.service.EDMService#ftlToEDM(com.iisigroup.cap.component.Request)
      */
     @Override
     public void xmlToFtl(Request request, String sourceFileName, String ftlDestination) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }
