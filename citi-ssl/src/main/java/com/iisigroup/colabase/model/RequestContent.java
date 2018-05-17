@@ -75,7 +75,7 @@ public abstract class RequestContent {
      * @param jsonStr
      */
     public void showResponseJsonStrLog(String jsonStr) {
-        logger.debug("Response responseData: " + jsonStr);
+        logger.debug("Response responseData: {}", jsonStr);
     }
 
     public boolean isUseOwnKeyAndTrustStore() {
