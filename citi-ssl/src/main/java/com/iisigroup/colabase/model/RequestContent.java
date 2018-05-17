@@ -15,7 +15,7 @@ import java.util.*;
  */
 public abstract class RequestContent {
 
-    public static enum HTTPMethod {
+    public enum HTTPMethod {
         GET("GET"), POST("POST"), PUT("PUT");
 
         private String methodName;
@@ -65,7 +65,8 @@ public abstract class RequestContent {
      * @param jsonStr
      */
     public void showRequestJsonStrLog(String jsonStr) {
-        logger.debug("Request: SendData = " + jsonStr);
+
+        logger.debug("Request: SendData = {}", jsonStr);
     }
 
     /**
