@@ -28,13 +28,13 @@ class JsonProxy implements MethodInterceptor {
 
     }
 
-    static <T extends JsonAbstract> T getInstance(Class<T> requestClass, Object... objects) throws
-            NoSuchFieldException, IllegalAccessException{
+    static <T extends JsonAbstract> T getInstance(Class<T> requestClass, Object... objects) throws NoSuchFieldException, IllegalAccessException{
         T instance = getInstance(requestClass);
         for (Object object : objects) {
             Field field = getSameClassField(instance.getClass(), object.getClass());
-            if(field == null)
-                continue;
+            if(field == null) {
+                throw new IllegalArgumentException("argument object: " + object.getClass() + ", can not found field to set");
+            }
             field.setAccessible(true);
             field.set(instance, object);
         }
@@ -44,12 +44,26 @@ class JsonProxy implements MethodInterceptor {
     private static <T extends JsonAbstract> Field getSameClassField(Class<T> mainClass, Class<?> setClass) {
         if(mainClass == JsonAbstract.class)
             return null;
+        if(setClass == Object.class)
+            return null;
         Field[] declaredFields = mainClass.getDeclaredFields();
         for (Field field : declaredFields) {
-            if (setClass == field.getType()) {
+
+            Class<?> fieldType = field.getType();
+            if (fieldType == setClass) { //check self class with setClass
                 return field;
             } else {
-                return getSameClassField(mainClass, setClass.getSuperclass());
+                // check setClass's interfaces
+                Class<?>[] interfaces = setClass.getInterfaces();
+                for (Class<?> anInterface : interfaces) {
+                    if(fieldType.getName().equals(anInterface.getName())) {
+                        return field;
+                    }
+                }
+                // check setClass father class
+                Field classField = getSameClassField(mainClass, setClass.getSuperclass());
+                if(classField != null)
+                    return classField;
             }
         }
         return getSameClassField((Class<T>) mainClass.getSuperclass(), setClass);
