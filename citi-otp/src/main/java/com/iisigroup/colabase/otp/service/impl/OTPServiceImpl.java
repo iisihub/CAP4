@@ -70,15 +70,15 @@ public class OTPServiceImpl implements OTPService {
                 otpMap.put(OTP, otp);
                 String otpSmsMsg = MessageFormat.format(SMS_MSG, otp, otpTimeoutSeconds);
                 otpMap.put(OTP_SMS_MSG, otpSmsMsg);
-                logger.debug(otpSmsMsg, "=========OTP message========={}");
+                logger.debug("=========OTP message========={}", otpSmsMsg);
                 if (!CapString.isEmpty(otp) && !CapString.isEmpty(otpSmsMsg)) {
                     String msg = sendOTPbySMS(mobilePhone, otpSmsMsg);
                     otpMap.put(IS_SEND_OTP, "true");
-                    logger.debug(msg, "=========send OTP by SMS========={}");
+                    logger.debug("=========send OTP by SMS========={}", msg);
                 }
             }
         } catch (Exception e) {
-            logger.warn("Generate & Send OTP password error.", e);
+            logger.error("Generate & Send OTP password error.", e);
         }
         return otpMap;
     }
@@ -108,7 +108,7 @@ public class OTPServiceImpl implements OTPService {
                 resendOtpMap.putAll(genAndSendOTP(mobilePhone, otpTimeoutSeconds));
             }
         } catch (Exception e) {
-            logger.warn("Resend OTP password error.", e);
+            logger.error("Resend OTP password error.", e);
         }
         return resendOtpMap;
     }
@@ -123,7 +123,7 @@ public class OTPServiceImpl implements OTPService {
         Random rnd = new Random();
         long nextInt = rnd.nextInt(999999) + (long) 1;
         String otp = OTP_DECIMAL_FMT.format(nextInt);
-        logger.debug(otp, "=========OTP number ========= {} ");
+        logger.debug("=========OTP number ========= {} ", otp);
         return otp;
     }
 
@@ -136,7 +136,7 @@ public class OTPServiceImpl implements OTPService {
     public String sendOTPbySMS(String mobilePhone, String message) {
         if (!StringUtils.isEmpty(mobilePhone) && mobilePhone.startsWith("09")) {
             mobilePhone = "+886" + mobilePhone.substring(1, mobilePhone.length());
-            logger.debug(mobilePhone, "send SMS mobile phone number: {}");
+            logger.debug("send SMS mobile phone number: {}", mobilePhone);
         } else if (StringUtils.isEmpty(mobilePhone)) {
             throw new CapException("There is no mobile phone number.", getClass());
         } else if (!mobilePhone.startsWith("+886")) {
@@ -204,9 +204,9 @@ public class OTPServiceImpl implements OTPService {
             int count = 0;
             int length = message.length() + count;
             if (length > 0) {
-                logger.debug(String.valueOf(length), "length={}");
+                logger.debug("length={}", length);
             }
-            logger.debug(message, "sending message:\n{}");
+            logger.debug("sending message:\n{}", message);
             writer.write(message);
             writer.flush();
             String line = null;

@@ -27,7 +27,7 @@ public class IPHostNameVerifier implements HostnameVerifier {
         }
         try {
             String str1 = paramSSLSession.getPeerCertificateChain()[0].getSubjectDN().toString();
-            logger.info(str1, "IPHostNameVerifier {}");
+            logger.info("IPHostNameVerifier {}", str1);
             int i = str1.indexOf("CN=");
             if (i == -1) {
                 return false;
