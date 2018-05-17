@@ -39,6 +39,9 @@ public class EDMHandler extends MFormHandler {
     @Autowired
     private EDMService edmService;
     
+    private static final String RESULT = "result";
+
+    
     public Result sendEdmDemo(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         String mailAddress = null;
@@ -57,30 +60,13 @@ public class EDMHandler extends MFormHandler {
               dataMap.put("edmCustomerName", edmCustomerName);
               dataMap.put("edmProject", edmProject);
               
-              //report/edm1.ftl
               edmService.sendEDM(request, "report/" + edmFtlPath, dataMap);
             
         } catch (Exception e) {
-            result.set("result", "Fail, cause : " + e.getClass());
+            result.set(RESULT, "Fail, cause : " + e.getClass());
             e.printStackTrace();
         }
-        result.set("result", "Success, EDM already send to : " + mailAddress);
-        return result;
-    }
-
-    public Result ftlDemo(Request request) {
-        AjaxFormResult result = new AjaxFormResult();
-        try {
-            String sourceFileName = request.get("sourceFileName");
-            String ftlDestination = request.get("ftlDestination");
-            
-            edmService.htmlToFtl(request, sourceFileName, ftlDestination);
-            result.set("result", "Success, ftl path : " + ftlDestination);
-            
-        } catch (Exception e) {
-            result.set("result", "Fail, cause : " + e.getClass());
-            e.printStackTrace();
-        }
+        result.set(RESULT, "Success, EDM already send to : " + mailAddress);
         return result;
     }
     

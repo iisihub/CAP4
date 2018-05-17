@@ -42,16 +42,4 @@ public interface EDMService {
      */
     Result sendEDM(String mailAddress, byte[] datas, Request request);
     
-    /**
-     * html檔案轉成ftl格式
-     * @param request
-     */
-    void htmlToFtl(Request request, String sourceFileName, String ftlDestination);
-    /**
-     * xml檔案轉成ftl格式
-     * @param request
-     */
-    void xmlToFtl(Request request, String sourceFileName, String ftlDestination);
-
-
 }

@@ -37,11 +37,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,7 +73,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
 
     private final Logger logRecord = LoggerFactory.getLogger(getClass());
 
-    static final String DEFAULT_ENCORDING = "UTF-8";
+    private static final String DEFAULT_ENCORDING = "UTF-8";
 
     /*
      * (non-Javadoc)
@@ -257,127 +254,6 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
             logRecord.error(e.getMessage(), e);
         }
         return null;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.iisigroup.colabase.edm.service.EDMService#ftlToEDM(com.iisigroup.cap.component.Request)
-     */
-    @Override
-    public void htmlToFtl(Request request, String sourceFileName, String ftlDestination) {
-
-        File sourceFile = new File(getClass().getResource(getSysConfig().getProperty("edmFileLocation", "/ftl/report/")).getPath() + sourceFileName);
-        File destinationFile = new File(ftlDestination);
-
-        final StringBuffer buffer = new StringBuffer();
-        try {
-            String str = FileUtils.readFileToString(sourceFile, "MS950");
-            int start;
-            int pos = 0;
-
-            while ((start = str.indexOf("${", pos)) != -1) {
-                buffer.append(str.substring(pos, start));
-                if (str.charAt(start + 1) == '$') {
-                    buffer.append("$");
-                    pos = start + 2;
-                    continue;
-                }
-                pos = start;
-                final int startVariableName = start + 2;
-                final int endVariableName = str.indexOf('}', startVariableName);
-
-                if (endVariableName != -1) {
-                    String variableName = getVariableName(str.substring(startVariableName, endVariableName));
-                    boolean fix = variableName.startsWith("<#");
-                    buffer.append(fix ? "" : "${").append(variableName).append(fix ? "" : "}");
-                    pos = endVariableName + 1;
-                } else {
-                    break;
-                }
-            }
-            if (pos < str.length()) {
-                buffer.append(str.substring(pos));
-            }
-            String ftl = setListVariable(buffer.toString());
-            FileUtils.writeStringToFile(destinationFile, ftl);
-        } catch (IOException e) {
-            logRecord.error("htmlToFtlNotification:" + e.getMessage(), e);
-        }
-    }
-
-    public String setListVariable(String xml) {
-        final StringBuffer buffer = new StringBuffer();
-        try {
-            int start, pos = 0;
-
-            while ((start = xml.indexOf("${", pos)) != -1) {
-
-                int startVariableName = start + 2;
-                int endVariableName = xml.indexOf('}', startVariableName);
-                String variableName = xml.substring(startVariableName, endVariableName);
-                if (variableName.startsWith("<")) {
-                    buffer.append(xml.substring(pos, start)).append(variableName);
-                    pos = endVariableName + 1;
-                } else if (variableName.startsWith("w:")) {
-                    int p = variableName.indexOf('<');
-                    String tag = "<" + variableName.substring(2, p) + " ";
-                    startVariableName = xml.lastIndexOf(tag, start);
-                    buffer.append(xml.substring(pos, startVariableName));
-                    buffer.append(variableName.substring(p));
-                    buffer.append(xml.substring(startVariableName, start));
-                    pos = endVariableName + 1;
-                } else if (variableName.startsWith("/w:")) {
-                    buffer.append(xml.substring(pos, start));
-                    int p = variableName.indexOf('<');
-                    String tag = "</" + variableName.substring(3, p) + ">";
-                    startVariableName = xml.indexOf(tag, endVariableName + 1);
-                    buffer.append(xml.substring(endVariableName + 1, startVariableName));
-                    buffer.append(tag).append(variableName.substring(p));
-                    pos = startVariableName + tag.length();
-                } else {
-                    buffer.append(xml.substring(pos, endVariableName + 1));
-                    pos = endVariableName + 1;
-                }
-            }
-            if (pos < xml.length()) {
-                buffer.append(xml.substring(pos));
-            }
-        } catch (Exception e) {
-            logRecord.error("setListVariableNotification:" + e.getMessage(), e);
-        }
-        return buffer.toString();
-    }// ;
-
-    public String getVariableName(String str) {
-        String temp = "<span>" + str + "</span>";
-        final StringBuffer buf1 = new StringBuffer();
-
-        int s1;
-        int p1 = 0;
-        while ((s1 = temp.indexOf("<span>", p1)) != -1) {
-            p1 = temp.indexOf("</span>", s1 + 6);
-            if (p1 == -1) {
-                break;
-            }
-            buf1.append(temp.substring(s1 + 6, p1));
-            p1 = p1 + 6;
-        }
-        String rtn = StringEscapeUtils.unescapeXml(buf1.toString());
-        rtn = rtn.replaceAll("\r\n", " ");
-        logRecord.debug("variable=" + rtn);
-        return rtn;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.iisigroup.colabase.edm.service.EDMService#ftlToEDM(com.iisigroup.cap.component.Request)
-     */
-    @Override
-    public void xmlToFtl(Request request, String sourceFileName, String ftlDestination) {
-        // TODO Auto-generated method stub
-
     }
 
 }
