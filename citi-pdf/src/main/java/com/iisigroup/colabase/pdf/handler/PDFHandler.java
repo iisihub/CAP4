@@ -147,7 +147,7 @@ public class PDFHandler extends MFormHandler {
                 result.set("pdfReslut", e.getMessage());
             }
         } else {
-            result.set("pdfReslut", "No Merge PDF Path.");
+            result.set("pdfReslut", "No Merge PDF Input Path.");
         }
         return result;
     }
@@ -171,7 +171,32 @@ public class PDFHandler extends MFormHandler {
                 result.set("pdfReslut", e.getMessage());
             }
         } else {
-            result.set("pdfReslut", "No Partition PDF Path.");
+            result.set("pdfReslut", "No Partition PDF Input Path.");
+        }
+        return result;
+    }
+
+    /**
+     * PDF加入浮水印
+     * 
+     * @param request
+     * @return
+     */
+    public Result pdfAddWatermark(Request request) {
+        AjaxFormResult result = new AjaxFormResult();
+        String wmPDFInputPath = request.get("wmPDFInputPath", "");
+        String wmPDFOutputPath = request.get("wmPDFOutputPath", "");
+        String wmNamePDF = request.get("wmNamePDF", "");
+        if (!CapString.isEmpty(wmPDFInputPath)) {
+            try {
+                pdfService.addWatermark(wmPDFInputPath, wmPDFOutputPath, wmNamePDF);
+                result.set("pdfReslut", "ok");
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.set("pdfReslut", e.getMessage());
+            }
+        } else {
+            result.set("pdfReslut", "No PDF Add WaterMark Input Path.");
         }
         return result;
     }

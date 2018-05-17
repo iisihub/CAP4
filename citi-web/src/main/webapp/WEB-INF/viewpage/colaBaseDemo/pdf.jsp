@@ -46,11 +46,19 @@
             <br />
             <hr/>
             <h3>Partition PDF</h3>
-	        <input id="partPDFPath" type="text" placeholder="請輸入欲分割的PDF路徑" value=""/>
+	        <input id="partPDFPath" type="text" placeholder="請輸入欲分割之PDF路徑" value=""/>
             <br />
 	        <input id="partPDFStartPage" type="text" placeholder="請輸入PDF欲分割之頁數" value=""/>
             <br />
             <button id="partitionPDF" class="sendbtn" type="button" style="">分割PDF</button>
+            <h3>PDF Add WaterMark</h3>
+	        <input id="wmPDFInputPath" type="text" placeholder="請輸入欲加入浮水印之PDF路徑" value=""/>
+            <br />
+	        <input id="wmPDFOutputPath" type="text" placeholder="請輸入加入浮水印後之PDF路徑" value=""/>
+            <br />
+	        <input id="wmNamePDF" type="text" placeholder="請輸入PDF欲加入浮水印文字" value=""/>
+            <br />
+            <button id="waterMarkPDF" class="sendbtn" type="button" style="">PDF加入浮水印</button>
             <fieldset>
                 <legend>
                     <h3>Message</h3>
