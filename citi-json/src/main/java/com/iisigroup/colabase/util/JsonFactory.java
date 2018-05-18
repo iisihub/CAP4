@@ -30,11 +30,11 @@ public class JsonFactory {
     private static final String REQUEST_CONTENT_KEY = "requestContent";
     private static final String NO_SEND_LIST_KEY = "noSendList";
 
+    private static final JsonDataService jsonDataService;
+
     static {
         jsonDataService = new JsonDataServiceImpl();
     }
-
-    private static final JsonDataService jsonDataService;
 
     public static <T extends JsonAbstract> T getInstance(Class<T> requestClass) {
         T instance;

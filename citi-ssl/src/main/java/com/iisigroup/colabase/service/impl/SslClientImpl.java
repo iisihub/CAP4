@@ -109,7 +109,7 @@ public class SslClientImpl implements SslClient {
     return this.sendRequest(requestContent);
   }
 
-  private ResponseContent clientSendRequest(RequestContent requestContent) throws IOException {
+  private ResponseContent clientSendRequest(final RequestContent requestContent) throws IOException {
     logger.debug("==== send dual ssl request start ====");
     long startTime = new Date().getTime();
     ArrayList<String> recordInfo = new ArrayList<>();
@@ -122,6 +122,7 @@ public class SslClientImpl implements SslClient {
     String jsonStr = requestContent.getJsonString();
     boolean isUseOwnSslFactory = requestContent.isUseOwnKeyAndTrustStore();
     Map<String, List<String>> requestHeaders = requestContent.getRequestHeaders();
+    Map<String, List<String>> headers = null;
     try {
       Date date = Calendar.getInstance().getTime();
       SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -201,7 +202,7 @@ public class SslClientImpl implements SslClient {
         is = connection.getErrorStream();
       }
 
-      Map<String, List<String>> headers = connection.getHeaderFields();
+      headers = connection.getHeaderFields();
       for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
         logger.debug("Response Header Key: {}, Value: {}", entry.getKey(), entry.getValue());
 
@@ -215,7 +216,9 @@ public class SslClientImpl implements SslClient {
       responseContent.showResponseJsonStrLog(responseBodySB.toString());
     } catch (Exception e) {
       if(responseContent == null) {
-        responseContent = new ResponseContent(statusCode, new HashMap<>(), new JsonObject(), recordInfo);
+        if (headers == null)
+          headers = new HashMap<>();
+        responseContent = new ResponseContent(statusCode, headers, new JsonObject(), recordInfo);
         responseContent.setException(e);
       }
       throw e;

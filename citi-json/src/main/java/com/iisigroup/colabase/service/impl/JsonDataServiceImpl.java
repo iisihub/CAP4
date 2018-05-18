@@ -259,7 +259,7 @@ public class JsonDataServiceImpl implements JsonDataService {
             JsonObject jsonElement = this.getJsonElement(requestContent, path, arrayMap);
             Object copy = this.deepCopy(jsonElement);
             String arrayName = paths[paths.length - 2];
-            arrayMap.putIfAbsent(arrayName, copy);
+            arrayMap.put(arrayName, copy);
         }
         arrayMap.remove(LAST_PROCESS_KEY);
     }
@@ -308,7 +308,8 @@ public class JsonDataServiceImpl implements JsonDataService {
                 ((JsonObject)jsonElement).remove(targetKey);
             }
         } else {
-            JsonObject jsonElement = this.getJsonElement(jsonObject, pathChain, new HashMap<>());
+            HashMap<String, Object> map = new HashMap<>();
+            JsonObject jsonElement = this.getJsonElement(jsonObject, pathChain, map);
             JsonElement checkEle = jsonElement.get(targetKey);
             if (checkEle != null && !"".equals(checkEle.getAsString()))
                 return;
