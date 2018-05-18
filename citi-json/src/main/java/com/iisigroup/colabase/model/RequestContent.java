@@ -13,7 +13,7 @@ import java.util.Map;
  *          </ul>
  * @since 2018/5/17
  */
-public abstract class RequestContent extends JsonAbstract implements Request{
+public abstract class RequestContent extends JsonAbstract implements ApiRequest {
 
 
     private static final Logger logger = LoggerFactory.getLogger(RequestContent.class);
@@ -61,7 +61,7 @@ public abstract class RequestContent extends JsonAbstract implements Request{
      */
     @Override
     public void showRequestJsonStrLog(String jsonStr) {
-        logger.debug("Request: SendData = " + jsonStr);
+        logger.debug("ApiRequest: SendData = " + jsonStr);
     }
 
     public boolean isUseOwnKeyAndTrustStore() {

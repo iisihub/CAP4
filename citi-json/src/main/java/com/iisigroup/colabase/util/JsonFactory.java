@@ -75,7 +75,7 @@ public class JsonFactory {
             }
         }
         if (jsonStrField == null)
-            throw new IllegalStateException("please check Request model defined jsonTemp with annotation @JsonTemp");
+            throw new IllegalStateException("please check ApiRequest model defined jsonTemp with annotation @JsonTemp");
         jsonStrField.setAccessible(true);
         Object jsonStr = jsonStrField.get(instance);
         Gson gson = new Gson();

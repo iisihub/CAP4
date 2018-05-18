@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class ResponseContent {
+public class ResponseContent implements ApiResponse {
 
     private static Logger logger = LoggerFactory.getLogger(ResponseContent.class);
 
@@ -35,8 +35,9 @@ public class ResponseContent {
      * 如果有針對特殊的呼叫(如送base64字串)導致過長，要自行override
      * @param jsonStr
      */
+    @Override
     public void showResponseJsonStrLog(String jsonStr) {
-        logger.debug("Response responseData: " + jsonStr);
+        logger.debug("ApiResponse responseData: " + jsonStr);
     }
 
     public void setHeaders(Map<String, List<String>> headers) {
@@ -52,7 +53,7 @@ public class ResponseContent {
     }
 
     /**
-     * HTTP Response Status Code
+     * HTTP ApiResponse Status Code
      * 
      * @return int
      */
@@ -70,7 +71,7 @@ public class ResponseContent {
     }
 
     /**
-     * HTTP Response JSON Object
+     * HTTP ApiResponse JSON Object
      * 
      * @return JSONObject
      */
@@ -96,6 +97,6 @@ public class ResponseContent {
 
     @Override
     public String toString() {
-        return "HTTP Status Code = " + statusCode + ", Response JSON = " + responseJson;
+        return "HTTP Status Code = " + statusCode + ", ApiResponse JSON = " + responseJson;
     }
 }

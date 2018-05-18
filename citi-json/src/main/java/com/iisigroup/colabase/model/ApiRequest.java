@@ -7,7 +7,7 @@ package com.iisigroup.colabase.model;
  *          </ul>
  * @since 2018/5/17
  */
-public interface Request {
+public interface ApiRequest {
     enum HTTPMethod {
         GET("GET"), POST("POST"), PUT("PUT");
 

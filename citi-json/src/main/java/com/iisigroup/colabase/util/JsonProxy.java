@@ -72,7 +72,7 @@ class JsonProxy implements MethodInterceptor {
     static <T extends JsonAbstract> T getInstance(Class<T> requestClass) throws NoSuchFieldException,
             IllegalAccessException {
         if(!checkJsonTemp(requestClass)) {
-            throw new IllegalStateException("please check Request model defined jsonTemp with annotation @JsonTemp");
+            throw new IllegalStateException("please check ApiRequest model defined jsonTemp with annotation @JsonTemp");
         }
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(requestClass);
