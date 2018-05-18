@@ -20,4 +20,9 @@ public class DemoRequestContent extends RequestContent {
     public void afterSendRequest(ResponseContent responseContent) {
         logger.debug("Do something with DB...");
     }
+
+    @Override
+    public String getJsonString() {
+        return super.getRequestContent().toString();
+    }
 }

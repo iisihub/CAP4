@@ -119,7 +119,7 @@ public class SslClientImpl implements SslClient {
     int timeOut = requestContent.getTimeout();
     RequestContent.HTTPMethod method = requestContent.getHttpMethod();
     String targetURL = requestContent.getTargetUrl();
-    String jsonStr = requestContent.getRequestContent().toString();
+    String jsonStr = requestContent.getJsonString();
     boolean isUseOwnSslFactory = requestContent.isUseOwnKeyAndTrustStore();
     Map<String, List<String>> requestHeaders = requestContent.getRequestHeaders();
     try {
@@ -209,10 +209,10 @@ public class SslClientImpl implements SslClient {
         recordInfo.add("Response: Header Key = " + entry.getKey() + ", Value = " + entry.getValue());
       }
 
-      JsonObject responseJson = new JsonObject();
       StringBuilder responseBodySB = new StringBuilder();
-      responseJson = this.readResponse(is, requestContent, responseBodySB, responseJson, recordInfo);
+      JsonObject responseJson = this.readResponse(is, responseBodySB, recordInfo);
       responseContent = new ResponseContent(statusCode, headers, responseJson, recordInfo);
+      responseContent.showResponseJsonStrLog(responseBodySB.toString());
     } catch (Exception e) {
       if(responseContent == null) {
         responseContent = new ResponseContent(statusCode, new HashMap<>(), new JsonObject(), recordInfo);
@@ -240,14 +240,14 @@ public class SslClientImpl implements SslClient {
     return responseContent;
   }
 
-    private JsonObject readResponse(InputStream is, RequestContent requestContent, StringBuilder responseBodySB, JsonObject responseJson, ArrayList<String> recordInfo) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-            String tempStr;
+    private JsonObject readResponse(InputStream is, StringBuilder responseBodySB, ArrayList<String> recordInfo) throws IOException {
+      JsonObject responseJson = null;
+      try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+          String tempStr;
             while ((tempStr = reader.readLine()) != null) {
                 responseBodySB.append(tempStr);
             }
 
-            requestContent.showResponseJsonStrLog(responseBodySB.toString());
             Gson gson = new Gson();
             if (responseBodySB.length() != 0) {
                 responseJson = gson.fromJson(responseBodySB.toString(), JsonObject.class);
