@@ -62,7 +62,7 @@
                 <option value="text">文字</option>
                 <option value="imgPath">圖片路徑</option>
             </select><br />
-	        <input id="wmNamePDF" type="text" placeholder="請輸入PDF欲加入浮水印文字" value="吱吱叫公司版權所有"/>
+	        <input id="wmNamePDF" type="text" placeholder="請輸入PDF欲加入浮水印文字" value=""/>
 	        <input id="wmPDFImgPath" type="text" placeholder="請輸入PDF欲加入浮水印圖片路徑" value="" style="display:none"/>
             <br />
             <button id="waterMarkPDF" class="sendbtn" type="button" style="">PDF加入浮水印</button>
