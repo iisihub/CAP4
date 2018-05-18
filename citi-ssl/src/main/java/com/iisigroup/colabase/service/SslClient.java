@@ -5,10 +5,10 @@ import com.iisigroup.colabase.model.ResponseContent;
 
 import java.io.IOException;
 
-public interface SslClient {
+public interface SslClient<T extends ResponseContent> {
 
-    ResponseContent sendRequest(RequestContent requestContent) throws IOException;
+    T sendRequest(RequestContent requestContent) throws IOException;
 
-    ResponseContent sendRequestWithDefaultHeader(RequestContent requestContent) throws IOException;
+    T sendRequestWithDefaultHeader(RequestContent requestContent) throws IOException;
 
 }

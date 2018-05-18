@@ -2,6 +2,7 @@ package com.iisigroup.colabase.service.impl;
 
 import com.google.gson.JsonObject;
 import com.iisigroup.colabase.demo.sslclient.model.DemoRequestContent;
+import com.iisigroup.colabase.demo.sslclient.service.DemoSslClientService;
 import com.iisigroup.colabase.model.RequestContent;
 import com.iisigroup.colabase.model.ResponseContent;
 import com.iisigroup.colabase.service.SslClient;
@@ -38,7 +39,7 @@ public class SslClientImplTest {
 
     @Before
     public void setUp() throws Exception {
-        sslClient = new SslClientImpl(keyStorePath, keyStorePWD, trustStorePath);
+        sslClient = new DemoSslClientService(keyStorePath, keyStorePWD, trustStorePath);
         org.apache.log4j.BasicConfigurator.configure(new NullAppender());
     }
 
