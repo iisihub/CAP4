@@ -34,6 +34,17 @@ pageInit(function() {
       window.setCloseConfirm(false);
       waterMarkPDF()();
     });
+    // 選擇浮水印類型
+    $(".wmType").on('change', function(e) {
+      var wmTypeValue = $(".wmType").val();
+      if (wmTypeValue == "text") {
+        $("#wmNamePDF").show();
+        $("#wmPDFImgPath").val("").hide();
+      } else if (wmTypeValue == "imgPath") {
+        $("#wmPDFImgPath").show();
+        $("#wmNamePDF").val("").hide();
+      }
+    })
 
     /**
      * 產生PDF
@@ -184,7 +195,8 @@ pageInit(function() {
       var wmPDFInputPath = $("#wmPDFInputPath").val();
       var wmPDFOutputPath = $("#wmPDFOutputPath").val();
       var wmNamePDF = $("#wmNamePDF").val();
-      if (wmPDFInputPath && wmPDFOutputPath && wmNamePDF) {
+      var wmPDFImgPath = $("#wmPDFImgPath").val();
+      if (wmPDFInputPath && wmPDFOutputPath && (wmNamePDF || wmPDFImgPath)) {
         $.ajax({
           url : url('demopdfhandler/pdfAddWatermark'),
           type : 'post',
@@ -192,7 +204,8 @@ pageInit(function() {
           data : {
             wmPDFInputPath : wmPDFInputPath,
             wmPDFOutputPath : wmPDFOutputPath,
-            wmNamePDF : wmNamePDF
+            wmNamePDF : wmNamePDF,
+            wmPDFImgPath : wmPDFImgPath
           },
           success : function(d) {
             var pdfResultMsg;

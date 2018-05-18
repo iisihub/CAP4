@@ -165,7 +165,7 @@ public class PDFHandler extends MFormHandler {
         int partPDFStartPage = Integer.parseInt(request.get("partPDFStartPage", "0"));
         if (!CapString.isEmpty(partPDFPath)) {
             try {
-                pdfService.partitionPdfFile(partPDFPath, partPDFOutputPath,partPDFStartPage);
+                pdfService.partitionPdfFile(partPDFPath, partPDFOutputPath, partPDFStartPage);
                 result.set("pdfReslut", "ok");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -188,9 +188,14 @@ public class PDFHandler extends MFormHandler {
         String wmPDFInputPath = request.get("wmPDFInputPath", "");
         String wmPDFOutputPath = request.get("wmPDFOutputPath", "");
         String wmNamePDF = request.get("wmNamePDF", "");
+        String wmPDFImgPath = request.get("wmPDFImgPath", "");
         if (!CapString.isEmpty(wmPDFInputPath)) {
             try {
-                pdfService.addWatermark(wmPDFInputPath, wmPDFOutputPath, wmNamePDF);
+                if (!CapString.isEmpty(wmNamePDF)) {
+                    pdfService.addTextWatermark(wmPDFInputPath, wmPDFOutputPath, wmNamePDF);
+                } else if (!CapString.isEmpty(wmPDFImgPath)) {
+                    pdfService.addImgWatermark(wmPDFInputPath, wmPDFOutputPath, wmPDFImgPath);
+                }
                 result.set("pdfReslut", "ok");
             } catch (Exception e) {
                 e.printStackTrace();

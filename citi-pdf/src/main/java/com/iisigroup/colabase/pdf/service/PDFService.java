@@ -108,27 +108,53 @@ public interface PDFService {
     public Result partitionPdfFile(String filePath, String partPDFOutputPath, int partitionPageNum);
 
     /**
-     * PDF 加入浮水印
+     * PDF 加入文字浮水印
      * 
      * @param inputFilePath
+     *            加入浮水印PDF路徑
      * @param outputFilePath
-     * @param watermark
+     *            加入浮水印後PDF產出路徑
+     * @param textWatermark
+     *            文字浮水印
      * @throws Exception
      */
-    public void addWatermark(String inputFilePath, String outputFilePath, String watermark) throws Exception;
+    public void addTextWatermark(String inputFilePath, String outputFilePath, String textWatermark) throws Exception;
+
+    /**
+     * PDF 加入圖片浮水印
+     * 
+     * @param inputFilePath
+     *            加入浮水印PDF路徑
+     * @param outputFilePath
+     *            加入浮水印後PDF產出路徑
+     * @param imgWatermarkPath
+     *            圖片浮水印路徑
+     * @throws Exception
+     */
+    public void addImgWatermark(String inputFilePath, String outputFilePath, String imgWatermarkPath) throws Exception;
 
     /**
      * PDF 加入浮水印
      * 
      * @param inputFilePath
+     *            加入浮水印PDF路徑
      * @param outputFilePath
-     * @param watermark
+     *            加入浮水印後PDF產出路徑
+     * @param textWatermark
+     *            浮水印文字
+     * @param imgWatermarkPath
+     *            圖片浮水印路徑
      * @param font
+     *            字形
      * @param fontSize
+     *            字形大小
      * @param opacity
-     * @param degree
+     *            透明度
+     * @param rotationDegree
+     *            浮水印旋轉角度
      * @throws Exception
      */
-    public void addWatermark(String inputFilePath, String outputFilePath, String watermark, BaseFont font, float fontSize, Float opacity, int degree) throws Exception;
+    public void addWatermark(String inputFilePath, String outputFilePath, String textWatermark, String imgWatermarkPath, BaseFont font, float fontSize, Float opacity, int rotationDegree)
+            throws Exception;
 
 }
