@@ -35,7 +35,7 @@ import com.iisigroup.cap.model.GenericBean;
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "CFG_SYSPARM", uniqueConstraints = @UniqueConstraint(columnNames = "parmId"))
+@Table(name = "CO_CFG_SYSPARM", uniqueConstraints = @UniqueConstraint(columnNames = "parmId"))
 public class SysParm extends GenericBean implements DataObject {
 
     /** 參數id */

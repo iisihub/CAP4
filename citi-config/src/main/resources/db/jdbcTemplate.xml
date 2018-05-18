@@ -13,7 +13,7 @@
     </bean>
     <bean id="capJdbcTemplate" class="com.iisigroup.cap.jdbc.CapNamedJdbcTemplate">
         <constructor-arg>
-            <ref bean="citi-db" />
+            <ref bean="citi-db-sql" />
         </constructor-arg>
         <property name="sqltemp">
             <bean class="com.iisigroup.cap.jdbc.support.CapSqlStatement">
@@ -24,7 +24,7 @@
         <property name="sqlProvider" ref="userSqlStatement" />
     </bean>
     <bean id="capJdbcTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="citi-db" />
+        <property name="dataSource" ref="citi-db-sql" />
     </bean>
     <tx:advice id="capJdbcTxAdvice" transaction-manager="capJdbcTxManager">
         <!-- the transactional semantics... -->

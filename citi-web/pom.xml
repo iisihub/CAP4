@@ -42,6 +42,10 @@
         </dependency>
         <dependency>
             <groupId>com.iisigroup.colabase</groupId>
+            <artifactId>citi-loan</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.iisigroup.colabase</groupId>
             <artifactId>citi-zip</artifactId>
         </dependency>
         <dependency>
@@ -60,10 +64,10 @@
             <groupId>com.iisigroup.colabase</groupId>
             <artifactId>citi-edm</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.iisigroup.colabase</groupId>
-            <artifactId>citi-import</artifactId>
-        </dependency>
+<!--         <dependency> -->
+<!--             <groupId>com.iisigroup.colabase</groupId> -->
+<!--             <artifactId>citi-import</artifactId> -->
+<!--         </dependency> -->
         <!-- optional -->
         <dependency>
             <groupId>com.iisigroup.colabase</groupId>
@@ -73,10 +77,10 @@
             <groupId>com.iisigroup.colabase</groupId>
             <artifactId>citi-report</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.iisigroup.colabase</groupId>
-            <artifactId>citi-json</artifactId>
-        </dependency>
+<!--         <dependency> -->
+<!--             <groupId>com.iisigroup.colabase</groupId> -->
+<!--             <artifactId>citi-json</artifactId> -->
+<!--         </dependency> -->
         <dependency>
             <groupId>org.tuckey</groupId>
             <artifactId>urlrewritefilter</artifactId>
