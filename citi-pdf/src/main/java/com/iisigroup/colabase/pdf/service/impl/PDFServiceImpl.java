@@ -193,14 +193,13 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
     /*
      * (non-Javadoc)
      * 
-     * @see com.iisigroup.colabase.pdf.service.PDFService#partitionPdfFile(java.lang.String, int)
+     * @see com.iisigroup.colabase.pdf.service.PDFService#partitionPdfFile(java.lang.String, java.lang.String, int)
      */
-    public Result partitionPdfFile(String filePath, int partitionPageNum) {
+    public Result partitionPdfFile(String inputFilePath, String outputFilePath, int partitionPageNum) {
         Document document = null;
         PdfCopy copy = null;
-
         try {
-            PdfReader reader = new PdfReader(filePath);
+            PdfReader reader = new PdfReader(inputFilePath);
             int n = reader.getNumberOfPages();
 
             if (n < partitionPageNum) {
@@ -209,19 +208,16 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             }
 
             int size = n / partitionPageNum;
-            String staticpath = filePath.substring(0, filePath.lastIndexOf("\\") + 1);
             String savepath = null;
             ArrayList<String> savepaths = new ArrayList<String>();
             for (int i = 1; i <= partitionPageNum; i++) {
+                savepath = inputFilePath.substring(inputFilePath.lastIndexOf("/") + 1, inputFilePath.length() - 4);
                 if (i < 10) {
-                    savepath = filePath.substring(filePath.lastIndexOf("\\") + 1, filePath.length() - 4);
-                    savepath = staticpath + savepath + "_" + i + ".pdf";
-                    savepaths.add(savepath);
+                    savepath = outputFilePath + File.separator + savepath + "_" + i + ".pdf";
                 } else {
-                    savepath = filePath.substring(filePath.lastIndexOf("\\") + 1, filePath.length() - 4);
-                    savepath = staticpath + savepath + i + ".pdf";
-                    savepaths.add(savepath);
+                    savepath = outputFilePath + File.separator + savepath + i + ".pdf";
                 }
+                savepaths.add(savepath);
             }
 
             for (int i = 0; i < partitionPageNum - 1; i++) {

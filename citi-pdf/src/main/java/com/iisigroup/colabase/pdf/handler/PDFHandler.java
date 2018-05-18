@@ -161,10 +161,11 @@ public class PDFHandler extends MFormHandler {
     public Result partitionPDF(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         String partPDFPath = request.get("partPDFPath", "");
+        String partPDFOutputPath = request.get("partPDFOutputPath", "");
         int partPDFStartPage = Integer.parseInt(request.get("partPDFStartPage", "0"));
         if (!CapString.isEmpty(partPDFPath)) {
             try {
-                pdfService.partitionPdfFile(partPDFPath, partPDFStartPage);
+                pdfService.partitionPdfFile(partPDFPath, partPDFOutputPath,partPDFStartPage);
                 result.set("pdfReslut", "ok");
             } catch (Exception e) {
                 e.printStackTrace();

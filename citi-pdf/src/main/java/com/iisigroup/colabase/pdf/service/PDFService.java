@@ -99,11 +99,13 @@ public interface PDFService {
      * 
      * @param filePath
      *            欲分割PDF檔案路徑
+     * @param partPDFOutputPath
+     *            分割後PDF檔案路徑
      * @param partitionPageNum
      *            分割頁數
      * @return
      */
-    public Result partitionPdfFile(String filePath, int partitionPageNum);
+    public Result partitionPdfFile(String filePath, String partPDFOutputPath, int partitionPageNum);
 
     /**
      * PDF 加入浮水印

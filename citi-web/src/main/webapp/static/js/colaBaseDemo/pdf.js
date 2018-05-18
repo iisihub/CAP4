@@ -150,6 +150,7 @@ pageInit(function() {
      */
     function partitionPDF() {
       var partPDFPath = $("#partPDFPath").val();
+      var partPDFOutputPath = $("#partPDFOutputPath").val();
       var partPDFStartPage = $("#partPDFStartPage").val();
       if (partPDFPath && partPDFStartPage) {
         $.ajax({
@@ -158,6 +159,7 @@ pageInit(function() {
           dataType : 'json',
           data : {
             partPDFPath : partPDFPath,
+            partPDFOutputPath : partPDFOutputPath,
             partPDFStartPage : partPDFStartPage
           },
           success : function(d) {

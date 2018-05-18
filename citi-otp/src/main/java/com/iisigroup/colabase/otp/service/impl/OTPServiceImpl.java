@@ -78,7 +78,7 @@ public class OTPServiceImpl implements OTPService {
                 }
             }
         } catch (Exception e) {
-            logger.error("Generate & Send OTP password error.", e);
+            logger.error("Generate & Send OTP password error {}", e);
         }
         return otpMap;
     }

@@ -48,6 +48,8 @@
             <h3>Partition PDF</h3>
 	        <input id="partPDFPath" type="text" placeholder="請輸入欲分割之PDF路徑" value=""/>
             <br />
+	        <input id="partPDFOutputPath" type="text" placeholder="請輸入分割後PDF路徑" value=""/>
+            <br />
 	        <input id="partPDFStartPage" type="text" placeholder="請輸入PDF欲分割之頁數" value=""/>
             <br />
             <button id="partitionPDF" class="sendbtn" type="button" style="">分割PDF</button>
