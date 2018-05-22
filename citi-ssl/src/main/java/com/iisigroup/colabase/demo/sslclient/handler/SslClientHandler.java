@@ -1,6 +1,5 @@
 package com.iisigroup.colabase.demo.sslclient.handler;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
@@ -62,8 +61,6 @@ public class SslClientHandler extends MFormHandler {
             resultStr.append(responseContent);
         } catch (JsonSyntaxException e) {
             resultStr.append("please check your JSON format");
-        } catch (IOException e) {
-            resultStr.append( e.getMessage());
         }
         result.set("result", resultStr.toString());
         return result;

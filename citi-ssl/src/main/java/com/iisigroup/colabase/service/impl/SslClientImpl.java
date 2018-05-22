@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.net.ssl.*;
 import java.io.*;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.net.URL;
 import java.security.*;
@@ -71,22 +70,24 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
    * @throws IOException
    */
   @Override
-  public T sendRequest(RequestContent requestContent) throws IOException {
+  public T sendRequest(RequestContent requestContent) {
     if(!isInit)
       this.initSslSocketFactory();
+
     for (int i = 0; i <= requestContent.getRetryTimes(); i++) {
+      T responseContent = null;
       try {
-        T responseContent = this.clientSendRequest(requestContent);
+        responseContent= this.clientSendRequest(requestContent);
         if(this.isStatusNeedToRetry(requestContent.getRetryHttpStatus(), responseContent.getStatusCode())) {
           continue;
         }
         return responseContent;
-      } catch (IOException e) {
+      } catch (Exception e) {
         if (i == requestContent.getRetryTimes())
-          throw e;
+          return responseContent;
       }
     }
-    throw new IOException();
+    throw new IllegalStateException("did not have any response");
   }
 
   private boolean isStatusNeedToRetry(int[] retryHttpStatus, int httpStatus){
@@ -101,7 +102,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
   }
 
   @Override
-  public T sendRequestWithDefaultHeader(RequestContent requestContent) throws IOException {
+  public T sendRequestWithDefaultHeader(RequestContent requestContent) {
     Map<String, List<String>> requestHeaders = new HashMap<>();
     requestHeaders.put("Accept", Collections.singletonList("application/json"));
     requestHeaders.put("Content-Type", Collections.singletonList("application/json; charset=UTF-8"));
@@ -226,7 +227,6 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
         responseContent = getResponseInstance(statusCode, headers, new JsonObject(), recordInfo);
         responseContent.setException(e);
       }
-      throw e;
     } finally {
       final ResponseContent renewResponseContent = responseContent;
       // 由於有可能上層method標記為@NonTransactional，會導致與DB有交易的方法會失敗，另開執行緒執行。
