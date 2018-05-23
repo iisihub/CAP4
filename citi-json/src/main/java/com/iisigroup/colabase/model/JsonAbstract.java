@@ -41,7 +41,7 @@ public abstract class JsonAbstract implements Json {
     @Override
     public String getJsonString() {
         // this return will never reach cause proxy
-        return requestContent.toString();
+        throw new IllegalStateException("something wrong, proxy did not catch this method.");
     }
 
     @Override
