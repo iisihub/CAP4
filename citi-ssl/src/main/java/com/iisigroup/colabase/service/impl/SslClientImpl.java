@@ -82,6 +82,9 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
           continue;
         }
         return responseContent;
+      } catch (IllegalArgumentException e) {
+        if (i == requestContent.getRetryTimes())
+          throw e;
       } catch (Exception e) {
         if (i == requestContent.getRetryTimes())
           return responseContent;
@@ -115,11 +118,13 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
     return this.sendRequest(requestContent);
   }
 
-  private T clientSendRequest(final RequestContent requestContent) throws IOException {
+  private T clientSendRequest(final RequestContent requestContent) {
     logger.debug("==== send dual ssl request start ====");
+    if (requestContent.getRequestContent() == null) {
+      throw new IllegalArgumentException("there is no json requestContent, please init RequestContent by JsonFactory");
+    }
     long startTime = new Date().getTime();
     ArrayList<String> recordInfo = new ArrayList<>();
-
     T responseContent = null;
     int statusCode = 0;
     int timeOut = requestContent.getTimeout();
@@ -258,7 +263,6 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
     }
     return result;
   }
-
 
 
   private JsonObject readResponse(InputStream is, StringBuilder responseBodySB, ArrayList<String> recordInfo) throws IOException {

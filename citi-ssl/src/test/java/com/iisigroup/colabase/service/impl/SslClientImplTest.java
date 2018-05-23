@@ -55,6 +55,12 @@ public class SslClientImplTest {
         Assert.assertNotEquals("http status should not equals 0", responseContent.getStatusCode(), 0);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void test_init_request_by_constructure() throws Exception {
+        RequestContent demoRequestContent = new DemoRequestContent();
+        sslClient.sendRequestWithDefaultHeader(demoRequestContent);
+    }
+
     private RequestContent getDummyContent(){
         RequestContent requestContent = new DemoRequestContent();
         HashMap<String, List<String>> headers = new HashMap<>();
