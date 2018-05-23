@@ -15,6 +15,8 @@ import com.iisigroup.colabase.service.test.TestServiceImpl;
 import com.iisigroup.colabase.service.test.TestServiceImpl2;
 import com.iisigroup.colabase.util.JsonFactory;
 
+import java.lang.reflect.Field;
+
 /**
  * Created by AndyChen on 2018/5/15.
  */
@@ -93,14 +95,13 @@ public class TestRequestDetailTest {
         requestContent.setCode(code1);
         requestContent.setNumber(number1);
         requestContent.setNation(nation1);
-//        requestContent.setCode(code1);
+        // requestContent.setCode(code1);
         requestContent.setText(text1);
 
         requestContent.setNumber(number2);
         requestContent.setNation(nation2);
         requestContent.setCode(code2);
         requestContent.setText(text2);
-
 
         JsonArray phoneEles = requestContent.getRequestContent().getAsJsonArray("phone");
         int arraySize = phoneEles.size();
@@ -110,11 +111,10 @@ public class TestRequestDetailTest {
         validateArrayValue(phoneEles, 1, number2, nation2, code2, text2);
     }
 
-    public void validateArrayValue(JsonArray phoneEles,
-                                   int index, String number, String nation, String code, String text) {
+    public void validateArrayValue(JsonArray phoneEles, int index, String number, String nation, String code, String text) {
         JsonObject firstPhoneEle = (JsonObject) phoneEles.get(index);
-        JsonElement numberValue1 =  firstPhoneEle.get(numberNode);
-        JsonElement nationValue1 =  firstPhoneEle.get(nationNode);
+        JsonElement numberValue1 = firstPhoneEle.get(numberNode);
+        JsonElement nationValue1 = firstPhoneEle.get(nationNode);
 
         Assert.assertEquals(number, numberValue1.getAsString());
         Assert.assertEquals(nation, nationValue1.getAsString());
@@ -131,9 +131,8 @@ public class TestRequestDetailTest {
 
     }
 
-
     @Test
-    public void test_no_send_list() throws Exception{
+    public void test_no_send_list() throws Exception {
         String standStr = requestContent.getRequestContent().toString();
         String jsonString = requestContent.getJsonString();
         Assert.assertNotEquals(standStr, jsonString);
@@ -148,7 +147,21 @@ public class TestRequestDetailTest {
         requestContent.afterSendRequest(response);
     }
 
+    @Test
+    public void test_chache_string() throws Exception {
+        Field field = JsonAbstract.class.getDeclaredField("jsonStrCache");
+        field.setAccessible(true);
+        String value = (String) field.get(requestContent);
+        Assert.assertEquals("", value);
 
+        requestContent.getJsonString();
+        value = (String) field.get(requestContent);
+        Assert.assertNotEquals("", value);
 
+        requestContent.getJsonString();
+        requestContent.setNation("Taiwan");
+        value = (String) field.get(requestContent);
+        Assert.assertEquals("", value);
 
+    }
 }

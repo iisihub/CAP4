@@ -153,7 +153,6 @@ public class JsonFactory {
     }
 
     static String processNoSendField(JsonAbstract instance) {
-        JsonObject jsonObject = jsonDataService.removeUnnecessaryNode(instance);
-        return jsonObject.toString();
+        return jsonDataService.removeUnnecessaryNode(instance).toString();
     }
 }

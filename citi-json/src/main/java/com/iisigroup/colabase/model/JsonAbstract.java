@@ -30,6 +30,9 @@ public abstract class JsonAbstract implements Json {
     /**  !!! do not use this list yourself */
     private List<String> noSendList = new ArrayList<>();
 
+    /** !!! do not use this string yourself */
+    private String jsonStrCache = "";
+
     /**
      * !!! 取json字串時使用本方法
      * 實作no value no send的功能
@@ -37,6 +40,7 @@ public abstract class JsonAbstract implements Json {
      */
     @Override
     public String getJsonString() {
+        // this return will never reach cause proxy
         return requestContent.toString();
     }
 

@@ -3,6 +3,7 @@ package com.iisigroup.colabase.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import com.google.gson.JsonObject;
 import com.iisigroup.colabase.annotation.JsonTemp;
 import com.iisigroup.colabase.model.JsonAbstract;
 import net.sf.cglib.proxy.Enhancer;
@@ -89,11 +90,39 @@ class JsonProxy implements MethodInterceptor {
         String methodName = method.getName();
         if(methodName.contains("set")) {
             JsonFactory.setValueToJsonContent(object, method, args);
+            this.removeCache(object);
         }
         if ("getJsonString".equals(methodName)) {
-            return JsonFactory.processNoSendField((JsonAbstract) object);
+            return this.readCache(object);
         }
         return methodProxy.invokeSuper(object, args);
+    }
+
+    private String readCache(Object instance) {
+        try {
+            Field field = JsonAbstract.class.getDeclaredField("jsonStrCache");
+            field.setAccessible(true);
+            String value = (String)field.get(instance);
+            if("".equals(value)) {
+                String jsonStr = JsonFactory.processNoSendField((JsonAbstract) instance);
+                field.set(instance, jsonStr);
+                return jsonStr;
+            } else {
+                return value;
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return JsonFactory.processNoSendField((JsonAbstract) instance);
+        }
+    }
+
+    private void removeCache(Object instance) {
+        try {
+            Field field = JsonAbstract.class.getDeclaredField("jsonStrCache");
+            field.setAccessible(true);
+            field.set(instance, "");
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            // do notthing
+        }
     }
 
     private static <T> boolean checkJsonTemp(Class<T> objClass) {
