@@ -369,6 +369,7 @@ public class JsonDataServiceImpl implements JsonDataService {
                     if (jsonEle.isJsonObject()) {
                         if (((JsonObject) jsonEle).entrySet().size() == 0) {
                             array.remove(i);
+                            i -= 1;
                             continue;
                         }
                     }
