@@ -19,4 +19,5 @@ public @interface ApiRequest {
     String path() default "";
     String defaultValue() default "";
     boolean noValueNoSend() default false;
+    boolean primaryEmptyClean() default false;
 }

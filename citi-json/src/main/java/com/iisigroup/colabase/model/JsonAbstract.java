@@ -30,6 +30,9 @@ public abstract class JsonAbstract implements Json {
     /**  !!! do not use this list yourself */
     private List<String> noSendList = new ArrayList<>();
 
+    /**  !!! do not use this list yourself */
+    private List<String> primaryCleanList = new ArrayList<>();
+
     /** !!! do not use this string yourself */
     private String jsonStrCache = "";
 

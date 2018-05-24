@@ -40,7 +40,7 @@ public class TestRequestDetail extends TestRequestServiceModel{
   private String code;
   @ApiRequest(path = "phone[].area[].text")
   private String text;
-  @ApiRequest(path = "phone[].nation")
+  @ApiRequest(path = "phone[].nation", primaryEmptyClean = true)
   private String nation;
   @ApiRequest(path = "phone[].dfield[].code", noValueNoSend = true)
   private String otherCode;

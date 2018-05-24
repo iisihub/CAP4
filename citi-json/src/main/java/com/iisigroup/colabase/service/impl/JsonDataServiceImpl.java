@@ -28,6 +28,7 @@ public class JsonDataServiceImpl implements JsonDataService {
     private final String LAST_PROCESS_KEY = "lastProcess";
     private final String ARRAY_MAP_KEY = "arrayMap";
     private final String NO_SEND_LIST_KEY = "noSendList";
+    private final String PRIMARY_CLEAN_LIST = "primaryCleanList";
     private final String PATH_SPLIT_MARK = "\\.";
 
     public JsonDataServiceImpl() {
@@ -272,10 +273,14 @@ public class JsonDataServiceImpl implements JsonDataService {
     @Override
     public JsonObject removeUnnecessaryNode(JsonAbstract requestContent) {
         List<String> noSendList;
+        List<String> primaryCleanList;
         try {
             Field noSendListField = JsonAbstract.class.getDeclaredField(NO_SEND_LIST_KEY);
             noSendListField.setAccessible(true);
             noSendList = (List<String>) noSendListField.get(requestContent);
+            Field primaryCleanField = JsonAbstract.class.getDeclaredField(PRIMARY_CLEAN_LIST);
+            primaryCleanField.setAccessible(true);
+            primaryCleanList = (List<String>) primaryCleanField.get(requestContent);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new IllegalArgumentException("instance can not found field: noSendList object");
         }
@@ -283,17 +288,27 @@ public class JsonDataServiceImpl implements JsonDataService {
         for (String path : noSendList) {
             this.cleanTargetJson(path, jsonObject);
         }
+        for (String path : primaryCleanList) {
+            this.cleanTargetJson(path, jsonObject, true);
+        }
         //清除所有empty jsonObject
         this.cleanEmptyJsonObject(jsonObject);
         return jsonObject;
     }
 
+
+    private void cleanTargetJson(String pathChain, JsonObject jsonObject) {
+        this.cleanTargetJson(pathChain, jsonObject, false);
+    }
+
     /**
      * 根據指定路徑去找出元素，並移除該值為空的元素
+     * 若為主要必要元素，則同時清除同階層元素
      * @param pathChain path
      * @param jsonObject jsonObject
+     * @param isPrimaryClean 是否為主要必要元素
      */
-    private void cleanTargetJson(String pathChain, JsonObject jsonObject) {
+    private void cleanTargetJson(String pathChain, JsonObject jsonObject, boolean isPrimaryClean) {
         String[] paths = pathChain.split(PATH_SPLIT_MARK);
         String targetKey = paths[paths.length - 1];
         if(pathChain.contains(ARRAY_MARK)) {
@@ -305,7 +320,11 @@ public class JsonDataServiceImpl implements JsonDataService {
                 if (checkEle != null && !"".equals(checkEle.getAsString())) {
                     continue;
                 }
-                ((JsonObject)jsonElement).remove(targetKey);
+                if(isPrimaryClean) {
+                    removeAllSameLevelEle(jsonElement);
+                } else {
+                    ((JsonObject)jsonElement).remove(targetKey);
+                }
             }
         } else {
             HashMap<String, Object> map = new HashMap<>();
@@ -313,7 +332,19 @@ public class JsonDataServiceImpl implements JsonDataService {
             JsonElement checkEle = jsonElement.get(targetKey);
             if (checkEle != null && !"".equals(checkEle.getAsString()))
                 return;
-            jsonElement.remove(targetKey);
+            if(isPrimaryClean) {
+                removeAllSameLevelEle(jsonElement);
+            } else {
+                jsonElement.remove(targetKey);
+            }
+        }
+    }
+
+    private void removeAllSameLevelEle(JsonElement jsonElement) {
+        Iterator<Map.Entry<String, JsonElement>> iterator = ((JsonObject) jsonElement).entrySet().iterator();
+        while (iterator.hasNext()) {
+            iterator.next(); //for moving index
+            iterator.remove();
         }
     }
 

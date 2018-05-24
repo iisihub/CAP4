@@ -29,6 +29,7 @@ public class JsonFactory {
 
     private static final String REQUEST_CONTENT_KEY = "requestContent";
     private static final String NO_SEND_LIST_KEY = "noSendList";
+    private static final String PRIMARY_CLEAN_LIST = "primaryCleanList";
 
     private static final JsonDataService jsonDataService;
 
@@ -84,9 +85,10 @@ public class JsonFactory {
         jsonObjField.set(instance, jsonObject);
 
         Map<String, String> valueMap = new HashMap<>();
-        List<String> noSendList = getListToInstance(instance);
+        List<String> noSendList = getListToInstance(instance, NO_SEND_LIST_KEY);
+        List<String> primaryCleanList = getListToInstance(instance, PRIMARY_CLEAN_LIST);
         List<String> allPathList = new ArrayList<>();
-        setApiRequstInfo(valueMap, noSendList, allPathList, instance.getClass());
+        setApiRequstInfo(valueMap, noSendList, allPathList, primaryCleanList, instance.getClass());
 
         // clean current jsonObject
         jsonDataService.cleanJsonObjectData(instance);
@@ -97,9 +99,9 @@ public class JsonFactory {
 
     }
 
-    private static <T extends JsonAbstract> List<String> getListToInstance(T instance) {
+    private static <T extends JsonAbstract> List<String> getListToInstance(T instance, String listFieldName) {
         try {
-            Field noSendList = JsonAbstract.class.getDeclaredField(NO_SEND_LIST_KEY);
+            Field noSendList = JsonAbstract.class.getDeclaredField(listFieldName);
             noSendList.setAccessible(true);
             return (List<String>) noSendList.get(instance);
         } catch (NoSuchFieldException |IllegalAccessException e) {
@@ -107,7 +109,7 @@ public class JsonFactory {
         }
     }
 
-    private static void setApiRequstInfo(Map<String, String> valueMap, List<String> noVnoSLinst, List<String> allPathList, Class<?> tClass) {
+    private static void setApiRequstInfo(Map<String, String> valueMap, List<String> noVnoSLinst, List<String> allPathList, List<String> primaryCleanList, Class<?> tClass) {
         if(tClass == JsonAbstract.class)
             return;
 
@@ -123,11 +125,14 @@ public class JsonFactory {
             allPathList.add(path);
             String defValue = annotation.defaultValue();
             boolean isNoSend = annotation.noValueNoSend();
+            boolean isPrimaryClean = annotation.primaryEmptyClean();
             valueMap.put(field.getName(), defValue);
             if(isNoSend)
                 noVnoSLinst.add(path);
+            if(isPrimaryClean)
+                primaryCleanList.add(path);
         }
-        setApiRequstInfo(valueMap, noVnoSLinst, allPathList, tClass.getSuperclass());
+        setApiRequstInfo(valueMap, noVnoSLinst, allPathList, primaryCleanList, tClass.getSuperclass());
     }
 
 
