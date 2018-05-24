@@ -23,6 +23,11 @@ import org.slf4j.LoggerFactory;
  *           </ul>
  */
 public class NetUseUtil {
+
+    private NetUseUtil() {
+        throw new IllegalStateException("Net Use Utility class");
+    }
+    
     private static Logger logger = LoggerFactory.getLogger(NetUseUtil.class);
     private static String ALL_FREE_DRIVE_LETTERS = "ZYXWVUTSRQPONMLKJIHGFEDCBA";
     
@@ -41,13 +46,12 @@ public class NetUseUtil {
         Process process = null;
         BufferedReader bf = null;
         try {
-            String command = COMMAND_NET_USE;
-            String[] cmd = new String[] { "cmd", "/C", command };
-            logger.debug("NetUseUtil mappingLocalPath(String netPath) = " + cmd);
+            String[] cmd = new String[] { "cmd", "/C", COMMAND_NET_USE };
+            logger.debug("NetUseUtil mappingLocalPath(String netPath) = {}{}{}", cmd[0], cmd[1], cmd[2]);
             process = Runtime.getRuntime().exec(cmd);
             bf = new BufferedReader(new InputStreamReader(process.getInputStream(), CHARSET_MS950));
             String line = "";
-            String netServer = netPath.substring(0, netPath.indexOf("\\", 2));
+            String netServer = netPath.substring(0, netPath.indexOf('\\', 2));
             while ((line = bf.readLine()) != null) {
                 result += line + "\n";
                 // net use 顯示的資料要包含 netServer，且 netPath 要包含 net use 的遠端路徑資料中
@@ -56,20 +60,19 @@ public class NetUseUtil {
                     st.nextToken();
                     String driver = st.nextToken();
                     String path = st.nextToken();
-                    logger.debug("net mapping local path " + driver + " & " + path);
+                    logger.debug("net mapping local path {}&{}", driver, path);
                     logger.debug(result);
                     int index = netPath.toLowerCase().indexOf(path.toLowerCase());
                     if (index >= 0) {
 //                        localPath = driver + netPath.substring(index + path.length());
                         localPath = driver;
-                        logger.debug("net mapping local result >> " +localPath);
+                        logger.debug("net mapping local result >> {}", localPath);
                     }
                 }
             }
             bf.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage() + "\n" + result, e);
+        } catch (Exception e) {
+            logger.debug(e.getMessage(), e.getMessage(), e);
         }
         return localPath;
     }
@@ -82,24 +85,25 @@ public class NetUseUtil {
         String result = "";
         Process process = null;
         BufferedReader bf = null;
+        int returnCode = -1;
         try {
             String command = COMMAND_NET_USE + SPACE + "* /delete /y";
             String[] cmd = new String[] { "cmd", "/C", command };
             process = Runtime.getRuntime().exec(cmd);
             if (process != null) {
                 bf = new BufferedReader(new InputStreamReader(process.getInputStream(), CHARSET_MS950));
+                String line = "";
+                while ((line = bf.readLine()) != null) {
+                    result += line + "\n";
+                }
+                bf.close();
+                logger.debug(result);
+                returnCode = process.exitValue();
             }
-            String line = "";
-            while ((line = bf.readLine()) != null) {
-                result += line + "\n";
-            }
-            bf.close();
-            logger.debug(result);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage() + "\n" + result, e);
+        } catch (Exception e) {
+            logger.debug(e.getMessage(), e.getMessage(), e);
         }
-        return process == null ? -1 : process.exitValue();
+        return returnCode;
     }
     
     /**
@@ -111,26 +115,27 @@ public class NetUseUtil {
         String result = "";
         Process process = null;
         BufferedReader bf = null;
+        int returnCode = -1;
         try {
-            logger.debug("disconnectNetworkPath diskLetter >> " + diskLetter);
+            logger.debug("disconnectNetworkPath diskLetter >> {}", diskLetter);
             String command = COMMAND_NET_USE + SPACE + diskLetter + ": /delete /y";
             String[] cmd = new String[] { "cmd", "/C", command };
-            logger.info("disConnect:" + command.toString());
+            logger.info("disConnect:{}", command.toString());
             process = Runtime.getRuntime().exec(cmd);
             if (process != null) {
                 bf = new BufferedReader(new InputStreamReader(process.getInputStream(), CHARSET_MS950));
+                String line = "";
+                while ((line = bf.readLine()) != null) {
+                    result += line + "\n";
+                }
+                bf.close();
+                logger.debug(result);
+                returnCode = process.exitValue();
             }
-            String line = "";
-            while ((line = bf.readLine()) != null) {
-                result += line + "\n";
-            }
-            bf.close();
-            logger.debug(result);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage() + "\n" + result, e);
+        } catch (Exception e) {
+            logger.debug(e.getMessage(), e.getMessage(), e);
         }
-        return process == null ? -1 : process.exitValue();
+        return returnCode;
     }
 
     /**
@@ -143,38 +148,38 @@ public class NetUseUtil {
      */
     public static int connectNetworkDrive(String netPath, String domain, String uName, String uXwd) {
         netPath = netPath.trim();
-        if (netPath.lastIndexOf("\\") == netPath.length() - 1) {
+        if (netPath.lastIndexOf('\\') == netPath.length() - 1) {
             netPath = netPath.substring(0, netPath.length() - 1);
         }
         String result = "";
         Process process = null;
         BufferedReader bf = null;
+        int returnCode = -1;
         try {
             StringBuffer command = new StringBuffer();
             command.append(COMMAND_NET_USE + SPACE).append(getFreeDriveLetter()).append(": ").append(netPath).append(" /user:");
             if (!"".equals(domain)) {
                 command.append(domain).append("\\");
             }
-            //2015/8/18,處理會記錄連線磁碟機紀錄,跳出詢問訊息
+            // 2015/8/18,處理會記錄連線磁碟機紀錄,跳出詢問訊息
             command.append(uName).append(" ").append(uXwd).append(" /y");
-            logger.info("connectDrive:" + command.toString());
+            logger.info("connectDrive:{}", command.toString());
             String[] cmd = new String[] { "cmd", "/C", command.toString() };
             process = Runtime.getRuntime().exec(cmd);
             if (process != null) {
                 bf = new BufferedReader(new InputStreamReader(process.getInputStream(), CHARSET_MS950));
+                String line = "";
+                while ((line = bf.readLine()) != null) {
+                    result += line + "\n";
+                }
+                bf.close();
+                logger.debug(result);
+                returnCode = process.exitValue();
             }
-            String line = "";
-            while ((line = bf.readLine()) != null) {
-                result += line + "\n";
-            }
-            bf.close();
-            logger.debug(result);
         } catch (Exception e) {
-            logger.debug(e.getLocalizedMessage(), e.getLocalizedMessage(), e);
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage() + "\n" + result, e);
+            logger.debug(e.getMessage(), e.getMessage(), e);
         }
-        return process == null ? -1 : process.exitValue();
+        return returnCode;
     }
     
     /**
@@ -188,45 +193,43 @@ public class NetUseUtil {
      */
     public static int connectNetworkDrive(String netPath, String drive, String domain, String uName, String uXwd) {
         netPath = netPath.trim();
-        if (netPath.lastIndexOf("\\") == netPath.length() - 1) {
+        if (netPath.lastIndexOf('\\') == netPath.length() - 1) {
             netPath = netPath.substring(0, netPath.length() - 1);
         }
         String result = "";
         Process process = null;
         BufferedReader bf = null;
+        int returnCode = -1;
         try {
             StringBuffer command = new StringBuffer();
             command.append(COMMAND_NET_USE + SPACE).append(drive).append(": ").append(netPath).append(" /user:");
             if (!"".equals(domain)) {
                 command.append(domain).append("\\");
             }
-            //2015/8/18,處理會記錄連線磁碟機紀錄,跳出詢問訊息
+            // 2015/8/18,處理會記錄連線磁碟機紀錄,跳出詢問訊息
             command.append(uName).append(" ").append(uXwd).append(" /y");
             String[] cmd = new String[] { "cmd", "/C", command.toString() };
-//             logger.debug("*******test connectNetDisk *****" + cmd[0]);
-//             logger.debug("*******test connectNetDisk *****" + cmd[1]);
-//             logger.debug("*******test connectNetDisk *****" + cmd[2]);
-//             System.out.println("*******test connectNetDisk *****" + cmd[0]);
-//             System.out.println("*******test connectNetDisk *****" + cmd[1]);
-//             System.out.println("*******test connectNetDisk *****" + cmd[2]);
+//          logger.debug("*******test connectNetDisk *****" + cmd[0]);
+//          logger.debug("*******test connectNetDisk *****" + cmd[1]);
+//          logger.debug("*******test connectNetDisk *****" + cmd[2]);
+//          System.out.println("*******test connectNetDisk *****" + cmd[0]);
+//          System.out.println("*******test connectNetDisk *****" + cmd[1]);
+//          System.out.println("*******test connectNetDisk *****" + cmd[2]);
             process = Runtime.getRuntime().exec(cmd);
             if (process != null) {
                 bf = new BufferedReader(new InputStreamReader(process.getInputStream(), CHARSET_MS950));
+                String line = "";
+                while ((line = bf.readLine()) != null) {
+                    result += line + "\n";
+                }
+                bf.close();
+                logger.debug(result);
+                returnCode = process.exitValue();
             }
-            String line = "";
-            while ((line = bf.readLine()) != null) {
-                result += line + "\n";
-            }
-            bf.close();
-            logger.debug(result);
-            System.out.println(result);
         } catch (Exception e) {
-            logger.debug(e.getLocalizedMessage(), e.getClass(), e);
-            System.out.println(e);
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage() + "\n" + result, e);
+            logger.debug(e.getMessage(), e.getMessage(), e);
         }
-        return process == null ? -1 : process.exitValue();
+        return returnCode;
     }
 
     /**

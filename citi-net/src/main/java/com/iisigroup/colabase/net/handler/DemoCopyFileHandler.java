@@ -61,8 +61,8 @@ public class DemoCopyFileHandler extends MFormHandler {
             String pathValue = NetUseUtil.mappingLocalPath(path);
             if (!CapString.isEmpty(pathValue)) {
                 File diskDrive = new File(pathValue + File.separator);
-                if (diskDrive != null && diskDrive.canRead() && diskDrive.canWrite()) {
-                    logger.debug("*****網路磁碟機已掛載於：" + pathValue.substring(0, 1) + ":" + File.separator);
+                if (diskDrive.canRead() && diskDrive.canWrite()) {
+                    logger.debug("*****網路磁碟機已掛載於：{}:{}", pathValue.substring(0, 1), File.separator);
                     result.set(RESULT_MSG, "網路磁碟機已掛載於：" + pathValue.substring(0, 1) + ":" + File.separator);
                 }
             }
@@ -83,9 +83,9 @@ public class DemoCopyFileHandler extends MFormHandler {
         int contNetDiskStat = -1;
         try {
             contNetDiskStat = NetUseUtil.connectNetworkDrive(path, diskLtr, domain, userName, userXwd);
-            logger.debug("contNetDiskStat:" + contNetDiskStat);
+            logger.debug("contNetDiskStat:{}", contNetDiskStat);
             if (contNetDiskStat == 0) {
-                logger.debug("*****成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
+                logger.debug("*****成功連線至網路磁碟機，掛載於：{}:{}", diskLtr, File.separator);
                 result.set(RESULT_MSG, "成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
             } else if (contNetDiskStat != -1) {
                 result.set(RESULT_MSG, "網路磁碟機連線已執行，請檢查網路磁碟機連線狀況。");
@@ -125,9 +125,9 @@ public class DemoCopyFileHandler extends MFormHandler {
                 diskLtr = NetUseUtil.getFreeDriveLetter(diskLtrs);
             }
             contNetDiskStat = NetUseUtil.connectNetworkDrive(path, diskLtr, domain, userName, userXwd);
-            logger.debug("contNetDiskStat:" + contNetDiskStat);
+            logger.debug("contNetDiskStat:{}", contNetDiskStat);
             if (contNetDiskStat == 0) {
-                logger.debug("*****成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
+                logger.debug("*****成功連線至網路磁碟機，掛載於：{}:{}", diskLtr, File.separator);
                 result.set(RESULT_MSG, "成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
             } else if (contNetDiskStat != -1) {
                 result.set(RESULT_MSG, "網路磁碟機連線已執行，請檢查網路磁碟機連線狀況。");
@@ -154,37 +154,37 @@ public class DemoCopyFileHandler extends MFormHandler {
             }
             File diskDrive = new File(diskLtr + ":" + File.separator);
             File hostFilePath = null;
-            if (diskDrive != null && diskDrive.canRead()) {
+            if (diskDrive.canRead()) {
                 hostFilePath = new File(exportFilePath + File.separator + fileName);
-                logger.debug("HOSTFILEPATH>>>" + hostFilePath.getAbsolutePath());
+                logger.debug("HOSTFILEPATH>>>{}", hostFilePath.getAbsolutePath());
             } else {
                 throw new CapMessageException("讀取網路磁碟機路徑(netdisk folder)錯誤", getClass());
             }
             if (!hostFilePath.canRead()) {
                 throw new CapMessageException("讀取本機匯出的檔案錯誤", getClass());
             }
-            logger.debug("*****連線網路磁碟機IMPORT_PATH@" + diskDrive + File.separator + importFilePath + File.separator);
+            logger.debug("*****連線網路磁碟機IMPORT_PATH@{}{}{}{}", diskDrive, File.separator, importFilePath, File.separator);
             File importFolder = new File(diskDrive + File.separator + importFilePath + File.separator);
             // 2018/03/22 建立子資料夾
-            if (importFolder != null && !importFolder.exists()) {
+            if (!importFolder.exists()) {
                 // 建立目錄結構
                 importFolder.mkdirs();
                 logger.debug("*****遠端匯入資料夾不存在，建立匯入資料夾");
             }
-            if (importFolder == null || !importFolder.canRead() || !importFolder.canWrite()) {
+            if (!importFolder.canRead() || !importFolder.canWrite()) {
                 // 讀取匯入資料夾(import folder)失敗
                 throw new CapMessageException("讀取遠端匯入資料夾(import folder)失敗", getClass());
             }
             try {
                 File existFile = new File(diskDrive + File.separator + importFilePath + File.separator + fileName);
-                if (existFile != null && existFile.exists()) {
+                if (existFile.exists()) {
                     FileUtils.forceDelete(existFile);
-                    logger.debug("*****刪除遠端重複名稱檔案::" + diskDrive + File.separator + importFilePath + File.separator + fileName);
+                    logger.debug("*****刪除遠端重複名稱檔案:{}{}{}{}{}", diskDrive, File.separator, importFilePath, File.separator, fileName);
                 }
                 FileUtils.copyFileToDirectory(hostFilePath, importFolder, true);
                 // 備份檔案
                 File backupFile = new File(exportFilePath + File.separator + fileName + ".bak");
-                if (backupFile != null && backupFile.exists()) {
+                if (backupFile.exists()) {
                     FileUtils.forceDelete(backupFile);
                 }
                 File newBackupFile = new File(exportFilePath + File.separator + fileName + ".bak");
@@ -208,7 +208,7 @@ public class DemoCopyFileHandler extends MFormHandler {
         int disContNetDiskStat = -1;
         try {
             disContNetDiskStat = NetUseUtil.disconnectNetworkPath(diskLtr);
-            logger.debug("disContNetDiskStat:" + disContNetDiskStat);
+            logger.debug("disContNetDiskStat:{}", disContNetDiskStat);
             if (disContNetDiskStat == 0) {
                 result.set(RESULT_MSG, "成功卸載網路磁碟機：" + diskLtr + ":" + File.separator);
             } else if (disContNetDiskStat != -1) {
@@ -223,16 +223,18 @@ public class DemoCopyFileHandler extends MFormHandler {
 
     public Result disconnectAllNetworkPath(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
-        int disContNetDiskStat = -1;
-        try {
-            disContNetDiskStat = NetUseUtil.disconnectAllNetworkPath();
-            logger.debug("disContNetDiskStat:" + disContNetDiskStat);
-            if (disContNetDiskStat == 0) {
-                result.set(RESULT_MSG, "成功卸載所有網路磁碟機");
+        if(!request.isEmpty() && "disconnectAllNetworkPath".equals(request.get("formAction"))){
+            int disContNetDiskStat = -1;
+            try {
+                disContNetDiskStat = NetUseUtil.disconnectAllNetworkPath();
+                logger.debug("disContNetDiskStat:{}", disContNetDiskStat);
+                if (disContNetDiskStat == 0) {
+                    result.set(RESULT_MSG, "成功卸載所有網路磁碟機");
+                }
+            } catch (Exception e) {
+                result.set(ERROR_MSG, e.getMessage());
+                logger.error("disconnectAllNetworkPath Error", e);
             }
-        } catch (Exception e) {
-            result.set(ERROR_MSG, e.getMessage());
-            logger.error("disconnectAllNetworkPath Error", e);
         }
         return result;
     }

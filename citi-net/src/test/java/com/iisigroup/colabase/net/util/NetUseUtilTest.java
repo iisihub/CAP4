@@ -36,54 +36,47 @@ public class NetUseUtilTest {
 
     @Test
     public void testGetFreeDriveLetter() throws Exception {
-        NetUseUtil test = new NetUseUtil();
-        String result = test.getFreeDriveLetter();
+        String result = NetUseUtil.getFreeDriveLetter();
         assertEquals(freeDrive, result.toUpperCase());
     }
 
     @Test
     public void testGetFreeCustomDriveLetter() throws Exception {
-        NetUseUtil test = new NetUseUtil();
-        String result = test.getFreeDriveLetter(driveLetters);
+        String result = NetUseUtil.getFreeDriveLetter(driveLetters);
         assertEquals("P", result.toUpperCase());
     }
 
     @Test
     public void testMappingLocalPath() throws Exception {
-        NetUseUtil test = new NetUseUtil();
-        String result = test.mappingLocalPath(netPath);
+        String result = NetUseUtil.mappingLocalPath(netPath);
         // assertEquals("", result.toUpperCase());
         assertEquals(drive + colon, result.toUpperCase());
     }
 
     @Test
     public void testConnectNetwork() throws Exception {
-        NetUseUtil test = new NetUseUtil();
-        int result = test.connectNetworkDrive(netPath, domain, uName, uXwd);
+        int result = NetUseUtil.connectNetworkDrive(netPath, domain, uName, uXwd);
         // assertTrue(-1 < result);
         assertEquals(0, result);
     }
 
     @Test
     public void testConnectNetworkDrive() throws Exception {
-        NetUseUtil test = new NetUseUtil();
-        int result = test.connectNetworkDrive(netPath, freeDrive, domain, uName, uXwd);
+        int result = NetUseUtil.connectNetworkDrive(netPath, freeDrive, domain, uName, uXwd);
         // assertTrue(-1 < result);
         assertEquals(0, result);
     }
 
     @Test
     public void testDisConnectNetworkPath() throws Exception {
-        NetUseUtil test = new NetUseUtil();
-        int result = test.disconnectNetworkPath(drive);
+        int result = NetUseUtil.disconnectNetworkPath(drive);
         // assertTrue(-1 < result);
         assertEquals(0, result);
     }
 
     @Test
     public void testDisConnectAllNetworkPath() throws Exception {
-        NetUseUtil test = new NetUseUtil();
-        int result = test.disconnectAllNetworkPath();
+        int result = NetUseUtil.disconnectAllNetworkPath();
         assertEquals(0, result);
     }
 

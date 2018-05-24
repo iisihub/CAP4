@@ -34,7 +34,7 @@ public class CopyFileServiceImpl implements CopyFileService {
             if (diskDrive != null && diskDrive.canRead() && diskDrive.canWrite()) {
                 needConnect = false;
                 diskLtr = pathValue.substring(0, 1);
-                logger.debug("*****網路磁碟機已掛載於：" + diskLtr + ":" + File.separator);
+                logger.debug("*****網路磁碟機已掛載於：{}:{}", diskLtr, File.separator);
             }
         }
         int contNetDiskStat = -1;
@@ -54,15 +54,15 @@ public class CopyFileServiceImpl implements CopyFileService {
                 diskLtr = NetUseUtil.getFreeDriveLetter(COLA_FREE_DRIVE_LETTERS);
             }
             contNetDiskStat = NetUseUtil.connectNetworkDrive(path, diskLtr, domain, userName, userXwd);
-            logger.debug("contNetDiskStat:" + contNetDiskStat);
-            if (contNetDiskStat == 0) { // TODO 看NetUseUtil有無更改，看回傳值
-                logger.debug("*****成功連線至網路磁碟機，掛載於：" + diskLtr + ":" + File.separator);
+            logger.debug("contNetDiskStat:{}", contNetDiskStat);
+            if (contNetDiskStat == 0) {
+                logger.debug("*****成功連線至網路磁碟機，掛載於：{}:{}", diskLtr, File.separator);
             } else {
                 logger.debug("*****網路磁碟機連線失敗");
             }
         }
         if (contNetDiskStat != -1 || !needConnect) {
-            logger.debug("*****連線網路磁碟機於@" + diskLtr + ":" + File.separator);
+            logger.debug("*****連線網路磁碟機於@{}:{}", diskLtr, File.separator);
             if (CapString.isEmpty(fileName)) {
                 throw new CapMessageException("讀取本機匯出的檔案名稱失敗", getClass());
             }
@@ -70,14 +70,14 @@ public class CopyFileServiceImpl implements CopyFileService {
             File hostFilePath = null; // new File(diskDrive + File.separator + hostName);
             if (diskDrive != null && diskDrive.canRead()) {
                 hostFilePath = new File(exportFilePath + File.separator + fileName);
-                logger.debug("HOSTFILEPATH>>>" + hostFilePath.getAbsolutePath());
+                logger.debug("HOSTFILEPATH>>>{}", hostFilePath.getAbsolutePath());
             } else {
                 throw new CapMessageException("讀取網路磁碟機路徑(netdisk folder)錯誤", getClass());
             }
             if (!hostFilePath.canRead()) {
                 throw new CapMessageException("讀取本機匯出的檔案錯誤", getClass());
             }
-            logger.debug("*****連線網路磁碟機IMPORT_PATH@" + diskDrive + File.separator + importFilePath + File.separator);
+            logger.debug("*****連線網路磁碟機IMPORT_PATH@{}{}{}{}", diskDrive, File.separator, importFilePath, File.separator);
             File importFolder = new File(diskDrive + File.separator + importFilePath + File.separator);
             // 2018/03/22 建立子資料夾
             if (importFolder != null && !importFolder.exists()) {
@@ -93,7 +93,7 @@ public class CopyFileServiceImpl implements CopyFileService {
                 File existFile = new File(diskDrive + File.separator + importFilePath + File.separator + fileName);
                 if (existFile != null && existFile.exists()) {
                     FileUtils.forceDelete(existFile);
-                    logger.debug("*****刪除遠端重複名稱檔案::" + diskDrive + File.separator + importFilePath + File.separator + fileName);
+                    logger.debug("*****刪除遠端重複名稱檔案:{}{}{}{}{}", diskDrive, File.separator, importFilePath, File.separator, fileName);
                 }
                 FileUtils.copyFileToDirectory(hostFilePath, importFolder, true);
 
