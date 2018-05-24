@@ -2,7 +2,7 @@ package com.iisigroup.colabase.service.impl;
 
 import com.google.gson.JsonObject;
 import com.iisigroup.colabase.demo.sslclient.model.DemoRequestContent;
-import com.iisigroup.colabase.demo.sslclient.service.DemoSslClientService;
+import com.iisigroup.colabase.demo.sslclient.service.impl.DemoSslClientService;
 import com.iisigroup.colabase.model.RequestContent;
 import com.iisigroup.colabase.model.ResponseContent;
 import com.iisigroup.colabase.service.SslClient;

@@ -38,7 +38,7 @@ import com.iisigroup.colabase.service.SslClient;
 public class SslClientHandler extends MFormHandler {
 
     @Autowired
-    private SslClient sslClient;
+    private SslClient<ResponseContent> sslClient;
 
     public Result testSslClient(Request request) {
         AjaxFormResult result = new AjaxFormResult();

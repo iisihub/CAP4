@@ -1,4 +1,4 @@
-package com.iisigroup.colabase.demo.sslclient.service;
+package com.iisigroup.colabase.demo.sslclient.service.impl;
 
 import com.iisigroup.colabase.model.ResponseContent;
 import com.iisigroup.colabase.service.impl.SslClientImpl;
