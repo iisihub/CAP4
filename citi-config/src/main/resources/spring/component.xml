@@ -35,12 +35,6 @@
             </bean>
         </property>
     </bean>
-    <!-- demo import module -->
-    <bean id="importCustomerDAO" class="com.iisigroup.colabase.import_.dao.impl.ImportCustomerDaoImpl">
-        <property name="dataSource">
-            <ref bean="citi-db-sql" />
-        </property>
-    </bean>
     <bean id="sysProp" class="com.iisigroup.cap.base.CapSystemProperties">
         <property name="ignoreCache">
             <list>
