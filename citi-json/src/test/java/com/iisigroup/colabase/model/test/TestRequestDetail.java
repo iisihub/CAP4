@@ -19,6 +19,8 @@ public class TestRequestDetail extends TestRequestServiceModel{
 
 
   //test
+  @ApiRequest(path = "documentDetails.parent.name.fullName", noValueNoSend = true)
+  private String parentName;
   @ApiRequest(path = "documentDetails.documentIdType", defaultValue = "", noValueNoSend = true)
 //  @ApiRequest(path = "documentDetails.documentIdType", defaultValue = "hoho")
   private String documentIdType;
@@ -45,24 +47,29 @@ public class TestRequestDetail extends TestRequestServiceModel{
 
   @JsonTemp
   private String jsonTempStr =
-                  "{\n" +
-                  "    \"documentDetails\": {\n" +
-                  "        \"documentIdType\": \"xxx\",\n" +
-                  "        \"documentFormat\": \"ooo\"\n" +
-                  "    },\n" +
-                  "    \"controlFlowId\": \"123\",\n" +
-                  "    \"phone\": [{\n" +
-                  "        \"number\":\"ok\",\n" +
-                  "        \"nation\":\"shi\",\n" +
-                  "        \"area\" : [{ " +
-                          "   \"code\" : \"hoho\",\n" +
-                          "   \"text\" : \"\"\n" +
-                          "}],\n" +
-                  "        \"dfield\" : [{ " +
-                          "   \"code\" : \"hoho\"\n" +
-                          "}]\n" +
-                  "    }]\n" +
-                  "}";
+                          "{\n" +
+                          "    \"documentDetails\": {\n" +
+                          "        \"parent\": {\n" +
+                          "            \"name\" : {\n" +
+                          "                \"fullName\" : \"\"\n" +
+                          "            }\n" +
+                          "        },\n" +
+                          "        \"documentIdType\": \"xxx\",\n" +
+                          "        \"documentFormat\": \"ooo\"\n" +
+                          "    },\n" +
+                          "    \"controlFlowId\": \"123\",\n" +
+                          "    \"phone\": [{\n" +
+                          "        \"number\": \"ok\",\n" +
+                          "        \"nation\": \"shi\",\n" +
+                          "        \"area\": [{\n" +
+                          "            \"code\": \"hoho\",\n" +
+                          "            \"text\": \"\"\n" +
+                          "        }],\n" +
+                          "        \"dfield\": [{\n" +
+                          "            \"code\": \"hoho\"\n" +
+                          "        }]\n" +
+                          "    }]\n" +
+                          "}";
 
 
   public TestRequestDetail() {
@@ -164,6 +171,14 @@ public class TestRequestDetail extends TestRequestServiceModel{
 
   public void setOtherCode(String otherCode) {
     this.otherCode = otherCode;
+  }
+
+  public String getParentName() {
+    return parentName;
+  }
+
+  public void setParentName(String parentName) {
+    this.parentName = parentName;
   }
 
   //  private String applicationFormRemove(String jsonStr){

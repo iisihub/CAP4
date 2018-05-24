@@ -381,9 +381,13 @@ public class JsonDataServiceImpl implements JsonDataService {
                 }
                 continue;
             }
-            int size = ((JsonObject) value).entrySet().size();
-            if (size > 0)
-                continue;
+            int size = ((JsonObject) value).entrySet().size(); //檢查JsonObject內有無元素
+            if (size > 0) {
+                cleanEmptyJsonObject(value); //嘗試清除內部元素
+                size = ((JsonObject) value).entrySet().size();
+                if(size > 0) //清除完要再檢查自己是否為空
+                    continue;
+            }
             iterator.remove();
         }
     }
