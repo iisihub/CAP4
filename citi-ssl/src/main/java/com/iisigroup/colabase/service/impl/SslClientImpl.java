@@ -34,19 +34,24 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
   private Class<T> type;
 
   public SslClientImpl() {
-    type = getType();
+    type = getType(getClass());
   }
 
   public SslClientImpl(String keyStorePath, String keyStorePWD, String trustStorePath) throws
           CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
     sslSocketFactory = getSSLSocketFactory(keyStorePath, keyStorePWD, trustStorePath);
     isInit = true;
-    type = getType();
+    type = getType(getClass());
   }
 
-  private Class<T> getType() {
-    return  (Class<T>) ((ParameterizedType) getClass()
-            .getGenericSuperclass()).getActualTypeArguments()[0];
+  private Class<T> getType(Class<?> tClass) {
+    Class<T> type;
+    try {
+      type = (Class<T>)((ParameterizedType) tClass.getGenericSuperclass()).getActualTypeArguments()[0];
+    } catch (Exception e ) {
+      return getType(tClass.getSuperclass());
+    }
+    return type;
   }
 
   private void initSslSocketFactory(){
