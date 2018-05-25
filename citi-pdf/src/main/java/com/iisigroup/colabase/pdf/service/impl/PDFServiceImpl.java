@@ -83,6 +83,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      */
     @Override
     public Result processPdf(Request request, String pdfPath, String pdfName, ByteArrayDownloadResult pdfContent, Boolean isDownloadPDF, String encryptPassword, String font) {
+        AjaxFormResult result = new AjaxFormResult();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         OutputStream os = null;
         // PDF名稱
@@ -92,10 +93,11 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         } else {
             outputFileName = defalutPDFName();
         }
-        if (!CapString.isEmpty(font)) {
+        if (CapString.isEmpty(font)) {
             try {
                 font = fontFactory.getFontPath(DEFAULT_FONT, "");
             } catch (IOException e) {
+                logger.debug(e.getMessage(), e);
             }
         }
         try {
@@ -118,15 +120,15 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
                 ByteArrayDownloadResult downloadResult = new ByteArrayDownloadResult(request, out.toByteArray(), ContextTypeEnum.pdf.toString(), outputFileName);
                 return downloadResult;
             }
-            return new AjaxFormResult();
-
+            result.set("isSuccess", true);
         } catch (Exception e) {
             logger.debug(e.getMessage(), e);
-            throw new CapException(e.getMessage(), e.getClass());
+            result.set("isSuccess", false);
         } finally {
             IOUtils.closeQuietly(out);
             IOUtils.closeQuietly(os);
         }
+        return result;
     }
 
     /*
@@ -154,7 +156,8 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * @see com.iisigroup.colabase.pdf.service.PDFService#mergePDFFiles(java.lang.String[], java.lang.String, java.lang.String)
      */
     @Override
-    public Result mergePDFFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName) {
+    public boolean mergePDFFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName) {
+        boolean isSuccess = false;
         Document document = new Document();
         OutputStream outputStream = null;
         try {
@@ -179,16 +182,16 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
                 }
             }
             document.close();
+            isSuccess = true;
         } catch (Exception e) {
             logger.debug(e.getMessage(), e);
-            throw new CapException(e.getMessage(), e.getClass());
         } finally {
             if (document.isOpen()) {
                 document.close();
             }
             IOUtils.closeQuietly(outputStream);
         }
-        return new AjaxFormResult();
+        return isSuccess;
     }
 
     /*
@@ -196,7 +199,8 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * 
      * @see com.iisigroup.colabase.pdf.service.PDFService#partitionPdfFile(java.lang.String, java.lang.String, int)
      */
-    public Result partitionPdfFile(String inputFilePath, String outputFilePath, int partitionPageNum) {
+    public boolean partitionPdfFile(String inputFilePath, String outputFilePath, int partitionPageNum) {
+        boolean isSuccess = false;
         Document document = null;
         PdfCopy copy = null;
         try {
@@ -205,7 +209,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
 
             if (n < partitionPageNum) {
                 logger.debug(String.valueOf(partitionPageNum), "The document does not have  {}  pages to partition !");
-                return null;
+                throw new CapException();
             }
 
             int size = n / partitionPageNum;
@@ -242,15 +246,15 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
                 copy.addPage(page);
             }
             document.close();
+            isSuccess = true;
         } catch (Exception e) {
             logger.debug(e.getMessage(), e);
-            throw new CapException(e.getMessage(), e.getClass());
         } finally {
-            if (document.isOpen()) {
+            if (document != null && document.isOpen()) {
                 document.close();
             }
         }
-        return new AjaxFormResult();
+        return isSuccess;
     }
 
     /*
@@ -288,8 +292,9 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * @see com.iisigroup.colabase.pdf.service.PDFService#addWatermark(java.lang.String, java.lang.String, java.lang.String, java.lang.String, com.lowagie.text.pdf.BaseFont, float, java.lang.Float,
      * int)
      */
-    public void addWatermark(String inputFilePath, String outputFilePath, String textWatermark, String imgWatermarkPath, BaseFont font, float fontSize, Float opacity, int rotationDegree)
+    public boolean addWatermark(String inputFilePath, String outputFilePath, String textWatermark, String imgWatermarkPath, BaseFont font, float fontSize, Float opacity, int rotationDegree)
             throws Exception {
+        boolean isSuccess = false;
         FileInputStream inputStream = new FileInputStream(inputFilePath);
         FileOutputStream outputStream = new FileOutputStream(outputFilePath);
         Document document = new Document(PageSize.A4);
@@ -297,8 +302,8 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         PdfStamper pdfStamper = new PdfStamper(pdfReader, outputStream);
         PdfContentByte pageContent = null;
         try {
-            if (!CapString.isEmpty(textWatermark) && font == null && fontSize == 0) {
-                return;
+            if (CapString.isEmpty(textWatermark) && font == null && fontSize == 0) {
+                return isSuccess;
             }
             for (int i = 1, pdfPageSize = pdfReader.getNumberOfPages() + 1; i < pdfPageSize; i++) {
                 pageContent = pdfStamper.getOverContent(i);// pdfContent所加入的浮水印會在PDF內容最上層
@@ -322,6 +327,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
                     pageContent.endText();
                 }
             }
+            isSuccess = true;
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
         } finally {
@@ -329,6 +335,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             font = null;
         }
         pdfStamper.close();
+        return isSuccess;
     }
 
     /**
@@ -352,7 +359,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             dataMap.put(entry.getKey(), CapString.trimNull(entry.getValue()));
             logData = logData.concat(entry.getKey() + "=" + MapUtils.getString(dataMap, entry.getKey(), "") + " , ");
         }
-        logger.debug(logData, "excute >>> all data : {}");
+        logger.debug("excute >>> all data : {}", logData);
         return dataMap;
     }
 
@@ -379,20 +386,20 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
                 wr = new OutputStreamWriter(out, getSysConfig().getProperty(PageReportParam.defaultEncoding.toString(), DEFAULT_ENCORDING));
                 writer = new BufferedWriter(wr);
                 if (logger.isDebugEnabled()) {
-                    logger.debug(templateName, contentMap.toString(), "[processPDFTemplate] freemarker template name: {} , content data: {}");
+                    logger.debug("[processPDFTemplate] freemarker template name: {} , content data: {}", templateName, contentMap.toString());
                 }
                 t.process(contentMap, writer);
             }
             return new ByteArrayDownloadResult(request, out.toByteArray(), ContextTypeEnum.text.toString());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            throw new CapException(e.getMessage(), e.getClass());
         } finally {
             IOUtils.closeQuietly(out);
             IOUtils.closeQuietly(wr);
             IOUtils.closeQuietly(is);
             IOUtils.closeQuietly(writer);
         }
+        return null;
     }
 
     /**
@@ -428,7 +435,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             pdfEncryption.setUserPassword(encrypt.getBytes());
             pdfEncryption.setAllowedPrivileges(PdfWriter.ALLOW_PRINTING);
             iTextRenderer.setPDFEncryption(pdfEncryption);
-            logger.debug(encrypt, "[genByRender] create pdf with password: {}");
+            logger.debug("[genByRender] create pdf with password: {}", encrypt);
         } else {
             logger.debug("[genByRender] create pdf with no password");
         }

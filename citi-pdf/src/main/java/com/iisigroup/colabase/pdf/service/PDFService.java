@@ -92,7 +92,7 @@ public interface PDFService {
      *            合併後PDF名稱
      * @return
      */
-    public Result mergePDFFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName);
+    public boolean mergePDFFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName);
 
     /**
      * 將Pdf檔案分割為多頁
@@ -105,7 +105,7 @@ public interface PDFService {
      *            分割頁數
      * @return
      */
-    public Result partitionPdfFile(String filePath, String partPDFOutputPath, int partitionPageNum);
+    public boolean partitionPdfFile(String filePath, String partPDFOutputPath, int partitionPageNum);
 
     /**
      * PDF 加入文字浮水印
@@ -154,7 +154,7 @@ public interface PDFService {
      *            浮水印旋轉角度
      * @throws Exception
      */
-    public void addWatermark(String inputFilePath, String outputFilePath, String textWatermark, String imgWatermarkPath, BaseFont font, float fontSize, Float opacity, int rotationDegree)
+    public boolean addWatermark(String inputFilePath, String outputFilePath, String textWatermark, String imgWatermarkPath, BaseFont font, float fontSize, Float opacity, int rotationDegree)
             throws Exception;
 
 }
