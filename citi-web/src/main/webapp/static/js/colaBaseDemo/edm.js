@@ -20,23 +20,5 @@ pageInit(function() {
 				}
 			});
 		});
-		// ftl
-		$("#sendFtlBtn").click(function() {
-			var datas = {
-				sourceFileName : $('#sourceFileName').val(),
-				ftlDestination : $('#ftlDestination').val(),
-			};
-
-			$.ajax({
-				type : 'post',
-				async : true,
-				data : datas,
-				url : url('demoedmhandler/ftlDemo'),
-				success : function(e) {
-					$('#ftlResult').text(e.result);
-				}
-			});
-		});
-
   });
 });

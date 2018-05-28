@@ -32,11 +32,11 @@ import com.iisigroup.cap.utils.CapSystemConfig;
  */
 public abstract class CCBasePageReport extends MFormHandler implements IFreeMarkerReport {
 
-    public static final String fileUrlPrefix = "file:///";
+    public static final String FILE_URL_PREFIX = "file:///";
 
     public enum PageReportParam {
-        templateName("templateName"),
-        defaultEncoding("defaultEncoding");
+        TEMPLATE_NAME("templateName"),
+        DEFAULT_ENCODING("defaultEncoding");
 
         private String code;
 

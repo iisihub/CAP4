@@ -68,32 +68,13 @@
 					客戶姓名 <input type="text" id="edmCustomerName" name="edmCustomerName" value="姜森"/>
 				</div>
 				<div>
-					選擇方案 <input type="text" id="edmProject" name="edmProject" value="隨時清償"/>
+					客戶備註 <input type="text" id="edmProject" name="edmProject" value="隨時清償"/>
 				</div>
 			</form>
 			<button id="sendEdmBtn" class="sendbtn" type="button">送出</button>
 		</div>
 		<div class="rightBox">
 			<p id="edmResult"></p>
-		</div>
-	</div>
-	<div>
-		<h3>《產檔ftl》</h3>
-		<div class="outerBox">
-			<div class="leftBox">
-				<form id="ftlForm" autocomplete="off" method="post">
-					<div>
-						選擇檔案 <input type="text" id="sourceFileName" name="sourceFileName" value="A1.htm"/>
-					</div>
-					<div>
-						輸出目錄 <input type="text" id="ftlDestination" name="ftlDestination" value="D:/COLA/ftl/A1.ftl"/>
-					</div>
-				</form>
-				<button id="sendFtlBtn" class="sendbtn" type="button">送出</button>
-			</div>
-			<div class="rightBox ftlRightBox">
-				<p id="ftlResult"></p>
-			</div>
 		</div>
 	</div>
 </body>

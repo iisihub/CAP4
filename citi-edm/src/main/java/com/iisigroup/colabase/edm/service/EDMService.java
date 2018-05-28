@@ -17,7 +17,7 @@ import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 
 /**<pre>
- * TODO Write a short description on the purpose of the program
+ * send EDM service
  * </pre>
  * @since  2018年4月30日
  * @author Johnson Ho

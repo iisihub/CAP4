@@ -15,7 +15,6 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
@@ -38,8 +37,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -197,16 +194,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
                     index = org.indexOf(keyword2, index + keyword2.length());
                 }
                 // 處理附加檔案
-                File sendFile;
-                MimeBodyPart filePart = new MimeBodyPart();
-                // send file
-                try {
-                    sendFile = new File(getSysConfig().getProperty("edmSendFileLocation"));
-                    filePart.attachFile(sendFile);
-                    multipart.addBodyPart(filePart);
-                } catch (Exception e) {
-                    logRecord.debug("sendEdmFileNotification:" + e.getMessage(), e);
-                }
+                multipart = sendFile(multipart);
             }
 
             // put everything together
@@ -233,7 +221,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
     private ByteArrayDownloadResult processTemplateEmail(Request request, String edmFtlPath, Map<String, Object> dataMap) {
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-                OutputStreamWriter wr = new OutputStreamWriter(out, getSysConfig().getProperty(PageReportParam.defaultEncoding.toString(), DEFAULT_ENCORDING));
+                OutputStreamWriter wr = new OutputStreamWriter(out, getSysConfig().getProperty(PageReportParam.DEFAULT_ENCODING.toString(), DEFAULT_ENCORDING));
                 Writer writer = new BufferedWriter(wr);
                 FileInputStream is = null;) {
             Configuration config = getFmConfg().getConfiguration();
@@ -245,7 +233,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
             }
 
             if (logRecord.isDebugEnabled()) {
-                logRecord.debug("[EDM] Template name: {}, data: {}", edmFtlPath, map.toString());
+                logRecord.debug("[EDM] Template name: {}, data: {}", edmFtlPath, map);
             }
             t.process(map, writer);
 
@@ -254,6 +242,23 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
             logRecord.error(e.getMessage(), e);
         }
         return null;
+    }
+    
+    private MimeMultipart sendFile(MimeMultipart multipart) {
+        // 處理附加檔案
+        File sendFile;
+        MimeBodyPart filePart = new MimeBodyPart();
+        
+        // send file
+        try {
+            sendFile = new File(getSysConfig().getProperty("edmSendFileLocation"));
+            filePart.attachFile(sendFile);
+            multipart.addBodyPart(filePart);
+        } catch (Exception e) {
+            logRecord.debug("sendEdmFileNotification:" + e.getMessage(), e);
+        }
+        
+        return multipart;
     }
 
 }

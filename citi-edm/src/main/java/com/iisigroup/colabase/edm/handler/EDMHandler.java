@@ -64,7 +64,6 @@ public class EDMHandler extends MFormHandler {
             
         } catch (Exception e) {
             result.set(RESULT, "Fail, cause : " + e.getClass());
-            e.printStackTrace();
         }
         result.set(RESULT, "Success, EDM already send to : " + mailAddress);
         return result;
