@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class NetUseUtilTest {
 
-    // 測試前請建立共用資料夾，並設定netPath, domain, uName, uXwd，
+    // 測試前請建立共用資料夾，並設定netPath, domain, uName, uXwd
 
     // 遠端資料夾路徑
     private final String netPath = ""; // 自訂

@@ -106,8 +106,7 @@ public class CopyFileServiceImpl implements CopyFileService {
                 FileUtils.moveFile(hostFilePath, newBackupFile);
 
             } catch (IOException e) {
-                logger.debug("*****無法取得搬檔案 IOException");
-                e.printStackTrace();
+                logger.error("*****無法搬檔案 IOException:", e);
                 throw new CapMessageException("複製匯入資料錯誤" + e.getLocalizedMessage(), getClass());
             } finally {
                 try {
