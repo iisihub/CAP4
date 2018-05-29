@@ -9,6 +9,7 @@ import com.iisigroup.colabase.model.JsonAbstract;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author AndyChen
@@ -49,7 +50,9 @@ class JsonProxy implements MethodInterceptor {
             return null;
         Field[] declaredFields = mainClass.getDeclaredFields();
         for (Field field : declaredFields) {
-
+            Autowired annotation = field.getAnnotation(Autowired.class);
+            if(annotation == null)
+                continue;
             Class<?> fieldType = field.getType();
             if (fieldType == setClass) { //check self class with setClass
                 return field;

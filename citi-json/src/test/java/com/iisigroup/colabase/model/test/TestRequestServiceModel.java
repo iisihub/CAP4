@@ -4,6 +4,7 @@ import com.iisigroup.colabase.model.RequestContent;
 import com.iisigroup.colabase.model.ResponseContent;
 import com.iisigroup.colabase.service.test.TestService2;
 import com.iisigroup.colabase.service.test.TestServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author AndyChen
@@ -14,8 +15,9 @@ import com.iisigroup.colabase.service.test.TestServiceImpl;
  */
 public class TestRequestServiceModel extends RequestContent {
 
+    @Autowired
     private TestServiceImpl testService;
-
+    @Autowired
     private TestService2 testService2;
 
     @Override
