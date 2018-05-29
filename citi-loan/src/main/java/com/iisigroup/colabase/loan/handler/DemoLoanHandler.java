@@ -30,34 +30,37 @@ public class DemoLoanHandler extends MFormHandler {
 
     @Autowired
     private LoanService loanService;
+    
+    private static final String AMOUNT = "amount";
+    private static final String TENOR = "tenor";
 
     public Result caculateLoan(Request params) {
         AjaxFormResult result = new AjaxFormResult();
-        LoanInfo loanInfo = new LoanInfo();
+        LoanInfo loanInfo;
         if ("oneTier".equals(params.get("tierChoose"))) {
-            BigDecimal amount = new BigDecimal(params.get("amount"));
-            Integer tenor = Integer.parseInt(params.get("tenor"));
+            BigDecimal amount = new BigDecimal(params.get(AMOUNT));
+            Integer tenor = Integer.parseInt(params.get(TENOR));
             BigDecimal eppRate = new BigDecimal(params.get("eppRate"));
             BigDecimal amountupfrontFee = new BigDecimal(params.get("amountupfrontFee"));
             // 一段式利率
             loanInfo = loanService.calFixedFee(amount, tenor, eppRate, amountupfrontFee);
-            result.set("amount", loanInfo.getAmount());
+            result.set(AMOUNT, loanInfo.getAmount());
             result.set("apr", loanInfo.getApr());
             result.set("firstEppRate", loanInfo.getFirstEppRate());
             result.set("firstExpense", loanInfo.getFirstExpense());
             result.set("lastExpense", loanInfo.getLastExpense());
             result.set("upfrontFee", loanInfo.getUpfrontFee());
-            result.set("tenor", loanInfo.getTenor());
+            result.set(TENOR, loanInfo.getTenor());
         } else if ("twoTier".equals(params.get("tierChoose"))) {
             // 二段式利率
-            BigDecimal amount = new BigDecimal(params.get("amount"));
-            Integer tenor = Integer.parseInt(params.get("tenor"));
+            BigDecimal amount = new BigDecimal(params.get(AMOUNT));
+            Integer tenor = Integer.parseInt(params.get(TENOR));
             Integer tenorTier1 = Integer.parseInt(params.get("tenorTier1"));
             BigDecimal eppRateTier1 = new BigDecimal(params.get("eppRateTier1"));
             BigDecimal eppRateTier2 = new BigDecimal(params.get("eppRateTier2"));
             BigDecimal amountupfrontFee = new BigDecimal(params.get("amountupfrontFee"));
             loanInfo = loanService.calTwoTierFee(amount, tenor, tenorTier1, eppRateTier1, eppRateTier2, amountupfrontFee);
-            result.set("amount", loanInfo.getAmount());
+            result.set(AMOUNT, loanInfo.getAmount());
             result.set("apr", loanInfo.getApr());
             result.set("firstEppRate", loanInfo.getFirstEppRate());
             result.set("firstExpense", loanInfo.getFirstExpense());
@@ -65,7 +68,7 @@ public class DemoLoanHandler extends MFormHandler {
             result.set("secondEppRate", loanInfo.getSecondEppRate());
             result.set("tier2Expense", loanInfo.getTier2Expense());
             result.set("upfrontFee", loanInfo.getUpfrontFee());
-            result.set("tenor", loanInfo.getTenor());
+            result.set(TENOR, loanInfo.getTenor());
         }
         return result;
     }

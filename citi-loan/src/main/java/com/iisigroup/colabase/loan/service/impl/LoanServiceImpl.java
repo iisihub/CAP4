@@ -17,10 +17,11 @@ import com.iisigroup.colabase.loan.service.LoanService;
 public class LoanServiceImpl implements LoanService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final static int SCALE = 50;
+    private static final int SCALE = 50;
 
     public LoanInfo calFixedFee(BigDecimal amount, int tenor, BigDecimal eppRate, BigDecimal upfrontFee) {
-        logger.debug("calFixedFee => " + "amount : " + amount.toString() + ", tenor : " + tenor + ", eppRate : " + eppRate.toString() + ", upfrontFee : " + upfrontFee.toString());
+        logger.debug("calFixedFee => ");
+        logger.debug("amount : {}, tenor : {}, eppRate : {}, upfrontFee : {}", amount.toString(), tenor, eppRate.toString(), upfrontFee.toString());
         LoanInfo loanInfo = new LoanInfo();
         loanInfo.setAmount(amount);
         loanInfo.setFirstEppRate(eppRate);
@@ -30,8 +31,8 @@ public class LoanServiceImpl implements LoanService {
         BigDecimal monthRate = eppRate.setScale(SCALE, BigDecimal.ROUND_HALF_UP).divide(BigDecimal.valueOf(12), BigDecimal.ROUND_HALF_UP);
         // 預設每月分期金額
         BigDecimal defaultInstallment = calDefaultInstallment(amount, tenor, monthRate, 0);
-        logger.debug("INSTMENT:       " + calDefaultInstallment(amount, tenor, monthRate, 2));
-        logger.debug("P+I adjustment: " + defaultInstallment);
+        logger.debug("INSTMENT:       {}", calDefaultInstallment(amount, tenor, monthRate, 2));
+        logger.debug("P+I adjustment: {}", defaultInstallment);
         List<LoanDetail> details = new ArrayList<LoanDetail>();
         logger.debug("\n##\tPRINCIPAL\tINTEREST\tINSTALLMENT\tBALANCE\tEXPENSE");
         for (int i = 0; i <= tenor; i++) {
@@ -66,7 +67,7 @@ public class LoanServiceImpl implements LoanService {
                 // 若期數!=1，本期支出為 本期分期金額
                 detail.setExpense(i == 1 ? detail.getInstallment().add(upfrontFee).setScale(2) : detail.getInstallment().setScale(2));
             }
-            logger.debug(i + "\t" + detail.getPrincipal() + "\t" + detail.getInterest() + "\t" + detail.getInstallment() + "\t" + detail.getBalance() + "\t" + detail.getExpense());
+            logger.debug("{}\t{}\t{}\t{}\t{}\t{}", i, detail.getPrincipal(), detail.getInterest(), detail.getInstallment(), detail.getBalance(), detail.getExpense());
             details.add(i, detail);
         }
         // 2015.05.04 第一期月付金不含手續費
@@ -74,23 +75,15 @@ public class LoanServiceImpl implements LoanService {
         loanInfo.setLastExpense(details.get(tenor).getExpense());
         long now = System.currentTimeMillis();
         BigDecimal apr = calAPR(details, monthRate).multiply(BigDecimal.valueOf(12));
-        logger.debug("\rapr       : " + apr.multiply(BigDecimal.valueOf(100)).setScale(4, BigDecimal.ROUND_HALF_UP) + "%");
-        logger.debug("cost      : " + (System.currentTimeMillis() - now));
-        // now = System.currentTimeMillis();
-        // apr = calAPR1(details, monthRate).multiply(BigDecimal.valueOf(12));
-        // logger.debug("\rapr       : "
-        // + apr.multiply(BigDecimal.valueOf(100)).setScale(4,
-        // BigDecimal.ROUND_HALF_UP) + "%");
-        // logger.debug("cost      : " + (System.currentTimeMillis() -
-        // now));
+        logger.debug("\rapr       : {}%", apr.multiply(BigDecimal.valueOf(100)).setScale(4, BigDecimal.ROUND_HALF_UP));
+        logger.debug("cost      : {}", (System.currentTimeMillis() - now));
         loanInfo.setApr(apr);
         return loanInfo;
     }
 
     public LoanInfo calTwoTierFee(BigDecimal amount, int tenor, int firstTenor, BigDecimal firstEppRate, BigDecimal secondEppRate, BigDecimal upfrontFee) {
         logger.debug("calTwoTierFee=> ");
-        logger.debug("amount: " + amount.toString() + ", tenor: " + tenor + ", firstTenor: " + firstTenor + ", firstEppRate: " + firstEppRate.toString() + ", secondEppRate: "
-                + secondEppRate.toString() + ", upfrontFee: " + upfrontFee.toString());
+        logger.debug("amount: {}, tenor: {}, firstTenor: {}, firstEppRate: {}, secondEppRate: {}, upfrontFee: {}", amount.toString(), tenor, firstTenor, firstEppRate.toString(), secondEppRate.toString(), upfrontFee.toString());
         LoanInfo loanInfo = new LoanInfo();
         loanInfo.setAmount(amount);
         loanInfo.setFirstEppRate(firstEppRate);
@@ -102,8 +95,8 @@ public class LoanServiceImpl implements LoanService {
         BigDecimal secondMonthRate = secondEppRate.setScale(SCALE, BigDecimal.ROUND_HALF_UP).divide(BigDecimal.valueOf(12), BigDecimal.ROUND_HALF_UP);
         // 預設每月分期金額
         BigDecimal defaultInstallment = calDefaultInstallment(amount, tenor, firstMonthRate, 0);
-        logger.debug("INSTMENT:       " + calDefaultInstallment(amount, tenor, firstMonthRate, 2));
-        logger.debug("P+I adjustment: " + defaultInstallment);
+        logger.debug("INSTMENT:       {}", calDefaultInstallment(amount, tenor, firstMonthRate, 2));
+        logger.debug("P+I adjustment: {}", defaultInstallment);
         BigDecimal installmentTier2 = null;
         List<LoanDetail> details = new ArrayList<LoanDetail>();
         logger.debug("\n##\tPRINCIPAL\tINTEREST\tINSTALLMENT\tBALANCE\tEXPENSE");
@@ -139,8 +132,8 @@ public class LoanServiceImpl implements LoanService {
                         if (i == firstTenor + 1) {
                             // tier2 開始
                             installmentTier2 = calDefaultInstallment(details.get(i - 1).getBalance(), tenor - firstTenor, secondMonthRate, 0);
-                            logger.debug("INSTMENT2:      " + calDefaultInstallment(details.get(i - 1).getBalance(), tenor - firstTenor, secondMonthRate, 2));
-                            logger.debug("P+I adjustment2:" + installmentTier2);
+                            logger.debug("INSTMENT2:      {}", calDefaultInstallment(details.get(i - 1).getBalance(), tenor - firstTenor, secondMonthRate, 2));
+                            logger.debug("P+I adjustment2:{}", installmentTier2);
                         }
                         detail.setInstallment(installmentTier2);
                     }
@@ -153,7 +146,7 @@ public class LoanServiceImpl implements LoanService {
                 // 若期數!=1，本期支出為 本期分期金額
                 detail.setExpense(i == 1 ? detail.getInstallment().add(upfrontFee).setScale(2) : detail.getInstallment().setScale(2));
             }
-            logger.debug(i + "\t" + detail.getPrincipal() + "\t" + detail.getInterest() + "\t" + detail.getInstallment() + "\t" + detail.getBalance() + "\t" + detail.getExpense());
+            logger.debug("{}\t{}\t{}\t{}\t{}\t{}", i, detail.getPrincipal(), detail.getInterest(), detail.getInstallment(), detail.getBalance(), detail.getExpense());
             details.add(i, detail);
         }
         // 2015.05.04 第一期月付金不含手續費
@@ -162,8 +155,8 @@ public class LoanServiceImpl implements LoanService {
         loanInfo.setLastExpense(details.get(tenor).getExpense());
         long now = System.currentTimeMillis();
         BigDecimal apr = calAPR(details, firstMonthRate).multiply(BigDecimal.valueOf(12));
-        logger.debug("\rapr       : " + apr.multiply(BigDecimal.valueOf(100)).setScale(4, BigDecimal.ROUND_HALF_UP) + "%");
-        logger.debug("cost      : " + (System.currentTimeMillis() - now));
+        logger.debug("\rapr       : {}%", apr.multiply(BigDecimal.valueOf(100)).setScale(4, BigDecimal.ROUND_HALF_UP));
+        logger.debug("cost      : {}", (System.currentTimeMillis() - now));
         // now = System.currentTimeMillis();
         // apr = calAPR1(details, monthRate).multiply(BigDecimal.valueOf(12));
         // logger.debug("\rapr       : "
@@ -215,10 +208,10 @@ public class LoanServiceImpl implements LoanService {
             }
             // apr = guess - npv / derivative
             apr = guess.subtract(npv.setScale(SCALE, BigDecimal.ROUND_HALF_UP).divide(derivative, BigDecimal.ROUND_HALF_UP));
-            logger.debug("\rguess     : " + guess.toString());
-            logger.debug("npv       : " + npv);
-            logger.debug("derivative: " + derivative);
-            logger.debug("apr'      : " + apr + "'");
+            logger.debug("\rguess     : {}", guess.toString());
+            logger.debug("npv       : {}", npv);
+            logger.debug("derivative: {}", derivative);
+            logger.debug("apr'      : {}'", apr);
             if (apr.subtract(guess).abs().doubleValue() > absoluteAccuracy) {
                 guess = apr;
             } else {
@@ -253,9 +246,9 @@ public class LoanServiceImpl implements LoanService {
             }
             if (i != 0) {
                 apr = guess.subtract(npv.multiply(guess.subtract(_guess).setScale(SCALE).divide(npv.subtract(_npv), BigDecimal.ROUND_HALF_UP)));
-                logger.debug("\rguess     : " + guess.toString());
-                logger.debug("npv       : " + npv);
-                logger.debug("apr'      : " + apr + "'");
+                logger.debug("\rguess     : {}", guess.toString());
+                logger.debug("npv       : {}", npv);
+                logger.debug("apr'      : {}'", apr);
                 if (apr.subtract(guess).abs().doubleValue() > absoluteAccuracy) {
                     _guess = guess;
                     _npv = npv;
