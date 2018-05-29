@@ -26,6 +26,9 @@ import java.io.File;
 @Controller("demoziphandler")
 public class ZipUtilHandler extends MFormHandler {
 
+    private static final String RESULT = "result";
+    private static final String FAIL = "Fail, cause : ";
+    
     public Result zipDemo(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         ZipUtil zip = new ZipUtil();
@@ -37,11 +40,11 @@ public class ZipUtilHandler extends MFormHandler {
             String password = request.get("zipPassword");
             String userDefineName = request.get("zipName");
 
+            zip.isExistsFolder(destination, true);
             zip.zip(new File(destination, userDefineName + ".zip"), overwrite, password, unzipFiles);
             result.set("result", "Success, zip path : " + destination + "\\" + userDefineName + ".zip");
         } catch (Exception e) {
-            result.set("result", "Fail, cause : " + e.getClass());
-            e.printStackTrace();
+            result.set(RESULT, FAIL + e.getClass());
         }
         return result;
     }
@@ -57,8 +60,7 @@ public class ZipUtilHandler extends MFormHandler {
             zip.unzip(unzipFiles, password, destination);
             result.set("result", "Success, unzip path : " + destination);
         } catch (Exception e) {
-            result.set("result", "Fail, cause : " + e.getClass());
-            e.printStackTrace();
+            result.set(RESULT, FAIL + e.getClass());
         }
         return result;
     }
@@ -73,8 +75,7 @@ public class ZipUtilHandler extends MFormHandler {
             Boolean isEmpty = zip.isEmptyFolder(false, isEmptyFolder1, isEmptyFolder2);
             result.set("result", "Success,  is empty folder ? : " + isEmpty);
         } catch (Exception e) {
-            result.set("result", "Fail, cause : " + e.getClass());
-            e.printStackTrace();
+            result.set(RESULT, FAIL + e.getClass());
         }
         return result;
     }
@@ -88,8 +89,7 @@ public class ZipUtilHandler extends MFormHandler {
             Boolean isExists = zip.isExistsFile(isExistsFile);
             result.set("result", "Success,  is exists file ? : " + isExists);
         } catch (Exception e) {
-            result.set("result", "Fail, cause : " + e.getClass());
-            e.printStackTrace();
+            result.set(RESULT, FAIL + e.getClass());
         }
         return result;
     }

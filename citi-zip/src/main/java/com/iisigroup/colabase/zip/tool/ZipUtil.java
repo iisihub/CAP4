@@ -20,8 +20,11 @@ import net.lingala.zip4j.unzip.UnzipUtil;
 import net.lingala.zip4j.util.CRCUtil;
 import net.lingala.zip4j.util.Zip4jConstants;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.iisigroup.cap.exception.CapException;
 
@@ -39,6 +42,7 @@ import com.iisigroup.cap.exception.CapException;
  */
 public class ZipUtil {
 
+    private final Logger logRecord = LoggerFactory.getLogger(getClass());
     private static final int BUFFER_SIZE = 8192;
 
     public void zip(File destination, boolean overwrite, String password, File... unzipFiles) throws IOException {
@@ -49,7 +53,10 @@ public class ZipUtil {
         if (destination.exists()) {
             if (overwrite) {
                 // 覆寫檔案
-                destination.delete();
+                boolean isDeleteSuccess = destination.delete();
+                if (!isDeleteSuccess) {
+                    logRecord.error("[ZIP] Delete file error!");
+                }
             } else {
                 // 備份原本檔案
                 StringBuilder bckFileName = new StringBuilder();
@@ -58,62 +65,48 @@ public class ZipUtil {
                 bckFileName.append('_');
                 bckFileName.append(System.currentTimeMillis());
                 bckFileName.append(fileName.substring(fileName.lastIndexOf('.')));
-                destination.renameTo(new File(destination.getParentFile(), bckFileName.toString()));
+                boolean isRenameSuccess = destination.renameTo(new File(destination.getParentFile(), bckFileName.toString()));
+                if (!isRenameSuccess) {
+                    logRecord.error("[ZIP] Rename file error!");
+                }
             }
         }
 
         byte[] buffer = new byte[BUFFER_SIZE];
         int length = -1;
-        ZipOutputStream out = null;
-        BufferedOutputStream buffOutput = null;
-        FileOutputStream fileOutput = null;
-        FileInputStream fileInput = null;
-        BufferedInputStream buffInput = null;
-        InputStream inputStream = null;
-        try {
-            fileOutput = new FileOutputStream(destination);
-            buffOutput = new BufferedOutputStream(fileOutput, BUFFER_SIZE);
-            out = new ZipOutputStream(buffOutput);
-            ZipParameters parameters = new ZipParameters();
-            parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
-            parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_ULTRA);
-            if (StringUtils.isNotEmpty(password)) {
-                parameters.setEncryptFiles(true);
-                parameters.setEncryptionMethod(Zip4jConstants.ENC_METHOD_STANDARD);
-                parameters.setPassword(password);
-            }
 
-            for (File unzipFile : unzipFiles) {
+        ZipParameters parameters = new ZipParameters();
+        parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
+        parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_ULTRA);
+        if (StringUtils.isNotEmpty(password)) {
+            parameters.setEncryptFiles(true);
+            parameters.setEncryptionMethod(Zip4jConstants.ENC_METHOD_STANDARD);
+            parameters.setPassword(password);
+        }
+
+        for (File unzipFile : unzipFiles) {
+            try (FileOutputStream fileOutput = new FileOutputStream(destination);
+                    BufferedOutputStream buffOutput = new BufferedOutputStream(fileOutput, BUFFER_SIZE);
+                    ZipOutputStream out = new ZipOutputStream(buffOutput);
+                    FileInputStream fileInput = new FileInputStream(unzipFile);
+                    BufferedInputStream buffInput = new BufferedInputStream(fileInput);
+                    InputStream inputStream = new BufferedInputStream(buffInput);) {
+
                 parameters.setSourceFileCRC((int) CRCUtil.computeFileCRC(unzipFile.getAbsolutePath()));
                 out.putNextEntry(unzipFile, parameters);
-                
-                fileInput = new FileInputStream(unzipFile);
-                buffInput = new BufferedInputStream(fileInput);
-                inputStream = new BufferedInputStream(buffInput);
-                
+
                 while ((length = inputStream.read(buffer)) != -1) {
                     out.write(buffer, 0, length);
                 }
                 out.closeEntry();
-                IOUtils.closeQuietly(inputStream);
-                IOUtils.closeQuietly(buffInput);
-                IOUtils.closeQuietly(fileInput);
+                out.finish();
+            } catch (ZipException e) {
+                throw new CapException(e, getClass());
             }
-            // output the zip file
-            out.finish();
-        } catch (ZipException e) {
-            throw new CapException(e, getClass());
-        } finally {
-            IOUtils.closeQuietly(inputStream);
-            IOUtils.closeQuietly(buffInput);
-            IOUtils.closeQuietly(fileInput);
-            IOUtils.closeQuietly(out);
-            IOUtils.closeQuietly(buffOutput);
-            IOUtils.closeQuietly(fileOutput);
         }
     }
 
-    public void unzip(File unzipFile, String password, File destination) throws IOException {
+    public void unzip(File unzipFile, String password, File destination) throws IOException, ZipException {
         if (!unzipFile.exists()) {
             throw new IOException(unzipFile + " is not exist.");
         }
@@ -133,47 +126,40 @@ public class ZipUtil {
             }
         }
 
-        ZipInputStream inputStream = null;
-        OutputStream out = null;
-
+        ZipFile zipFile = null;
         try {
-            ZipFile zipFile = new ZipFile(unzipFile);
+            zipFile = new ZipFile(unzipFile);
             if (zipFile.isEncrypted()) {
                 zipFile.setPassword(password);
             }
+        } catch (Exception e) {
+            throw new CapException(e, getClass());
+        }
 
-            // get the header information for all the files in the ZipFile
-            @SuppressWarnings("unchecked")
-            List<FileHeader> fileHeaderList = zipFile.getFileHeaders();
+        // get the header information for all the files in the ZipFile
+        @SuppressWarnings("unchecked")
+        List<FileHeader> fileHeaderList = zipFile.getFileHeaders();
 
-            for (FileHeader fileHeader : fileHeaderList) {
-                if (fileHeader != null) {
-                    File outputFile = new File(destination, fileHeader.getFileName());
+        for (FileHeader fileHeader : fileHeaderList) {
+            if (fileHeader != null) {
+                File outputFile = new File(destination, fileHeader.getFileName());
 
-                    // Get the InputStream from the ZipFile
-                    inputStream = zipFile.getInputStream(fileHeader);
-                    // Initialize the output stream
-                    out = new BufferedOutputStream(new FileOutputStream(outputFile), BUFFER_SIZE);
+                try (ZipInputStream inputStream = zipFile.getInputStream(fileHeader); OutputStream out = new BufferedOutputStream(new FileOutputStream(outputFile), BUFFER_SIZE);) {
 
                     int length = -1;
                     byte[] buffer = new byte[BUFFER_SIZE];
                     while ((length = inputStream.read(buffer)) != -1) {
                         out.write(buffer, 0, length);
                     }
-                    IOUtils.closeQuietly(inputStream);
-                    IOUtils.closeQuietly(out);
-
                     // restore file attributes
                     UnzipUtil.applyFileAttributes(fileHeader, outputFile);
-                }
-            }
-        } catch (ZipException e) {
-            throw new CapException(e, getClass());
-        } finally {
-            IOUtils.closeQuietly(out);
-            IOUtils.closeQuietly(inputStream);
-        }
 
+                } catch (ZipException e) {
+                    throw new CapException(e, getClass());
+                }
+
+            }
+        }
     }
 
     public Boolean isEmptyFolder(Boolean isDeleteEmptyFolder, String... fileList) {
@@ -187,7 +173,11 @@ public class ZipUtil {
             } else {
                 // 若資料夾內沒檔案且delete參數為true，將會刪除資料夾
                 if (isDeleteEmptyFolder) {
-                    new File(fileList[i]).delete();
+                    boolean isDeleteSuccess = new File(fileList[i]).delete();
+                    if (!isDeleteSuccess) {
+                        logRecord.error("[ZIP] Delete empty folder error!");
+                    }
+
                 }
             }
         }
@@ -198,8 +188,25 @@ public class ZipUtil {
 
         if (!file.exists()) {
             return false;
+        } else {
+            return true;
         }
-        return true;
+    }
+
+    public void isExistsFolder(File folder, boolean isCreate) {
+
+        if (!folder.exists()) {
+            try {
+                if (isCreate) {
+                    FileUtils.forceMkdir(folder);
+                }
+                logRecord.debug("[ZIP] Folder not exists!");
+            } catch (IOException e) {
+                logRecord.error("[ZIP] Create folder error!");
+            }
+        } else {
+            logRecord.debug("[ZIP] Folder exists!");
+        }
     }
 
 }
