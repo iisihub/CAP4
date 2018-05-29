@@ -21,7 +21,6 @@ import net.lingala.zip4j.util.CRCUtil;
 import net.lingala.zip4j.util.Zip4jConstants;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -182,15 +181,6 @@ public class ZipUtil {
             }
         }
         return hasFile;
-    }
-
-    public Boolean isExistsFile(File file) {
-
-        if (!file.exists()) {
-            return false;
-        } else {
-            return true;
-        }
     }
 
     public void isExistsFolder(File folder, boolean isCreate) {

@@ -52,8 +52,8 @@
 </head>
 <body>
 	<script>
-    loadScript('js/colaBaseDemo/zip');
-  </script>
+		loadScript('js/colaBaseDemo/zip');
+	</script>
 	<h3>《壓縮檔案》</h3>
 	<div class="outerBox">
 		<div class="leftBox">
@@ -121,22 +121,6 @@
 			</div>
 			<div class="rightBox isEmptyFolderRightBox">
 				<p id="isEmptyFolderResult"></p>
-			</div>
-		</div>
-	</div>
-	<div>
-		<h3>《確認檔案是否存在 》</h3>
-		<div class="outerBox">
-			<div class="leftBox">
-				<form id="isExistsFileForm" autocomplete="off" method="post">
-					<div>
-						選擇檔案 <input type="text" id="isExistsFile" name="isExistsFile" />
-					</div>
-				</form>
-				<button id="sendIsExistsFileBtn" class="sendbtn" type="button">送出</button>
-			</div>
-			<div class="rightBox isExistsFileRightBox">
-				<p id="isExistsFileResult"></p>
 			</div>
 		</div>
 	</div>

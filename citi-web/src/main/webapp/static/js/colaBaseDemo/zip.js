@@ -59,22 +59,5 @@ pageInit(function() {
 
 		});
 
-		// isExistsFile
-		$("#sendIsExistsFileBtn").click(function() {
-			var datas = {
-				isExistsFile : $('#isExistsFile').val()
-			};
-
-			$.ajax({
-				type : 'post',
-				async : true,
-				data : datas,
-				url : url('demoziphandler/isExistsFileDemo'),
-				success : function(e) {
-					$('#isExistsFileResult').text(e.result);
-				}
-			});
-    		});
-
-  });
+	});
 });

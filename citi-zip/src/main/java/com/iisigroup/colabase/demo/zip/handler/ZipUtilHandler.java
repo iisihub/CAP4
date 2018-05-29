@@ -42,7 +42,7 @@ public class ZipUtilHandler extends MFormHandler {
 
             zip.isExistsFolder(destination, true);
             zip.zip(new File(destination, userDefineName + ".zip"), overwrite, password, unzipFiles);
-            result.set("result", "Success, zip path : " + destination + "\\" + userDefineName + ".zip");
+            result.set(RESULT, "Success, zip path : " + destination + "\\" + userDefineName + ".zip");
         } catch (Exception e) {
             result.set(RESULT, FAIL + e.getClass());
         }
@@ -58,7 +58,7 @@ public class ZipUtilHandler extends MFormHandler {
             String password = request.get("unzipPassword");
 
             zip.unzip(unzipFiles, password, destination);
-            result.set("result", "Success, unzip path : " + destination);
+            result.set(RESULT, "Success, unzip path : " + destination);
         } catch (Exception e) {
             result.set(RESULT, FAIL + e.getClass());
         }
@@ -73,21 +73,7 @@ public class ZipUtilHandler extends MFormHandler {
             String isEmptyFolder2 = request.get("isEmptyFolder2");
 
             Boolean isEmpty = zip.isEmptyFolder(false, isEmptyFolder1, isEmptyFolder2);
-            result.set("result", "Success,  is empty folder ? : " + isEmpty);
-        } catch (Exception e) {
-            result.set(RESULT, FAIL + e.getClass());
-        }
-        return result;
-    }
-
-    public Result isExistsFileDemo(Request request) {
-        AjaxFormResult result = new AjaxFormResult();
-        ZipUtil zip = new ZipUtil();
-        try {
-            File isExistsFile = new File(request.get("isExistsFile"));
-
-            Boolean isExists = zip.isExistsFile(isExistsFile);
-            result.set("result", "Success,  is exists file ? : " + isExists);
+            result.set(RESULT, "Success,  is empty folder ? : " + isEmpty);
         } catch (Exception e) {
             result.set(RESULT, FAIL + e.getClass());
         }

@@ -21,34 +21,35 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**<pre>
+/**
+ * <pre>
  * test zipUtil
  * </pre>
- * @since  2018年3月29日
+ * 
+ * @since 2018年3月29日
  * @author JohnsonHo
- * @version <ul>
- *           <li>2018年3月29日,JohnsonHo,new
+ * @version
+ *          <ul>
+ *          <li>2018年3月29日,JohnsonHo,new
  *          </ul>
  */
 public class ZipUtilTest {
-    
-    /**zip test 資料路徑*/
+
+    /** zip test 資料路徑 */
     private final String zipFilePath = "D:\\COLA\\testFile\\testZip\\testData.txt";
     private final String zipFileOutputPath = "D:\\COLA\\testFile\\zipComplete\\testZip";
     private final String zipFileName = "TestZip.zip";
     private final String zipFilePassword = "abc123";
-    /**unzip test 資料路徑*/
+    /** unzip test 資料路徑 */
     private final String unzipFilePath = "D:\\COLA\\testFile\\zipComplete\\testZip\\TestZip.zip";
     private final String unzipOutputFolder = "D:\\COLA\\testFile\\zipComplete\\testUnzip";
-    /**check folder 資料路徑*/
+    /** check folder 資料路徑 */
     private final String emptyFolderPath = "D:\\COLA\\testFile\\zipComplete\\testEmptyFolder";
     private final String emptyFolder2Path = "D:\\COLA\\testFile\\zipComplete\\testEmptyFolder\\empty";
-    /**check exists file 資料路徑*/
-    private final String existsFilePath = "D:\\COLA\\testFile\\zipComplete\\testFileExists\\file.txt";
 
-    
     /**
      * class初始化之後調用，用來作測試的準備工作。
+     * 
      * @throws java.lang.Exception
      */
     @BeforeClass
@@ -57,19 +58,21 @@ public class ZipUtilTest {
 
     /**
      * class結束之前調用，用來作測試的清理工作。
+     * 
      * @throws java.lang.Exception
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-      //testZip()--clean file
-//      File zipOutputFile = new File(zipFileOutputPath, zipFileName);
-//      if (zipOutputFile.exists()) {
-//          zipOutputFile.delete();
-//      }
+        // testZip()--clean file
+        // File zipOutputFile = new File(zipFileOutputPath, zipFileName);
+        // if (zipOutputFile.exists()) {
+        // zipOutputFile.delete();
+        // }
     }
 
     /**
      * 在測試method前調用，用來作測試的準備工作
+     * 
      * @throws java.lang.Exception
      */
     @Before
@@ -78,11 +81,12 @@ public class ZipUtilTest {
 
     /**
      * 在測試method後調用，用來作測試的清理工作。
+     * 
      * @throws java.lang.Exception
      */
     @After
     public void tearDown() throws Exception {
-       
+
     }
 
     @Test
@@ -100,7 +104,7 @@ public class ZipUtilTest {
             fail("檔案不存在!");
         }
     }
-    
+
     @Test
     public void testUnzip() {
         ZipUtil zipUtil = new ZipUtil();
@@ -116,23 +120,12 @@ public class ZipUtilTest {
             fail("檔案不存在!");
         }
     }
-    
+
     @Test
     public void testIsEmptyFolder() {
         try {
             ZipUtil zipUtil = new ZipUtil();
             zipUtil.isEmptyFolder(false, emptyFolderPath, emptyFolder2Path);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("Exception!");
-        }
-    }
-    
-    @Test
-    public void testIsExistsFile() {
-        try {
-            ZipUtil zipUtil = new ZipUtil();
-            zipUtil.isExistsFile(new File(existsFilePath));
         } catch (Exception e) {
             e.printStackTrace();
             fail("Exception!");
