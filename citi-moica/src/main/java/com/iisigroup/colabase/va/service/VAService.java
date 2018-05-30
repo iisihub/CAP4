@@ -8,7 +8,19 @@ import org.bouncycastle.cert.CertException;
 public interface VAService {
 
     enum CertInfoType {
-        CERT_TYPE, PERSONAL_ID, ENTERPRISE_ID, X509_SUBJECT, X509_ISSUER, X509_CN, X509_SERIAL, X509_KEY_USAGE, X509_FINGER, X509_NOTBEFORE, X509_NOTAFTER, SUBJECT_KEY_IDENTIFIER, AUTHORITY_KEY_IDENTIFIER
+        CERT_TYPE,
+        PERSONAL_ID,
+        ENTERPRISE_ID,
+        X509_SUBJECT,
+        X509_ISSUER,
+        X509_CN,
+        X509_SERIAL,
+        X509_KEY_USAGE,
+        X509_FINGER,
+        X509_NOTBEFORE,
+        X509_NOTAFTER,
+        SUBJECT_KEY_IDENTIFIER,
+        AUTHORITY_KEY_IDENTIFIER
     }
 
     /**
@@ -27,30 +39,17 @@ public interface VAService {
      * @return
      */
     Certificate getSignerCert(String p7b);
-    
+
     /**
-     * 
+     * 驗證 PKCS7 的有效性，包含驗章、憑證鏈、ICSC、OCSP、CRL
+     *
+     * @param Request
+     *            request
+     * @return 若回傳的 return code 第一位為 E 代表是錯誤，第一位為 W 代表 WARNING。0000 為成功。
+     * @throws SecurityException
+     *             exception 其 message 代表 i18n 的 key
      */
     String doVerifyPKCS7(String personalId, String... p7bDatas);
-//    /**
-//     *
-//     * @param request
-//     * @return
-//     * @throws SecurityException
-//     */
-//
-//    String verifyPKCS7ForRe(Request request) throws SecurityException;
-
-//    /**
-//     * 驗證 PKCS7 的有效性，包含驗章、憑證鏈、ICSC、OCSP、CRL
-//     *
-//     * @param Request
-//     *            request
-//     * @return 若回傳的 return code 第一位為 E 代表是錯誤，第一位為 W 代表 WARNING。0000 為成功。
-//     * @throws SecurityException
-//     *             exception 其 message 代表 i18n 的 key
-//     */
-//    String verifyPKCS7(Request request) throws SecurityException;
 
     /**
      * 載入所有 CA 憑證和憑證廢止清單

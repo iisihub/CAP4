@@ -12,7 +12,6 @@
 package com.iisigroup.colabase.va.service.impl;
 
 /**<pre>
- * TODO Write a short description on the purpose of the program
  * </pre>
  * @since  2016-02-18
  * @author Roger Lin

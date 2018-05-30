@@ -19,9 +19,6 @@ import javax.persistence.Table;
 import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.hibernate.internal.util.StringHelper;
 
-//import com.citibank.pmom.app.model.Branch;
-//import com.citibank.pmom.app.model.CountryRating;
-//import com.citibank.pmom.app.model.JobClass;
 import com.iisigroup.colabase.va.model.CAInfo;
 import com.iisigroup.colabase.va.model.CrlCert;
 import com.iisigroup.colabase.va.model.TransLog;
@@ -68,17 +65,11 @@ public class MOMNamingStrategy extends ImprovedNamingStrategy {
             Table tableAnnotation = clz.getAnnotation(Table.class);
             CO_SPECIAL_TABLES.add(tableAnnotation.name());
         }
-//        MOM_SPECIAL_CLASSES.add(Branch.class);
-//        MOM_SPECIAL_CLASSES.add(CountryRating.class);
-//        MOM_SPECIAL_CLASSES.add(JobClass.class);
 
         for (Class<?> clz : MOM_SPECIAL_CLASSES) {
             Table tableAnnotation = clz.getAnnotation(Table.class);
             MOM_SPECIAL_TABLES.add(tableAnnotation.name());
         }
-    }
-
-    public MOMNamingStrategy() {
     }
 
     @Override

@@ -45,6 +45,7 @@ public class MOMJpaDao<T> extends GenericDaoImpl<T> {
         return entityManager;
     }
 
+    @Override
     public CapNamedJdbcTemplate getNamedJdbcTemplate() {
         return namedJdbcTemplate;
     }

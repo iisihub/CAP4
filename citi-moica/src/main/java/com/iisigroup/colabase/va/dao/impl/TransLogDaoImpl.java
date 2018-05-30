@@ -15,24 +15,22 @@ import com.iisigroup.colabase.common.dao.MOMJpaDao;
 @Repository("transLogDao")
 public class TransLogDaoImpl extends MOMJpaDao<TransLog> implements ITransLogDao {
 
+    private static final String TRANSDATE = "transDate";
+    
     public TransLog findByPrintSeq(String seq) {
         SearchSetting search = createSearchTemplete();
         search.addSearchModeParameters(SearchMode.EQUALS, "printSeq", seq);
-        search.addOrderBy("transDate", true);
+        search.addOrderBy(TRANSDATE, true);
         return findUniqueOrNone(search);
     }
 
     public int countInTransLogToday(String idHash) {
-        // String today = CapDate.getCurrentDate("yyyy-MM-dd");
         Timestamp todayTs = CapDate.getCurrentTimestamp();
         SearchSetting search = createSearchTemplete();
         search.addSearchModeParameters(SearchMode.EQUALS, "idHash", idHash);
         search.addSearchModeParameters(SearchMode.EQUALS, "status", "0000");
-        // search.addSearchModeParameters(SearchMode.BETWEEN, "transDate",
-        // new Date[] { CapDate.getFirstMinuteDate(today, "yyyy-MM-dd"),
-        // CapDate.getLastMinuteDate(today, "yyyy-MM-dd") });
-        search.addSearchModeParameters(SearchMode.BETWEEN, "transDate", new Date[] { CapDate.shiftDays(todayTs, -1), todayTs });
-        search.addOrderBy("transDate", true);
+        search.addSearchModeParameters(SearchMode.BETWEEN, TRANSDATE, new Date[] { CapDate.shiftDays(todayTs, -1), todayTs });
+        search.addOrderBy(TRANSDATE, true);
         return count(search);
     }
 

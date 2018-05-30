@@ -35,7 +35,9 @@ import com.iisigroup.cap.db.constants.SearchMode;
  */
  @Repository("verPathDao")
 public class VerPathDao extends MOMJpaDao<VerPath> implements IVerPathDao {
-
+     
+     private static final String PARMID = "parmId";
+     
     // @Override
     public VerPath findByOid(String oid) {
         SearchSetting search = createSearchTemplete();
@@ -47,7 +49,7 @@ public class VerPathDao extends MOMJpaDao<VerPath> implements IVerPathDao {
     // @Override
     public VerPath findByVerPathId(String parmId) {
         SearchSetting search = createSearchTemplete();
-        search.addSearchModeParameters(SearchMode.EQUALS, "parmId", parmId);
+        search.addSearchModeParameters(SearchMode.EQUALS, PARMID, parmId);
         search.setFirstResult(0).setMaxResults(Integer.MAX_VALUE);
         return findUniqueOrNone(search);
     }
@@ -55,9 +57,9 @@ public class VerPathDao extends MOMJpaDao<VerPath> implements IVerPathDao {
     // @Override
     public List<VerPath> findAllHost() {
         SearchSetting search = createSearchTemplete();
-        search.addSearchModeParameters(SearchMode.LIKE, "parmId", "host." + "%");
+        search.addSearchModeParameters(SearchMode.LIKE, PARMID, "host." + "%");
         search.setFirstResult(0).setMaxResults(Integer.MAX_VALUE);
-        search.addOrderBy("parmId");
+        search.addOrderBy(PARMID);
         return find(search);
     }
 

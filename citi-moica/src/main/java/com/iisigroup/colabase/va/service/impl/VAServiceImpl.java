@@ -2,10 +2,8 @@ package com.iisigroup.colabase.va.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iisigroup.cap.base.CapSystemProperties;
-import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.db.dao.SearchSetting;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.utils.CapDate;
@@ -38,11 +35,9 @@ import com.iisigroup.colabase.va.crypto.ICSCChecker;
 import com.iisigroup.colabase.va.crypto.PKCS7Verify;
 import com.iisigroup.colabase.va.dao.ICAInfoDao;
 import com.iisigroup.colabase.va.dao.ICrlCertDao;
-import com.iisigroup.colabase.va.dao.ITransLogDao;
 import com.iisigroup.colabase.va.dao.IVerPathDao;
 import com.iisigroup.colabase.va.model.CAInfo;
 import com.iisigroup.colabase.va.model.CrlCert;
-import com.iisigroup.colabase.va.model.TransLog;
 import com.iisigroup.colabase.va.service.VAService;
 import com.iisigroup.colabase.va.util.CommonCryptUtils;
 
@@ -56,13 +51,6 @@ public class VAServiceImpl implements VAService {
      */
     private static final String SUCCESS_CODE = "0000";
 
-    private static final String ZIP_VA_LOCATION = "pmom.file.zip.va.location";
-    private static final String ZIP_CUS_LOCATION = "pmom.file.zip.cus.location";
-    private static final String ZIP_RETURNDOC_LOCATION = "pmom.file.zip.returndoc.location";
-    private static final String FILES_UUID = "FILES_UUID";
-    private static final String TEMP_FOLDER = "pmom.file.temp.location";
-    private static final String TEMP_UPLOAD_FOLDER = "pmom.file.temp.uploadfiles";
-
     @Autowired
     private CapSystemProperties sysProp;
 
@@ -73,197 +61,10 @@ public class VAServiceImpl implements VAService {
     private ICAInfoDao caInfoDao;
 
     @Autowired
-    private ITransLogDao transLogDao;
-
-    @Autowired
     private CapSystemConfig config;
 
     @Autowired
     private ICrlCertDao crlCertDao;
-
-//    public String verifyPKCS7ForRe(Request request) throws SecurityException {
-//        String personalId = request.get("ID_NO");
-//        String p7b = request.get("PKCS7Data");
-//        String rc = doVerifyPKCS7(personalId, p7b);
-//        if (SUCCESS_CODE.equals(rc)) {
-//            String df = CapDate.getCurrentDate("yyyyMMdd");
-//            String zipPwd = personalId.substring(0, 4) + df;
-//            File zipLocation = new File(config.getProperty(ZIP_RETURNDOC_LOCATION), df);
-//            if (!zipLocation.exists()) {
-//                zipLocation.mkdirs();
-//            }
-//            File destination = new File(zipLocation, "reUpload_Payrollaccount_" + MOMReportUtils.maskId(personalId) + ".zip");
-//            HttpSession session = ((HttpServletRequest) request.getServletRequest()).getSession();
-//            File pdfTempPath = new File((String) session.getAttribute("pdfPath"));
-//            File p7bTempPath = new File((String) session.getAttribute("p7bPath"));
-//            File imageZipPath = new File((String) session.getAttribute("imageZipPath"));
-//            try {
-//                zipSrv.zip(destination, true, zipPwd, new File[] { pdfTempPath, p7bTempPath, imageZipPath });
-//                saveTransLog(request, URLDecoder.decode(p7b, "UTF-8"), destination.toString().replaceAll("\\\\", "/"), rc, SystemType.MOICA_RETURN_DOC);
-//            } catch (IOException e) {
-//                LOGGER.error(e.getMessage(), e);
-//            }
-//
-//        }
-//        return rc;
-//    }
-
-//    public String verifyPKCS7(Request request) throws SecurityException {
-//        String p7b = request.get("PKCS7Data");
-//        String p7b2 = request.get("PKCS7Data2");
-//        String personalId = request.get("ID_NO");
-//        String rc = doVerifyPKCS7(personalId, p7b, p7b2);
-//        if (SUCCESS_CODE.equals(rc)) {
-//            HttpSession session = ((HttpServletRequest) request.getServletRequest()).getSession();
-//            String filesUUID = session.getAttribute(FILES_UUID) != null ? (String) session.getAttribute(FILES_UUID) : "";
-//            File tempFilePath = new File(config.getProperty(TEMP_FOLDER), filesUUID);
-//
-//            PDFPacker[] workers = new PDFPacker[] {
-//                new VAPDFPacker(p7b, (String) (session.getAttribute(MOMConstants.FILE_NAME)) + ".pdf"),
-//                new CUSPDFPacker(p7b2, (String) (session.getAttribute(MOMConstants.CONCAT_PDF_NAME)) + ".pdf")
-//            };
-//
-//            for (PDFPacker worker : workers) {
-//                try {
-//                    File tempPdf = new File(tempFilePath, worker.getPdfName());
-//                    File pdfFolder = new File(config.getProperty(ZIP_VA_LOCATION), filesUUID);
-//                    File pdf = new File(pdfFolder, worker.getPdfName());
-//                    worker.pack(request);
-//                    FileUtils.copyFile(tempPdf, pdf);
-//                    saveTransLog(request, URLDecoder.decode(worker.getP7Data(), "UTF-8"), pdf.toString().replaceAll("\\\\", "/"), rc, SystemType.MOICA_OPEN_ACCOUNT);
-//                } catch (IOException e) {
-//                    LOGGER.error("copy moica pdf file fail : " + personalId + " " + tempFilePath, e);
-//                    rc = "E011";
-//                    break;
-//                }
-//            }
-//        }
-//        return rc;
-//    }
-
-//    interface PDFPacker {
-//        String getUploadFileLocation();
-//        String getPdfName();
-//        String getP7Data();
-//        void pack(Request request) throws IOException;
-//    }
-//    abstract class AbstractPDFPacker implements PDFPacker {
-//        protected String p7Data;
-//        protected String pdfName;
-//
-//        AbstractPDFPacker(String p7Data, String pdfName) {
-//            this.p7Data = p7Data;
-//            this.pdfName = pdfName;
-//        }
-//
-//        public String getP7Data() {
-//            return p7Data;
-//        }
-//
-//        public String getPdfName() {
-//            return pdfName;
-//        }
-//
-//        protected File getTempFolder(HttpSession session) {
-//            String filesUUID = session.getAttribute(FILES_UUID) != null ? (String) session.getAttribute(FILES_UUID) : "";
-//            return new File(config.getProperty(TEMP_FOLDER), filesUUID);
-//        }
-//    }
-//    class CUSPDFPacker extends AbstractPDFPacker implements PDFPacker {
-//
-//        CUSPDFPacker(String p7Data, String pdfName) {
-//            super(p7Data, pdfName);
-//        }
-//
-//        public String getUploadFileLocation() {
-//            return config.getProperty(ZIP_CUS_LOCATION);
-//        }
-//
-//        public void pack(Request request) throws IOException {
-//            String serNo = "001";
-//            //判斷批次時間8:30 ~ 15:29 為 002 ,15:30 ~ 8:29 為001
-//            Timestamp ts = CapDate.getCurrentTimestamp();
-//            String fhm = new SimpleDateFormat("HHmm").format(ts);
-//            if (fhm.compareTo("0830") > 0 && fhm.compareTo("1530") < 0) {
-//                serNo = "002";
-//            }
-//
-//            String YYMMDD = null;
-//            String YYYYMMDD = null;
-//            // 批次為001, 判斷資料夾時間24點前要+1天, 過24點則不用加
-//            if (serNo.equals("001") && fhm.compareTo("2359") <= 0 && fhm.compareTo("0830") > 0 ) {
-//                YYMMDD = new SimpleDateFormat("yyMMdd").format(ts.getTime() + 86400000);
-//                YYYYMMDD = new SimpleDateFormat("yyyyMMdd").format(ts.getTime() + 86400000);
-//            } else {
-//                YYMMDD = new SimpleDateFormat("yyMMdd").format(ts.getTime());
-//                YYYYMMDD = new SimpleDateFormat("yyyyMMdd").format(ts.getTime());
-//            }
-//
-//            String personalId = request.get("ID_NO");
-//            String brday = request.get("BIRTH").replaceAll("-", "");
-//            String zipName = new StringBuilder()
-//                .append("e_payrollaccount_").append(YYMMDD).append(serNo)
-//                .append('_').append(MOMReportUtils.maskId(personalId)).append(".zip").toString();
-//            // password = <加密邏輯> ID第一碼 + 出生年月日
-//            String password = new StringBuilder().append(Character.toUpperCase(personalId.charAt(0))).append(brday).toString();
-//            HttpSession session = ((HttpServletRequest) request.getServletRequest()).getSession();
-//            File tempFilePath = getTempFolder(session);
-//            File destination = new File(tempFilePath, zipName);
-//            // 加上上傳的4張圖片zip檔
-//            zipSrv.zip(destination, true, password,
-//                    new File[] {
-//                        new File(tempFilePath, getPdfName()), new File(tempFilePath, getPdfName().replace(".pdf", ".p7b")),
-//                        new File(tempFilePath + File.separator + config.getProperty(TEMP_UPLOAD_FOLDER) + File.separator + MOMReportUtils.maskId(personalId) + ".zip") });
-//
-//            //pdf存放的folder->Main MOICA folder+TCO+日期+ batch number+DL File
-//            String tcoPath = getUploadFileLocation() + File.separator + "TCO" + File.separator + YYYYMMDD + serNo
-//                    + File.separator + "Application File";
-//            FileUtils.copyFile(destination, new File(tcoPath, zipName));
-//        }
-//    }
-//    class VAPDFPacker extends AbstractPDFPacker implements PDFPacker {
-//
-//        VAPDFPacker(String p7Data, String pdfName) {
-//            super(p7Data, pdfName);
-//        }
-//
-//        public String getUploadFileLocation() {
-//            return config.getProperty(ZIP_VA_LOCATION);
-//        }
-//
-//        public void pack(Request request) throws IOException {
-//            String password = request.get("ID_NO").toUpperCase();
-//            String zipFileName = getPdfName().replace(".pdf", ".zip");
-//            HttpSession session = ((HttpServletRequest) request.getServletRequest()).getSession();
-//            session.setAttribute("USER_ZIP_FILE_NAME", zipFileName);
-//            File tempFolder = getTempFolder(session);
-//            File destination = new File(tempFolder, zipFileName);
-//            String filePath = destination.getName();
-//            filePath = filePath.substring(0, filePath.lastIndexOf(".zip"));
-//            //只需要打包使用者的 pdf & p7b
-//            File[] packFiles = new File[] { new File(tempFolder, getPdfName()), new File(tempFolder, getPdfName().replace(".pdf", ".p7b")) };
-//            zipSrv.zip(destination, true, password, packFiles);
-//        }
-//    }
-
-    private void saveTransLog(Request request, String p7Data, String pdfPath, String rc, SystemType systemType) {
-        TransLog transLog = new TransLog();
-        String personalId = request.get("ID_NO");
-        transLog.setIdHash(md5(personalId.getBytes()));
-        transLog.setP7Data(p7Data);
-        transLog.setPdfPath(pdfPath);
-        transLog.setPrintSeq("");
-        transLog.setSourceIp(request.getServletRequest().getRemoteAddr());
-        transLog.setStatus(rc);
-        transLog.setTransDate(CapDate.getCurrentTimestamp());
-        transLog.setSystemtype(systemType.getCode());
-        try {
-            transLog.setPdfServer(InetAddress.getLocalHost().getHostName());
-        } catch (UnknownHostException e) {
-            LOGGER.error("Can't get hostname for moica pdf server fail : " + personalId, e);
-        }
-        transLogDao.save(transLog);
-    }
 
     public String doVerifyPKCS7(String personalId, String... p7bDatas) {
         String rc = SUCCESS_CODE;
@@ -291,13 +92,13 @@ public class VAServiceImpl implements VAService {
                 rc = "E003, 憑證已經失效";
                 break;
             }
-//            try {
-//                checkICSC(signerCert, personalId);
-//            } catch (Exception e) {
-//                LOGGER.error("checkICSC fail : " + personalId, e);
-//                rc = e.getMessage();
-//                break;
-//            }
+            try {
+                checkICSC(signerCert, personalId);
+            } catch (Exception e) {
+                LOGGER.error("checkICSC fail : " + personalId, e);
+                rc = e.getMessage();
+                break;
+            }
             try {
                 checkOCSP(signerCert);
             } catch (Exception e) {
@@ -313,7 +114,7 @@ public class VAServiceImpl implements VAService {
         return rc;
     }
 
-    private void checkICSC(Certificate ee, String personalId) throws SecurityException {
+    private void checkICSC(Certificate ee, String personalId) {
         String ip = verPathDao.findByVerPathId("ICSC_IP").getParmValue();
         String port = verPathDao.findByVerPathId("ICSC_PORT").getParmValue();
         String uri = verPathDao.findByVerPathId("ICSC_URI").getParmValue();
@@ -337,7 +138,7 @@ public class VAServiceImpl implements VAService {
         }
         int ret1 = check.checkMOICAICSC(ee, personalId, getProxy());
         if (ret1 != 0) {
-            LOGGER.error("checkMOICAICSC fail. rc = " + ret1);
+            LOGGER.error("checkMOICAICSC fail. rc = {}", ret1);
             throw new SecurityException("E005");
         }
     }
@@ -356,7 +157,7 @@ public class VAServiceImpl implements VAService {
         }
         int ret1 = CryptoLibrary.analyseOCSPResponse(resp, req);
         if (ret1 != 0) {
-            LOGGER.error("analyseOCSPResponse fail. rc = " + ret1);
+            LOGGER.error("analyseOCSPResponse fail. rc = {}", ret1);
             throw new SecurityException("W009");
         }
         Certificate signOCSP = CryptoLibrary.verifyOCSPResp(resp);
@@ -408,7 +209,7 @@ public class VAServiceImpl implements VAService {
             // 載入 CA 憑證到記憶體
             Certificate caCert = CryptoLibrary.loadCaCerts(CryptoLibrary.base64Decode(certData));
             if (caCert == null) {
-                LOGGER.error("LoadCaCerts fail : " + info.getCaName());
+                LOGGER.error("LoadCaCerts fail : {}", info.getCaName());
             }
             // 載入已下載的CRL
             String crlUrl = info.getCrlUrl();
@@ -424,7 +225,7 @@ public class VAServiceImpl implements VAService {
                     }
                 }
             } catch (IOException e) {
-                LOGGER.error("Read CRL file fail : " + crlPathInfo, e);
+                LOGGER.error("Read CRL file fail : {}", crlPathInfo, e);
             }
         }
         CryptoLibrary.validCaCerts();
@@ -448,7 +249,7 @@ public class VAServiceImpl implements VAService {
 
     private File getCrlLocalPath(String crlUrl, boolean success) {
         String path = config.getProperty("crlLocalDir") + "/" + md5(crlUrl.getBytes()) + (success ? "/" : "_fail/");
-        String fileName = crlUrl.substring(crlUrl.lastIndexOf("/") + 1);
+        String fileName = crlUrl.substring(crlUrl.lastIndexOf('/') + 1);
         return new File(path, fileName);
     }
 
@@ -462,6 +263,7 @@ public class VAServiceImpl implements VAService {
             hash = md.digest();
             result = new String(Hex.encodeHex(hash));
         } catch (NoSuchAlgorithmException e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return result;
     }

@@ -2,11 +2,9 @@ package com.iisigroup.colabase.demo.handler;
 
 import com.iisigroup.cap.mvc.handler.MFormHandler;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
@@ -34,7 +32,7 @@ public class DemoMoicaHandler extends MFormHandler {
     @Autowired
     private VAService vaService;
 
-    public Result demoMoica(Request params) throws UnsupportedEncodingException {
+    public Result demoMoica(Request params) {
       String personalId = params.get("Login_PINCode");
       String p7b = params.get("PKCS7Data");
 //      p7b = URLDecoder.decode(p7b, "UTF-8");
@@ -48,16 +46,12 @@ public class DemoMoicaHandler extends MFormHandler {
         AjaxFormResult result = new AjaxFormResult();
         String p7b = params.get("PKCS7Data");
         String p7bPath = params.get("p7bPath");
-        FileOutputStream os = null;
         byte[] p7byte = Base64.decodeBase64(p7b);
-        try {
-            os = new FileOutputStream(p7bPath);
+        try (FileOutputStream os = new FileOutputStream(p7bPath);){
             os.write(p7byte);
             result.set("msg", "gen p7bData success");
         } catch (IOException e) {
             result.set("msg", "gen p7bData fail");
-        } finally {
-            IOUtils.closeQuietly(os);
         }
         return result;
     }
