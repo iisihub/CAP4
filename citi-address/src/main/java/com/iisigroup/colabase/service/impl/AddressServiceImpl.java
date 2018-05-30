@@ -21,6 +21,8 @@ import java.util.StringTokenizer;
 import java.util.UUID;
 
 import com.iisigroup.colabase.service.AddressService;
+import com.iisigroup.colabase.util.NumberUtil;
+import org.apache.commons.lang.ArrayUtils;
 
 public class AddressServiceImpl implements AddressService {
     private static Map<String, String> villages = new HashMap<String, String>();
@@ -90,8 +92,9 @@ public class AddressServiceImpl implements AddressService {
                 }
                 String tw = st.nextToken().trim();
                 String en = st.nextToken().trim();
-                roadce.put(tw.replaceAll("１０", "十").replaceAll("１", "一").replaceAll("２", "二").replaceAll("３", "三").replaceAll("４", "四").replaceAll("５", "五").replaceAll("６", "六").replaceAll("７", "七")
-                        .replaceAll("８", "八").replaceAll("９", "九").trim(), en); //TODO number formate issue
+                roadce.put(NumberUtil.formatStrNumberByType(tw.trim(), NumberUtil.Type.CHINESE), en); //TODO number formate issue
+//                roadce.put(tw.replaceAll("１０", "十").replaceAll("１", "一").replaceAll("２", "二").replaceAll("３", "三").replaceAll("４", "四").replaceAll("５", "五").replaceAll("６", "六").replaceAll("７", "七")
+//                        .replaceAll("８", "八").replaceAll("９", "九").trim(), en); //TODO number formate issue
             }
             // 中華郵政下載3+2郵遞區號資料，但須手動刪除"路"之後的資料(ex.單、雙......)
             String zipCodeFileName = p.getProperty("zipcode.filename");
@@ -122,8 +125,9 @@ public class AddressServiceImpl implements AddressService {
                 ps.setString(4, country);
                 ps.setString(5, road.trim());
                 // 中華郵政下載3+2郵遞區號資料中，段是用全型數字，但身分證和一般證件是用國字，所以多放一欄是轉成國字的資料，也方便後續取"段"的資料
-                ps.setString(6, road.replaceAll("１０", "十").replaceAll("１", "一").replaceAll("２", "二").replaceAll("３", "三").replaceAll("４", "四").replaceAll("５", "五").replaceAll("６", "六")
-                        .replaceAll("７", "七").replaceAll("８", "八").replaceAll("９", "九").trim());
+                ps.setString(6, NumberUtil.formatStrNumberByType(road.trim(), NumberUtil.Type.CHINESE));
+//                ps.setString(6, road.replaceAll("１０", "十").replaceAll("１", "一").replaceAll("２", "二").replaceAll("３", "三").replaceAll("４", "四").replaceAll("５", "五").replaceAll("６", "六")
+//                        .replaceAll("７", "七").replaceAll("８", "八").replaceAll("９", "九").trim());
                 ps.executeUpdate();
                 ps.close();
             }
@@ -263,9 +267,9 @@ public class AddressServiceImpl implements AddressService {
                         zip5 = zipCol;
                     }
                     if (road.contains("段")) {
-                        // FIXME? 如果輸入資料是 "10段"，會有問題
-                        section = road.substring(road.indexOf("段") - 1, road.indexOf("段") + 1);
-                        res.put("section", section);
+                        // FIXMEed? 如果輸入資料是 "10段"，會有問題
+                        String numbers = findSectionNum(road);
+                        res.put("section", numbers + "段");
                     }
                     break;
                 }
@@ -311,6 +315,31 @@ public class AddressServiceImpl implements AddressService {
         }
         return res;
     }
+
+    private String findSectionNum(String value) {
+        List<String> list = new ArrayList<>();
+        boolean found = false;
+        for (int i = value.length() - 1; i > 0; i--) {
+            String check = String.valueOf(value.charAt(i));
+            if(NumberUtil.isNumber(check)) {
+                found = true;
+                list.add(check);
+            } else {
+                if(found)
+                    break;
+            }
+        }
+        String[] temp = new String[list.size()];
+        list.toArray(temp);
+        ArrayUtils.reverse(temp);
+        StringBuffer result = new StringBuffer();
+        for (String s : temp) {
+            result.append(s);
+        }
+        return result.toString();
+    }
+
+
 
     private String processLane(String process) {
         return processSinglePhrases(process, "巷");
