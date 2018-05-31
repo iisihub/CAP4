@@ -45,9 +45,20 @@ public class PDFHandler extends MFormHandler {
     @Autowired
     private ItextFontFactory fontFactory;
     private static final String DEFAULT_FONT = "MSJH.TTF";// 微軟正黑體
-    private static final String TEST_SIGN_WORDING = "線上簽名驗證完成";
     private static final String DATE_FORMAT = "yyyy/MM/dd";
     private static final String FTL_TEMPLETE_NAME = "PDF_TEMPLETE.ftl";
+    // generatePDF parm
+    private static final String PDF_NAME = "PDF_NAME";
+    private static final String PDF_PATH = "PDF_PATH";
+    private static final String PDF_PASS_WORD = "PDF_PASSWORD";
+    private static final String CUST_NAME = "custName";
+    private static final String M_PHONE = "mPhone";
+    private static final String ID_NO = "idNo";
+    private static final String APPLY_DATE = "applyDate";
+    private static final String ONLINE_SIGN = "onlineSign";
+    private static final String TEST_SIGN_WORDING = "線上簽名驗證完成";
+    // Result key id
+    private static final String PDF_RESULT = "pdfReslut";
 
     /**
      * 產生PDF
@@ -57,35 +68,35 @@ public class PDFHandler extends MFormHandler {
      */
     public Result generatePDF(Request request) {
         AjaxFormResult result = new AjaxFormResult();
-        String pdfPath = request.get("PDF_PATH", "");
-        String pdfName = request.get("PDF_NAME", "");
-        String pdfPwd = request.get("PDF_PASSWORD", "");
-        String custName = request.get("custName", "");
-        String idNo = request.get("idNo", "");
-        String mPhone = request.get("mPhone", "");
+        String pdfPath = request.get(PDF_PATH, "");
+        String pdfName = request.get(PDF_NAME, "");
+        String pdfPwd = request.get(PDF_PASS_WORD, "");
+        String custName = request.get(CUST_NAME, "");
+        String idNo = request.get(ID_NO, "");
+        String mPhone = request.get(M_PHONE, "");
         String colabaseDemoPath = "colabaseDemo" + File.separator;
         String templateName = colabaseDemoPath + FTL_TEMPLETE_NAME;
         Boolean isDownlownPDF = false;
         String font = "";
         // 給PDF值
         Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("custName", custName);
-        dataMap.put("idNo", idNo);
-        dataMap.put("mPhone", mPhone);
-        dataMap.put("applyDate", CapDate.getCurrentDate(DATE_FORMAT));
-        dataMap.put("onlineSign", TEST_SIGN_WORDING);
+        dataMap.put(CUST_NAME, custName);
+        dataMap.put(ID_NO, idNo);
+        dataMap.put(M_PHONE, mPhone);
+        dataMap.put(APPLY_DATE, CapDate.getCurrentDate(DATE_FORMAT));
+        dataMap.put(ONLINE_SIGN, TEST_SIGN_WORDING);
         // PDF產生結果
         if (!CapString.isEmpty(pdfPath)) {
             try {
                 font = fontFactory.getFontPath(DEFAULT_FONT, "");
                 pdfService.processPdf(request, dataMap, templateName, pdfPath, pdfName, isDownlownPDF, pdfPwd, font);
-                result.set("pdfReslut", "ok");
+                result.set(PDF_RESULT, "ok");
             } catch (Exception e) {
-                e.printStackTrace();
-                result.set("pdfReslut", e.getMessage());
+                logger.debug(e.getMessage(), e);
+                result.set(PDF_RESULT, e.getMessage());
             }
         } else {
-            result.set("pdfReslut", "No PDF Generate Path.");
+            result.set(PDF_RESULT, "No PDF Generate Path.");
         }
         return result;
     }
@@ -98,29 +109,29 @@ public class PDFHandler extends MFormHandler {
      */
     public Result downloadPDF(Request request) {
         AjaxFormResult result = new AjaxFormResult();
-        String pdfName = request.get("PDF_NAME", "DWN_PDF");
-        String pdfPwd = request.get("PDF_PASSWORD", "");
-        String custName = request.get("custName", "");
-        String idNo = request.get("idNo", "");
-        String mPhone = request.get("mPhone", "");
+        String pdfName = request.get(PDF_NAME, "DWN_PDF");
+        String pdfPwd = request.get(PDF_PASS_WORD, "");
+        String custName = request.get(CUST_NAME, "");
+        String idNo = request.get(ID_NO, "");
+        String mPhone = request.get(M_PHONE, "");
         String colabaseDemoPath = "colabaseDemo" + File.separator;
         String templateName = colabaseDemoPath + FTL_TEMPLETE_NAME;
         Boolean isDownlownPDF = true;
         String font = "";
         // 給PDF值
         Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("custName", custName);
-        dataMap.put("idNo", idNo);
-        dataMap.put("mPhone", mPhone);
-        dataMap.put("applyDate", CapDate.getCurrentDate(DATE_FORMAT));
-        dataMap.put("onlineSign", TEST_SIGN_WORDING);
+        dataMap.put(CUST_NAME, custName);
+        dataMap.put(ID_NO, idNo);
+        dataMap.put(M_PHONE, mPhone);
+        dataMap.put(APPLY_DATE, CapDate.getCurrentDate(DATE_FORMAT));
+        dataMap.put(ONLINE_SIGN, TEST_SIGN_WORDING);
         // PDF產生結果
         try {
             font = fontFactory.getFontPath(DEFAULT_FONT, "");
             return pdfService.processPdf(request, dataMap, templateName, "", pdfName, isDownlownPDF, pdfPwd, font);
         } catch (Exception e) {
-            e.printStackTrace();
-            result.set("pdfReslut", e.getMessage());
+            logger.debug(e.getMessage(), e);
+            result.set(PDF_RESULT, e.getMessage());
         }
         return result;
     }
@@ -141,13 +152,13 @@ public class PDFHandler extends MFormHandler {
         if (!CapString.isEmpty(genMgPDFPath)) {
             try {
                 pdfService.mergePDFFiles(filesPath, genMgPDFPath, genMgPDFName);
-                result.set("pdfReslut", "ok");
+                result.set(PDF_RESULT, "ok");
             } catch (Exception e) {
-                e.printStackTrace();
-                result.set("pdfReslut", e.getMessage());
+                logger.debug(e.getMessage(), e);
+                result.set(PDF_RESULT, e.getMessage());
             }
         } else {
-            result.set("pdfReslut", "No Merge PDF Input Path.");
+            result.set(PDF_RESULT, "No Merge PDF Input Path.");
         }
         return result;
     }
@@ -166,13 +177,13 @@ public class PDFHandler extends MFormHandler {
         if (!CapString.isEmpty(partPDFPath)) {
             try {
                 pdfService.partitionPdfFile(partPDFPath, partPDFOutputPath, partPDFStartPage);
-                result.set("pdfReslut", "ok");
+                result.set(PDF_RESULT, "ok");
             } catch (Exception e) {
-                e.printStackTrace();
-                result.set("pdfReslut", e.getMessage());
+                logger.debug(e.getMessage(), e);
+                result.set(PDF_RESULT, e.getMessage());
             }
         } else {
-            result.set("pdfReslut", "No Partition PDF Input Path.");
+            result.set(PDF_RESULT, "No Partition PDF Input Path.");
         }
         return result;
     }
@@ -196,13 +207,13 @@ public class PDFHandler extends MFormHandler {
                 } else if (!CapString.isEmpty(wmPDFImgPath)) {
                     pdfService.addImgWatermark(wmPDFInputPath, wmPDFOutputPath, wmPDFImgPath);
                 }
-                result.set("pdfReslut", "ok");
+                result.set(PDF_RESULT, "ok");
             } catch (Exception e) {
-                e.printStackTrace();
-                result.set("pdfReslut", e.getMessage());
+                logger.debug(e.getMessage(), e);
+                result.set(PDF_RESULT, e.getMessage());
             }
         } else {
-            result.set("pdfReslut", "No PDF Add WaterMark Input Path.");
+            result.set(PDF_RESULT, "No PDF Add WaterMark Input Path.");
         }
         return result;
     }

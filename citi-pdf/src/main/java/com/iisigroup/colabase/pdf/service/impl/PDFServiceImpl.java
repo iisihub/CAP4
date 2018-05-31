@@ -16,9 +16,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
@@ -38,6 +35,7 @@ import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.colabase.pdf.report.CCBasePageReport;
 import com.iisigroup.colabase.pdf.service.PDFService;
 import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
@@ -58,7 +56,6 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
 
     @Autowired
     private ItextFontFactory fontFactory;
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     private static final String DEFAULT_FONT = "MSJH.TTF";// 微軟正黑體
     private static final String UNDER_LINE = "_";
     private static final String DEFAULT_ENCORDING = "utf-8";
@@ -84,8 +81,6 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
     @Override
     public Result processPdf(Request request, String pdfPath, String pdfName, ByteArrayDownloadResult pdfContent, Boolean isDownloadPDF, String encryptPassword, String font) {
         AjaxFormResult result = new AjaxFormResult();
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        OutputStream os = null;
         // PDF名稱
         String outputFileName = "";
         if (!CapString.isEmpty(pdfName)) {
@@ -100,7 +95,9 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
                 logger.debug(e.getMessage(), e);
             }
         }
-        try {
+        String encryptPdfOutputFilename = pdfPath + File.separator + outputFileName;
+        File encryptPdfFile = new File(encryptPdfOutputFilename);
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream(); OutputStream os = new FileOutputStream(encryptPdfFile);) {
             // 加密密碼，建立PDF名稱並產出
             String encrypt = CapString.trimNull(encryptPassword, "");
             genByRender(out, pdfContent.getByteArray(), encrypt, font);// gen encrypt Pdf
@@ -111,22 +108,18 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
                 if (!tempDir.exists()) {
                     tempDir.mkdirs();
                 }
-                String encryptPdfOutputFilename = pdfPath + File.separator + outputFileName;
-                File encryptPdfFile = new File(encryptPdfOutputFilename);
-                os = new FileOutputStream(encryptPdfFile);
                 out.writeTo(os);
             } else if (isDownloadPDF) {
                 // 直接下載PDF
-                ByteArrayDownloadResult downloadResult = new ByteArrayDownloadResult(request, out.toByteArray(), ContextTypeEnum.pdf.toString(), outputFileName);
-                return downloadResult;
+                if (out != null) {
+                    ByteArrayDownloadResult downloadResult = new ByteArrayDownloadResult(request, out.toByteArray(), ContextTypeEnum.pdf.toString(), outputFileName);
+                    return downloadResult;
+                }
             }
             result.set("isSuccess", true);
         } catch (Exception e) {
             logger.debug(e.getMessage(), e);
             result.set("isSuccess", false);
-        } finally {
-            IOUtils.closeQuietly(out);
-            IOUtils.closeQuietly(os);
         }
         return result;
     }
@@ -141,11 +134,11 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         ByteArrayDownloadResult pdfContent = null;
         if (pdfType.equals(PDFType.FTL) && !CapString.isEmpty(templateName)) {
             // process ftl template
-            Map<String, Object> contentMap = getPDFContent(request, dataMap);
+            Map<String, Object> contentMap = getPDFContent(dataMap);
             pdfContent = processPDFTemplate(request, templateName, contentMap);
         } else if (pdfType.equals(PDFType.HTML)) {
             // process HTML
-            pdfContent = (ByteArrayDownloadResult) request.getObject(PDFType.HTML.getPdfType());
+            pdfContent = (ByteArrayDownloadResult) request.getObject(PDFType.HTML.getTemplateType());
         }
         return pdfContent;
     }
@@ -159,17 +152,15 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
     public boolean mergePDFFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName) {
         boolean isSuccess = false;
         Document document = new Document();
-        OutputStream outputStream = null;
-        try {
-            // PDF名稱
-            String outputMergeFileName = "";
-            if (!CapString.isEmpty(mergerPDFName)) {
-                outputMergeFileName = mergerPDFName + ".pdf";
-            } else {
-                outputMergeFileName = defalutPDFName();
-            }
+        // PDF名稱
+        String outputMergeFileName = "";
+        if (!CapString.isEmpty(mergerPDFName)) {
+            outputMergeFileName = mergerPDFName + ".pdf";
+        } else {
+            outputMergeFileName = defalutPDFName();
+        }
+        try (OutputStream outputStream = new FileOutputStream(mergerPDFPath + File.separator + outputMergeFileName);) {
             document = new Document(new PdfReader(filesPath[0]).getPageSize(1));
-            outputStream = new FileOutputStream(mergerPDFPath + File.separator + outputMergeFileName);
             PdfCopy copy = new PdfCopy(document, outputStream);
             document.open();
             for (int i = 0; i < filesPath.length; i++) {
@@ -189,7 +180,6 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             if (document.isOpen()) {
                 document.close();
             }
-            IOUtils.closeQuietly(outputStream);
         }
         return isSuccess;
     }
@@ -208,7 +198,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             int n = reader.getNumberOfPages();
 
             if (n < partitionPageNum) {
-                logger.debug(String.valueOf(partitionPageNum), "The document does not have  {}  pages to partition !");
+                logger.debug("The document does not have  {}  pages to partition !", partitionPageNum);
                 throw new CapException();
             }
 
@@ -216,7 +206,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             String savepath = null;
             ArrayList<String> savepaths = new ArrayList<String>();
             for (int i = 1; i <= partitionPageNum; i++) {
-                savepath = inputFilePath.substring(inputFilePath.lastIndexOf("/") + 1, inputFilePath.length() - 4);
+                savepath = inputFilePath.substring(inputFilePath.lastIndexOf('/') + 1, inputFilePath.length() - 4);
                 if (i < 10) {
                     savepath = outputFilePath + File.separator + savepath + "_" + i + ".pdf";
                 } else {
@@ -262,7 +252,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * 
      * @see com.iisigroup.colabase.pdf.service.PDFService#addTextWatermark(java.lang.String, java.lang.String, java.lang.String)
      */
-    public void addTextWatermark(String inputFilePath, String outputFilePath, String textWatermark) throws Exception {
+    public void addTextWatermark(String inputFilePath, String outputFilePath, String textWatermark) throws DocumentException, IOException {
         Float opacity = 0.7f;// 透明度0.7
         int rotationDegree = 15;// 15度角
         BaseFont font = null;
@@ -280,7 +270,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * 
      * @see com.iisigroup.colabase.pdf.service.PDFService#addImgWatermark(java.lang.String, java.lang.String, java.lang.String)
      */
-    public void addImgWatermark(String inputFilePath, String outputFilePath, String imgWatermarkPath) throws Exception {
+    public void addImgWatermark(String inputFilePath, String outputFilePath, String imgWatermarkPath) throws DocumentException, IOException {
         Float opacity = 0.4f;// 透明度0.4
         int rotationDegree = 15;// 15度角
         this.addWatermark(inputFilePath, outputFilePath, "", imgWatermarkPath, null, 0, opacity, rotationDegree);
@@ -293,7 +283,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * int)
      */
     public boolean addWatermark(String inputFilePath, String outputFilePath, String textWatermark, String imgWatermarkPath, BaseFont font, float fontSize, Float opacity, int rotationDegree)
-            throws Exception {
+            throws DocumentException, IOException {
         boolean isSuccess = false;
         FileInputStream inputStream = new FileInputStream(inputFilePath);
         FileOutputStream outputStream = new FileOutputStream(outputFilePath);
@@ -330,9 +320,6 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             isSuccess = true;
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
-        } finally {
-            pageContent = null;
-            font = null;
         }
         pdfStamper.close();
         return isSuccess;
@@ -346,7 +333,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      *            PDF欄位值資料Map
      * @return
      */
-    private Map<String, Object> getPDFContent(Request request, Map<String, Object> dataMap) {
+    private Map<String, Object> getPDFContent(Map<String, Object> dataMap) {
         // pur image path
         final String PDF_IMG_PATH_KEY = "imgPath";
         final String PDF_IMG_FILE_LOCATION = "pdfImageFileLocation";
@@ -374,30 +361,20 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * @return
      */
     private ByteArrayDownloadResult processPDFTemplate(Request request, String templateName, Map<String, Object> contentMap) {
-        ByteArrayOutputStream out = null;
-        OutputStreamWriter wr = null;
-        FileInputStream is = null;
-        Writer writer = null;
-        try {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+                OutputStreamWriter wr = new OutputStreamWriter(out, getSysConfig().getProperty(PageReportParam.DEFAULT_ENCODING.toString(), DEFAULT_ENCORDING));
+                Writer writer = new BufferedWriter(wr);) {
             if (templateName != null) {
                 Configuration config = getFmConfg().getConfiguration();
                 Template t = config.getTemplate(templateName);
-                out = new ByteArrayOutputStream();
-                wr = new OutputStreamWriter(out, getSysConfig().getProperty(PageReportParam.defaultEncoding.toString(), DEFAULT_ENCORDING));
-                writer = new BufferedWriter(wr);
                 if (logger.isDebugEnabled()) {
-                    logger.debug("[processPDFTemplate] freemarker template name: {} , content data: {}", templateName, contentMap.toString());
+                    logger.debug("[processPDFTemplate] freemarker template name: {} , content data: {}", templateName, contentMap);
                 }
                 t.process(contentMap, writer);
             }
             return new ByteArrayDownloadResult(request, out.toByteArray(), ContextTypeEnum.text.toString());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-        } finally {
-            IOUtils.closeQuietly(out);
-            IOUtils.closeQuietly(wr);
-            IOUtils.closeQuietly(is);
-            IOUtils.closeQuietly(writer);
         }
         return null;
     }
@@ -413,9 +390,10 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      *            加密密碼
      * @param font
      *            自行
-     * @throws Exception
+     * @throws DocumentException
+     * @throws IOException
      */
-    private void genByRender(OutputStream out, byte[] pdfContent, String encrypt, String font) throws Exception {
+    private void genByRender(OutputStream out, byte[] pdfContent, String encrypt, String font) throws DocumentException, IOException {
         /**
          * just start your local test use VM Arguments : -Djavax.xml.transform.TransformerFactory="org.apache.xalan.xsltc.trax.TransformerFactoryImpl" to SVN
          */
@@ -452,17 +430,17 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      */
     private String defalutPDFName() {
         String convertTimestampToString = CapDate.convertTimestampToString(CapDate.getCurrentTimestamp(), "yyyyMMdd_hhmm_ss");
-        String defaultPDFName = "PDF" + UNDER_LINE + convertTimestampToString + ".pdf";
-        return defaultPDFName;
+        return "PDF" + UNDER_LINE + convertTimestampToString + ".pdf";
     }
 
     /**
      * Get BaseFont 微軟正黑體
      *
      * @return
-     * @throws Exception
+     * @throws IOException
+     * @throws DocumentException
      */
-    private BaseFont getBaseMSJHFont() throws Exception {
+    private BaseFont getBaseMSJHFont() throws DocumentException, IOException {
         return BaseFont.createFont(getMSJHFont(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
     }
 
@@ -470,9 +448,9 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * Get String 微軟正黑體
      * 
      * @return
-     * @throws Exception
+     * @throws IOException
      */
-    private String getMSJHFont() throws Exception {
+    private String getMSJHFont() throws IOException {
         return fontFactory.getFontPath(DEFAULT_FONT, "");
     }
 

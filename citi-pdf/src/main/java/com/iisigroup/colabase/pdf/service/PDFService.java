@@ -1,11 +1,13 @@
 package com.iisigroup.colabase.pdf.service;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
 import com.iisigroup.cap.exception.CapException;
+import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 
 public interface PDFService {
@@ -13,14 +15,14 @@ public interface PDFService {
     public enum PDFType {
         FTL("ftl"),
         HTML("html");
-        private String pdfType;
+        private String templateType;
 
-        public String getPdfType() {
-            return pdfType;
+        public String getTemplateType() {
+            return templateType;
         }
 
-        private PDFType(String pdfType) {
-            this.pdfType = pdfType;
+        private PDFType(String templateType) {
+            this.templateType = templateType;
         }
     }
 
@@ -116,9 +118,11 @@ public interface PDFService {
      *            加入浮水印後PDF產出路徑
      * @param textWatermark
      *            文字浮水印
+     * @throws IOException
+     * @throws DocumentException
      * @throws Exception
      */
-    public void addTextWatermark(String inputFilePath, String outputFilePath, String textWatermark) throws Exception;
+    public void addTextWatermark(String inputFilePath, String outputFilePath, String textWatermark) throws DocumentException, IOException;
 
     /**
      * PDF 加入圖片浮水印
@@ -129,9 +133,11 @@ public interface PDFService {
      *            加入浮水印後PDF產出路徑
      * @param imgWatermarkPath
      *            圖片浮水印路徑
+     * @throws IOException
+     * @throws DocumentException
      * @throws Exception
      */
-    public void addImgWatermark(String inputFilePath, String outputFilePath, String imgWatermarkPath) throws Exception;
+    public void addImgWatermark(String inputFilePath, String outputFilePath, String imgWatermarkPath) throws DocumentException, IOException;
 
     /**
      * PDF 加入浮水印
@@ -152,9 +158,11 @@ public interface PDFService {
      *            透明度
      * @param rotationDegree
      *            浮水印旋轉角度
+     * @throws IOException
+     * @throws DocumentException
      * @throws Exception
      */
     public boolean addWatermark(String inputFilePath, String outputFilePath, String textWatermark, String imgWatermarkPath, BaseFont font, float fontSize, Float opacity, int rotationDegree)
-            throws Exception;
+            throws DocumentException, IOException;
 
 }
