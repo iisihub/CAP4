@@ -111,10 +111,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
                 out.writeTo(os);
             } else if (isDownloadPDF) {
                 // 直接下載PDF
-                if (out != null) {
-                    ByteArrayDownloadResult downloadResult = new ByteArrayDownloadResult(request, out.toByteArray(), ContextTypeEnum.pdf.toString(), outputFileName);
-                    return downloadResult;
-                }
+                return new ByteArrayDownloadResult(request, out.toByteArray(), ContextTypeEnum.pdf.toString(), outputFileName);
             }
             result.set("isSuccess", true);
         } catch (Exception e) {
@@ -192,8 +189,8 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
     public boolean partitionPdfFile(String inputFilePath, String outputFilePath, int partitionPageNum) {
         boolean isSuccess = false;
         Document document = null;
-        PdfCopy copy = null;
         try {
+            PdfCopy copy = null;
             PdfReader reader = new PdfReader(inputFilePath);
             int n = reader.getNumberOfPages();
 
