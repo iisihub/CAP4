@@ -178,7 +178,7 @@ public class OTPServiceImpl implements OTPService {
         }
         if ("true".equalsIgnoreCase(proxyEnable)) {
             if (StringUtils.isBlank(proxyHost) || StringUtils.isBlank(proxyPort)) {
-                logger.warn("proxy doesn't set.", getClass());
+                logger.warn("proxy doesn't set.{}", getClass());
             }
         } else {
             proxyHost = null;
