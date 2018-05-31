@@ -16,10 +16,6 @@ import com.iisigroup.colabase.import_.model.ImportCustomer;
 @Repository("importCustomerDao")
 public class ImportCustomerDaoImpl extends GenericDaoImpl<ImportCustomer> implements ImportCustomerDao {
 
-    public ImportCustomerDaoImpl(){
-        
-    }
-
     public List spImport(String[] importFiles, String[] storedProcedureNames) {
         
         List list = new ArrayList();
