@@ -201,10 +201,9 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
 
             int size = n / partitionPageNum;
             String savePath = null;
-            String savePathName = null;
+            String savePathName = inputFilePath.substring(inputFilePath.lastIndexOf('/') + 1, inputFilePath.length() - 4);
             ArrayList<String> savePaths = new ArrayList<String>();
             for (int i = 1; i <= partitionPageNum; i++) {
-                savePathName = inputFilePath.substring(inputFilePath.lastIndexOf('/') + 1, inputFilePath.length() - 4);
                 if (i < 10) {
                     savePath = outputFilePath + File.separator + savePathName + "_" + i + ".pdf";
                 } else {
