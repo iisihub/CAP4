@@ -23,11 +23,6 @@ import com.iisigroup.colabase.import_.service.ImportFileService;
 @Service
 public class ImportFileServiceImpl implements ImportFileService {
 
-    
-    public ImportFileServiceImpl(){
-
-    }
-
     public ImportFileServiceImpl(ImportCustomerDao custDao){
         this.custDao = custDao;
     }
@@ -37,7 +32,7 @@ public class ImportFileServiceImpl implements ImportFileService {
     @Autowired
     private ImportCustomerDao custDao;
     
-    private static final String fileDateFormat = "yyyyMMdd";
+    private static final String FILE_DATE_FORMAT = "yyyyMMdd";
 
     /**
      * 判斷.bak檔案是否超過指定的天數
@@ -83,11 +78,11 @@ public class ImportFileServiceImpl implements ImportFileService {
         if (file.exists() && file.canRead()) {
             long modifiedTime = file.lastModified();
             Timestamp tsp = new Timestamp(modifiedTime);
-            String fileDate = CapDate.convertTimestampToString(tsp, fileDateFormat);
+            String fileDate = CapDate.convertTimestampToString(tsp, FILE_DATE_FORMAT);
             logger.debug("checkFileModifiedDate>>>>檢查日期(原格式):" + date);
             logger.debug("checkFileModifiedDate>>>>檔案日期(yyyyMMdd):" + fileDate);
             if(CapDate.validDate(date, dateFormat)){
-                String checkDate = CapDate.convertDateTimeFromF1ToF2(date, dateFormat, fileDateFormat);
+                String checkDate = CapDate.convertDateTimeFromF1ToF2(date, dateFormat, FILE_DATE_FORMAT);
                 logger.debug("checkFileModifiedDate>>>>檢查日期(yyyyMMdd):" + checkDate);
                 if(checkDate!=null && checkDate.equals(fileDate)){
                     logger.debug("checkFileModifiedDate>>>>true");
@@ -110,11 +105,11 @@ public class ImportFileServiceImpl implements ImportFileService {
         File file = new File(filePath, fileName);
         Integer lineNumber = 0;
         if(file.exists() && file.canRead()){
-            FileReader fr = null;
-            LineNumberReader lnr = null;
-            try {
-                fr = new FileReader(file);
-                lnr = new LineNumberReader(fr);
+//            FileReader fr = null;
+//            LineNumberReader lnr = null;
+            try (LineNumberReader lnr = new LineNumberReader(new FileReader(file))) {
+//                fr = new FileReader(file);
+//                lnr = new LineNumberReader(fr);
                 String line = "";
                 while ((line = lnr.readLine()) != null && !"".equals(line)) { // 除了判斷讀取到的行訊息是否為null之外，最好也加上是否為空白的判斷。
                     lineNumber = lnr.getLineNumber();
@@ -122,22 +117,23 @@ public class ImportFileServiceImpl implements ImportFileService {
                 }
             } catch (IOException e) {
                 logger.error("countLines fail >>>" + e.getMessage(), e);
-            } finally {
-                if (lnr != null) {
-                    try {
-                        lnr.close();
-                    } catch (IOException e) {
-                        logger.error("close LineNumberReader fail >>>" + e.getMessage(), e);
-                    }
-                }
-                if (fr != null) {
-                    try {
-                        fr.close();
-                    } catch (IOException e) {
-                        logger.error("close FileReader fail >>>" + e.getMessage(), e);
-                    }
-                }
             }
+//            finally {
+//                if (lnr != null) {
+//                    try {
+//                        lnr.close();
+//                    } catch (IOException e) {
+//                        logger.error("close LineNumberReader fail >>>" + e.getMessage(), e);
+//                    }
+//                }
+//                if (fr != null) {
+//                    try {
+//                        fr.close();
+//                    } catch (IOException e) {
+//                        logger.error("close FileReader fail >>>" + e.getMessage(), e);
+//                    }
+//                }
+//            }
         }else{
             throw new CapMessageException("讀取不存在或無法讀取，無法算資料筆數", getClass());
         }

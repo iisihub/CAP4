@@ -2,9 +2,11 @@ package com.iisigroup.colabase.import_.dao.impl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 
 import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
@@ -30,8 +32,9 @@ public class ImportCustomerDaoImpl extends GenericDaoImpl<ImportCustomer> implem
                     logger.info("SP Import DEMO_CUSTOMER Result: File Not Found");
                 }
                 String sp = storedProcedureNames[i];
-                Query storedProcedure = getEntityManager().createNativeQuery("exec " + sp + " ?1");
-                storedProcedure.setParameter(1, importFile);
+                Query storedProcedure = getEntityManager().createNativeQuery("exec " + "?1" + " ?2");
+                storedProcedure.setParameter(1, sp);
+                storedProcedure.setParameter(2, importFile);
                 list = storedProcedure.getResultList();
                 logger.info("SP Import DEMO_CUSTOMER Result:");
                 for (Object s : list) {
@@ -39,9 +42,9 @@ public class ImportCustomerDaoImpl extends GenericDaoImpl<ImportCustomer> implem
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("*****無法匯入檔案 Exception:", e);
             list.add(e.getMessage());
-            list.add(e.getStackTrace().toString());
+            list.add(Arrays.toString(e.getStackTrace()));
         }
         return list;
     }
@@ -55,14 +58,15 @@ public class ImportCustomerDaoImpl extends GenericDaoImpl<ImportCustomer> implem
                     System.out.println("File Not Found");
                     logger.info("SP Import DEMO_CUSTOMER Result: File Not Found");
                 }
-                Query storedProcedure = getEntityManager().createNativeQuery("exec " + storedProcedureName + " ?1");
-                storedProcedure.setParameter(1, importFile);
+                Query storedProcedure = getEntityManager().createNativeQuery("exec " + "?1" + " ?2");
+                storedProcedure.setParameter(1, storedProcedureName);
+                storedProcedure.setParameter(2, importFile);
                 list = storedProcedure.getResultList();
                 logger.info(storedProcedureName + " result: " + list.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("*****無法匯入檔案 Exception:", e);
             list.add(e.getMessage());
-            list.add(e.getStackTrace().toString());
+            list.add(Arrays.toString(e.getStackTrace()));
         }
         return list;
     }

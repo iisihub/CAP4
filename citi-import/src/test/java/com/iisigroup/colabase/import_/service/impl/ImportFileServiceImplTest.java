@@ -44,31 +44,19 @@ public class ImportFileServiceImplTest {
 
     @Test
     public void testCheckTime() throws Exception {
-        ImportFileServiceImpl test = new ImportFileServiceImpl();
-//        String filePath = "D:/TEST/TEST_EXPORT/";
-//        String fileName = "demo_customer_gen_data.txt";
-//        int days = 50;
-        boolean result = test.checkTime(filePath, fileName, days);
+        boolean result = importFileService.checkTime(filePath, fileName, days);
         assertEquals(true, result);
     }
     
     @Test
     public void testCheckDate() throws Exception {
-        ImportFileServiceImpl test = new ImportFileServiceImpl();
-//        String filePath = "D:/TEST/TEST_EXPORT/";
-//        String fileName = "demo_customer_gen_data.txt";
-//        String date = "20180417";
-//        String dateFormat = "yyyyMMdd";
-        boolean result = test.checkDate(filePath, fileName, date, dateFormat);
+        boolean result = importFileService.checkDate(filePath, fileName, date, dateFormat);
         assertEquals(true, result);
     }
     
     @Test
     public void testCountRows() throws Exception {
-        ImportFileServiceImpl test = new ImportFileServiceImpl();
-//        String filePath = "D:/TEST/TEST_EXPORT/";
-//        String fileName = "demo_customer_gen_data.txt";
-        int result = test.countRows(filePath, fileName);
+        int result = importFileService.countRows(filePath, fileName);
         assertEquals(count, result);
     }
 
