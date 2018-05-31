@@ -200,21 +200,22 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             }
 
             int size = n / partitionPageNum;
-            String savepath = null;
-            ArrayList<String> savepaths = new ArrayList<String>();
+            String savePath = null;
+            String savePathName = null;
+            ArrayList<String> savePaths = new ArrayList<String>();
             for (int i = 1; i <= partitionPageNum; i++) {
-                savepath = inputFilePath.substring(inputFilePath.lastIndexOf('/') + 1, inputFilePath.length() - 4);
+                savePathName = inputFilePath.substring(inputFilePath.lastIndexOf('/') + 1, inputFilePath.length() - 4);
                 if (i < 10) {
-                    savepath = outputFilePath + File.separator + savepath + "_" + i + ".pdf";
+                    savePath = outputFilePath + File.separator + savePathName + "_" + i + ".pdf";
                 } else {
-                    savepath = outputFilePath + File.separator + savepath + i + ".pdf";
+                    savePath = outputFilePath + File.separator + savePathName + i + ".pdf";
                 }
-                savepaths.add(savepath);
+                savePaths.add(savePath);
             }
 
             for (int i = 0; i < partitionPageNum - 1; i++) {
                 document = new Document(reader.getPageSize(1));
-                copy = new PdfCopy(document, new FileOutputStream(savepaths.get(i)));
+                copy = new PdfCopy(document, new FileOutputStream(savePaths.get(i)));
                 document.open();
                 for (int j = size * i + 1; j <= size * (i + 1); j++) {
                     document.newPage();
@@ -225,7 +226,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             }
 
             document = new Document(reader.getPageSize(1));
-            copy = new PdfCopy(document, new FileOutputStream(savepaths.get(partitionPageNum - 1)));
+            copy = new PdfCopy(document, new FileOutputStream(savePaths.get(partitionPageNum - 1)));
             document.open();
             for (int j = size * (partitionPageNum - 1) + 1; j <= n; j++) {
                 document.newPage();
