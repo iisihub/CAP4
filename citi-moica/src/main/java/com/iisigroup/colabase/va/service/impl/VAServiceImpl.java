@@ -385,7 +385,7 @@ public class VAServiceImpl implements VAService {
             crlCertDao.batchSave(crlCerts);
             LOGGER.debug("Finish save MOICA{} - cost time : {} ms", crlType, System.currentTimeMillis() - startTime);
         } catch (Exception e) {
-            ret = CryptoLibrary.ERROR_CRL_Exception;
+            ret = CryptoLibrary.ERROR_CRL_EXCEPTION;
             LOGGER.error(e.getMessage(), e);
         }
         return ret;

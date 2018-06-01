@@ -150,7 +150,7 @@ public class ICSCChecker {
                         if (ret == -2) {
                             ErrorMsg = "icscapi.iMake_ToBeSignedData 無法產生憑證檔的拇指紋.";
                         }
-                        ret = CryptoLibrary.Error_CALL_HiSecureAPI;
+                        ret = CryptoLibrary.ERROR_CALL_HISECUREAPI;
                         break;
                     }
                     // Sign process
@@ -161,7 +161,7 @@ public class ICSCChecker {
                 } catch (Exception ex) {
                     ErrorMsg = ex.toString();
                     ex.printStackTrace();
-                    ret = CryptoLibrary.Error_CALL_HiSecure_Exception;
+                    ret = CryptoLibrary.ERROR_CALL_HISECURE_EXCEPTION;
                     break;
                 }
 

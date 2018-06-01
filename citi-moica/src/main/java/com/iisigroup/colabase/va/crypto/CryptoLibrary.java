@@ -94,7 +94,7 @@ public final class CryptoLibrary {
     /**
      * 執行CRL檔分解發生錯誤
      */
-    public static final int ERROR_CRL_Exception = 0x2000;
+    public static final int ERROR_CRL_EXCEPTION = 0x2000;
     /**
      * CRL 檔尚未生效
      */
@@ -111,7 +111,7 @@ public final class CryptoLibrary {
     /**
      * OCSP 之Req與Resp的None內容不一致
      */
-    public static final int ERROR_OCSP_Nonce = 0x3001;
+    public static final int ERROR_OCSP_NONCE = 0x3001;
     /**
      * 該憑證已廢止或狀態未明
      */
@@ -120,7 +120,7 @@ public final class CryptoLibrary {
     /**
      * 驗章憑證發生錯誤
      */
-    public static final int ERROR_CERT_Exception = 0x4000;
+    public static final int ERROR_CERT_EXCEPTION = 0x4000;
     /**
      * 憑證尚未生效
      */
@@ -133,7 +133,7 @@ public final class CryptoLibrary {
     /**
      * CRL 驗證發生錯誤
      */
-    public static final int ERROR_CERT_CRL_VERIFY_Exception = 0x5000;
+    public static final int ERROR_CERT_CRL_VERIFY_EXCEPTION = 0x5000;
     /**
      * 憑證已廢止
      */
@@ -151,11 +151,11 @@ public final class CryptoLibrary {
     /**
      * 使用中華電信API錯誤
      */
-    public static final int Error_CALL_HiSecureAPI = 0x7001;
+    public static final int ERROR_CALL_HISECUREAPI = 0x7001;
     /**
      * 執行驗證身份錯誤
      */
-    public static final int Error_CALL_HiSecure_Exception = 0x7002;
+    public static final int ERROR_CALL_HISECURE_EXCEPTION = 0x7002;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CryptoLibrary.class);
 
@@ -404,20 +404,11 @@ public final class CryptoLibrary {
      */
     public static RSAKeyParameters getRSAPubKey(byte[] data) {
         RSAKeyParameters ret = null;
-        ASN1InputStream ais = null;
-        try {
-            ais = new ASN1InputStream(data);
+        try (ASN1InputStream ais = new ASN1InputStream(data);) {
             RSAPublicKey pubKS = RSAPublicKey.getInstance(ais.readObject());
             ret = new RSAKeyParameters(false, pubKS.getModulus(), pubKS.getPublicExponent());
         } catch (Exception e) {
-        } finally {
-            if (ais != null) {
-                try {
-                    ais.close();
-                } catch (IOException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
-            }
+            LOGGER.error(e.getMessage(), e);
         }
         return ret;
     }
@@ -430,21 +421,12 @@ public final class CryptoLibrary {
      */
     public static RSAKeyParameters getRSAPriKey(byte[] data) {
         RSAKeyParameters ret = null;
-        ASN1InputStream ais = null;
-        try {
-            ais = new ASN1InputStream(data);
+        try (ASN1InputStream ais = new ASN1InputStream(data);){
             RSAPrivateKey priKS = RSAPrivateKey.getInstance(ais.readObject());
             ret = new RSAPrivateCrtKeyParameters(priKS.getModulus(), priKS.getPublicExponent(), priKS.getPrivateExponent(), priKS.getPrime1(), priKS.getPrime2(), priKS.getExponent1(),
                     priKS.getExponent2(), priKS.getCoefficient());
         } catch (Exception e) {
-        } finally {
-            if (ais != null) {
-                try {
-                    ais.close();
-                } catch (IOException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
-            }
+            LOGGER.error(e.getMessage(), e);
         }
         return ret;
     }
@@ -483,8 +465,7 @@ public final class CryptoLibrary {
         try {
             if (rsaKey.isPrivate()) {
                 RSAPrivateCrtKeyParameters rsaPri = (RSAPrivateCrtKeyParameters) rsaKey;
-                priKS = new RSAPrivateKey(rsaPri.getModulus(), rsaPri.getPublicExponent(), rsaPri.getExponent(), rsaPri.getP(), rsaPri.getQ(), rsaPri.getDP(), rsaPri.getDQ(),
-                        rsaPri.getQInv());
+                priKS = new RSAPrivateKey(rsaPri.getModulus(), rsaPri.getPublicExponent(), rsaPri.getExponent(), rsaPri.getP(), rsaPri.getQ(), rsaPri.getDP(), rsaPri.getDQ(), rsaPri.getQInv());
                 ret = priKS.getEncoded();
             }
         } catch (Exception e) {
@@ -647,17 +628,10 @@ public final class CryptoLibrary {
     public static Certificate[] getP7bCerts(byte[] p7bDer) {
         Certificate[] ret = null;
         do {
-            ASN1InputStream ais = null;
-            try {
-                if (p7bDer == null) {
-                    break;
-                }
-
-                if (p7bDer[0] == 0x30) {
-                    ais = new ASN1InputStream(p7bDer);
-                } else {
-                    ais = new ASN1InputStream(base64Decode(new String(p7bDer)));
-                }
+            if (p7bDer == null) {
+                break;
+            }
+            try (ASN1InputStream ais = p7bDer[0] == 0x30 ? new ASN1InputStream(p7bDer) : new ASN1InputStream(base64Decode(new String(p7bDer)))){
                 ContentInfo p7bContent = ContentInfo.getInstance((ASN1Sequence) ais.readObject());
                 if (!p7bContent.getContentType().equals(PKCSObjectIdentifiers.signedData)) {
                     break;
@@ -670,14 +644,6 @@ public final class CryptoLibrary {
                 }
             } catch (Exception e) {
                 ret = null;
-            } finally {
-                if (ais != null) {
-                    try {
-                        ais.close();
-                    } catch (IOException e) {
-                        LOGGER.error(e.getMessage(), e);
-                    }
-                }
             }
         } while (false);
         return ret;
@@ -693,28 +659,14 @@ public final class CryptoLibrary {
     public static Certificate getX509Cert(byte[] x509der) {
         Certificate ret = null;
         do {
-            ASN1InputStream ais = null;
-            try {
-                if (x509der == null) {
-                    break;
-                }
-                if (x509der[0] == 0x30) {
-                    ais = new ASN1InputStream(x509der);
-                } else {
-                    byte[] der = base64Decode(new String(x509der));
-                    ais = new ASN1InputStream(der);
-                }
+            if (x509der == null) {
+                break;
+            }
+            byte[] der = base64Decode(new String(x509der));
+            try (ASN1InputStream ais = x509der[0] == 0x30 ? new ASN1InputStream(x509der) : new ASN1InputStream(der)){
                 ret = Certificate.getInstance((ASN1Sequence) ais.readObject());
             } catch (Exception e) {
                 ret = null;
-            } finally {
-                if (ais != null) {
-                    try {
-                        ais.close();
-                    } catch (IOException e) {
-                        LOGGER.error(e.getMessage(), e);
-                    }
-                }
             }
         } while (false);
         return ret;
@@ -805,23 +757,14 @@ public final class CryptoLibrary {
      */
     public static CertificateList parseCRL(byte[] crlData) {
         CertificateList ret = null;
-        ASN1InputStream ais = null;
         do {
-            try {
+            try (ASN1InputStream ais = new ASN1InputStream(crlData);){
                 if (crlData == null) {
                     break;
                 }
-                ais = new ASN1InputStream(crlData);
                 ret = CertificateList.getInstance((ASN1Sequence) ais.readObject());
             } catch (Exception e) {
                 LOGGER.error(e.getMessage(), e);
-            } finally {
-                if (ais != null) {
-                    try {
-                        ais.close();
-                    } catch (IOException e) {
-                    }
-                }
             }
         } while (false);
         return ret;
@@ -870,6 +813,7 @@ public final class CryptoLibrary {
 
     /**
      * 檢驗 CRL 有效性
+     * 
      * @param crl
      * @return
      */
@@ -902,7 +846,7 @@ public final class CryptoLibrary {
                 }
             }
         } catch (Exception e) {
-            ret = ERROR_CRL_Exception;
+            ret = ERROR_CRL_EXCEPTION;
             LOGGER.error(e.getMessage(), e);
         }
         return ret;
@@ -999,7 +943,7 @@ public final class CryptoLibrary {
         } catch (CertificateNotYetValidException ex) {
             ret = CryptoLibrary.ERROR_CERT_NOT_YET_VALIE;
         } catch (Exception ex) {
-            ret = CryptoLibrary.ERROR_CERT_Exception;
+            ret = CryptoLibrary.ERROR_CERT_EXCEPTION;
         }
         return ret;
     }
@@ -1034,7 +978,7 @@ public final class CryptoLibrary {
         String ret = null;
         X500Name x500name = x509Cert.getSubject();
         RDN[] rdns = x500name.getRDNs(BCStyle.CN);
-        if(rdns.length > 0) {
+        if (rdns.length > 0) {
             RDN rdn = x500name.getRDNs(BCStyle.CN)[0];
             // TODO check if work
             ret = rdn.toString();
@@ -1308,21 +1252,12 @@ public final class CryptoLibrary {
                 ASN1OctetString oct = extVal.getExtnValue();
 
                 if (oid.equals(Extension.authorityKeyIdentifier)) {
-                    ASN1InputStream extIn = null;
-                    try {
-                        extIn = new ASN1InputStream(new ByteArrayInputStream(oct.getOctets()));
+                    try (ASN1InputStream extIn = new ASN1InputStream(new ByteArrayInputStream(oct.getOctets()));){
+                        
                         AuthorityKeyIdentifier aki = AuthorityKeyIdentifier.getInstance(extIn.readObject());
                         ret = CryptoLibrary.hexEncode(aki.getKeyIdentifier()).toUpperCase();
                     } catch (Exception e) {
                         LOGGER.error(e.getMessage(), e);
-                    } finally {
-                        if (extIn != null) {
-                            try {
-                                extIn.close();
-                            } catch (IOException e) {
-                                LOGGER.error(e.getMessage(), e);
-                            }
-                        }
                     }
                 }
 
@@ -1353,21 +1288,11 @@ public final class CryptoLibrary {
                 ASN1OctetString oct = extVal.getExtnValue();
 
                 if (oid.equals(Extension.subjectKeyIdentifier)) {
-                    ASN1InputStream extIn = null;
-                    try {
-                        extIn = new ASN1InputStream(new ByteArrayInputStream(oct.getOctets()));
+                    try (ASN1InputStream extIn = new ASN1InputStream(new ByteArrayInputStream(oct.getOctets()));){
                         SubjectKeyIdentifier ski = SubjectKeyIdentifier.getInstance(extIn.readObject());
                         ret = CryptoLibrary.hexEncode(ski.getKeyIdentifier()).toUpperCase();
                     } catch (Exception e) {
                         LOGGER.error(e.getMessage(), e);
-                    } finally {
-                        if (extIn != null) {
-                            try {
-                                extIn.close();
-                            } catch (IOException e) {
-                                LOGGER.error(e.getMessage(), e);
-                            }
-                        }
                     }
                 }
 
@@ -1563,10 +1488,6 @@ public final class CryptoLibrary {
             try {
                 x509 = new X509CertificateObject(thisCert);
                 x509.checkValidity();
-            } catch (java.security.cert.CertificateExpiredException eExp) {
-                caCertsList.remove(certSKI);
-            } catch (java.security.cert.CertificateNotYetValidException eExp) {
-                caCertsList.remove(certSKI);
             } catch (Exception eExp) {
                 caCertsList.remove(certSKI);
             }
@@ -1589,7 +1510,7 @@ public final class CryptoLibrary {
                 break;
             }
             String issuerCN = "";
-            Vector crlSerialList = new Vector();
+            ArrayList crlSerialList = new ArrayList();
             boolean crlFalure = false;
             try {
                 Extensions crlExt = crl.getTBSCertList().getExtensions();
@@ -1624,7 +1545,7 @@ public final class CryptoLibrary {
                     crlSerialList.add(crlCertsEntry[i].getUserCertificate().getValue()); // 放 BigInteger
                 }
             } catch (Exception e) {
-                ret = ERROR_CRL_Exception;
+                ret = ERROR_CRL_EXCEPTION;
                 LOGGER.error(e.getMessage(), e);
                 break;
             }
@@ -1721,10 +1642,8 @@ public final class CryptoLibrary {
         AuthorityInformationAccess authorityInformationAccess = null;
         String OCSPUrl = null;
         do {
-            ASN1InputStream asn1InOctets = null;
-            try {
-                DEROctetString aiaDEROctetString = (DEROctetString) certst.getTBSCertificate().getExtensions().getExtension(Extension.authorityInfoAccess).getExtnValue();
-                asn1InOctets = new ASN1InputStream(aiaDEROctetString.getOctets());
+            DEROctetString aiaDEROctetString = (DEROctetString) certst.getTBSCertificate().getExtensions().getExtension(Extension.authorityInfoAccess).getExtnValue();
+            try (ASN1InputStream asn1InOctets = new ASN1InputStream(aiaDEROctetString.getOctets());){
                 ASN1Sequence aiaASN1Sequence = (ASN1Sequence) asn1InOctets.readObject();
                 authorityInformationAccess = AuthorityInformationAccess.getInstance(aiaASN1Sequence);
 
@@ -1738,14 +1657,6 @@ public final class CryptoLibrary {
                 }
             } catch (IOException e) {
                 break;
-            } finally {
-                if (asn1InOctets != null) {
-                    try {
-                        asn1InOctets.close();
-                    } catch (IOException e) {
-                        LOGGER.error(e.getMessage(), e);
-                    }
-                }
             }
         } while (false);
         return OCSPUrl;
@@ -1754,8 +1665,6 @@ public final class CryptoLibrary {
     private static int a(byte[] paramArrayOfByte1, byte[] paramArrayOfByte2) {
         int j = 0;
         for (int i = 0; i < paramArrayOfByte1.length - paramArrayOfByte2.length; i++) {
-            for (j = 0; (j < paramArrayOfByte2.length) && (paramArrayOfByte1[(i + j)] == paramArrayOfByte2[j]); j++) {
-            }
             if (j == paramArrayOfByte2.length) {
                 return i;
             }
@@ -1857,7 +1766,7 @@ public final class CryptoLibrary {
                 BigInteger nonce = BigInteger.valueOf(System.currentTimeMillis());
 
                 Extension ex = new Extension(OCSPObjectIdentifiers.id_pkix_ocsp_nonce, false, new DEROctetString(nonce.toByteArray()));
-                ocspGen.setRequestExtensions(new Extensions (ex));
+                ocspGen.setRequestExtensions(new Extensions(ex));
                 Req = ocspGen.build();
             } catch (Exception e) {
                 break;
@@ -1930,7 +1839,7 @@ public final class CryptoLibrary {
                         }
                     }
                 } else {
-                    ret = ERROR_OCSP_Nonce;
+                    ret = ERROR_OCSP_NONCE;
                 }
 
             } catch (Exception e) {
@@ -2000,6 +1909,7 @@ public final class CryptoLibrary {
                 ret = crl.getNextUpdate().getDate();
             }
         } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
         }
         return ret;
     }
