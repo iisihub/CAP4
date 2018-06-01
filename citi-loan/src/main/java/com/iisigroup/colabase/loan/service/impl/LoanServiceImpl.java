@@ -21,7 +21,7 @@ public class LoanServiceImpl implements LoanService {
 
     public LoanInfo calFixedFee(BigDecimal amount, int tenor, BigDecimal eppRate, BigDecimal upfrontFee) {
         logger.debug("calFixedFee => ");
-        logger.debug("amount : {}, tenor : {}, eppRate : {}, upfrontFee : {}", amount.toString(), tenor, eppRate.toString(), upfrontFee.toString());
+        logger.debug("amount : {}, tenor : {}, eppRate : {}, upfrontFee : {}", amount, tenor, eppRate, upfrontFee);
         LoanInfo loanInfo = new LoanInfo();
         loanInfo.setAmount(amount);
         loanInfo.setFirstEppRate(eppRate);
@@ -83,7 +83,7 @@ public class LoanServiceImpl implements LoanService {
 
     public LoanInfo calTwoTierFee(BigDecimal amount, int tenor, int firstTenor, BigDecimal firstEppRate, BigDecimal secondEppRate, BigDecimal upfrontFee) {
         logger.debug("calTwoTierFee=> ");
-        logger.debug("amount: {}, tenor: {}, firstTenor: {}, firstEppRate: {}, secondEppRate: {}, upfrontFee: {}", amount.toString(), tenor, firstTenor, firstEppRate.toString(), secondEppRate.toString(), upfrontFee.toString());
+        logger.debug("amount: {}, tenor: {}, firstTenor: {}, firstEppRate: {}, secondEppRate: {}, upfrontFee: {}", amount, tenor, firstTenor, firstEppRate, secondEppRate, upfrontFee);
         LoanInfo loanInfo = new LoanInfo();
         loanInfo.setAmount(amount);
         loanInfo.setFirstEppRate(firstEppRate);
@@ -157,13 +157,6 @@ public class LoanServiceImpl implements LoanService {
         BigDecimal apr = calAPR(details, firstMonthRate).multiply(BigDecimal.valueOf(12));
         logger.debug("\rapr       : {}%", apr.multiply(BigDecimal.valueOf(100)).setScale(4, BigDecimal.ROUND_HALF_UP));
         logger.debug("cost      : {}", (System.currentTimeMillis() - now));
-        // now = System.currentTimeMillis();
-        // apr = calAPR1(details, monthRate).multiply(BigDecimal.valueOf(12));
-        // logger.debug("\rapr       : "
-        // + apr.multiply(BigDecimal.valueOf(100)).setScale(4,
-        // BigDecimal.ROUND_HALF_UP) + "%");
-        // logger.debug("cost      : " + (System.currentTimeMillis() -
-        // now));
         loanInfo.setApr(apr);
         return loanInfo;
     }
@@ -208,7 +201,7 @@ public class LoanServiceImpl implements LoanService {
             }
             // apr = guess - npv / derivative
             apr = guess.subtract(npv.setScale(SCALE, BigDecimal.ROUND_HALF_UP).divide(derivative, BigDecimal.ROUND_HALF_UP));
-            logger.debug("\rguess     : {}", guess.toString());
+            logger.debug("\rguess     : {}", guess);
             logger.debug("npv       : {}", npv);
             logger.debug("derivative: {}", derivative);
             logger.debug("apr'      : {}'", apr);
@@ -246,7 +239,7 @@ public class LoanServiceImpl implements LoanService {
             }
             if (i != 0) {
                 apr = guess.subtract(npv.multiply(guess.subtract(_guess).setScale(SCALE).divide(npv.subtract(_npv), BigDecimal.ROUND_HALF_UP)));
-                logger.debug("\rguess     : {}", guess.toString());
+                logger.debug("\rguess     : {}", guess);
                 logger.debug("npv       : {}", npv);
                 logger.debug("apr'      : {}'", apr);
                 if (apr.subtract(guess).abs().doubleValue() > absoluteAccuracy) {
