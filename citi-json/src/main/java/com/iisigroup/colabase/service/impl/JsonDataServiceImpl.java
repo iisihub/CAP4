@@ -407,7 +407,6 @@ public class JsonDataServiceImpl implements JsonDataService {
                 // 最後如果array變為空則把自己再刪掉
                 if (array.size() == 0) {
                     iterator.remove();
-                    continue;
                 }
                 continue;
             }

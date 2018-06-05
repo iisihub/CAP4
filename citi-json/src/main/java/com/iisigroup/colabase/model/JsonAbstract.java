@@ -55,11 +55,9 @@ public abstract class JsonAbstract implements Json {
 
     @Override
     public String toString() {
-        String stringBuilder =
-                "arrayMap: " + arrayMap.toString() + "\n" +
+        return "arrayMap: " + arrayMap.toString() + "\n" +
                 "noSendList: " + noSendList.toString() + "\n" +
                 "primaryCleanList: " + primaryCleanList.toString() + "\n" +
                 "jsonStrCache: " + jsonStrCache + "\n";
-        return stringBuilder;
     }
 }
