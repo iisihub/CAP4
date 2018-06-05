@@ -329,6 +329,31 @@ public class ImageUtil {
 
             return newImageFileList;
         }
+
+        private static Dimension getScaledDimension(Dimension imageSize, Dimension boundary) {
+            double widthRatio = boundary.getWidth() / imageSize.getWidth();
+            double heightRatio = boundary.getHeight() / imageSize.getHeight();
+            double ratio = Math.min(widthRatio, heightRatio);
+
+            return new Dimension((int) (imageSize.width * ratio), (int) (imageSize.height * ratio));
+        }
+
+        private static boolean checkDestLocationIsExists(File destLocation) throws IIOException {
+            if (!destLocation.exists()) {
+                if (!destLocation.mkdirs()) {
+                    throw new IIOException("Can not create destination directory!");
+                }
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private static boolean checkDestLocationIsDirectory(File destLocation) {
+            return destLocation.isDirectory();
+
+        }
     }
 
     /**
@@ -668,28 +693,5 @@ public class ImageUtil {
         }
     }
 
-    private static Dimension getScaledDimension(Dimension imageSize, Dimension boundary) {
-        double widthRatio = boundary.getWidth() / imageSize.getWidth();
-        double heightRatio = boundary.getHeight() / imageSize.getHeight();
-        double ratio = Math.min(widthRatio, heightRatio);
 
-        return new Dimension((int) (imageSize.width * ratio), (int) (imageSize.height * ratio));
-    }
-
-    private static boolean checkDestLocationIsExists(File destLocation) throws IIOException {
-        if (!destLocation.exists()) {
-            if (!destLocation.mkdirs()) {
-                throw new IIOException("Can not create destination directory!");
-            }
-
-            return false;
-        }
-
-        return true;
-    }
-
-    private static boolean checkDestLocationIsDirectory(File destLocation) {
-        return destLocation.isDirectory();
-
-    }
 }
