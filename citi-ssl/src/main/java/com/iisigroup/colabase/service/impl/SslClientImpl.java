@@ -159,7 +159,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
         }
       }
       logger.debug("Request: use own ssl factory = {}", isUseOwnSslFactory);
-      logger.debug("Request: need retry status = {}", Arrays.toString(requestContent.getRetryHttpStatus()));
+      logger.debug("Request: need retry status = {}", requestContent.getRetryHttpStatus());
 
       connection.setConnectTimeout(timeOut);
       connection.setReadTimeout(timeOut);
@@ -254,7 +254,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
             recordInfo.add("Request: data = " + jsonStr);
         } catch (IOException e) {
             recordInfo.add("Output data Exception = " + e.toString());
-            logger.warn("Output data Exception = {}", e.toString());
+            logger.warn("Output data Exception = {}", e);
             throw e;
         }
     }
@@ -283,7 +283,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
       if (responseBodySB.length() != 0) {
         responseJson = gson.fromJson(responseBodySB.toString(), JsonObject.class);
       }
-      recordInfo.add("Response Body : " + responseJson.toString());
+      recordInfo.add("Response Body : " + responseJson);
     } catch (JsonSyntaxException e) {
       responseJson = new JsonObject();
       recordInfo.add("Response Body: " + responseBodySB);
