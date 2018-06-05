@@ -37,6 +37,8 @@ public class JsonFactory {
         jsonDataService = new JsonDataServiceImpl();
     }
 
+    private JsonFactory() {}
+
     public static <T extends JsonAbstract> T getInstance(Class<T> requestClass) {
         T instance;
         try {

@@ -52,4 +52,14 @@ public abstract class JsonAbstract implements Json {
     public void setRequestContent(JsonObject requestContent) {
         this.requestContent = requestContent;
     }
+
+    @Override
+    public String toString() {
+        String stringBuilder =
+                "arrayMap: " + arrayMap.toString() + "\n" +
+                "noSendList: " + noSendList.toString() + "\n" +
+                "primaryCleanList: " + primaryCleanList.toString() + "\n" +
+                "jsonStrCache: " + jsonStrCache + "\n";
+        return stringBuilder;
+    }
 }

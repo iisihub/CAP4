@@ -24,12 +24,12 @@ import java.util.regex.Pattern;
  */
 public class JsonDataServiceImpl implements JsonDataService {
 
-    private final String ARRAY_MARK = "[]";
-    private final String LAST_PROCESS_KEY = "lastProcess";
-    private final String ARRAY_MAP_KEY = "arrayMap";
-    private final String NO_SEND_LIST_KEY = "noSendList";
-    private final String PRIMARY_CLEAN_LIST = "primaryCleanList";
-    private final String PATH_SPLIT_MARK = "\\.";
+    private static final String ARRAY_MARK = "[]";
+    private static final String LAST_PROCESS_KEY = "lastProcess";
+    private static final String ARRAY_MAP_KEY = "arrayMap";
+    private static final String NO_SEND_LIST_KEY = "noSendList";
+    private static final String PRIMARY_CLEAN_LIST = "primaryCleanList";
+    private static final String PATH_SPLIT_MARK = "\\.";
 
     @Override
     public void setParamToJsonContent(JsonAbstract requestContent, String fieldName, String value) {
@@ -222,7 +222,6 @@ public class JsonDataServiceImpl implements JsonDataService {
     @Override
     public void setDefaultValue(JsonAbstract reqInstance, Map<String, String> valueMap) {
         for (Map.Entry<String, String> entry : valueMap.entrySet()) {
-//        for (String key : valueMap.keySet()) {
             String value = entry.getValue().trim();
             if("".equals(value))
                 continue;
@@ -398,7 +397,7 @@ public class JsonDataServiceImpl implements JsonDataService {
                 for (int i = 0; i < array.size(); i++) {
                     // 檢查jsonArray 內的元素，如果是jsonObject，則檢查是否為{}元素
                     JsonElement jsonEle = array.get(i);
-                    if (jsonEle.isJsonObject() && ((JsonObject) jsonEle).entrySet().size() == 0) {
+                    if (jsonEle.isJsonObject() && ((JsonObject) jsonEle).entrySet().isEmpty()) {
                         array.remove(i);
                         i -= 1;
                         continue;

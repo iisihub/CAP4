@@ -3,13 +3,14 @@ package com.iisigroup.colabase.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import com.google.gson.JsonObject;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.iisigroup.colabase.annotation.JsonTemp;
 import com.iisigroup.colabase.model.JsonAbstract;
+
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author AndyChen
