@@ -44,9 +44,7 @@ class JsonProxy implements MethodInterceptor {
     }
 
     private static <T extends JsonAbstract> Field getSameClassField(Class<T> mainClass, Class<?> setClass) {
-        if(mainClass == JsonAbstract.class)
-            return null;
-        if(setClass == Object.class)
+        if(mainClass == JsonAbstract.class || setClass == Object.class)
             return null;
         Field[] declaredFields = mainClass.getDeclaredFields();
         for (Field field : declaredFields) {
@@ -60,7 +58,7 @@ class JsonProxy implements MethodInterceptor {
                 // check setClass's interfaces
                 Class<?>[] interfaces = setClass.getInterfaces();
                 for (Class<?> anInterface : interfaces) {
-                    if(fieldType.getName().equals(anInterface.getName())) {
+                    if(fieldType.isAssignableFrom(anInterface)) {
                         return field;
                     }
                 }

@@ -31,9 +31,6 @@ public class JsonDataServiceImpl implements JsonDataService {
     private final String PRIMARY_CLEAN_LIST = "primaryCleanList";
     private final String PATH_SPLIT_MARK = "\\.";
 
-    public JsonDataServiceImpl() {
-    }
-
     @Override
     public void setParamToJsonContent(JsonAbstract requestContent, String fieldName, String value) {
         Map<String, Object> arrayMap;
@@ -68,16 +65,16 @@ public class JsonDataServiceImpl implements JsonDataService {
         } else {
             arrayMap.put(path, (Integer)object + 1);
             //上層array擴增，底下所有的array計數要歸零
-            String parentArrayName = path.substring(0, path.lastIndexOf("."));
+            String parentArrayName = path.substring(0, path.lastIndexOf('.'));
             parentArrayName = parentArrayName.replaceAll("\\[\\]", "\\\\[\\\\]"); //for next regExp string
-            for (String key : arrayMap.keySet()) {
+            for (Map.Entry<String, Object> entry : arrayMap.entrySet()) {
                 String regExpStr = parentArrayName + "\\..*\\[\\]\\..*";
                 Pattern pattern = Pattern.compile(regExpStr);
-                Matcher matcher = pattern.matcher(key);
+                Matcher matcher = pattern.matcher(entry.getKey());
                 if (matcher.matches()) {
                     try {
-                        Integer.parseInt(String.valueOf(arrayMap.get(key)));
-                        arrayMap.put(key, null);
+                        Integer.parseInt(String.valueOf(entry.getValue()));
+                        arrayMap.put(entry.getKey(), null);
                     } catch (NumberFormatException e) {
                         //do nothing
                     }
@@ -113,7 +110,7 @@ public class JsonDataServiceImpl implements JsonDataService {
         if(paths.length == 1) {
             return jsonObject;
         }
-        String newPath = eleNameChain.substring(eleNameChain.indexOf(".") + 1);
+        String newPath = eleNameChain.substring(eleNameChain.indexOf('.') + 1);
         return this.getJsonElement((JsonObject) jsonElement, newPath, arrayMap);
     }
 
@@ -141,7 +138,6 @@ public class JsonDataServiceImpl implements JsonDataService {
         if(arrayName.equals(markPath)) {
             String arrayKey = arrayName + ARRAY_MARK;
             if(count == 0) {
-//                arrayMap.putIfAbsent(arrayKey, deepCopy(jsonArray.get(0)));
                 return (JsonObject) jsonArray.get(0);
             } else {
                 if(jsonArray.size() - 1 == count)
@@ -225,11 +221,12 @@ public class JsonDataServiceImpl implements JsonDataService {
 
     @Override
     public void setDefaultValue(JsonAbstract reqInstance, Map<String, String> valueMap) {
-        for (String key : valueMap.keySet()) {
-            String value = valueMap.get(key).trim();
+        for (Map.Entry<String, String> entry : valueMap.entrySet()) {
+//        for (String key : valueMap.keySet()) {
+            String value = entry.getValue().trim();
             if("".equals(value))
                 continue;
-            this.setParamToJsonContent(reqInstance, key, value);
+            this.setParamToJsonContent(reqInstance, entry.getKey(), value);
         }
         //must clean arrayMap to empty
         Map<String, Object> arrayMap = getArrayMap(reqInstance);
@@ -313,19 +310,7 @@ public class JsonDataServiceImpl implements JsonDataService {
         String targetKey = paths[paths.length - 1];
         if(pathChain.contains(ARRAY_MARK)) {
             // Array 處理
-            JsonArray jsonArray = new JsonArray();
-            getTargetJsonArray(pathChain, jsonObject, jsonArray);
-            for (JsonElement jsonElement : jsonArray) {
-                JsonElement checkEle = ((JsonObject) jsonElement).get(targetKey);
-                if (checkEle != null && !"".equals(checkEle.getAsString())) {
-                    continue;
-                }
-                if(isPrimaryClean) {
-                    removeAllSameLevelEle(jsonElement);
-                } else {
-                    ((JsonObject)jsonElement).remove(targetKey);
-                }
-            }
+            this.cleanArrayJson(pathChain, targetKey, jsonObject, isPrimaryClean);
         } else {
             HashMap<String, Object> map = new HashMap<>();
             JsonObject jsonElement = this.getJsonElement(jsonObject, pathChain, map);
@@ -338,6 +323,23 @@ public class JsonDataServiceImpl implements JsonDataService {
                 jsonElement.remove(targetKey);
             }
         }
+    }
+
+    private void cleanArrayJson(String pathChain, String targetKey, JsonObject jsonObject, boolean isPrimaryClean) {
+        JsonArray jsonArray = new JsonArray();
+        getTargetJsonArray(pathChain, jsonObject, jsonArray);
+        for (JsonElement jsonElement : jsonArray) {
+            JsonElement checkEle = ((JsonObject) jsonElement).get(targetKey);
+            if (checkEle != null && !"".equals(checkEle.getAsString())) {
+                continue;
+            }
+            if(isPrimaryClean) {
+                removeAllSameLevelEle(jsonElement);
+            } else {
+                ((JsonObject)jsonElement).remove(targetKey);
+            }
+        }
+
     }
 
     private void removeAllSameLevelEle(JsonElement jsonElement) {
@@ -370,7 +372,7 @@ public class JsonDataServiceImpl implements JsonDataService {
                 getTargetJsonArray(newPath, (JsonObject)element, jsonArray);
             }
         } else { //primitive type
-            String newPath = pathChain.substring(pathChain.indexOf(".") + 1);
+            String newPath = pathChain.substring(pathChain.indexOf('.') + 1);
             JsonObject jsonElement = (JsonObject) jsonObject.get(paths[0]);
             getTargetJsonArray(newPath, jsonElement, jsonArray);
         }
@@ -389,7 +391,6 @@ public class JsonDataServiceImpl implements JsonDataService {
         while (iterator.hasNext()) {
             Map.Entry<String, JsonElement> entry = iterator.next();
             JsonElement value = entry.getValue();
-            String key = entry.getKey();
             if (value.isJsonPrimitive())
                 continue;
             if (value.isJsonArray()) { // JsonArray process
@@ -397,12 +398,10 @@ public class JsonDataServiceImpl implements JsonDataService {
                 for (int i = 0; i < array.size(); i++) {
                     // 檢查jsonArray 內的元素，如果是jsonObject，則檢查是否為{}元素
                     JsonElement jsonEle = array.get(i);
-                    if (jsonEle.isJsonObject()) {
-                        if (((JsonObject) jsonEle).entrySet().size() == 0) {
-                            array.remove(i);
-                            i -= 1;
-                            continue;
-                        }
+                    if (jsonEle.isJsonObject() && ((JsonObject) jsonEle).entrySet().size() == 0) {
+                        array.remove(i);
+                        i -= 1;
+                        continue;
                     }
                     cleanEmptyJsonObject(jsonEle);
                 }

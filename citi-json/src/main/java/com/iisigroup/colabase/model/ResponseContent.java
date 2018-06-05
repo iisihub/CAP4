@@ -37,7 +37,7 @@ public class ResponseContent implements ApiResponse {
      */
     @Override
     public void showResponseJsonStrLog(String jsonStr) {
-        logger.debug("ApiResponse responseData: " + jsonStr);
+        logger.debug("ApiResponse responseData: {}", jsonStr);
     }
 
     public void setHeaders(Map<String, List<String>> headers) {

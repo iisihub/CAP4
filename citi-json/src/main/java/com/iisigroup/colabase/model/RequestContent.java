@@ -61,7 +61,7 @@ public abstract class RequestContent extends JsonAbstract implements ApiRequest 
      */
     @Override
     public void showRequestJsonStrLog(String jsonStr) {
-        logger.debug("ApiRequest: SendData = " + jsonStr);
+        logger.debug("ApiRequest: SendData = {}", jsonStr);
     }
 
     public boolean isUseOwnKeyAndTrustStore() {

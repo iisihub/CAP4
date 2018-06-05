@@ -32,7 +32,7 @@ import com.iisigroup.cap.mvc.handler.MFormHandler;
 @Controller("demojsonhandler")
 public class JsonHandler extends MFormHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(JsonHandler.class);
+    private static final Logger jLogger = LoggerFactory.getLogger(JsonHandler.class);
 
 
     public Result testSslClient(Request request) {
@@ -70,7 +70,7 @@ public class JsonHandler extends MFormHandler {
             declaredField.setAccessible(true);
             declaredField.set(model, list);
         } catch (IllegalAccessException | NoSuchFieldException e) {
-            logger.debug("something wrong");
+            jLogger.debug("something wrong");
         }
 
     }
