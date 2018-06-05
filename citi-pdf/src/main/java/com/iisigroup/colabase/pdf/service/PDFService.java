@@ -158,11 +158,13 @@ public interface PDFService {
      *            透明度
      * @param rotationDegree
      *            浮水印旋轉角度
+     * @param textWMRepeatNum
+     *            文字浮水印重複次數
      * @throws IOException
      * @throws DocumentException
      * @throws Exception
      */
-    public boolean addWatermark(String inputFilePath, String outputFilePath, String textWatermark, String imgWatermarkPath, BaseFont font, float fontSize, Float opacity, int rotationDegree)
-            throws DocumentException, IOException;
+    public boolean addWatermark(String inputFilePath, String outputFilePath, String textWatermark, String imgWatermarkPath, BaseFont font, float fontSize, Float opacity, int rotationDegree,
+            int textWMRepeatNum) throws DocumentException, IOException;
 
 }

@@ -91,7 +91,7 @@ public class PDFServiceImplTest {
         }
     }
 
-    // @Test
+    @Test
     public void testMergePDFFiles() {
         String[] filesPath = { PDF_PATH1, PDF_PATH2 };
         String[] failFilesPath = { PDF_PATH1, "" };
@@ -105,7 +105,7 @@ public class PDFServiceImplTest {
         }
     }
 
-    // @Test
+    @Test
     public void testPartitionPdfFile() {
         int partPDFStartPage = 2;
         try {
@@ -118,10 +118,11 @@ public class PDFServiceImplTest {
         }
     }
 
-    // @Test
+    @Test
     public void testAddWatermark() {
         Float opacity = 0.7f;// 透明度0.7
         int rotationDegree = 15;// 15度角
+        int textWMRepeatNum = 4;// 文字浮水印重複次數
         URL font = null;
         float fontSize = 24;
         String outFilePath = PDF_OUT_PATH + File.separator + PART_PDF_FILE_NAME;
@@ -129,9 +130,9 @@ public class PDFServiceImplTest {
             ClassLoader classLoader = getClass().getClassLoader();
             font = classLoader.getResource(TEST_FONT_PATH);
             boolean isSuccess = pdfService.addWatermark(PDF_PATH1, outFilePath, TEST_TEXT_WM, "", BaseFont.createFont(font.getPath(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED), fontSize, opacity,
-                    rotationDegree);
+                    rotationDegree, textWMRepeatNum);
             assertTrue(isSuccess);
-            isSuccess = pdfService.addWatermark(PDF_PATH1, outFilePath, "", "", null, 0, opacity, rotationDegree);
+            isSuccess = pdfService.addWatermark(PDF_PATH1, outFilePath, "", "", null, 0, opacity, rotationDegree, 0);
             assertFalse(isSuccess);
         } catch (Exception e) {
             e.printStackTrace();

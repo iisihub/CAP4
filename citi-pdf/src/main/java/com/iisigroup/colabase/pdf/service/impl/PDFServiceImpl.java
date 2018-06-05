@@ -250,16 +250,17 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * @see com.iisigroup.colabase.pdf.service.PDFService#addTextWatermark(java.lang.String, java.lang.String, java.lang.String)
      */
     public void addTextWatermark(String inputFilePath, String outputFilePath, String textWatermark) throws DocumentException, IOException {
-        Float opacity = 0.7f;// 透明度0.7
-        int rotationDegree = 15;// 15度角
+        Float opacity = 0.7f;// 透明度
+        int rotationDegree = 0;// 旋轉角度
+        int textWMRepeatNum = 4;// 文字浮水印重複次數
         BaseFont font = null;
-        float fontSize = 24;
+        float fontSize = 32;
         try {
             font = this.getBaseMSJHFont();// 設定字型
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-        this.addWatermark(inputFilePath, outputFilePath, textWatermark, "", font, fontSize, opacity, rotationDegree);
+        this.addWatermark(inputFilePath, outputFilePath, textWatermark, "", font, fontSize, opacity, rotationDegree, textWMRepeatNum);
     }
 
     /*
@@ -268,9 +269,9 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * @see com.iisigroup.colabase.pdf.service.PDFService#addImgWatermark(java.lang.String, java.lang.String, java.lang.String)
      */
     public void addImgWatermark(String inputFilePath, String outputFilePath, String imgWatermarkPath) throws DocumentException, IOException {
-        Float opacity = 0.4f;// 透明度0.4
-        int rotationDegree = 15;// 15度角
-        this.addWatermark(inputFilePath, outputFilePath, "", imgWatermarkPath, null, 0, opacity, rotationDegree);
+        Float opacity = 0.4f;// 透明度
+        int rotationDegree = 15;// 旋轉角度
+        this.addWatermark(inputFilePath, outputFilePath, "", imgWatermarkPath, null, 0, opacity, rotationDegree, 0);
     }
 
     /*
@@ -279,8 +280,8 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * @see com.iisigroup.colabase.pdf.service.PDFService#addWatermark(java.lang.String, java.lang.String, java.lang.String, java.lang.String, com.lowagie.text.pdf.BaseFont, float, java.lang.Float,
      * int)
      */
-    public boolean addWatermark(String inputFilePath, String outputFilePath, String textWatermark, String imgWatermarkPath, BaseFont font, float fontSize, Float opacity, int rotationDegree)
-            throws DocumentException, IOException {
+    public boolean addWatermark(String inputFilePath, String outputFilePath, String textWatermark, String imgWatermarkPath, BaseFont font, float fontSize, Float opacity, int rotationDegree,
+            int textWMRepeatNum) throws DocumentException, IOException {
         boolean isSuccess = false;
         FileInputStream inputStream = new FileInputStream(inputFilePath);
         FileOutputStream outputStream = new FileOutputStream(outputFilePath);
@@ -310,7 +311,14 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
                     pageContent.beginText();
                     pageContent.setColorFill(Color.LIGHT_GRAY);
                     pageContent.setFontAndSize(font, fontSize);
-                    pageContent.showTextAligned(alignment, textWatermark, documentWidth, documentHeight, rotationDegree);
+                    if (textWMRepeatNum > 0) {// text repeat
+                        for (int j = 1; j <= textWMRepeatNum; j++) {
+                            documentHeight = (document.getPageSize().getHeight() / textWMRepeatNum) * j - 100;
+                            pageContent.showTextAligned(alignment, textWatermark, documentWidth, documentHeight, rotationDegree);
+                        }
+                    } else {
+                        pageContent.showTextAligned(alignment, textWatermark, documentWidth, documentHeight, rotationDegree);
+                    }
                     pageContent.endText();
                 }
             }
