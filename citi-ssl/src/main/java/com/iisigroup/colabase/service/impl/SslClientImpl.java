@@ -31,17 +31,17 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
 
   @Autowired
   private CapSystemConfig systemConfig;
-  private Class<T> type;
+  private Class<T> contentType;
 
   public SslClientImpl() {
-    type = getType(getClass());
+    contentType = getType(getClass());
   }
 
   public SslClientImpl(String keyStorePath, String keyStorePWD, String trustStorePath) throws
           CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
     sslSocketFactory = getSSLSocketFactory(keyStorePath, keyStorePWD, trustStorePath);
     isInit = true;
-    type = getType(getClass());
+    contentType = getType(getClass());
   }
 
   private Class<T> getType(Class<?> tClass) {
@@ -158,8 +158,8 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
           isUseOwnSslFactory = false;
         }
       }
-      logger.debug("Request: use own ssl factory = " + isUseOwnSslFactory);
-      logger.debug("Request: need retry status = " + Arrays.toString(requestContent.getRetryHttpStatus()));
+      logger.debug("Request: use own ssl factory = {}", isUseOwnSslFactory);
+      logger.debug("Request: need retry status = {}", Arrays.toString(requestContent.getRetryHttpStatus()));
 
       connection.setConnectTimeout(timeOut);
       connection.setReadTimeout(timeOut);
@@ -193,20 +193,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
       requestContent.showRequestJsonStrLog(jsonStr);
 
       if (!RequestContent.HTTPMethod.GET.equals(method)) {
-        try (
-                OutputStream output = connection.getOutputStream();
-                PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, "UTF-8"), true)
-        ) {
-          writer.write(jsonStr);
-          output.flush();
-
-          // add listForRecordInfos
-          recordInfo.add("Request: data = " + jsonStr);
-        } catch (IOException e) {
-          recordInfo.add("Output data Exception = " + e.toString());
-          logger.warn("Output data Exception = {}" , e.toString());
-          throw e;
-        }
+        this.sendDataToRemote(connection, jsonStr, recordInfo);
       }
 
       InputStream is;
@@ -239,6 +226,11 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
       }
     } finally {
       final ResponseContent renewResponseContent = responseContent;
+      long endTime = new Date().getTime();
+      long diffTime = endTime - startTime;
+      logger.debug("[clientSendRequest] done. All cause time: {} ms", diffTime );
+      logger.debug("==== send dual ssl request end ====");
+
       // 由於有可能上層method標記為@NonTransactional，會導致與DB有交易的方法會失敗，另開執行緒執行。
       Thread thread = new Thread(new Runnable() {
         @Override
@@ -249,19 +241,28 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
         }
       });
       thread.start();
-      long endTime = new Date().getTime();
-      long diffTime = endTime - startTime;
-      logger.debug("[clientSendRequest] done. All cause time: {} ms", diffTime );
-      logger.debug("==== send dual ssl request end ====");
     }
 
     return responseContent;
   }
 
+    private void sendDataToRemote(HttpsURLConnection connection, String jsonStr, List<String> recordInfo) throws IOException {
+        try (OutputStream output = connection.getOutputStream(); PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, "UTF-8"), true)) {
+            writer.write(jsonStr);
+            output.flush();
+            // add listForRecordInfos
+            recordInfo.add("Request: data = " + jsonStr);
+        } catch (IOException e) {
+            recordInfo.add("Output data Exception = " + e.toString());
+            logger.warn("Output data Exception = {}", e.toString());
+            throw e;
+        }
+    }
+
   private T getResponseInstance(int statusCode, Map<String, List<String>> headers, JsonObject responseJson, List<String> records){
     T result;
     try {
-      Constructor<T> constructor = type.getConstructor(int.class, Map.class, JsonObject.class, List.class);
+      Constructor<T> constructor = contentType.getConstructor(int.class, Map.class, JsonObject.class, List.class);
       result = constructor.newInstance(statusCode, headers, responseJson, records);
     } catch (Exception e) {
       throw new IllegalStateException("can not init response instance. e: " + e.getMessage());
