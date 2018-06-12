@@ -189,12 +189,11 @@ public abstract class MFormHandler extends HandlerPlugin {
      *            String
      * @return String string[]
      */
-    @SuppressWarnings("unchecked")
     protected String[] getColumns(String params) {
         List<Object> arr = GsonUtil.jsonToObjectList(params);
         String[] colNames = new String[arr.size()];
         for (int i = 0; i < arr.size(); i++) {
-            Map<String, String> m = (Map<String, String>) GsonUtil.objToObj(arr.get(i));
+            Map<String, String> m = GsonUtil.objToObj(arr.get(i));
             if (m.containsKey(GridEnum.COL_INDEX.getCode())) {
                 colNames[i] = new StringBuffer().append(m.get(GridEnum.COL_NAME.getCode())).append("|").append(m.get(GridEnum.COL_INDEX.getCode())).toString();
             } else {

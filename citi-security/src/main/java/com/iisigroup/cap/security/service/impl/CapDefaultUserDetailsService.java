@@ -38,7 +38,6 @@ public class CapDefaultUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // TODO Auto-generated method stub
         CapUserDetails u = new CapUserDetails();
         u.setPassword("P@ssw0rd");
         return u;

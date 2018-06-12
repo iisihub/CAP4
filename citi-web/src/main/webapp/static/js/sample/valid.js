@@ -3,7 +3,7 @@ pageInit(function() {
     var form = $("form");
 
     form.validationEngine('attach', $.extend({
-      addFailureCssClassToField : 'input-success',
+      addSuccessCssClassToField: 'input-success',
       addFailureCssClassToField : 'input-error'
     }, Properties.myCustMessages));
 

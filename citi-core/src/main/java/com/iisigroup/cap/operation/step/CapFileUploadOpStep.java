@@ -43,7 +43,7 @@ import com.iisigroup.cap.utils.CapMath;
  */
 public class CapFileUploadOpStep extends AbstractCustomizeOpStep {
 
-    protected final Logger logger = LoggerFactory.getLogger(CapFileUploadOpStep.class);
+    protected final Logger LOGGER = LoggerFactory.getLogger(CapFileUploadOpStep.class);
 
     private CommonsMultipartResolver multipartResolver;
 

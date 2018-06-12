@@ -50,7 +50,7 @@ public class CapCommonUtil {
         return spel.parseExpression(expressionStr, parserContext).getValue(context, String.class);
     }
 
-    final static ParserContext defParser = new TemplateParserContext();
+    static final ParserContext defParser = new TemplateParserContext();
 
     /**
      * use Spring Expression Language (SpEL) parse

@@ -24,7 +24,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
  */
 public class BaseActionController extends MultiActionController {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     public static final String SUCCESS_VIEW = "success";
 
@@ -43,14 +43,14 @@ public class BaseActionController extends MultiActionController {
             response.setContentLength(string.getBytes("UTF-8").length);
         } catch (UnsupportedEncodingException e1) {
             response.setContentLength(string.getBytes().length);
-            logger.error(e1.getMessage(), e1);
+            LOGGER.error(e1.getMessage(), e1);
         }
         try {
             PrintWriter out = response.getWriter();
             out.write(string);
             out.flush();
         } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
 

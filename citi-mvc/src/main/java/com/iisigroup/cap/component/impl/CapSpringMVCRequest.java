@@ -1,5 +1,5 @@
 /* 
- * CapDefaultRequest.java
+ * CapSpringMVCRequest.java
  * 
  * Copyright (c) 2009-2011 International Integrated System, Inc. 
  * All Rights Reserved.
@@ -124,7 +124,7 @@ public class CapSpringMVCRequest extends HashMap<String, Object> implements Requ
             // return StringEscapeUtils.escapeHtml(s);
             return xssEncode(((String[]) value)[0]);
         }
-        logger.trace("can't find request parameter :" + key);
+        logger.trace("can't find request parameter :{}", key);
         return defaultValue;
     }
 
