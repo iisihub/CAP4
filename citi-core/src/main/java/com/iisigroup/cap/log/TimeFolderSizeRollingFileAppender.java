@@ -251,14 +251,12 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
                 ((CountingQuietWriter) qw).setCount(currFile.length());
             }
             LogLog.debug("setFile ended");
-        } catch (IOException e) {
-            errorHandler.error("Create log File error", e, FILE_OPEN_FAILURE);
         } catch (Exception e) {
             errorHandler.error("Create log File error", e, FILE_OPEN_FAILURE);
         }
     }
 
-    final int BUFFER = 2048;
+    final int buffer = 2048;
 
     public void zipFiles(String source, String dest) throws IOException {
         FileUtils.forceMkdir(new File(source));
@@ -267,7 +265,7 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
         for (File f : allFiles) {
             list.add(f.getAbsolutePath());
         }
-        if (list.size() > 0) {
+        if (!list.isEmpty()) {
             zipFiles(list, dest);
         }
     }
@@ -279,7 +277,7 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
         FileOutputStream fos = null;
         BufferedOutputStream bos = null;
         ZipArchiveOutputStream out = null;
-        byte data[] = new byte[BUFFER];
+        byte[] data = new byte[buffer];
         try {
             fos = new FileOutputStream(destUrl);
             bos = new BufferedOutputStream(fos);
@@ -287,16 +285,18 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
 
             for (String fName : fileList) {
                 File file = new File(fName);
-                FileInputStream fi = new FileInputStream(file);
-                origin = new BufferedInputStream(fi, BUFFER);
-                ZipArchiveEntry entry = new ZipArchiveEntry(file.getName());
-                out.putArchiveEntry(entry);
-                int count;
-                while ((count = origin.read(data, 0, BUFFER)) != -1) {
-                    out.write(data, 0, count);
+                try (FileInputStream fi = new FileInputStream(file)) {
+
+                    origin = new BufferedInputStream(fi, buffer);
+                    ZipArchiveEntry entry = new ZipArchiveEntry(file.getName());
+                    out.putArchiveEntry(entry);
+                    int count;
+                    while ((count = origin.read(data, 0, buffer)) != -1) {
+                        out.write(data, 0, count);
+                    }
+                    out.closeArchiveEntry();
+                    fi.close();
                 }
-                out.closeArchiveEntry();
-                fi.close();
                 origin.close();
             }
 

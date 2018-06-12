@@ -48,7 +48,7 @@ import nl.captcha.audio.Sample;
 @Controller("captchahandler")
 public class CaptchaHandler extends MFormHandler {
 
-    public static String DEFAULT_RENDER = "capCaptcha";
+    public static final String DEFAULT_RENDER = "capCaptcha";
 
     /**
      * create captcha image
@@ -58,22 +58,14 @@ public class CaptchaHandler extends MFormHandler {
     public Result img(Request request) {
         CheckCodeService captcha = CapAppContext.getBean(DEFAULT_RENDER);
         BufferedImage img = captcha.createCheckCode(true);
-        ByteArrayOutputStream baos = null;
-        try {
-            baos = new ByteArrayOutputStream();
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             ImageIO.write(img, "jpg", baos);
             baos.flush();
+            return new ByteArrayDownloadResult(request, baos.toByteArray(), "image");
         } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (baos != null) {
-                try {
-                    baos.close();
-                } catch (IOException e) {
-                }
-            }
+            logger.error(e.getMessage(), e);
         }
-        return new ByteArrayDownloadResult(request, baos.toByteArray(), "image");
+        return null;
     }
 
     /**
@@ -84,23 +76,14 @@ public class CaptchaHandler extends MFormHandler {
     public Result audio(Request request) {
         CheckCodeService captcha = CapAppContext.getBean(DEFAULT_RENDER);
         Sample audio = captcha.createCheckCode(false);
-        ByteArrayOutputStream baos = null;
-
-        try {
-            baos = new ByteArrayOutputStream();
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             AudioSystem.write(audio.getAudioInputStream(), AudioFileFormat.Type.WAVE, baos);
             baos.flush();
+            return new ByteArrayDownloadResult(request, baos.toByteArray(), "audio/wave");
         } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (baos != null) {
-                try {
-                    baos.close();
-                } catch (IOException e) {
-                }
-            }
+            logger.error(e.getMessage(), e);
         }
-        return new ByteArrayDownloadResult(request, baos.toByteArray(), "audio/wave");
+        return null;
     }
 
     /**

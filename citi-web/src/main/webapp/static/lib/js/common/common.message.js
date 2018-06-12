@@ -38,7 +38,7 @@
           fn : fn || s.writterLog
         } ];
       }
-      for (k in level) {
+      for (var k in level) {
         var o = level[k];
         ilog[o.level] = (function(oo) {
           return function(message) {

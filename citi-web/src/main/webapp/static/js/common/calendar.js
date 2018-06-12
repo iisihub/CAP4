@@ -40,7 +40,7 @@ $(function() {
           }).done(function(data) {
             var events = [];
             var items = data.events;
-            for (item in items) {
+            for (var item in items) {
               events.push({
                 title : items[item]['content'],
                 start : Math.round(items[item]['startDate']["time"] / 1000),

@@ -168,7 +168,7 @@ public class CapSecurityCaptcha implements CheckCodeService {
             if ((System.currentTimeMillis() - this.captcha.getTimeStamp().getTime()) > timeout) {
                 status = CheckStatus.TIMEOUT;
             } else {
-                status = this.captcha.getAnswer().toLowerCase().equals(answer.toLowerCase()) ? CheckStatus.SUCCESS : CheckStatus.FAIL;
+                status = this.captcha.getAnswer().equalsIgnoreCase(answer) ? CheckStatus.SUCCESS : CheckStatus.FAIL;
             }
         }
         this.captcha = null;

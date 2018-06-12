@@ -75,7 +75,7 @@
      */
     removeGridData : function(ids) {
       ids = (typeof ids === 'string') ? [ ids ] : [].concat(ids);
-      for (i in ids) {
+      for (var i in ids) {
         this.delRowData(ids[i]);
       }
       return this;

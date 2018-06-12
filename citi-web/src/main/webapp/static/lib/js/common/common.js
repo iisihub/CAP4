@@ -120,7 +120,6 @@ $.holdReady(true);
                         AJAX_HANDLER_TIMEOUT: function(xhr, action, json) {
                             // ilog.server(json.AJAX_HANDLER_TIMEOUT);
                             window.setCloseConfirm(false);
-                            alert(i18n.def.sessionTimeout);
                             window.location = window.location.href.replace(/#$/, '');
                             return false;
                         },
@@ -533,7 +532,7 @@ $.holdReady(true);
                 emptyJSON: {},
                 __ajax: $.ajax,
                 ajax: function(settings) {
-                    s = $.extend({
+                    var s = $.extend({
                         handler: "",
                         action: "",
                         formId: "",
@@ -831,7 +830,6 @@ $.holdReady(true);
                     } else if (params && typeof params === "object") {
                         type = "POST";
                     }
-                    var self = this;
                     // Request the remote document
                     $.ajax({
                         url: url,
@@ -1229,8 +1227,7 @@ $.holdReady(true);
                                 }).data('bindChanged', true);
                         }
                         return s
-                            .html(
-                                ops = ((s.attr("space") != undefined && s.attr("space") != 'false' ? ("<option value=''>" + (s.attr("space") == "true" ? i18n.def.comboSpace : s.attr("space")) + "</option>") :
+                            .html(((s.attr("space") != undefined && s.attr("space") != 'false' ? ("<option value=''>" + (s.attr("space") == "true" ? i18n.def.comboSpace : s.attr("space")) + "</option>") :
                                     "") + ops)).find('option[value="' + defalutValue + '"]').prop('selected', true).end().data('realOptions', o || {}).data('viewOptions', to || {}).attr("list",
                                 okey || s.attr("list"));
                     }).call(this, options, append);
@@ -1323,6 +1320,7 @@ $.holdReady(true);
                                         break;
                                     case "size":
                                         $cthis.attr(attr, common[attr]);
+                                        break;
                                     case "valid":
                                         break;
                                     default:
@@ -1378,7 +1376,8 @@ $.holdReady(true);
                         var $cthis = $(this);
                         $cthis.setOptions(icombos[$cthis.attr("comboKey") || $cthis.attr("comboaction")], false);
                     });
-                    combos = combokeys = null;
+                    combos = null;
+                    combokeys = null;
                     Properties.custLoadPageInit && Properties.custLoadPageInit.call($_this, isSubPage);
                 }
             });

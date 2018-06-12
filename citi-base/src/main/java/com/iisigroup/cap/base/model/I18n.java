@@ -1,5 +1,5 @@
 /* 
- * CodeType.java
+ * I18n.java
  * 
  * Copyright (c) 2009-2012 International Integrated System, Inc. 
  * All Rights Reserved.

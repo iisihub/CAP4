@@ -123,10 +123,6 @@ public class CapUserDetails implements UserDetails {
         return userId;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
     public String getUnitNo() {
         return unitNo;
     }
@@ -173,7 +169,7 @@ public class CapUserDetails implements UserDetails {
         this.extraAttrib = extraAttrib;
     }
 
-    // TODO Mark by sk
+    // TODOed Mark by sk
     // public Map<String, Object> put(String k, Object v) {
     // this.extraAttrib.put(k, v);
     // return extraAttrib;

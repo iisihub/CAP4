@@ -41,7 +41,7 @@ import com.iisigroup.cap.utils.CapString;
  */
 public class CapReloadableResourceBundleMessageSource extends org.springframework.context.support.ReloadableResourceBundleMessageSource implements ApplicationContextAware, InitializingBean {
 
-    protected final Logger logger = LoggerFactory.getLogger(CapReloadableResourceBundleMessageSource.class);
+    protected final Logger LOGGER = LoggerFactory.getLogger(CapReloadableResourceBundleMessageSource.class);
 
     // private final String i18nFileREG = "(_zh_CN|_en|_zh_TW).properties$";
     // private final String i18nPattern = "classpath:/i18n/**/*.properties";
@@ -105,13 +105,13 @@ public class CapReloadableResourceBundleMessageSource extends org.springframewor
                             .replaceAll(".*\\\\i18n\\\\", "classpath:\\\\i18n\\\\").replaceAll("\\\\", "/");
                     if (!l.contains(path)) {
                         l.add(path);
-                        logger.debug("set message path:" + path);
+                        LOGGER.debug("set message path:" + path);
                     }
                 }
 
             }
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
         super.setBasenames(l.toArray(new String[l.size()]));
 

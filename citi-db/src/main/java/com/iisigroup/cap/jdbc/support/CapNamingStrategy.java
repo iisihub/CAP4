@@ -34,6 +34,7 @@ public class CapNamingStrategy extends ImprovedNamingStrategy {
     private static final String TABLE_PREFIX = "";
 
     public CapNamingStrategy() {
+        super();
     }
 
     public String classToTableName(String className) {

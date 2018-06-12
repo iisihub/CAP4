@@ -15,7 +15,7 @@ import java.util.EnumSet;
 
 /**
  * <pre>
- * TODO Write a short description on the purpose of the program
+ * capthcha code 用來檢查狀態的列舉
  * </pre>
  * 
  * @since 2016年6月13日
@@ -36,10 +36,6 @@ public enum CheckStatus {
     private String code;
 
     CheckStatus(String code) {
-        this.code = code;
-    }
-
-    public void setCode(String code) {
         this.code = code;
     }
 

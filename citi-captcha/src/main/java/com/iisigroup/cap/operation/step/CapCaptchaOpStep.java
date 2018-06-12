@@ -42,7 +42,7 @@ import com.iisigroup.cap.utils.CapString;
  */
 public class CapCaptchaOpStep extends AbstractCustomizeOpStep {
 
-    protected final Logger logger = LoggerFactory.getLogger(CapCaptchaOpStep.class);
+    protected final Logger LOGGER = LoggerFactory.getLogger(CapCaptchaOpStep.class);
 
     @Override
     public OpStepContext execute(OpStepContext ctx, Request params, Handler handler) {

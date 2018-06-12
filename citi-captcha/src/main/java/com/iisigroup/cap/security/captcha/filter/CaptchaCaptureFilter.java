@@ -15,13 +15,13 @@ import com.iisigroup.cap.security.CapSecurityContext;
 
 public class CaptchaCaptureFilter extends OncePerRequestFilter {
 
-    private final Logger logger = LoggerFactory.getLogger(CaptchaCaptureFilter.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(CaptchaCaptureFilter.class);
     private String userCaptchaResponse;
     private HttpServletRequest request;
 
     public void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
 
-        logger.debug("Captcha capture filter");
+        LOGGER.debug("Captcha capture filter");
 
         // Assign values only when user has submitted a Captcha value.
         // Without this condition the values will be reset due to redirection
@@ -33,10 +33,10 @@ public class CaptchaCaptureFilter extends OncePerRequestFilter {
                 CapSecurityContext.getUser().getExtraAttrib().put("request", req);
                 request = req;
             }
-            logger.debug("userResponse: " + req.getParameter("captcha"));
+            LOGGER.debug("userResponse: {}", req.getParameter("captcha"));
         }
 
-        logger.debug("userResponse: " + userCaptchaResponse);
+        LOGGER.debug("userResponse: {}", userCaptchaResponse);
 
         // Proceed with the remaining filters
         chain.doFilter(req, res);

@@ -47,8 +47,8 @@ import com.iisigroup.cap.utils.CapWebUtil;
 public class ByteArrayDownloadResult extends FileDownloadResult {
 
     private byte[] _byteArray = null;
-    private String _outputName;
-    private String _contentType;
+    private String outputName;
+    private String contentType;
 
     public ByteArrayDownloadResult() {
     }
@@ -56,22 +56,22 @@ public class ByteArrayDownloadResult extends FileDownloadResult {
     public ByteArrayDownloadResult(Request request, byte[] byteArray, String contentType, String outputName) {
         this._request = request;
         this._byteArray = byteArray;
-        this._contentType = contentType;
-        this._outputName = CapWebUtil.encodeFileName(_request, outputName);
+        this.contentType = contentType;
+        this.outputName = CapWebUtil.encodeFileName(_request, outputName);
     }
 
     public ByteArrayDownloadResult(Request request, byte[] byteArray, String contentType) {
         this._request = request;
         this._byteArray = byteArray;
-        this._contentType = contentType;
+        this.contentType = contentType;
     }
 
     @Override
     public String getLogMessage() {
-        if (_outputName == null) {
-            return _contentType + " byteArrayDownload complete!!";
+        if (outputName == null) {
+            return contentType + " byteArrayDownload complete!!";
         } else {
-            return new StringBuffer("Download file:").append(_outputName).toString();
+            return new StringBuffer("Download file:").append(outputName).toString();
         }
     }
 
@@ -80,11 +80,11 @@ public class ByteArrayDownloadResult extends FileDownloadResult {
     }
 
     public String getOutputName() {
-        return _outputName;
+        return outputName;
     }
 
     public String getContentType() {
-        return _contentType;
+        return contentType;
     }
 
     @Override
@@ -92,9 +92,9 @@ public class ByteArrayDownloadResult extends FileDownloadResult {
         if (result instanceof ByteArrayDownloadResult) {
             ByteArrayDownloadResult r = (ByteArrayDownloadResult) result;
             this._request = r._request;
-            this._contentType = r._contentType;
+            this.contentType = r.contentType;
             this._byteArray = r._byteArray;
-            this._outputName = CapWebUtil.encodeFileName(_request, r._outputName);
+            this.outputName = CapWebUtil.encodeFileName(_request, r.outputName);
         }
     }
 
@@ -111,9 +111,9 @@ public class ByteArrayDownloadResult extends FileDownloadResult {
                 HttpServletRequest req = (HttpServletRequest) _request.getServletRequest();
                 String userAgent = req.getHeader("USER-AGENT");
                 if (StringUtils.contains(userAgent, "MSIE")) {
-                    resp.setHeader("Content-Disposition", "attachment; filename=\"" + _outputName + "\"");
+                    resp.setHeader("Content-Disposition", "attachment; filename=\"" + outputName + "\"");
                 } else {
-                    resp.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + _outputName);
+                    resp.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + outputName);
                 }
                 resp.setHeader("Cache-Control", "public");
                 resp.setHeader("Pragma", "public");
