@@ -10,12 +10,8 @@ import com.iisigroup.colabase.service.impl.JsonDataServiceImpl;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static jdk.nashorn.internal.objects.NativeString.substring;
 
 /**
  * @author AndyChen
@@ -30,6 +26,7 @@ public class JsonFactory {
     private static final String REQUEST_CONTENT_KEY = "requestContent";
     private static final String NO_SEND_LIST_KEY = "noSendList";
     private static final String PRIMARY_CLEAN_LIST = "primaryCleanList";
+    private static final String ALL_PATH_MAP = "allPathMap";
 
     private static final JsonDataService jsonDataService;
 
@@ -86,14 +83,18 @@ public class JsonFactory {
         JsonObject jsonObject = gson.fromJson(String.valueOf(jsonStr), JsonObject.class);
         jsonObjField.set(instance, jsonObject);
 
-        Map<String, String> valueMap = new HashMap<>();
-        List<String> noSendList = getListToInstance(instance, NO_SEND_LIST_KEY);
-        List<String> primaryCleanList = getListToInstance(instance, PRIMARY_CLEAN_LIST);
+        // clean jsonObject original value and get all json attribute paths
         List<String> allPathList = new ArrayList<>();
-        setApiRequstInfo(valueMap, noSendList, allPathList, primaryCleanList, instance.getClass());
+        jsonDataService.cleanJsonObjectDataAndGetAllPath(instance, allPathList);
 
-        // clean current jsonObject
-        jsonDataService.cleanJsonObjectData(instance);
+        Map<String, String> valueMap = new HashMap<>();
+        List<String> noSendList = (List<String>)getObjectFromInstance(instance, NO_SEND_LIST_KEY);
+        List<String> primaryCleanList = (List<String>)getObjectFromInstance(instance, PRIMARY_CLEAN_LIST);
+        Map<String, String> allPathMap = (Map<String, String>) getObjectFromInstance(instance, ALL_PATH_MAP);
+
+        // get some info when field had @ApiRequest
+        List<String> allPathListForMapping = new ArrayList<>(allPathList);
+        setApiRequstInfo(valueMap, noSendList, allPathListForMapping, primaryCleanList, allPathMap, instance.getClass());
         // set default value to it
         jsonDataService.setDefaultValue(instance, valueMap);
         // set default array copy to map
@@ -101,17 +102,17 @@ public class JsonFactory {
 
     }
 
-    private static <T extends JsonAbstract> List<String> getListToInstance(T instance, String listFieldName) {
+    public static <T extends JsonAbstract> Object getObjectFromInstance(T instance, String fieldName) {
         try {
-            Field noSendList = JsonAbstract.class.getDeclaredField(listFieldName);
-            noSendList.setAccessible(true);
-            return (List<String>) noSendList.get(instance);
+            Field objectField = JsonAbstract.class.getDeclaredField(fieldName);
+            objectField.setAccessible(true);
+            return objectField.get(instance);
         } catch (NoSuchFieldException |IllegalAccessException e) {
             throw new IllegalArgumentException("instance provide did not have list field");
         }
     }
 
-    private static void setApiRequstInfo(Map<String, String> valueMap, List<String> noVnoSLinst, List<String> allPathList, List<String> primaryCleanList, Class<?> tClass) {
+    private static void setApiRequstInfo(Map<String, String> valueMap, List<String> noVnoSLinst, List<String> allPathList, List<String> primaryCleanList, Map<String, String> allPathMap, Class<?> tClass) {
         if(tClass == JsonAbstract.class)
             return;
 
@@ -121,10 +122,10 @@ public class JsonFactory {
             if (annotation == null) {
                 continue;
             }
-            String path = annotation.path();
+            mappingFieldPath(field, allPathList, allPathMap);
+            String path = allPathMap.get(field.getName());
             if("".equals(path))
                 throw new IllegalStateException("path could not be empty in annotation, issue field: " + field.getName());
-            allPathList.add(path);
             String defValue = annotation.defaultValue();
             boolean isNoSend = annotation.noValueNoSend();
             boolean isPrimaryClean = annotation.primaryEmptyClean();
@@ -134,7 +135,46 @@ public class JsonFactory {
             if(isPrimaryClean)
                 primaryCleanList.add(path);
         }
-        setApiRequstInfo(valueMap, noVnoSLinst, allPathList, primaryCleanList, tClass.getSuperclass());
+        setApiRequstInfo(valueMap, noVnoSLinst, allPathList, primaryCleanList, allPathMap, tClass.getSuperclass());
+    }
+
+    /**
+     * 針對之前存的all path list去mapping 找出該屬性是要用哪個path
+     * @param field model had @ApiRequest field
+     * @param allPathList all json attr path
+     * @param allPathMap mapping map for each field
+     */
+    private static void mappingFieldPath(Field field, List<String> allPathList, Map<String, String> allPathMap) {
+        ApiRequest annotation = field.getAnnotation(ApiRequest.class);
+        String fieldName = field.getName();
+        String fieldPath = annotation.path();
+        String keyword;
+        if ("".equals(fieldPath)) {
+            keyword = fieldName;
+        } else {
+            keyword = fieldPath;
+        }
+        Iterator<String> iterator = allPathList.iterator();
+        while (iterator.hasNext()) {
+            String path = iterator.next();
+            if (keyword.equals(path)) {
+                if (allPathMap.get(fieldName) != null)
+                    throw new IllegalStateException("json object model field name: " + fieldName + " duplicate, may cause some issue. ");
+                allPathMap.put(fieldName, path);
+                allPathList.remove(path);
+                return;
+            } else {
+                String pathCheck = path.substring(path.lastIndexOf(".") + 1);
+                if (keyword.equals(pathCheck)) {
+                    allPathMap.put(fieldName, path);
+                    allPathList.remove(path);
+                    return;
+                }
+            }
+        }
+
+        if (allPathMap.get(fieldName) == null)
+            throw new IllegalStateException("field name: " + fieldName + " ,had found no path for map.");
     }
 
 

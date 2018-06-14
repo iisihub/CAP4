@@ -29,21 +29,23 @@ public class JsonDataServiceImpl implements JsonDataService {
     private static final String ARRAY_MAP_KEY = "arrayMap";
     private static final String NO_SEND_LIST_KEY = "noSendList";
     private static final String PRIMARY_CLEAN_LIST = "primaryCleanList";
+    private static final String ALL_PATH_MAP = "allPathMap";
     private static final String PATH_SPLIT_MARK = "\\.";
 
     @Override
     public void setParamToJsonContent(JsonAbstract requestContent, String fieldName, String value) {
         Map<String, Object> arrayMap;
+        Map<String, String> allPathMap;
         try {
             arrayMap =  (Map<String, Object>) JsonFactory.getFieldObject(requestContent, ARRAY_MAP_KEY);
+            allPathMap =  (Map<String, String>) JsonFactory.getFieldObject(requestContent, ALL_PATH_MAP);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new IllegalStateException("can not found arrayMap in requestContent");
         }
         JsonObject requestJson = requestContent.getRequestContent();
-        ApiRequest fieldAnnotation = getFieldAnnotation(requestContent.getClass(), fieldName);
-        if (fieldAnnotation == null)
+        String path = allPathMap.get(fieldName);
+        if (path == null)
             return;
-        String path = fieldAnnotation.path();
         String[] paths = path.split(PATH_SPLIT_MARK);
         this.countArray(path, arrayMap);
         JsonObject jsonElement = this.getJsonElement(requestJson, path, arrayMap);
@@ -193,28 +195,33 @@ public class JsonDataServiceImpl implements JsonDataService {
 
     /**
      * 清空JsonObject內既有的值，保持個元素都是空值
+     * 同時獲取各屬性路徑
      * @param reqInstance instance
+     * @param allPathList store all attribute path
      */
     @Override
-    public void cleanJsonObjectData(JsonAbstract reqInstance) {
-        this.cleanJsonObject(reqInstance.getRequestContent());
+    public void cleanJsonObjectDataAndGetAllPath(JsonAbstract reqInstance, List<String> allPathList) {
+        this.cleanJsonObjectAndGetAllPath(reqInstance.getRequestContent(), allPathList, "");
     }
 
-    private void cleanJsonObject(JsonObject jsonObject) {
+    private void cleanJsonObjectAndGetAllPath(JsonObject jsonObject, List<String> allPath, String lastPath) {
         Set<Map.Entry<String, JsonElement>> entries = jsonObject.entrySet();
         for (Map.Entry<String, JsonElement> entry : entries) {
             JsonElement value = entry.getValue();
             if(value instanceof JsonPrimitive) {
                 jsonObject.add(entry.getKey(), new JsonPrimitive(""));
+                allPath.add("".equals(lastPath) ? "" + entry.getKey() : lastPath + "." + entry.getKey());
             } else if(value instanceof JsonArray){
                 for (JsonElement jsonElement : ((JsonArray) value)) {
                     if (jsonElement.isJsonNull()) {
-                        throw new IllegalStateException("please check your jsonTemp string, can no clean origin value");
+                        throw new IllegalStateException("please check your jsonTemp string, can not clean origin value: " + value);
                     }
-                    this.cleanJsonObject((JsonObject) jsonElement);
+                    String newLastPath = "".equals(lastPath) ? ("" + entry.getKey() + "[]") : (lastPath + "." + entry.getKey() + "[]" );
+                    this.cleanJsonObjectAndGetAllPath((JsonObject) jsonElement, allPath, newLastPath);
                 }
             } else {
-                this.cleanJsonObject((JsonObject) value);
+                String newLastPath = "".equals(lastPath) ? "" + entry.getKey() : lastPath + "." + entry.getKey();
+                this.cleanJsonObjectAndGetAllPath((JsonObject) value, allPath, newLastPath);
             }
         }
     }

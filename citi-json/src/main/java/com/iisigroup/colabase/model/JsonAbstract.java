@@ -24,6 +24,9 @@ public abstract class JsonAbstract implements Json {
     /**  !!! do not use this map yourself */
     private Map<String, Object> arrayMap = new HashMap<>();
 
+    /**  !!! do not use this map yourself */
+    private Map<String, Object> allPathMap = new HashMap<>();
+
     /**  !!! do not use this list yourself */
     private List<String> noSendList = new ArrayList<>();
 

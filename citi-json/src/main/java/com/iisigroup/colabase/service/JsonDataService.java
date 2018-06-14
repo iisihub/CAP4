@@ -13,7 +13,7 @@ public interface JsonDataService {
 
     void setParamToJsonContent(JsonAbstract requestContent, String fieldName, String value);
 
-    void cleanJsonObjectData(JsonAbstract reqInstance);
+    void cleanJsonObjectDataAndGetAllPath(JsonAbstract reqInstance, List<String> allPathList);
 
     void setDefaultValue(JsonAbstract reqInstance, Map<String, String> valueMap);
 
