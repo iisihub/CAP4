@@ -42,32 +42,8 @@ public class TestRequestDetailNew extends TestRequestServiceModel{
   @ApiRequest(path = "phone[].dfield[].code", noValueNoSend = true)
   private String otherCode;
 
-  @JsonTemp
-  private String jsonTempStr =
-                          "{\n" +
-                          "    \"documentDetails\": {\n" +
-                          "        \"parent\": {\n" +
-                          "            \"name\" : {\n" +
-                          "                \"fullName\" : \"\"\n" +
-                          "            }\n" +
-                          "        },\n" +
-                          "        \"documentIdType\": \"xxx\",\n" +
-                          "        \"documentFormat\": \"ooo\"\n" +
-                          "    },\n" +
-                          "    \"controlFlowId\": \"123\",\n" +
-                          "    \"phone\": [{\n" +
-                          "        \"number\": \"ok\",\n" +
-                          "        \"nation\": \"shi\",\n" +
-                          "        \"area\": [{\n" +
-                          "            \"code\": \"hoho\",\n" +
-                          "            \"text\": \"\"\n" +
-                          "        }],\n" +
-                          "        \"dfield\": [{\n" +
-                          "            \"code\": \"hoho\"\n" +
-                          "        }]\n" +
-                          "    }]\n" +
-                          "}";
-
+  @JsonTemp(location = "test.json")
+  private String jsonTempStr;
 
   public TestRequestDetailNew() {
 

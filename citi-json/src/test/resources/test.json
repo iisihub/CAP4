@@ -1,0 +1,23 @@
+{
+  "documentDetails": {
+    "parent": {
+      "name" : {
+        "fullName" : ""
+      }
+    },
+    "documentIdType": "xxx",
+    "documentFormat": "ooo"
+  },
+  "controlFlowId": "123",
+  "phone": [{
+    "number": "ok",
+    "nation": "shi",
+    "area": [{
+      "code": "hoho",
+      "text": ""
+    }],
+    "dfield": [{
+      "code": "hoho"
+    }]
+  }]
+}

@@ -77,7 +77,8 @@ public class JsonFactory {
         if (jsonStrField == null)
             throw new IllegalStateException("please check ApiRequest model defined jsonTemp with annotation @JsonTemp");
         jsonStrField.setAccessible(true);
-        Object jsonStr = jsonStrField.get(instance);
+        //load from config
+        Object jsonStr = getJsonStrFromField(jsonStrField, instance);
         Gson gson = new Gson();
         //init jsonObject
         JsonObject jsonObject = gson.fromJson(String.valueOf(jsonStr), JsonObject.class);
@@ -102,7 +103,17 @@ public class JsonFactory {
 
     }
 
-    public static <T extends JsonAbstract> Object getObjectFromInstance(T instance, String fieldName) {
+    private static String getJsonStrFromField(Field field, Object instance) throws IllegalAccessException {
+        JsonTemp annotation = field.getAnnotation(JsonTemp.class);
+        String location = annotation.location();
+        if("".equals(location)) {
+            return (String) field.get(instance);
+        }
+        return JsonFileUtil.loadFileFromConfigPath(location);
+    }
+
+
+    private static <T extends JsonAbstract> Object getObjectFromInstance(T instance, String fieldName) {
         try {
             Field objectField = JsonAbstract.class.getDeclaredField(fieldName);
             objectField.setAccessible(true);
