@@ -622,3 +622,675 @@ return str;
 else
 return padRight(str+"0",lenght);
 }
+
+//**************************************************************** 
+//General purpose functions
+//
+//Company: 
+//Author : 
+//Emial  : 
+//
+//**************************************************************** 
+//Log of changes: 
+//**************************************************************** 
+
+//檢核是否為整數型態之數字
+function chknumberformat(chkstr, msgheader) {
+var iCode = 0
+// parse every char, no restriction
+for (var i = 0; i < chkstr.length; i++) {
+ iCode = chkstr.charCodeAt(i)
+ if ((iCode < '0'.charCodeAt(0) || iCode > '9'.charCodeAt(0))) {
+   alert(msgheader + "必須為整數型態!");
+   return false;
+ }
+}
+
+if (chkstr.substring(0, 1) == '0') {
+ alert(msgheader + "第一碼不可為0!");
+ return false;
+}
+
+return true;
+}
+
+//不足位填滿0 str:欲補0的字串 len:補滿0後的總長度 align:left(靠左補0)/right(靠右補0) floatLen:小數點長度
+function addZero2(str, len, align, floatLen) {
+var floatIndex = 0;
+var floatStr = "";
+var fLen = 0;
+if (floatLen != 0) {
+ floatIndex = str.indexOf(".");
+ if (floatIndex > -1) {
+   fLen = str.length - floatIndex - 1;
+   floatStr = str.substring(floatIndex + 1, fLen);
+ }
+ for (var j = 0; j < floatLen; j++) {
+   floatStr += "0";
+ }
+ str += floatStr;
+}
+zeroCount = len - str.length;
+zeroStr = "";
+for (var i = 0; i < zeroCount; i++) {
+ zeroStr += "0";
+}
+if (align == "left") {
+ //表示str前面加0
+ zeroStr = zeroStr + str;
+} else {
+ //表示str後面加0
+ zeroStr = str + zeroStr;
+}
+return zeroStr;
+}
+
+//不足位填滿空白 str:欲補空白的字串 len:補滿空白後的總長度 align:left(靠左補0)/right(靠右補0)
+function addSpace(str, len, align, floatLen) {
+var fLen = 0;
+spaceCount = len - str.length;
+spaceStr = "";
+for (var i = 0; i < spaceCount; i++) {
+ spaceStr += " ";
+}
+if (align == "left") {
+ //表示str前面加0
+ spaceStr = spaceStr + str;
+} else {
+ //表示str後面加0
+ spaceStr = str + spaceStr;
+}
+return spaceStr;
+}
+
+function addZero(Num) {
+var strAmount;
+var lgAmount = 0;
+var lgMupltify = 1;
+var len = 0;
+var radix = 2;
+
+var dAmount = parseFloat(amntFormat_inverse(Num));
+if (dAmount == 0) {
+ strAmount = "0.00";
+ return strAmount;
+}
+try {
+ do {
+   for (var i = 0; i < radix; i++) {
+     lgMupltify = lgMupltify * 10;
+   }
+   strAmount = "" + Math.round(dAmount * lgMupltify);
+   len = strAmount.length;
+   strAmount = strAmount.substring(0, len - radix) + "." + strAmount.substring(len - radix, len);
+   break;
+ } while (true);
+} catch (e) {
+ alert("ERROR FORMAT" + e.toString());
+ strAmount = "N/A";
+}
+return strAmount;
+}
+
+
+function isAlpha(elmstr) {
+if (elmstr != '') {
+ for (var i = 0; i < elmstr.length; i++) {
+   if ((elmstr.charAt(i) < '0' || elmstr.charAt(i) > '9') &&
+     (elmstr.charAt(i) < 'A' || elmstr.charAt(i) > 'Z') &&
+     (elmstr.charAt(i) < 'a' || elmstr.charAt(i) > 'z')) {
+     return false;
+   }
+ }
+}
+return true;
+}
+
+
+//輸出現在時間 2001/10/12 10:00
+function mynow() {
+var MyNow = new Date();
+var now_year = MyNow.getFullYear();
+var now_month = MyNow.getMonth() + 1;
+if (now_month < 10) {
+ now_month = "0" + now_month;
+}
+var now_day = MyNow.getDate();
+if (now_day < 10) {
+ now_day = "0" + now_day;
+}
+var now_hours = MyNow.getHours();
+var now_min = MyNow.getMinutes();
+if (now_min < 10) {
+ now_min = "0" + now_min;
+}
+//輸出
+document.writeln(now_year + "/" + now_month + "/" + now_day + "&nbsp;" + now_hours + ":" + now_min);
+}
+//輸出現在時間 2001/10/12 10:00:00
+function mynow2() {
+var MyNow = new Date();
+var now_year = MyNow.getFullYear();
+var now_month = MyNow.getMonth() + 1;
+if (now_month < 10) {
+ now_month = "0" + now_month;
+}
+var now_day = MyNow.getDate();
+if (now_day < 10) {
+ now_day = "0" + now_day;
+}
+var now_hours = MyNow.getHours();
+var now_min = MyNow.getMinutes();
+var now_sec = MyNow.getSeconds();
+if (now_min < 10) {
+ now_min = "0" + now_min;
+}
+if (now_sec < 10) {
+ now_sec = "0" + now_sec;
+}
+//輸出
+document.writeln(now_year + "/" + now_month + "/" + now_day + "&nbsp;" + now_hours + ":" + now_min + ":" + now_sec);
+}
+//輸出今天日期
+function getToday() {
+var MyNow = new Date();
+var now_year = MyNow.getFullYear();
+var now_month = MyNow.getMonth() + 1;
+if (now_month < 10) {
+ now_month = "0" + now_month;
+}
+var now_day = MyNow.getDate();
+if (now_day < 10) {
+ now_day = "0" + now_day;
+}
+//輸出
+//nice  2001.10.12修改  加toString()轉成String
+var myresult = now_year.toString() + now_month.toString() + now_day.toString();
+return myresult;
+}
+
+//in:940101 out:94/01/01 民國年
+function DateFormatShow2(indate) {
+if (indate.length == 6) {
+ var outdate = indate;
+ outdate = outdate.substring(0, 2) + "/" + outdate.substring(2, 4) + "/" + outdate.substring(4, 6);
+ return outdate;
+} else {
+ return indate;
+}
+}
+
+//in:20010613 out:2001/06/13
+function DateFormatShow(indate) {
+if (indate.length == 8) {
+ var outdate = indate;
+ outdate = outdate.substring(0, 4) + "/" + outdate.substring(4, 6) + "/" + outdate.substring(6, 8);
+ return outdate;
+} else {
+ return indate;
+}
+}
+function convertime(inst) {
+if (inst == "000000") {
+ return "&nbsp;";
+} else {
+ inst = TimeFormats(inst);
+ return inst;
+}
+}
+//轉換Time(main Function)  in:HHMMSS  out:HH:MM:SS
+function TimeFormats(intime) {
+if (intime.length == 6) {
+ var outtime = intime;
+ outtime = outtime.substring(0, 2) + ":" + outtime.substring(2, 4) + ":" + outtime.substring(4, 6);
+ return outtime;
+} else if (intime == 'null') {
+ return "";
+} else {
+ return intime;
+}
+}
+//in:2001/06/13 out:20010613
+function revertDateTime(indate2) {
+if (indate2.length == 10) {
+ var outdate = indate2;
+ outdate = outdate.substring(0, 4) + outdate.substring(5, 7) + outdate.substring(8, 10);
+ return outdate;
+} else {
+ return indate2;
+}
+}
+//in:2001/06/13 out:民國年 900613--西元年轉民國年
+function CHTtoAD(indate2) {
+if (indate2.length == 10) {
+ var outdate = indate2;
+ var transyear = eval(outdate.substring(0, 4)) - 1911;
+ outdate = transyear.toString() + outdate.substring(5, 7) + outdate.substring(8, 10);
+ return outdate;
+} else {
+ return indate2;
+}
+}
+//in:00900613 out:2001/06/13 民國年轉西元年
+function ADtoCHT(indate2) {
+if (indate2.length == 8) {
+ var outdate = indate2;
+ var transyear = outdate.substring(0, 4);
+ for (i = 0; i < transyear.length; i++) {
+   if (transyear.substring(i, i + 1) != "0") {
+     transyear = transyear.substring(i);
+   }
+ }
+ outdate = (eval(transyear) + 1911) + "/" + outdate.substring(4, 6) + "/" + outdate.substring(6, 8);
+ return outdate;
+} else {
+ return indate2;
+}
+}
+function isFloat(elmstr) {
+if (elmstr != '') {
+ var j = 0;
+ if (elmstr.charAt(0) == '.') {
+   return false;
+ }
+
+ if (elmstr.charAt(elmstr.length - 1) == '.') {
+   return false;
+ }
+ for (var i = 0; i < elmstr.length; i++) {
+   if ((elmstr.charAt(i) < '0' || elmstr.charAt(i) > '9') && elmstr.charAt(i) != '.') {
+     return false;
+   } else {
+     if (elmstr.charAt(i) == '.') {
+       j = j + 1;
+       if (j > 1) {
+         return false;
+       }
+     }
+   }
+ }
+}
+return true;
+}
+
+function isInt(elmstr) {
+if (elmstr != '') {
+ for (var i = 0; i < elmstr.length; i++) {
+   if (elmstr.charAt(i) < '0' || elmstr.charAt(i) > '9') {
+     return false;
+   }
+ }
+}
+return true;
+}
+/*
+金額格式表達
+@param amnt String
+@return String 字串(99,999,999)
+字串加上三位一撇(有處理科學符號, 但是無法處理有小數點的字串, 也沒有處理空白字串)
+*/
+function amntFormat(amnt) {
+//add by 2003/06/19 解決網頁金額大於一千萬會顯示科學符號問題
+amnt = parseFloat(amnt).toString();
+var sAmnt = amnt;
+var sign = "";
+if (amnt < 0) {
+ sAmnt = sAmnt.substring(1, sAmnt.length);
+ sign = "-";
+}
+
+if (sAmnt.length <= 3) {
+ return sAmnt;
+}
+var mony = "";
+
+while (sAmnt.length > 3) {
+ mony = "," + sAmnt.substring(sAmnt.length - 3, sAmnt.length) + mony;
+ sAmnt = sAmnt.substring(0, sAmnt.length - 3);
+ if (sAmnt.length <= 3) {
+   mony = sAmnt + mony;
+ }
+}
+return sign + mony;
+}
+
+//in:1234673.1
+//out:1,234,673.10
+//字串加上三位一撇(有處理科學符號, 也有處理小數點的字串,會將空白字串轉成 0)
+function amntFormat2(instr) {
+//add by 2003/06/19 解決網頁金額大於一千萬會顯示科學符號問題
+instr = parseFloat(instr).toString();
+if (instr == "") {
+ return "0";
+}
+instr = instr + "";
+var estr = instr.indexOf(".");
+var intstr = "";
+var floatstr = "";
+
+//當沒有小數點時
+if (estr == "-1") {
+ return amntFormat(instr);
+} else {
+ //處理整數部份
+ intstr = instr.substring(0, estr);
+ intstr = amntFormat(intstr);
+ //處理小數部份
+ floatstr = instr.substring(estr + 1);
+ if (floatstr.length >= 2) {
+   floatstr = floatstr.substring(0, 2);
+ } else {
+   for (var i = 0; i < (2 - floatstr.length); i++) {
+     floatstr = floatstr + "0";
+   }
+ }
+}
+return (intstr + "." + floatstr);
+}
+
+
+//in:1234673.1
+//out:1,234,673.10
+//字串加上三位一撇(沒有處理科學符號, 有處理小數點的字串,會將空白字串轉成 0)
+//只有套過 acc.js 的 mathcal() 後才能使用此方法, 否則會有科學符號的問題
+function amntFormat4(instr) {
+if (instr == "") {
+ return "0";
+}
+instr = instr + "";
+var estr = instr.indexOf(".");
+var intstr = "";
+var floatstr = "";
+
+//當沒有小數點時
+if (estr == "-1") {
+ return amntFormat(instr);
+} else {
+ //處理整數部份
+ intstr = instr.substring(0, estr);
+ intstr = amntFormat(intstr);
+ //處理小數部份
+ floatstr = instr.substring(estr + 1);
+ if (floatstr.length >= 2) {
+   floatstr = floatstr.substring(0, 2);
+ } else {
+   for (var i = 0; i < (2 - floatstr.length); i++) {
+     floatstr = floatstr + "0";
+   }
+ }
+}
+return (intstr + "." + floatstr);
+}
+//in:1,234,673.10 
+//out:1234673.1
+function amntFormat_inverse(instr) {
+var myindex;
+var Resstr = instr;
+while ((myindex = Resstr.indexOf(",")) != -1) {
+ Resstr = Resstr.substring(0, myindex) + Resstr.substring(myindex + 1);
+}
+return Resstr;
+}
+
+/*
+*帳號格式的轉換(XXX-XXX-XXXXXXX-X)
+*/
+function accountFormat(instr) {
+if (instr == "null" || instr == "")
+ return "";
+if (instr.length < 14)
+ return instr;
+var ResStr = instr.substring(0, 3) + "-" + instr.substring(3, 6) + "-" + instr.substring(6, 13) + "-" + instr.substring(13, 14);
+return ResStr;
+}
+
+/*
+*金額格式轉換(6789.00-->$6,789.00，-57843.00-->-$57,843.00)
+*/
+function amountFormat(instr) {
+if (instr == "" || instr == "null") {
+ return "&nbsp;";
+}
+var amount = instr;
+if (amount.charAt(0) == '-') {
+ amount = amntFormat3(instr.substring(1));
+ amount = "-$" + amount;
+} else {
+ amount = amntFormat3(instr);
+ amount = "$" + amount;
+}
+return amount;
+}
+
+//字串加上三位一撇(有處理科學符號, 也有處理小數點的字串,但是空白字串還是空白字串)
+function amntFormat3(instr) {
+
+if (instr == "" || instr == "null") {
+ return "";
+}
+//add by 2003/06/19 解決網頁金額大於一千萬會顯示科學符號問題
+var instr2 = instr;
+instr = parseFloat(instr).toString();
+var estr = instr.indexOf(".");
+var intstr = "";
+var floatstr = "";
+var floatlen = 0;
+
+//當沒有小數點時
+if (estr == "-1") {
+ intstr = amntFormat(instr);
+ floatlen = floatstr.length;
+ for (var i = 0; i < (2 - floatlen); i++) {
+   floatstr = floatstr + "0";
+ }
+ return (intstr + "." + floatstr);
+} else {
+ //處理整數部份
+ intstr = instr.substring(0, estr);
+ intstr = amntFormat(intstr);
+ //處理小數部份
+ floatstr = instr.substring(estr + 1);
+ if (floatstr.length >= 2) {
+   if (floatstr.length > 5) {
+     floatstr = floatstr.substring(0, 5);
+   } else {
+     floatstr = floatstr.substring(0, floatstr.length);
+   }
+ } else {
+   floatlen = floatstr.length;
+   for (var i = 0; i < (2 - floatlen); i++) {
+     floatstr = floatstr + "0";
+   }
+ }
+}
+return (intstr + "." + floatstr);
+}
+
+/*
+*金額格式轉換(6789-->$6,789.00，-57843.00-->-$57,843.00)
+*/
+function amountFormat(instr) {
+if (instr == "" || instr == "null") {
+ return "&nbsp;";
+}
+var amount = instr;
+if (amount.charAt(0) == '-') {
+ amount = "-$"
+ instr = instr.substring(1);
+
+} else {
+ amount = "$"
+}
+amount = amount + amntFormat3(instr);
+return amount;
+}
+
+
+//將null字串轉換為空白
+function strNull(str) {
+
+if (str == null || str == "null") {
+ return "&nbsp;";
+} else {
+ return str;
+}
+}
+/*
+*金額格式轉換(00000000012300-->$123.00，-00000000012300-->-$123.00)
+*/
+function amountFormat2(instr) {
+if (instr == "" || instr == "null") {
+ return "&nbsp;";
+}
+if (instr.length == 14) {
+ instr = instr.substring(0, 12) + "." + instr.substring(12, 14)
+ var amount = amntFormat3(instr);
+ if (amount.charAt(0) == '-') {
+   amount = "-$" + amount.substring(1);
+ } else {
+   amount = "$" + amount;
+ }
+ return amount;
+} else {
+ return instr;
+}
+}
+
+
+//驗證是否有特殊字元
+function CheckSymbol(values, name) {
+var a, j, flag;
+//a=Array("'","@","!","$","<",">","!"," ")
+a = Array("'", "$", "\"", "<", ">", "+", "&");
+
+flag = true;
+for (j = 0; j < a.length; j++) {
+ if (!(values.indexOf(a[j], 0) == -1 )) {
+   //MsgBox "請勿輸入不合法字元"
+   //return (false);
+   flag = false;
+ }
+}
+if (!(flag == true)) {
+ alert("[ " + name + " ]請勿輸入特殊符號");
+ return (false);
+}
+else {
+ return (true);
+}
+}
+
+//檢核E-Mail格式
+function CheckEmail(values) {
+//var endlength = values.length-(values.indexOf(".",0)+1);
+if ((values.substr(values.length - 3, 1) != ".") && (values.substr(values.length - 4, 1) != ".")) {
+ alert("[ E-mail ]格式不正確");
+ return (false);
+}
+else if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(values)) {
+ return (true);
+}
+else {
+ alert("[ E-mail ]格式不正確");
+ return (false);
+}
+}
+
+function checkDateFormat(Chk_DATE, msg) {
+if (Chk_DATE.length == 8) {
+ var date_arr = Chk_DATE.split("/");
+ if (date_arr.length != 3) {
+   alert(msg + "輸入有錯，格式為(YY/MM/DD)，請重新輸入");
+   return false;
+ }
+
+ var nyear = 1911 + eval(date_arr[0]);
+ if ((date_arr[1] > 12) || (date_arr[1] < 1) ||
+   (date_arr[2] > 31) || (date_arr[2] < 1)) {
+   alert(msg + "輸入有錯，格式為(YY/MM/DD)，請重新輸入");
+   return false;
+ }
+ if ((date_arr[1] == 04) || (date_arr[1] == 06) ||
+   (date_arr[1] == 09) || (date_arr[1] == 11)) {
+   chd = 30;
+ } else if ((date_arr[1] == 01) || (date_arr[1] == 03) ||
+   (date_arr[1] == 05) || (date_arr[1] == 7) ||
+   (date_arr[1] == 8) || (date_arr[1] == 10)
+   || (date_arr[1] == 12)) {
+   chd = 31;
+ } else {
+   if ((nyear % 4 == 0 && nyear % 100 != 0) || nyear % 400 == 0) {
+     chd = 29;
+   } else {
+     chd = 28;
+   }
+ }
+ if (date_arr[2] > chd) {
+   alert(msg + "輸入有錯，格式為(YY/MM/DD)，請重新輸入");
+   return false;
+ }
+} else if (Chk_DATE.length == 6) {
+ var YY = Chk_DATE.substring(0, 2);
+ var MM = Chk_DATE.substring(2, 4);
+ var DD = Chk_DATE.substring(4, 6);
+ var nyear = 1911 + eval(YY);
+
+ if ((MM > 12) || (MM < 1) || (DD > 31) || (DD < 1)) {
+   alert(msg + "輸入有錯，請重新輸入");
+   return false;
+ }
+ if ((MM == 04) || (MM == 06) || (MM == 09) || (MM == 11)) {
+   chd = 30;
+ } else if ((MM == 01) || (MM == 03) || (MM == 05) || (MM == 7) ||
+   (MM == 8) || (MM == 10) || (MM == 12)) {
+   chd = 31;
+ } else {
+   if ((nyear % 4 == 0 && nyear % 100 != 0) || nyear % 400 == 0) {
+     chd = 29;
+   } else {
+     chd = 28;
+   }
+ }
+ if (DD > chd) {
+   alert(msg + "輸入有錯，請重新輸入");
+   return false;
+ }
+} else if (Chk_DATE.length == 10) {
+ var date_arr = Chk_DATE.split("/");
+ if (date_arr.length != 3) {
+   alert(msg + "輸入有錯，格式為(YYYY/MM/DD)，請重新輸入");
+   return false;
+ }
+
+ var nyear = eval(date_arr[0]);
+ if ((date_arr[1] > 12) || (date_arr[1] < 1) ||
+   (date_arr[2] > 31) || (date_arr[2] < 1)) {
+   alert(msg + "輸入有錯，格式為(YYYY/MM/DD)，請重新輸入");
+   return false;
+ }
+ if ((date_arr[1] == 04) || (date_arr[1] == 06) ||
+   (date_arr[1] == 09) || (date_arr[1] == 11)) {
+   chd = 30;
+ } else if ((date_arr[1] == 01) || (date_arr[1] == 03) ||
+   (date_arr[1] == 05) || (date_arr[1] == 7) ||
+   (date_arr[1] == 8) || (date_arr[1] == 10)
+   || (date_arr[1] == 12)) {
+   chd = 31;
+ } else {
+   if ((nyear % 4 == 0 && nyear % 100 != 0) || nyear % 400 == 0) {
+     chd = 29;
+   } else {
+     chd = 28;
+   }
+ }
+ if (date_arr[2] > chd) {
+   alert(msg + "輸入有錯，格式為(YYYY/MM/DD)，請重新輸入");
+   return false;
+ }
+} else {
+ alert(msg + "輸入有錯，請重新輸入");
+ return false;
+}
+return true;
+}
+

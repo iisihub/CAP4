@@ -135,6 +135,11 @@
                 <artifactId>citi-json</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <!-- <dependency>
+                <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-webatm</artifactId>
+                <version>${project.version}</version>
+            </dependency> -->
         </dependencies>
     </dependencyManagement>
     <modules>
@@ -159,6 +164,7 @@
         <module>citi-edm</module>
         <module>citi-import</module>
         <module>citi-json</module>
+        <!-- <module>citi-webatm</module> -->
     </modules>
     <profiles>
         <profile>

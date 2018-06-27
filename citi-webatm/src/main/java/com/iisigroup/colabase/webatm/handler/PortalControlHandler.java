@@ -21,6 +21,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -65,7 +66,7 @@ import tw.com.iisi.desserver.execption.SAPIException;
  * PortalControlHandler
  * </pre>
  */
-@Controller("portalhandler")
+@Controller("demoportalhandler")
 public class PortalControlHandler extends MFormHandler {
     // log4J category
     protected final Logger LOG = LoggerFactory.getLogger(getClass());
@@ -89,7 +90,7 @@ public class PortalControlHandler extends MFormHandler {
         String EncMappingTable;
         // get Session Id
         String session_id = session.getId();
-
+        getRandKeypad(request);
         StringBuffer pintemp = new StringBuffer();
         int[] intIndex = (int[]) session.getAttribute(RAND_KEYPAD_LIST);
         for (int i : intIndex) {
@@ -180,7 +181,7 @@ public class PortalControlHandler extends MFormHandler {
 
         String etype = (String)session.getAttribute(SELECT_TYPE);
         String lastAccessPageNo = (String) session.getAttribute(SESSION_LAST_ACCESS_PAGENO);
-        
+        int[] intIndex = (int[]) session.getAttribute(RAND_KEYPAD_LIST);
         LOG.debug("E_ACCOUNT=" + e_act);
 
         WSSecurity wss = new WSSecurity((String) APSystem.getSYS_PRAM_MAP().get("WS_ADDR"), (String) APSystem.getSYS_PRAM_MAP().get("EC_SLOT"), WSS_SYS_ID, WSS_CHK_CODE, WSS_CHK_USR,
@@ -240,11 +241,10 @@ public class PortalControlHandler extends MFormHandler {
         login_temp.setIssuerIP(request.getServletRequest().getRemoteHost());
         login_temp.setAccountList(saAccountList);
         login_temp.setHexSessionId(hexSessionId);
-
+        session.setAttribute(RAND_KEYPAD_LIST, intIndex);
         session.setAttribute(SESSION_ATTRIB, login_temp);
         session.setAttribute(SESSION_LOG_OUT, logout_temp);
         session.setAttribute(SELECT_TYPE, etype);
-        session.setAttribute(SESSION_LAST_ACCESS_PAGENO, lastAccessPageNo);
         
      // 完成後端處理後要記下允許至下一頁的 flag 給 checkpage 檢查
         request.<HttpServletRequest> getServletRequest().getSession().setAttribute(SESSION_CAN_ACCESS_TO_NEXTPAGE, true);
@@ -312,7 +312,7 @@ public class PortalControlHandler extends MFormHandler {
                     alField.add(""); // PCode
                     alField.add("0"); // LockFlag
 
-                    doInsertIssuerLog(request, "signin", alField);
+                    //doInsertIssuerLog(request, "signin", alField);
 
                 } catch (CapException ex) {
                     LOG.debug(ex.getMessage());
@@ -343,32 +343,26 @@ public class PortalControlHandler extends MFormHandler {
                 }
 
                 LOG.debug("TmlID:" + txnTml.getTmlID());
+                result.set("TmlID", txnTml.getTmlID());
+                result.set("tNow", tNow);
                 APSystemServiceImpl.TmlPool.returnTerminal(txnTml.getTmlID());
                 // put Date Time to IssuerSession
                 login.setIssuerLoginDttm(tNow);
                 login.setIssuerOperation("signin", tNow); // 登入
                 login.setIssuerTimeOut(timeOut);
-                String nextPage = null;
                 String etype = (String)session.getAttribute(SELECT_TYPE);
-                if(etype.equals("balance")){
-                    
-                    nextPage =  "page/balance"; 
-                }else{
-                    
-                    nextPage = "page/transfer";
-                }
                 session.setAttribute(SESSION_ATTRIB, login);
-             // 完成後端處理後要記下允許至下一頁的 flag 給 checkpage 檢查
-                request.<HttpServletRequest> getServletRequest().getSession().setAttribute(SESSION_CAN_ACCESS_TO_NEXTPAGE, true);
-                result.set("nextPageURL",nextPage);
-                result.set("res", "sucess");
-
             }
+            
+            
 
         } catch (Exception ex) {
             LOG.debug(ex.getMessage());
             throw new CapMessageException(CapAppContext.getMessage("LOGIN_STATUS_ERR"), getClass());
         }
+        
+        
+        result.set("res", "sucess");
         return result;
     }
 
@@ -388,7 +382,7 @@ public class PortalControlHandler extends MFormHandler {
             LOG.debug("SessionID:" + session.getId());
 
         }
-        result.set("nextPageURL", "page/login");
+        result.set("nextPageURL", "page/colaBaseDemo/webATMDemo");
         result.set("res", "sucess");
         return result;
     }

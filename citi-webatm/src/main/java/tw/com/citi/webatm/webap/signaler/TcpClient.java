@@ -828,7 +828,7 @@ public class TcpClient implements Runnable {
                                     isReConnectFlag = true;
                                 }
                             } catch (ConnectException ce) {
-                                LOG.debug("Connection refused");
+                                //LOG.debug("Connection refused");
                                 bbSend = null;
                             } catch (InterruptedException e) {
                                 e.printStackTrace();

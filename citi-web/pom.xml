@@ -68,6 +68,10 @@
              <groupId>com.iisigroup.colabase</groupId>
              <artifactId>citi-import</artifactId>
          </dependency>
+         <!-- <dependency>
+             <groupId>com.iisigroup.colabase</groupId>
+             <artifactId>citi-webatm</artifactId>
+         </dependency> -->
         <!-- optional -->
         <dependency>
             <groupId>com.iisigroup.colabase</groupId>

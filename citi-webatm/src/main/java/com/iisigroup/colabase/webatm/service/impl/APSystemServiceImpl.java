@@ -81,8 +81,7 @@ public class APSystemServiceImpl implements APSystemService {
     protected final Logger LOG = LoggerFactory.getLogger(getClass());
     @Autowired
     private CapSystemConfig sysProp;
-    @Autowired
-    private AWATMSystemDBConfig dbProp;
+    
     @Autowired
     private CodeParameterService CodePARM;
     @Autowired
@@ -142,8 +141,7 @@ public class APSystemServiceImpl implements APSystemService {
 
     public String getRmiSrvName() {
 
-        SYS_RmiSrvName = System.getProperty(JVM_VAR_RMI_HOSTNAME, sysProp.getProperty(JVM_VAR_RMI_HOSTNAME, "localhost"));
-
+        SYS_RmiSrvName = System.getProperty(JVM_VAR_RMI_HOSTNAME, sysProp.getProperty(JVM_VAR_RMI_HOSTNAME, "loclahost"));
         return SYS_RmiSrvName;
 
     }
@@ -151,7 +149,6 @@ public class APSystemServiceImpl implements APSystemService {
     public String getRmiSrvPort() {
 
         SYS_RmiSrvPort = System.getProperty(JVM_VAR_RMI_PORT, sysProp.getProperty(JVM_VAR_RMI_PORT, "3098"));
-
         return SYS_RmiSrvPort;
 
     }
@@ -195,23 +192,28 @@ public class APSystemServiceImpl implements APSystemService {
      * @return the Send Txn if Busy One RetryTimes wait N Sec.
      */
     public int getWaitSleepTime() {
-        waitTime = Integer.parseInt(dbProp.getProperty("TIME_OUT"));
+        waitTime = Integer.parseInt("10");
         return waitTime;
     }
 
     @PostConstruct
     public void init() {
-        initSysParm();
-        if (SYSTEM_DATA.getPreLoadPram().equals(PRELOAD_STTS_DYN)) {
-            // 先將TableAlter清成無最新更新之狀態
-            updateTableAlterStatus(TB_ReaderType_NAME, ALTER_STTS_unNEED_UPD);
-            updateTableAlterStatus(TB_ReaderProc_NAME, ALTER_STTS_unNEED_UPD);
-            updateTableAlterStatus(TB_BankInfo_NAME, ALTER_STTS_unNEED_UPD);
-            updateTableAlterStatus(TB_SysCode_NAME, ALTER_STTS_unNEED_UPD);
-            updateTableAlterStatus(TB_SysParm_NAME, ALTER_STTS_unNEED_UPD);
-        }
+    	try {
+    		 initSysParm();
+    	        if (SYSTEM_DATA.getPreLoadPram().equals(PRELOAD_STTS_DYN)) {
+    	            // 先將TableAlter清成無最新更新之狀態
+    	            updateTableAlterStatus(TB_ReaderType_NAME, ALTER_STTS_unNEED_UPD);
+    	            updateTableAlterStatus(TB_ReaderProc_NAME, ALTER_STTS_unNEED_UPD);
+    	            updateTableAlterStatus(TB_BankInfo_NAME, ALTER_STTS_unNEED_UPD);
+    	            updateTableAlterStatus(TB_SysCode_NAME, ALTER_STTS_unNEED_UPD);
+    	            updateTableAlterStatus(TB_SysParm_NAME, ALTER_STTS_unNEED_UPD);
+    	        }
 
-        initTerminalPool();
+    	        initTerminalPool();
+		} catch (Exception e) {
+			
+		}
+       
     }
 
     /**
