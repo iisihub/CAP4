@@ -1,5 +1,6 @@
 package com.iisigroup.colabase.model;
 
+import com.iisigroup.colabase.model.test.TestRequestDetailNew;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -163,5 +164,11 @@ public class TestRequestDetailTest {
         value = (String) field.get(requestContent);
         Assert.assertEquals("", value);
 
+    }
+
+    @Test
+    public void test_new_model_init() throws Exception {
+        TestRequestDetailNew instance = JsonFactory.getInstance(TestRequestDetailNew.class);
+        Assert.assertNotNull(instance);
     }
 }

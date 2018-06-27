@@ -12,4 +12,5 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface JsonTemp {
+    String location() default "";
 }

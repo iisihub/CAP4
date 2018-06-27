@@ -1,8 +1,11 @@
 package com.iisigroup.colabase.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.iisigroup.colabase.model.test.TestRequestDetailNew;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -63,6 +66,14 @@ public class JsonDataServiceImplTest {
         Assert.assertEquals(TEST_VALUE, value);
     }
 
+    @Test
+    public void setParamToJsonContent_for_new_model() throws Exception {
+        requestContent = JsonFactory.getInstance(TestRequestDetailNew.class);
+        jsonDataService.setParamToJsonContent(requestContent, TEST_NODE_NAME, TEST_VALUE);
+        String value = getTestValue();
+        Assert.assertEquals(TEST_VALUE, value);
+    }
+
     private String getTestValue() {
         JsonObject parentEle = (JsonObject) requestContent.getRequestContent().get(PARENT_NODE_NAME);
         return parentEle.get(TEST_NODE_NAME).getAsString();
@@ -92,7 +103,8 @@ public class JsonDataServiceImplTest {
 
     @Test
     public void cleanJsonObjectData() throws Exception {
-        jsonDataService.cleanJsonObjectData(requestContent);
+        List<String> allPaths = new ArrayList<>();
+        jsonDataService.cleanJsonObjectDataAndGetAllPath(requestContent, allPaths);
         String value = getTestValue();
         Assert.assertEquals("", value);
     }
