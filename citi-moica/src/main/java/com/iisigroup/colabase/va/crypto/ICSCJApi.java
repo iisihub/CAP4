@@ -19,6 +19,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import com.iisigroup.colabase.base.va.crypto.IPHostNameVerifier;
+
 public class ICSCJApi {
 
     static int CERR_ICSResponse_NotFound = 2001;
