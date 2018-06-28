@@ -46,8 +46,8 @@ import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
 import com.iisigroup.cap.utils.CapString;
-import com.iisigroup.colabase.edm.report.CCBasePageReport;
 import com.iisigroup.colabase.edm.service.EDMService;
+import com.iisigroup.colabase.report.CCBasePageReport;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;

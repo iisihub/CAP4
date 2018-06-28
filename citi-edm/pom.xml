@@ -27,10 +27,6 @@
             <artifactId>citi-report</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.iisigroup.colabase</groupId>
-            <artifactId>citi-mvc</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>4.0</version>
