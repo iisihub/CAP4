@@ -16,6 +16,8 @@ import javax.net.ssl.X509TrustManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.iisigroup.colabase.base.va.crypto.IPHostNameVerifier;
+
 /**
  * Https Connection Opener
  * 

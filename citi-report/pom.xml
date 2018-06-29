@@ -11,6 +11,10 @@
             <groupId>com.iisigroup.colabase</groupId>
             <artifactId>citi-core</artifactId>
         </dependency>
+	   <dependency>
+            <groupId>com.iisigroup.colabase</groupId>
+            <artifactId>citi-mvc</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
