@@ -1,0 +1,35 @@
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+
+
+<Call name="addConnector">
+    <Arg>
+       <New class="org.eclipse.jetty.ajp.Ajp13SocketConnector">
+         <Set name="port">8010</Set>
+       </New>
+    </Arg>
+  </Call>
+  
+<Call name="addConnector">
+        <Arg>
+            <New class="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
+                <Arg>
+                    <New class="org.eclipse.jetty.http.ssl.SslContextFactory">
+                        <Set name="keyStore">
+                            <SystemProperty name="jetty.home" default="." />/iis-cert.pfx
+                        </Set>
+                        <Set name="certAlias">dbe8ea80-64ff-4c74-afc5-5aa2cb1a5e3d</Set>
+                        <Set name="keyStorePassword">p@ssw0rd</Set>
+                        <Set name="keyManagerPassword">p@ssw0rd</Set>
+                        <Set name="trustStore">
+                            <SystemProperty name="jetty.home" default="." />/iis-cert.pfx
+                        </Set>
+                        <Set name="trustStorePassword">p@ssw0rd</Set>
+                    </New>
+                </Arg>
+                <Set name="port">18444</Set>
+                <Set name="maxIdleTime">30000</Set>
+            </New>
+        </Arg>
+    </Call>
+    
+</Configure>

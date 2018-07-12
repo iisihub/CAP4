@@ -80,12 +80,12 @@
             <version>${hibernate.validator.version}</version>
         </dependency>
         <!-- provided：在編譯和測試的過程有效,在最後生成war時不加入 runtime：在運行的時候依賴,在編譯的時候不依賴 -->
-        <dependency>
+        <!-- <dependency>
             <groupId>com.mchange</groupId>
             <artifactId>c3p0</artifactId>
             <version>0.9.5.2</version>
             <scope>runtime</scope>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
@@ -104,6 +104,11 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-util</artifactId>
+            <version>9.3.6.v20151106</version>
         </dependency>
     </dependencies>
     <build>
@@ -136,7 +141,7 @@
                     </webAppConfig>
                     <contextPath>/cap-web</contextPath>
                     <stopKey>foo</stopKey>
-                    <stopPort>8080</stopPort>
+                    <stopPort>18088</stopPort>
                     <!-- <systemProperties>
                         <systemProperty>
                             <name>cola.cas.host</name>
