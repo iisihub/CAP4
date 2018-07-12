@@ -35,7 +35,7 @@ public class DemoHttpHandler extends MFormHandler {
             String way = request.get("way");
             String url = request.get("url");
             
-            Map contents = new HashMap<String, String>();
+            Map<String, String> contents = new HashMap<String, String>();
             for(String param: sendCols){
                 contents.put(param, request.get(param));
             }
@@ -80,7 +80,7 @@ public class DemoHttpHandler extends MFormHandler {
             String url = request.get("url");
             JSONObject json = new JSONObject();
             
-            Map contents = new HashMap<String, String>();
+            Map<String, String> contents = new HashMap<String, String>();
             for(String param: sendCols){
                 contents.put(param, request.get(param));
             }
