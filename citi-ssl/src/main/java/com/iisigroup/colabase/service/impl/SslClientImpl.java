@@ -79,8 +79,8 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
     if(!isInit)
       this.initSslSocketFactory();
 
+    T responseContent = null;
     for (int i = 0; i <= requestContent.getRetryTimes(); i++) {
-      T responseContent = null;
       try {
         responseContent= this.clientSendRequest(requestContent);
         if(this.isStatusNeedToRetry(requestContent.getRetryHttpStatus(), responseContent.getStatusCode())) {
@@ -95,7 +95,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
           return responseContent;
       }
     }
-    throw new IllegalStateException("did not have any response");
+    return responseContent;
   }
 
   private boolean isStatusNeedToRetry(int[] retryHttpStatus, int httpStatus){
