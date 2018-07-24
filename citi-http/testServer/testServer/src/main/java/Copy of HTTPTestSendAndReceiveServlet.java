@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.security.cert.X509Certificate;
 import java.util.Calendar;
 import java.util.Enumeration;
-
+import java.io.BufferedInputStream;
 import javax.json.*;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -51,40 +51,95 @@ public class HTTPTestSendAndReceiveServlet extends HttpServlet {
       JsonObjectBuilder respObj = Json.createObjectBuilder();
 
       //response all data from client
-      StringBuilder responseBodySB = new StringBuilder();
+//      StringBuilder responseBodySB = new StringBuilder();
+//      try (
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))
+//      ) {
+//        String tempStr;
+//        while ((tempStr = reader.readLine()) != null) {
+//          responseBodySB.append(tempStr);
+//        }
+//
+//        System.out.println("result: " + responseBodySB);
+//      } catch (IOException e) {
+//         e.printStackTrace();
+//      }
+      
+    //response all data from client
+      String responseBodySB = "";
       try (
-        BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))
+              BufferedInputStream in = new BufferedInputStream(request.getInputStream())
       ) {
-        String tempStr;
-        while ((tempStr = reader.readLine()) != null) {
-          responseBodySB.append(tempStr);
-        }
+          byte[] contents = new byte[1024];
+
+          int bytesRead = 0;
+          while((bytesRead = in.read(contents)) != -1) { 
+              responseBodySB += new String(contents, 0, bytesRead);              
+          }
 
         System.out.println("result: " + responseBodySB);
       } catch (IOException e) {
          e.printStackTrace();
       }
 
-      responseJOB.add("YouSendMe", responseBodySB.toString());
+      responseJOB.add("YouSendMe", responseBodySB);
 
     } else {
         //response all data from client
-        StringBuilder responseBodySB = new StringBuilder();
+//        StringBuilder responseBodySB = new StringBuilder();
+//        try (
+//          BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))
+//        ) {
+//          String tempStr;
+//          while ((tempStr = reader.readLine()) != null) {
+//            responseBodySB.append(tempStr);
+//          }
+//
+//          System.out.println("result: " + responseBodySB);
+//        } catch (IOException e) {
+//           e.printStackTrace();
+//        }
+//        
+//        responseJOB.add("YouSendMe", responseBodySB.toString());
+        
+        
+        //response all data from client
+        String responseBodySB = "";
         try (
-          BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))
+                BufferedInputStream in = new BufferedInputStream(request.getInputStream())
         ) {
-          String tempStr;
-          while ((tempStr = reader.readLine()) != null) {
-            responseBodySB.append(tempStr);
-          }
+            byte[] contents = new byte[1024];
+
+            int bytesRead = 0;
+            while((bytesRead = in.read(contents)) != -1) { 
+                responseBodySB += new String(contents, 0, bytesRead);              
+            }
 
           System.out.println("result: " + responseBodySB);
         } catch (IOException e) {
            e.printStackTrace();
         }
-        
-        responseJOB.add("YouSendMe", responseBodySB.toString());
 
+        responseJOB.add("YouSendMe", responseBodySB);
+        
+        
+//        String contentType = request.getHeader("Content-Type");
+//        
+//        if (contentType.indexOf("json") != -1) {
+//            //TODO
+//            System.out.println("~~~~~~~~~~~~~~~~~~~~~JSON:");
+//        } else if (contentType.indexOf("urlencoded") != -1) {
+//            String name = request.getParameter("name");
+//            String birthday = request.getParameter("birthday");
+//            String mobile = request.getParameter("mobile");
+//            System.out.println("~~~~~~~~~~~~~~~~~~~~~URLENCODED:" + name + "," + birthday + "," + mobile);
+//        }
+
+//      if ("https".equalsIgnoreCase(request.getScheme())) {
+//        responseJOB.add("errorMessage", "HTTPS Request: client certificate not found");
+//      } else {
+//        responseJOB.add("errorMessage", "HTTP: can not get client certificate");
+//      }
     }
 
     response.addHeader("Content-Type", "application/json");
