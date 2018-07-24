@@ -95,12 +95,11 @@ public class HttpServiceImpl implements HttpService {
          * prepare data
          */
         ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-        // Basic POST (Using new UrlEncodedFormEntity(new ArrayList<NameValuePair>()))
         for (String colName : sendCols) {
             postParameters.add(new BasicNameValuePair(colName, request.get(colName)));
         }
         /**
-         * send HTTP post data
+         * send HTTP post data use UrlEncodedFormEntity
          */
         CloseableHttpClient httpClient = null;
         if (isTestMode) {
@@ -208,7 +207,6 @@ public class HttpServiceImpl implements HttpService {
             logger.debug("Send Data URL => ", sendUrl);
             HttpPost httppost = new HttpPost(sendUrl);
 
-            // POST with JSON (Using new StringEntity((new JSONObject()).toString(), "UTF-8"))
             logger.debug("sendData::" + jsonStr);
             StringEntity params = new StringEntity(jsonStr, "UTF-8");// 傳json字串到後端
             params.setChunked(true);
