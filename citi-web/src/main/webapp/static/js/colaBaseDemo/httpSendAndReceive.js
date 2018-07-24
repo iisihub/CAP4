@@ -11,14 +11,17 @@ pageInit(function() {
         type : 'post',
         data : datas,
         success : function(d) {
-          if (d.result) {
-            $('#resultBoard').html(d.result);
-          } else if (d.error) {
-            $('#resultBoard').html(d.error);
+          debugger
+          if (d.responseString) {
+            $('#resultBoard').html(d.responseString);
           }
+//          else if (d.error) {
+//            $('#resultBoard').html(d.error);
+//          }
         },
         error : function(xhr, desc, err) { // error : function(xhr, status,
           // errorThrown) {
+          debugger
           $('#resultBoard').html("");
           console.log(xhr);
           console.log("Details: " + desc + "\nError:" + err);
@@ -32,10 +35,8 @@ pageInit(function() {
         type : 'post',
         data : form.serializeData(),
         success : function(d) {
-          if (d.result) {
-            $('#resultBoard').html(d.result);
-          } else if (d.error) {
-            $('#resultBoard').html(d.error);
+          if (d.responseString) {
+            $('#resultBoard').html(d.responseString);
           }
         },
         error : function(xhr, desc, err) {
@@ -45,6 +46,8 @@ pageInit(function() {
         }
       });
     });
+    
+    $('#jsonStr').val("{\"name\": \"測試\",\"birthday\": \"19800101\",\"mobile\": \"0912345678\"}");
     
 //    $('#basic').on('click', function() {
 //      $('#paramNames1').show();

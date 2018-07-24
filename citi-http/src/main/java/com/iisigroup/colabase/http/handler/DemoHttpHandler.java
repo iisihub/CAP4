@@ -12,14 +12,14 @@ import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.exception.CapException;
-import com.iisigroup.colabase.http.service.HTTPService;
+import com.iisigroup.colabase.http.service.HttpService;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
 
 @Controller("demohttphandler")
 public class DemoHttpHandler extends MFormHandler {
     
     @Autowired
-    private HTTPService httpSvc;
+    private HttpService httpSvc;
     
     private static final String FILE_DATE_FORMAT = "yyyyMMdd";
     
@@ -35,36 +35,19 @@ public class DemoHttpHandler extends MFormHandler {
             String way = request.get("way");
             String url = request.get("url");
             
+            String jsonStr = request.get("jsonStr");
+            
             Map<String, String> contents = new HashMap<String, String>();
             for(String param: sendCols){
                 contents.put(param, request.get(param));
             }
             
             if("basic".equalsIgnoreCase(way)){
-//                result.add(httpSvc.sendUrlEncodedForm(request, url, sendCols, true));
-                result.add(httpSvc.sendUrlEncodedForm(contents, url, sendCols, false));    //call server
+                result.add(httpSvc.sendUrlEncodedForm(contents, url, sendCols, false));    //call test server
             }else if("json".equalsIgnoreCase(way)){
-                JSONObject json = new JSONObject();
-                for (String colName : sendCols) {
-                    json.put(colName, request.get(colName));
-                }
-//                result.add(httpSvc.sendJSON(request, url, json, true));
-                result.add(httpSvc.sendJSON(contents, url, json, false));    //call server
+                result.add(httpSvc.sendJson(contents, url, jsonStr, false));    //call test server
             }
-            
-//            result.add(httpSvc.sendEligibleDatatoMFS(request));
-//            result.add(httpSvc.sendUrlEncodedForm(request, sendCols, true));
-//            result.add(httpSvc.sendJSON(request, sendCols, true));
 
-
-            String test = "";
-
-
-//            if(!list.isEmpty()){
-//                result.set(RESULT_MSG, "檔案內容有" + map.get("countRows") + "筆資料，實際匯入" + list.get(0) + "筆資料");
-//            }else{
-//                result.set(RESULT_MSG, "檔案時間過久，沒有讀取。");
-//            }
         } catch (Exception e) {
             result.set(ERROR_MSG, e.getMessage());
             logger.error("Http Send Error", e);
@@ -78,7 +61,7 @@ public class DemoHttpHandler extends MFormHandler {
             
             String way = request.get("way");
             String url = request.get("url");
-            JSONObject json = new JSONObject();
+            String jsonStr = request.get("jsonStr");
             
             Map<String, String> contents = new HashMap<String, String>();
             for(String param: sendCols){
@@ -88,21 +71,18 @@ public class DemoHttpHandler extends MFormHandler {
             if("basic".equalsIgnoreCase(way)){
                 result.add(httpSvc.sendUrlEncodedForm(contents, url, sendCols, true));   //url設成自己的receive
             }else if("json".equalsIgnoreCase(way)){
-                result.add(httpSvc.sendJSON(contents, url, json, true));             //url設成自己的receive
+                result.add(httpSvc.sendJson(contents, url, jsonStr, true));             //url設成自己的receive
             }
-            
-            
-//            result.add(httpSvc.receiveMFSUpdateMessage(request));
-            String test = "";
-//            if(!list.isEmpty()){
-//                result.set(RESULT_MSG, "檔案內容有" + map.get("countRows") + "筆資料，實際匯入" + list.get(0) + "筆資料");
-//            }else{
-//                result.set(RESULT_MSG, "檔案時間過久，沒有讀取。");
-//            }
+
         } catch (Exception e) {
             result.set(ERROR_MSG, e.getMessage());
             logger.error("Http Receive Error", e);
         }
+        return result;
+    }
+    
+    public Result httpReceiveTest(Request request) throws CapException {
+        Result result = httpSvc.receiveData(request);
         return result;
     }
     

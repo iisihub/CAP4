@@ -81,7 +81,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.iisigroup.colabase.http.response.CrossDomainAjaxFormResult;
-import com.iisigroup.colabase.http.service.HTTPService;
+import com.iisigroup.colabase.http.service.CopyOfHttpService;
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
@@ -106,9 +106,9 @@ import net.sf.json.JSONSerializer;
  *          </ul>
  */
 @Service
-public class HTTPServiceImpl implements HTTPService {
+public class CopyOfHttpServiceImpl implements CopyOfHttpService {
 
-	private static Logger logger = LoggerFactory.getLogger(HTTPServiceImpl.class);
+	private static Logger logger = LoggerFactory.getLogger(CopyOfHttpServiceImpl.class);
 
 	/**
 	 * 接收 傳送來的資料欄位名稱
@@ -284,6 +284,7 @@ public class HTTPServiceImpl implements HTTPService {
             HttpResponse response = null;
             HttpEntity entity = null;
             String responseString = null;
+            JSONObject resultJSON = null;
             logger.debug("SSL.TrustStore >> " + System.getProperty("javax.net.ssl.trustStore"));
             // logger.debug("SSL.TrustStore >> " + System.getProperty("javax.net.ssl.trustStorePassword"));
             logger.debug("SSL.KeyStore >> " + System.getProperty("javax.net.ssl.keyStore"));
@@ -291,6 +292,7 @@ public class HTTPServiceImpl implements HTTPService {
                 response = httpClient.execute(httppost);
                 entity = response.getEntity();
                 responseString = EntityUtils.toString(entity, "UTF-8");
+                resultJSON = JSONObject.fromObject(responseString);
             } catch (Exception e) {
                 logger.debug("Send Data Exception >>> " + e.getMessage(), e);
             }

@@ -19,13 +19,14 @@
             Content Type：
             <input type="radio" id="basic" name="way" value="basic" style="width:10%;height:20px" /> 一般 (Url Encoded Form)
             <input type="radio" id="json" name="way" value="json" style="width:10%;height:20px" /> JSON </br>
+            <br/>
                                 傳輸資料：
-            <input type="text" id="name" name="name" maxlength="100" placeholder="姓名" style="width:100%" />
-            <input type="text" id="birthday" name="birthday" maxlength="100" placeholder="生日" style="width:100%" />
-            <input type="text" id="mobile" name="mobile" maxlength="100" placeholder="行動電話" style="width:100%" />
-<!--             <input type="text" id="paramNames1" name="paramNames1" maxlength="100" placeholder="請輸入參數名稱列表(以逗號隔開)" style="width:100%;display:none" /> -->
-<!--             <input type="text" id="paramValue1" name="paramValue1" maxlength="100" placeholder="請輸入參數值(以逗號隔開)" style="width:100%;display:none" /> -->
-<!--             <input type="text" id="jsonString1" name="jsonString1" maxlength="100" placeholder="請輸入JSON格式" style="width:100%;display:none" /> -->
+            <br/>
+            姓名：<input type="text" id="name" name="name" maxlength="100" placeholder="姓名" style="width:90%" /><br/>
+            生日：<input type="text" id="birthday" name="birthday" maxlength="100" placeholder="生日" style="width:90%" /><br/>
+            行動電話：<input type="text" id="mobile" name="mobile" maxlength="100" placeholder="行動電話" style="width:84%" /><br/>
+    json：<input type="text" id="jsonStr" name="jsonStr" maxlength="500" placeholder="json" style="width:91%" />
+
             <br/>
             <button id="sendBtn" class="sendbtn" type="button">測試傳送</button><br/>
             <button id="receiveBtn" class="sendbtn" type="button">測試接收</button><br/>

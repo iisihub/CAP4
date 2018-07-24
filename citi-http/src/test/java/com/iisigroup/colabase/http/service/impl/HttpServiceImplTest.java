@@ -1,0 +1,88 @@
+package com.iisigroup.colabase.http.service.impl;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import net.sf.json.JSONObject;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Spy;
+
+import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.component.impl.AjaxFormResult;
+
+import static org.junit.Assert.*;
+
+public class HttpServiceImplTest {
+
+    // 測試傳送URL
+    private final String TEST_SEND_UTL = "https://127.0.0.1:8443/http-test-server/v1/tw/sendTest"; // 自訂
+    // 測試接收URL
+    private final String TEST_RECEIVE_URL = "http://127.0.0.1:8098/citi-web/demohttphandler/httpReceiveTest"; // 自訂
+    // 傳送資料(key)
+    private final String[] SEND_COLUMNS = new String[] { "name", "birthday", "mobile" }; // 自訂
+    // 傳送資料(value)
+    private final String[] SEND_VALUES = new String[] { "測試", "19800101", "0912XXX678" }; // 自訂
+    // 傳送資料(JSON)
+    private final String JSON_STRING = "{\"name\": \"測試\",\"birthday\": \"19800101\",\"mobile\": \"0912XXX678\"}";
+    // 狀態碼
+    private final String STATUS_CODE = "statusCode";
+    
+    @Spy
+    private HttpServiceImpl httpServiceImpl;
+
+    @Before
+    public void setUp() throws Exception {
+        httpServiceImpl = new HttpServiceImpl();
+    }
+
+    @Test
+    public void testSend() throws Exception {
+        AjaxFormResult result = new AjaxFormResult();
+        Map<String, String> request = new HashMap<String, String>();
+        for(int i=0 ; i<SEND_COLUMNS.length; i++){
+            request.put(SEND_COLUMNS[i], SEND_VALUES[i]);
+        }
+        result = (AjaxFormResult) httpServiceImpl.sendUrlEncodedForm(request, TEST_SEND_UTL, SEND_COLUMNS, false);
+//        assertNotNull(result.get("responseString"));
+        assertEquals(200, result.get(STATUS_CODE));
+    }
+
+    @Test
+    public void testSend2() throws Exception {
+        AjaxFormResult result = new AjaxFormResult();
+        Map<String, String> request = new HashMap<String, String>();
+        result = (AjaxFormResult) httpServiceImpl.sendJson(request, TEST_SEND_UTL, JSON_STRING, false);
+//        assertNotNull(result.get("responseString"));
+        assertEquals(200, result.get(STATUS_CODE));
+    }
+
+    @Test
+    public void testReceive() throws Exception {
+        AjaxFormResult result = new AjaxFormResult();
+        Map<String, String> request = new HashMap<String, String>();
+        for(int i=0 ; i<SEND_COLUMNS.length; i++){
+            request.put(SEND_COLUMNS[i], SEND_VALUES[i]);
+        }
+        result = (AjaxFormResult) httpServiceImpl.sendUrlEncodedForm(request, TEST_RECEIVE_URL, SEND_COLUMNS, true);
+        String responseString = (String) result.get("responseString");
+        JSONObject resultJSON = JSONObject.fromObject(responseString);
+        assertEquals(200, resultJSON.opt("status_code"));
+//        assertNotNull(result.get("responseString"));
+//        assertEquals(200, result.get(STATUS_CODE));
+    }
+    
+    @Test
+    public void testReceive2() throws Exception {
+        AjaxFormResult result = new AjaxFormResult();
+        Map<String, String> request = new HashMap<String, String>();
+        result = (AjaxFormResult) httpServiceImpl.sendJson(request, TEST_RECEIVE_URL, JSON_STRING, true);
+        String responseString = (String) result.get("responseString");
+        JSONObject resultJSON = JSONObject.fromObject(responseString);
+        assertEquals(200, resultJSON.opt("status_code"));
+//        assertNotNull(result.get("responseString"));
+//        assertEquals(200, result.get(STATUS_CODE));
+    }
+
+}

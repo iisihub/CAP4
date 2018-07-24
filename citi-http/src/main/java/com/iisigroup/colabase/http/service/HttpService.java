@@ -11,10 +11,7 @@
  */
 package com.iisigroup.colabase.http.service;
 
-import java.util.HashMap;
 import java.util.Map;
-
-import net.sf.json.JSONObject;
 
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
@@ -31,11 +28,11 @@ import com.iisigroup.cap.component.Result;
  *          <li>2018/7/5, Lily, update
  *          </ul>
  */
-public interface HTTPService {
+public interface HttpService {
     
     public Result sendUrlEncodedForm(Map<String, String> request, String sendUrl, String[] sendCols, boolean isTestMode);
     
-    public Result sendJSON(Map<String, String> request, String sendUrl, JSONObject json, boolean isTestMode);
+    public Result sendJson(Map<String, String> request, String sendUrl, String jsonStr, boolean isTestMode);
 
     public Result receiveData(Request request);
     
