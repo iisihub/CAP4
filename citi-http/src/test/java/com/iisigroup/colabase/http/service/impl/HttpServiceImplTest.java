@@ -26,8 +26,10 @@ public class HttpServiceImplTest {
     private final String[] SEND_VALUES = new String[] { "測試", "19800101", "0912XXX678" }; // 自訂
     // 傳送資料(JSON)
     private final String JSON_STRING = "{\"name\": \"測試\",\"birthday\": \"19800101\",\"mobile\": \"0912XXX678\"}";
-    // 狀態碼
+    // Http狀態碼
     private final String STATUS_CODE = "statusCode";
+    // 返回值
+    private final String RETURN_CODE = "status_code";
     
     @Spy
     private HttpServiceImpl httpServiceImpl;
@@ -68,9 +70,9 @@ public class HttpServiceImplTest {
         result = (AjaxFormResult) httpServiceImpl.sendUrlEncodedForm(request, TEST_RECEIVE_URL, SEND_COLUMNS, true);
         String responseString = (String) result.get("responseString");
         JSONObject resultJSON = JSONObject.fromObject(responseString);
-        assertEquals(200, resultJSON.opt("status_code"));
+        assertEquals(200, resultJSON.opt(RETURN_CODE));
 //        assertNotNull(result.get("responseString"));
-//        assertEquals(200, result.get(STATUS_CODE));
+//        assertEquals(200, result.get(RETURN_CODE));
     }
     
     @Test
@@ -80,9 +82,9 @@ public class HttpServiceImplTest {
         result = (AjaxFormResult) httpServiceImpl.sendJson(request, TEST_RECEIVE_URL, JSON_STRING, true);
         String responseString = (String) result.get("responseString");
         JSONObject resultJSON = JSONObject.fromObject(responseString);
-        assertEquals(200, resultJSON.opt("status_code"));
+        assertEquals(200, resultJSON.opt(RETURN_CODE));
 //        assertNotNull(result.get("responseString"));
-//        assertEquals(200, result.get(STATUS_CODE));
+//        assertEquals(200, result.get(RETURN_CODE));
     }
 
 }

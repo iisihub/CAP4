@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class HTTPTestSendAndReceiveServlet extends HttpServlet {
+public class CopyOfHTTPTestSendAndReceiveServlet extends HttpServlet {
   static int count = 2;
   // Tomcat server.xml settings:
   // <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"

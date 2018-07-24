@@ -1,5 +1,5 @@
 /* 
- * HTTPService.java
+ * HttpService.java
  * 
  * Copyright (c) 2009-2018 International Integrated System, Inc. 
  * All Rights Reserved.

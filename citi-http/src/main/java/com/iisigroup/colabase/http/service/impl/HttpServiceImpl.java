@@ -1,5 +1,5 @@
 /* 
- * HTTPServiceImpl.java
+ * HttpServiceImpl.java
  * 
  * Copyright (c) 2009-2018 International Integrated System, Inc. 
  * All Rights Reserved.
@@ -12,49 +12,27 @@
 package com.iisigroup.colabase.http.service.impl;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.UUID;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.Registry;
@@ -62,11 +40,7 @@ import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
@@ -87,11 +61,9 @@ import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.exception.CapException;
-import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.cap.utils.CapString;
 
 import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
 
 /**
  * <pre>
@@ -114,13 +86,8 @@ public class HttpServiceImpl implements HttpService {
 	/**
 	 * 接收 傳送來的資料欄位名稱
 	 */
-	public String[] receiveCols = new String[] { "Otp1", "Otp2", "SubmitTime" };
-//	public String defaultSendUrl = "http://127.0.0.1:8098/citi-web/demohttphandler/httpReceiveTest";
 	public String defaultSendUrl = "https://127.0.0.1:8443/http-test-server/v1/tw/sendTest";
-    // String defaultSendUrl = "https://uat.newwebatm.citibank.com.tw/extfunc16/mltpreceivemfshandler/receiveMFSUpdateMessage";
-	// String defaultSendUrl = "http://127.0.0.1:8098/citi-web/demohttphandler/httpReceive";
-    // defaultSendUrl = "https://127.0.0.1:8443/mutual-authentication-server/v1/tw/onboarding/customers/deduplicationFlag";
-    // defaultSendUrl = "http://127.0.0.1:8888/mutual-authentication-server/v1/tw/onboarding/customers/deduplicationFlag";
+//    public String defaultSendUrl = "http://127.0.0.1:8098/citi-web/demohttphandler/httpReceiveTest";
 
     public Result sendUrlEncodedForm(Map<String, String> request, String sendUrl, String[] sendCols, boolean isTestMode) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
@@ -171,8 +138,7 @@ public class HttpServiceImpl implements HttpService {
             logger.debug("Send Data URL => ", sendUrl);
             HttpPost httppost = new HttpPost(sendUrl);
             httppost.addHeader("content-type", "application/x-www-form-urlencoded;charset=utf-8");
-            // httppost.addHeader("Cache-Control", "no-cache");
-            // httppost.addHeader("X-Requested-With", "XMLHttpRequest");
+            httppost.addHeader("X-Requested-With", "XMLHttpRequest");
             // httppost.addHeader("Accept", "application/json, text/javascript, */*; q=0.01");
             httppost.setEntity(new UrlEncodedFormEntity(postParameters));
             /**
@@ -249,7 +215,7 @@ public class HttpServiceImpl implements HttpService {
             params.setContentType("application/json");
             params.setContentEncoding("utf-8");
             httppost.addHeader("content-type", "application/json;charset=utf-8");
-//            httppost.addHeader("X-Requested-With", "XMLHttpRequest");
+            httppost.addHeader("X-Requested-With", "XMLHttpRequest");
 //            httppost.addHeader("Accept", "application/json, text/javascript, */*; q=0.01");
             httppost.setEntity(params);
             /**

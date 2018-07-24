@@ -3,8 +3,6 @@ package com.iisigroup.colabase.http.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -21,9 +19,6 @@ public class DemoHttpHandler extends MFormHandler {
     @Autowired
     private HttpService httpSvc;
     
-    private static final String FILE_DATE_FORMAT = "yyyyMMdd";
-    
-    private static final String RESULT_MSG = "result";
     private static final String ERROR_MSG = "error";
     
     private String[] sendCols = new String[] { "name", "birthday", "mobile" };
