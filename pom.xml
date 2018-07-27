@@ -44,6 +44,11 @@
             </dependency>
             <dependency>
                 <groupId>com.iisigroup.colabase</groupId>
+                <artifactId>citi-http</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.iisigroup.colabase</groupId>
                 <artifactId>citi-db</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -147,6 +152,7 @@
         <module>citi-mvc</module>
         <module>citi-security</module>
         <module>citi-config</module>
+        <module>citi-http</module>
         <module>citi-web</module>
         <module>citi-db</module>
         <module>citi-base</module>
