@@ -30,9 +30,9 @@ import com.iisigroup.cap.component.Result;
  */
 public interface HttpService {
     
-    public Result sendUrlEncodedForm(Map<String, String> request, String sendUrl, String[] sendCols, boolean isTestMode);
+    public Result sendUrlEncodedForm(String sendUrl, String[] sendCols, Map<String, String> contents, boolean isTestMode);
     
-    public Result sendJson(Map<String, String> request, String sendUrl, String jsonStr, boolean isTestMode);
+    public Result sendJson(String sendUrl, String jsonStr, boolean isTestMode);
 
     public Result receiveData(Request request);
     

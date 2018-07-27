@@ -3,8 +3,6 @@ package com.iisigroup.colabase.http.response;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.component.impl.StringResponse;
 import com.iisigroup.cap.utils.CapString;

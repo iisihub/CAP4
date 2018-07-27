@@ -61,7 +61,6 @@ import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.exception.CapException;
-import com.iisigroup.cap.utils.CapString;
 
 import net.sf.json.JSONObject;
 
@@ -83,20 +82,14 @@ public class HttpServiceImpl implements HttpService {
 
 	private static Logger logger = LoggerFactory.getLogger(HttpServiceImpl.class);
 
-	/**
-	 * 接收 傳送來的資料欄位名稱
-	 */
-	public String defaultSendUrl = "https://127.0.0.1:8443/http-test-server/v1/tw/sendTest";
-//    public String defaultSendUrl = "http://127.0.0.1:8098/citi-web/demohttphandler/httpReceiveTest";
-
-    public Result sendUrlEncodedForm(Map<String, String> request, String sendUrl, String[] sendCols, boolean isTestMode) throws CapException {
+    public Result sendUrlEncodedForm(String sendUrl, String[] sendCols, Map<String, String> contents, boolean isTestMode) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         /**
          * prepare data
          */
         ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
         for (String colName : sendCols) {
-            postParameters.add(new BasicNameValuePair(colName, request.get(colName)));
+            postParameters.add(new BasicNameValuePair(colName, contents.get(colName)));
         }
         /**
          * send HTTP post data use UrlEncodedFormEntity
@@ -131,9 +124,6 @@ public class HttpServiceImpl implements HttpService {
             httpClient = HttpClients.custom().setSSLSocketFactory(sslsf).setConnectionManager(cm).build();
         }
         try {
-            if (CapString.isEmpty(sendUrl)) {
-                sendUrl = defaultSendUrl;
-            }
             logger.debug("Send Data URL => ", sendUrl);
             HttpPost httppost = new HttpPost(sendUrl);
             httppost.addHeader("content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -164,7 +154,7 @@ public class HttpServiceImpl implements HttpService {
         return result;
     }
 	
-    public Result sendJson(Map<String, String> request, String sendUrl, String jsonStr, boolean isTestMode) throws CapException {
+    public Result sendJson(String sendUrl, String jsonStr, boolean isTestMode) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         /**
          * send HTTP post data use JSON
@@ -201,9 +191,6 @@ public class HttpServiceImpl implements HttpService {
             httpClient = HttpClients.custom().setSSLSocketFactory(sslsf).setConnectionManager(cm).build();
         }
         try {
-            if (CapString.isEmpty(sendUrl)) {
-                sendUrl = defaultSendUrl;
-            }
             logger.debug("Send Data URL => ", sendUrl);
             HttpPost httppost = new HttpPost(sendUrl);
 
@@ -241,6 +228,9 @@ public class HttpServiceImpl implements HttpService {
         return result;
     }
     
+    /**
+     * 接收 傳送來的資料
+     */
 	@SuppressWarnings("unchecked")
 	public Result receiveData(Request request) throws CapException {
 		CrossDomainAjaxFormResult result = new CrossDomainAjaxFormResult();
@@ -281,13 +271,20 @@ public class HttpServiceImpl implements HttpService {
                 }
             } else if (contentType.indexOf("application/x-www-form-urlencoded") != -1) {
                 Enumeration paramNames = sreq.getParameterNames();
-                while (paramNames.hasMoreElements()) {
-                    Object obj = paramNames.nextElement();
-                    if (obj != null) {
-                        logger.debug("ReceiveDataKey=>>" + obj);
-                        logger.debug("ReceiveDataValue=>>" + request.get(obj));
-                        js.put(obj, request.get(obj));
+                try {
+                    while (paramNames.hasMoreElements()) {
+                        Object obj = paramNames.nextElement();
+                        if (obj != null) {
+                            logger.debug("ReceiveDataKey=>>" + obj);
+                            logger.debug("ReceiveDataValue=>>" + request.get(obj));
+                            js.put(obj, request.get(obj));
+                        }
                     }
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                    result.set("status_msg", "Read UrlEncodedForm error: " + e.getLocalizedMessage());
+                    result.set("status_code", 505);
+                    return result;
                 }
             } else {
                 logger.debug("ReceiveContentTypeError=>>" + contentType + "||onlySupport:application/json or application/x-www-form-urlencoded");

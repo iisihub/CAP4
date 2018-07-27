@@ -12,6 +12,7 @@ import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.colabase.http.service.HttpService;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
+import com.iisigroup.cap.utils.CapString;
 
 @Controller("demohttphandler")
 public class DemoHttpHandler extends MFormHandler {
@@ -20,8 +21,9 @@ public class DemoHttpHandler extends MFormHandler {
     private HttpService httpSvc;
     
     private static final String ERROR_MSG = "error";
-    
-    private String[] sendCols = new String[] { "name", "birthday", "mobile" };
+    private static final String[] SEND_COLS = new String[] { "name", "birthday", "mobile" };
+    private static final String TEST_SEND_URL = "https://127.0.0.1:8443/http-test-server/v1/tw/sendTest";
+    private static final String TEST_RECEIVE_URL = "http://127.0.0.1:8098/citi-web/demohttphandler/httpReceiveTest";
     
     public Result httpSend(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
@@ -29,18 +31,21 @@ public class DemoHttpHandler extends MFormHandler {
 
             String way = request.get("way");
             String url = request.get("url");
-            
             String jsonStr = request.get("jsonStr");
             
+            if (CapString.isEmpty(url)) {
+                url = TEST_SEND_URL;
+            }
+            
             Map<String, String> contents = new HashMap<String, String>();
-            for(String param: sendCols){
+            for(String param: SEND_COLS){
                 contents.put(param, request.get(param));
             }
             
             if("basic".equalsIgnoreCase(way)){
-                result.add(httpSvc.sendUrlEncodedForm(contents, url, sendCols, false));    //call test server
+                result.add(httpSvc.sendUrlEncodedForm(url, SEND_COLS, contents, false));    //call test server，isTestMode = false
             }else if("json".equalsIgnoreCase(way)){
-                result.add(httpSvc.sendJson(contents, url, jsonStr, false));    //call test server
+                result.add(httpSvc.sendJson(url, jsonStr, false));    //call test server，isTestMode = false
             }
 
         } catch (Exception e) {
@@ -58,15 +63,19 @@ public class DemoHttpHandler extends MFormHandler {
             String url = request.get("url");
             String jsonStr = request.get("jsonStr");
             
+            if (CapString.isEmpty(url)) {
+                url = TEST_RECEIVE_URL;
+            }
+            
             Map<String, String> contents = new HashMap<String, String>();
-            for(String param: sendCols){
+            for(String param: SEND_COLS){
                 contents.put(param, request.get(param));
             }
             
             if("basic".equalsIgnoreCase(way)){
-                result.add(httpSvc.sendUrlEncodedForm(contents, url, sendCols, true));   //url設成自己的receive
+                result.add(httpSvc.sendUrlEncodedForm(url, SEND_COLS, contents, true));   //local測試自己的receive，isTestMode = true
             }else if("json".equalsIgnoreCase(way)){
-                result.add(httpSvc.sendJson(contents, url, jsonStr, true));             //url設成自己的receive
+                result.add(httpSvc.sendJson(url, jsonStr, true));             //local測試自己的receive，isTestMode = true
             }
 
         } catch (Exception e) {
