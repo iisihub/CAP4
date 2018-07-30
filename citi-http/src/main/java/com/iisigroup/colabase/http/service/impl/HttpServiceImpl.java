@@ -80,7 +80,12 @@ import net.sf.json.JSONObject;
 @Service
 public class HttpServiceImpl implements HttpService {
 
-	private static Logger logger = LoggerFactory.getLogger(HttpServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(HttpServiceImpl.class);
+    
+    private static final String UTF_8 = "UTF-8";
+    private static final String RECEIVE_CONTENT_TYPE_ERROR_MSG = "ReceiveContentTypeError=>>";
+    private static final String STATUS_MSG = "status_msg";
+    private static final String STATUS_CODE = "status_code";
 
     public Result sendUrlEncodedForm(String sendUrl, String[] sendCols, Map<String, String> contents, boolean isTestMode) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
@@ -138,7 +143,7 @@ public class HttpServiceImpl implements HttpService {
             try {
                 response = httpClient.execute(httppost);
                 entity = response.getEntity();
-                String responseString = EntityUtils.toString(entity, "UTF-8");
+                String responseString = EntityUtils.toString(entity, UTF_8);
                 result.set("responseString", responseString);
                 int statusCode = response.getStatusLine().getStatusCode();
                 result.set("statusCode", statusCode);
@@ -153,7 +158,7 @@ public class HttpServiceImpl implements HttpService {
         }
         return result;
     }
-	
+    
     public Result sendJson(String sendUrl, String jsonStr, boolean isTestMode) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         /**
@@ -195,7 +200,7 @@ public class HttpServiceImpl implements HttpService {
             HttpPost httppost = new HttpPost(sendUrl);
 
             logger.debug("sendData::" + jsonStr);
-            StringEntity params = new StringEntity(jsonStr, "UTF-8");// 傳json字串到後端
+            StringEntity params = new StringEntity(jsonStr, UTF_8);// 傳json字串到後端
             params.setChunked(true);
             params.setContentType("application/json");
             params.setContentEncoding("utf-8");
@@ -211,7 +216,7 @@ public class HttpServiceImpl implements HttpService {
             try {
                 response = httpClient.execute(httppost);
                 entity = response.getEntity();
-                String responseString = EntityUtils.toString(entity, "UTF-8");
+                String responseString = EntityUtils.toString(entity, UTF_8);
                 result.set("responseString", responseString);
                 int statusCode = response.getStatusLine().getStatusCode();
                 result.set("statusCode", statusCode);
@@ -231,12 +236,12 @@ public class HttpServiceImpl implements HttpService {
     /**
      * 接收 傳送來的資料
      */
-	@SuppressWarnings("unchecked")
-	public Result receiveData(Request request) throws CapException {
-		CrossDomainAjaxFormResult result = new CrossDomainAjaxFormResult();
-		result.setCallback(request.get("callback"));
-		result.setCorsDomain("*");
-		HttpServletRequest sreq = (HttpServletRequest) request.getServletRequest();
+    @SuppressWarnings("unchecked")
+    public Result receiveData(Request request) throws CapException {
+        CrossDomainAjaxFormResult result = new CrossDomainAjaxFormResult();
+        result.setCallback(request.get("callback"));
+        result.setCorsDomain("*");
+        HttpServletRequest sreq = (HttpServletRequest) request.getServletRequest();
         JSONObject js = new JSONObject();
 
         try {
@@ -253,9 +258,9 @@ public class HttpServiceImpl implements HttpService {
                 }
             }
             if (contentType == null) {
-                logger.debug("ReceiveContentTypeError=>>" + contentType);
-                result.set("status_msg", "ReceiveContentTypeError=>>" + contentType + "is null");
-                result.set("status_code", 507);
+                logger.debug(RECEIVE_CONTENT_TYPE_ERROR_MSG + contentType);
+                result.set(STATUS_MSG, RECEIVE_CONTENT_TYPE_ERROR_MSG + contentType + "is null");
+                result.set(STATUS_CODE, 507);
                 return result;
             }
             if (contentType.indexOf("application/json") != -1) {
@@ -265,8 +270,8 @@ public class HttpServiceImpl implements HttpService {
                     }
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
-                    result.set("status_msg", "Read JsonString error: " + e.getLocalizedMessage());
-                    result.set("status_code", 504);
+                    result.set(STATUS_MSG, "Read JsonString error: " + e.getLocalizedMessage());
+                    result.set(STATUS_CODE, 504);
                     return result;
                 }
             } else if (contentType.indexOf("application/x-www-form-urlencoded") != -1) {
@@ -282,14 +287,14 @@ public class HttpServiceImpl implements HttpService {
                     }
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
-                    result.set("status_msg", "Read UrlEncodedForm error: " + e.getLocalizedMessage());
-                    result.set("status_code", 505);
+                    result.set(STATUS_MSG, "Read UrlEncodedForm error: " + e.getLocalizedMessage());
+                    result.set(STATUS_CODE, 505);
                     return result;
                 }
             } else {
-                logger.debug("ReceiveContentTypeError=>>" + contentType + "||onlySupport:application/json or application/x-www-form-urlencoded");
-                result.set("status_msg", "ReceiveContentTypeError=>>" + contentType + "||onlySupport:application/json or application/x-www-form-urlencoded");
-                result.set("status_code", 506);
+                logger.debug(RECEIVE_CONTENT_TYPE_ERROR_MSG + contentType + "||onlySupport:application/json or application/x-www-form-urlencoded");
+                result.set(STATUS_MSG, RECEIVE_CONTENT_TYPE_ERROR_MSG + contentType + "||onlySupport:application/json or application/x-www-form-urlencoded");
+                result.set(STATUS_CODE, 506);
                 return result;
             }
             try {
@@ -297,23 +302,23 @@ public class HttpServiceImpl implements HttpService {
                     logger.debug("status_msg:{}", "Receive Data>>Success");
                     logger.debug("status_code:{}", 200);
                     logger.debug("receive content:{}", js);
-                    result.set("status_msg", "Receive Data>>Success");
-                    result.set("status_code", 200);
+                    result.set(STATUS_MSG, "Receive Data>>Success");
+                    result.set(STATUS_CODE, 200);
                 }
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
-                result.set("status_msg", "Read data error: " + e.getLocalizedMessage());
-                result.set("status_code", 505);
+                result.set(STATUS_MSG, "Read data error: " + e.getLocalizedMessage());
+                result.set(STATUS_CODE, 505);
                 return result;
             }
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            result.set("status_msg", "get exception error>>" + e.getLocalizedMessage());
-            result.set("status_code", 500);
+            result.set(STATUS_MSG, "get exception error>>" + e.getLocalizedMessage());
+            result.set(STATUS_CODE, 500);
         }
         return result;
-	}
+    }
 
     private static class TrustAllHostNameVerifier implements HostnameVerifier {
         public boolean verify(String hostname, SSLSession session) {
@@ -321,7 +326,7 @@ public class HttpServiceImpl implements HttpService {
         }
     }
 
-	private JSONObject readHttpServletRequestJsonData(HttpServletRequest sreq) throws IOException {
+    private JSONObject readHttpServletRequestJsonData(HttpServletRequest sreq) throws IOException {
         logger.debug("Start Receive JSON data>>>");
         JSONObject js = new JSONObject();
         StringBuffer jb = new StringBuffer();
@@ -338,12 +343,12 @@ public class HttpServiceImpl implements HttpService {
         return js;
     }
 
-	private static class ContentLengthHeaderRemover implements HttpRequestInterceptor {
-		@Override
-		public void process(HttpRequest request, HttpContext context) throws HttpException, IOException {
-			request.removeHeaders(HTTP.CONTENT_LEN);// fighting org.apache.http.protocol.RequestContent's
-													// ProtocolException("Content-Length header already present");
-		}
-	}
+    private static class ContentLengthHeaderRemover implements HttpRequestInterceptor {
+        @Override
+        public void process(HttpRequest request, HttpContext context) throws HttpException, IOException {
+            request.removeHeaders(HTTP.CONTENT_LEN);// fighting org.apache.http.protocol.RequestContent's
+                                                    // ProtocolException("Content-Length header already present");
+        }
+    }
 
 }
