@@ -251,7 +251,9 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
         
         // send file
         try {
-            sendFile = new File(getSysConfig().getProperty("edmSendFileLocation"));
+            String imagePath = getSysConfig().getProperty("edmSendFileLocation", "/ftl/colabaseDemo/edmImages/blue.jpg");
+            imagePath = getClass().getResource(imagePath).getPath();
+            sendFile = new File(imagePath);
             filePart.attachFile(sendFile);
             multipart.addBodyPart(filePart);
         } catch (Exception e) {
