@@ -31,6 +31,7 @@ import com.iisigroup.cap.mvc.handler.MFormHandler;
 public class AddressHandler extends MFormHandler {
 
     private static final Logger jLogger = LoggerFactory.getLogger(AddressHandler.class);
+    private final String RESULT_KEY = "result";
 
     @Autowired
     private AddressService addressService;
@@ -40,16 +41,16 @@ public class AddressHandler extends MFormHandler {
         AjaxFormResult result = new AjaxFormResult();
         String addressStr = request.get("address");
         if(CapString.isEmpty(addressStr)) {
-            result.set("result", "address is empty!");
+            result.set(RESULT_KEY, "address is empty!");
             return result;
         }
         try {
             Address address = addressService.normalizeAddress(addressStr);
             Gson gson = new Gson();
             String jsonStr = gson.toJson(address);
-            result.set("result", jsonStr);
+            result.set(RESULT_KEY, jsonStr);
         } catch (Exception e) {
-            result.set("result", e.toString());
+            result.set(RESULT_KEY, e.toString());
         }
         return result;
     }

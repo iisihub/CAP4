@@ -7,14 +7,6 @@ import com.iisigroup.colabase.model.ZipCode;
 
 public interface ZipCodeDao extends GenericDao<ZipCode> {
 
-	List<ZipCode> findByZipCode(String zipCode);
-	
-	List<ZipCode> findByCounty(String county);
-	
-	List<ZipCode> findByDistrict(String district);
-	
-	List<ZipCode> findByCountyAndDist(String county, String district);
-
 	List<ZipCode> findAll();
 
 }

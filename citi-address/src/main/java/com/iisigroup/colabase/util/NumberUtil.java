@@ -115,9 +115,7 @@ public class NumberUtil {
      * @return 轉換後數字
      */
     public static String transNumberToAssignType(String numbers, Type type) {
-        Boolean checkMix = isMixNum(numbers);
-        if(checkMix == null)
-            throw new IllegalArgumentException("argument must be numbers");
+        boolean checkMix = isMixNum(numbers);
         if(checkMix) { //如果是混合數字就全部先轉成half
             String temp = "";
             for (String s : numbers.split("")) {
@@ -126,9 +124,6 @@ public class NumberUtil {
             }
             numbers = temp;
         }
-
-//        if (!isNumber(numbers))
-//            throw new IllegalArgumentException("argument must be numbers");
 
         Integer number;
         int length;
@@ -168,7 +163,7 @@ public class NumberUtil {
         }
     }
 
-    private static Boolean isMixNum(String value) {
+    private static boolean isMixNum(String value) {
         Type flagType = null;
         for (String key : value.split("")) {
             if(isNumber(key)) {
@@ -188,12 +183,13 @@ public class NumberUtil {
                     }
                 }
             } else {
-                return null;
+                throw new IllegalArgumentException("argument must be numbers");
             }
         }
-        if(flagType != null)
+        if(flagType != null) {
             return false;
-        return null;
+        }
+        throw new IllegalArgumentException("argument must be numbers");
     }
 
     private static String specialTenFormat(String value) {

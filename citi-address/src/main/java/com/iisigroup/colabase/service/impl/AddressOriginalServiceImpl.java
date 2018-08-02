@@ -25,7 +25,7 @@ import com.iisigroup.colabase.util.NumberUtil;
 import org.apache.commons.lang.ArrayUtils;
 
 public class AddressOriginalServiceImpl implements AddressOriginalService {
-    protected static Map<String, String> villages = new HashMap<String, String>();
+    private static Map<String, String> villages = new HashMap<String, String>();
     private static Map<String, String> roadce = new HashMap<String, String>();
     private static Map<String, String> countryce = new HashMap<String, String>();
     protected static Connection conn = null;
@@ -387,10 +387,8 @@ public class AddressOriginalServiceImpl implements AddressOriginalService {
     }
 
     protected List<Map<String, Object>> query(int columnCount, String sqlStr, Object... parameters) throws Exception {
-        PreparedStatement smt = null;
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-        try {
-            smt = conn.prepareStatement(sqlStr, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        try (PreparedStatement smt = conn.prepareStatement(sqlStr, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)){
             for (int i = 1; i <= parameters.length; i++) {
                 smt.setObject(i, parameters[i - 1]);
             }
@@ -408,13 +406,6 @@ public class AddressOriginalServiceImpl implements AddressOriginalService {
             }
         } catch (Exception e) {
             throw e;
-        } finally {
-            if (smt != null) {
-                try {
-                    smt.close();
-                } catch (SQLException e) {
-                }
-            }
         }
         return result;
     }
@@ -466,6 +457,8 @@ public class AddressOriginalServiceImpl implements AddressOriginalService {
                 break;
             case "zip3":
                 eAddress.put("city_dist", countryce.get(value));
+                eAddress.put(eKey, value);
+                break;
             case "zip5":
             case "other":
                 eAddress.put(eKey, value);
