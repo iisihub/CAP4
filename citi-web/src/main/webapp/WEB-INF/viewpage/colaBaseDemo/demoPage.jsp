@@ -31,6 +31,7 @@
                 <tr>
                     <td><button id="pdfBtn" class="orangeBtn" type="button">PDF</button></td>
                     <td><button id="edmBtn" class="orangeBtn" type="button">EDM</button></td>
+                    <td><button id="addressBtn" class="orangeBtn" type="button">Address</button></td>
                 </tr>
             </table>
         </fieldset>

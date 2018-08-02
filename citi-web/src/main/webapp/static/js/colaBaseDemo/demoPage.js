@@ -32,5 +32,9 @@ pageInit(function() {
     	window.setCloseConfirm(false);
     	window.location.href = url('page/colaBaseDemo/edm')
     });
+    $("#addressBtn").on('click', function(e) {
+    	window.setCloseConfirm(false);
+    	window.location.href = url('page/colaBaseDemo/address')
+    });
   });
 });
