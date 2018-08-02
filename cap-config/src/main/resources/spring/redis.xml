@@ -5,7 +5,7 @@
            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
     <context:annotation-config />
-    <bean class="com.iisigroup.cap.session.server.RedisServer" />
+    <!-- <bean class="com.iisigroup.cap.session.server.RedisServer" /> -->
     <bean id="redisHttpSessionConfiguration" class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration" />
     <bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
         <constructor-arg name="poolConfig" ref="poolConfig"></constructor-arg>

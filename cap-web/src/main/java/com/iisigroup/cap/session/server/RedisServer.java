@@ -30,11 +30,13 @@ public class RedisServer {
 
     public RedisServer() throws IOException {
         redisServer = new redis.embedded.RedisServer(6379);
+        // redis-server
         redisServer.start();
         Runtime.getRuntime().addShutdownHook(new Thread() {
 
             @Override
             public void run() {
+                // redis-cli shutdown
                 redisServer.stop();
             }
         });
