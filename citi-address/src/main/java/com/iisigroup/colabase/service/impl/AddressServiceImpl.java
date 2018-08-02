@@ -1,5 +1,6 @@
 package com.iisigroup.colabase.service.impl;
 
+import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.colabase.dao.ZipCodeDao;
 import com.iisigroup.colabase.model.Address;
 import com.iisigroup.colabase.model.ZipCode;
@@ -47,8 +48,13 @@ public class AddressServiceImpl extends AddressOriginalServiceImpl implements Ad
 
     @Override
     public Address normalizeAddress(String address) throws Exception {
-        Map<String, String> resultMap = super.normalize(address);
         Address addressModel = new Address();
+        //transform data to full excluded zipCode
+        String zipCode = this.getZipCode(address);
+        address = address.replace(zipCode, "");
+        address = zipCode + CapString.halfWidthToFullWidth(address);
+
+        Map<String, String> resultMap = super.normalize(address);
         addressModel.setNo(resultMap.get("no"));
         addressModel.setAddress(resultMap.get("address"));
         addressModel.setRoad(resultMap.get("road"));
@@ -64,6 +70,18 @@ public class AddressServiceImpl extends AddressOriginalServiceImpl implements Ad
         addressModel.setVillage(resultMap.get("village"));
         addressModel.setNeighborhood(resultMap.get("neighborhood"));
         return addressModel;
+    }
+
+    private String getZipCode(String address) {
+        String[] strings = address.split("");
+        int noneNumberPos = 0;
+        for(int i = 0 ; i < strings.length ; i ++) {
+            if(!CapString.isNumeric(strings[i])) {
+                noneNumberPos = i;
+                break;
+            }
+        }
+        return address.substring(0, noneNumberPos);
     }
 
     private void putZipCodeDataToH2() {

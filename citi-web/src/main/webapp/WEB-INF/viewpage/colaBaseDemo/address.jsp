@@ -20,7 +20,7 @@
 <div style="height: 1060px;">
     <form id="sslClientForm" autocomplete="off" method="post">
         <h3>地址正規化測試頁</h3>
-        輸入地址: <br/>
+        輸入地址: <br/> *格式：3 or 5 碼 zip code + 縣市 + 鄉鎮市區 + (村里) + (鄰) + 路段 + 巷 + 弄 + 號 + 樓 + 室
         <input type="text" id="address" name="address" class="longInput"
                value="100臺北市中正區仁愛路１段149-2號9樓">
         <br/>
