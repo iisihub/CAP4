@@ -3,6 +3,7 @@ package com.iisigroup.colabase.service.impl;
 import com.iisigroup.colabase.model.Address;
 import com.iisigroup.colabase.service.AddressOriginalService;
 import com.iisigroup.colabase.service.AddressService;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,17 @@ public class AddressOriginalServiceTest {
     private AddressService addressOriginalService;
 
     @Test
-    public void testAddress() throws Exception {
+    public void test_normal_address() throws Exception {
+        String testAddress = "100臺北市中正區仁愛路１段149-2號9樓";
+        Address address = addressOriginalService.normalizeAddress(testAddress);
+        Assert.assertNotNull(address);
+    }
 
-//        String testAddress = "241新北市三重區中正南路149-2號9樓";
-        String testAddress = "100臺北市中正區中華路１段149-2號9樓";
-        Map<String, String> normalize = addressService.normalize(testAddress);
-        String s = "";
-
+    @Test
+    public void test_normal_address_with_village() throws Exception {
+        String testAddress = "100臺北市中正區丁台里36鄰仁愛路１段149-2號9樓";
+        Address address = addressOriginalService.normalizeAddress(testAddress);
+        Assert.assertNotNull(address);
     }
 
 }
