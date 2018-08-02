@@ -51,4 +51,6 @@
     <import resource="classpath:spring/captcha.xml" />
     <!-- report -->
     <import resource="classpath:report/report.xml" />
+    <!-- session data redis -->
+    <import resource="classpath:spring/redis.xml" />
 </beans>
