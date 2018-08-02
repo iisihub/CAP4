@@ -1,12 +1,18 @@
 package com.iisigroup.colabase.service.impl;
 
 import com.iisigroup.colabase.dao.ZipCodeDao;
+import com.iisigroup.colabase.model.Address;
 import com.iisigroup.colabase.model.ZipCode;
+import com.iisigroup.colabase.service.AddressService;
+import com.iisigroup.colabase.util.NumberUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * @author AndyChen
@@ -16,7 +22,7 @@ import java.util.Map;
  * @since 2018/6/4
  */
 @Service
-public class AddressServiceImpl extends AddressOriginalService {
+public class AddressServiceImpl extends AddressOriginalServiceImpl implements AddressService {
 
     @Autowired
     private ZipCodeDao zipCodeDao;

@@ -20,15 +20,15 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
-import com.iisigroup.colabase.service.AddressService;
+import com.iisigroup.colabase.service.AddressOriginalService;
 import com.iisigroup.colabase.util.NumberUtil;
 import org.apache.commons.lang.ArrayUtils;
 
-public class AddressOriginalService implements AddressService {
-    private static Map<String, String> villages = new HashMap<String, String>();
+public class AddressOriginalServiceImpl implements AddressOriginalService {
+    protected static Map<String, String> villages = new HashMap<String, String>();
     private static Map<String, String> roadce = new HashMap<String, String>();
     private static Map<String, String> countryce = new HashMap<String, String>();
-    private static Connection conn = null;
+    protected static Connection conn = null;
 
     // data prepare 把從中華郵政下載的資料，insert 到 h2 in-memory db
     static {
@@ -171,7 +171,7 @@ public class AddressOriginalService implements AddressService {
     /*
      * (non-Javadoc)
      * 
-     * @see idv.lancelot.lambda.tool.service.AddressService#normalize(java.lang.
+     * @see idv.lancelot.lambda.tool.service.AddressOriginalService#normalize(java.lang.
      * String)
      */
     @Override
@@ -218,7 +218,12 @@ public class AddressOriginalService implements AddressService {
             if (process.contains(city)) {
                 process = process.replace(city, "").trim();
             } else {
-                throw new Exception("city should be " + city + " with zip " + zip);
+                process = process.replace("臺", "台"); // 台 vs. 臺比對處理
+                if (process.contains(city)) {
+                    process = process.replace(city, "").trim();
+                } else {
+                    throw new Exception("city should be " + city + " with zip " + zip);
+                }
             }
         }
         // country
@@ -275,6 +280,7 @@ public class AddressOriginalService implements AddressService {
                 }
             }
             if (!found) {
+
                 throw new Exception("road isn't correct with city/district " + city + "/" + district);
             } else {
                 res.put("road", road);

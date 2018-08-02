@@ -1,5 +1,7 @@
 package com.iisigroup.colabase.service.impl;
 
+import com.iisigroup.colabase.model.Address;
+import com.iisigroup.colabase.service.AddressOriginalService;
 import com.iisigroup.colabase.service.AddressService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +19,7 @@ import java.util.Map;
 public class AddressOriginalServiceTest {
 
     @Autowired
-    private AddressService addressService;
+    private AddressService addressOriginalService;
 
     @Test
     public void testAddress() throws Exception {
