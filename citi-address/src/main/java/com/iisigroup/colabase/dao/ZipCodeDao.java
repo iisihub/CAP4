@@ -14,5 +14,7 @@ public interface ZipCodeDao extends GenericDao<ZipCode> {
 	List<ZipCode> findByDistrict(String district);
 	
 	List<ZipCode> findByCountyAndDist(String county, String district);
-	
+
+	List<ZipCode> findAll();
+
 }

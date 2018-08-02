@@ -49,6 +49,12 @@ public class ZipCodeDaoImpl extends GenericDaoImpl<ZipCode> implements ZipCodeDa
         return query.getResultList();
     }
 
+    @Override
+    public List<ZipCode> findAll() {
+        Query query = getEntityManager().createNativeQuery("select r.* from CO_XSL_ZIPCODE r WITH(NOLOCK)", ZipCode.class);
+        return query.getResultList();
+    }
+
     private class QuerySettings {
         private EntityManager entityManager;
         private CriteriaQuery<ZipCode> query;
