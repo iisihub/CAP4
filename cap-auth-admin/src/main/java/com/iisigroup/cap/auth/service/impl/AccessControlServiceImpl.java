@@ -5,8 +5,6 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.stereotype.Service;
-
 import com.iisigroup.cap.auth.dao.RoleDao;
 import com.iisigroup.cap.auth.dao.UserDao;
 import com.iisigroup.cap.auth.model.DefaultUser;
@@ -18,7 +16,7 @@ import com.iisigroup.cap.security.service.CheckCodeService;
 import com.iisigroup.cap.utils.CapAppContext;
 import com.iisigroup.cap.utils.CapDate;
 
-@Service
+//@Service
 public class AccessControlServiceImpl implements AccessControlService {
 
     @Resource

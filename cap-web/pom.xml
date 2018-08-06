@@ -4,7 +4,7 @@
     <parent>
         <artifactId>cap</artifactId>
         <groupId>com.iisigroup.cap</groupId>
-        <version>4.0.1</version>
+        <version>4.1.0</version>
     </parent>
     <artifactId>cap-web</artifactId>
     <packaging>war</packaging>
@@ -131,7 +131,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>1.5.10.RELEASE</version>
+            <version>${spring-boot.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
@@ -142,13 +142,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
-            <version>1.5.10.RELEASE</version>
+            <version>${spring-boot.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>            
-            <version>1.5.10.RELEASE</version>
+            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
 			<groupId>org.springframework.integration</groupId>
@@ -168,7 +168,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>1.5.10.RELEASE</version>
+                <version>${spring-boot.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -205,7 +205,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <configuration>
                     <webAppConfig>
-                        <extraClasspath>target/cap-web-4.0.1/WEB-INF/classes</extraClasspath>
+                        <extraClasspath>target/cap-web-4.1.0/WEB-INF/classes</extraClasspath>
                     </webAppConfig>
                     <contextPath>/cap-web</contextPath>
                     <stopKey>foo</stopKey>
@@ -269,7 +269,7 @@
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
-                        <version>1.5.10.RELEASE</version>                 
+                        <version>${spring-boot.version}</version>                 
                         <executions>
                             <execution>
                                 <goals>

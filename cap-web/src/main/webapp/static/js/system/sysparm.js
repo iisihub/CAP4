@@ -67,8 +67,7 @@ pageInit(function() {
         eform.find('#parmId').readOnly(eDialog.data('type') == 'A' ? false : true);
       },
       close : function() {
-        eform.reset();
-        eform.validationEngine('hide');
+        eform.reset().validationEngine('hide');
       },
       buttons : API.createJSON([ {
         key : i18n.def.sure,

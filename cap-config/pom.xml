@@ -3,7 +3,7 @@
     <parent>
         <artifactId>cap</artifactId>
         <groupId>com.iisigroup.cap</groupId>
-        <version>4.0.1</version>
+        <version>4.1.0</version>
     </parent>
     <artifactId>cap-config</artifactId>
     <!-- http://static.springsource.org/spring-batch/reference/html-single/index.html -->
