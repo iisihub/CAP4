@@ -25,6 +25,11 @@ public abstract class RequestContent extends JsonAbstract implements ApiRequest 
     private boolean isUseOwnKeyAndTrustStore = true;
 
     /**
+     * API的名稱
+     */
+    private String apiName;
+
+    /**
      * millisecond
      */
     private int timeout;
@@ -118,5 +123,13 @@ public abstract class RequestContent extends JsonAbstract implements ApiRequest 
 
     public void setRetryHttpStatus(int[] retryHttpStatus) {
         this.retryHttpStatus = retryHttpStatus;
+    }
+
+    public String getApiName() {
+        return apiName;
+    }
+
+    public void setApiName(String apiName) {
+        this.apiName = apiName;
     }
 }

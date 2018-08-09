@@ -136,6 +136,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
     RequestContent.HTTPMethod method = requestContent.getHttpMethod();
     String targetURL = requestContent.getTargetUrl();
     String jsonStr = requestContent.getJsonString();
+    String apiName = requestContent.getApiName();
     boolean isUseOwnSslFactory = requestContent.isUseOwnKeyAndTrustStore();
     Map<String, List<String>> requestHeaders = requestContent.getRequestHeaders();
     Map<String, List<String>> headers = null;
@@ -144,9 +145,12 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
       SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
       String time = formatter.format(date);
       logger.debug("start time = {}",  time);
+      logger.debug("API NAME = {}", apiName);
       logger.debug("Request: target = {}", targetURL);
       // add listForRecordInfos
       recordInfo.add("Request: time = " + time);
+      recordInfo.add("API NAME = " + apiName);
+      recordInfo.add("Request: target = " + targetURL);
 
       HttpsURLConnection connection = (HttpsURLConnection) new URL(targetURL).openConnection();
       // 設定 HttpsURLConnection 的 SSLSocketFactory
