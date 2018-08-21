@@ -89,6 +89,10 @@
              <groupId>com.iisigroup.colabase</groupId>
              <artifactId>citi-json</artifactId>
          </dependency>
+         <dependency>
+             <groupId>com.iisigroup.colabase</groupId>
+             <artifactId>citi-common</artifactId>
+         </dependency>
         <dependency>
             <groupId>org.tuckey</groupId>
             <artifactId>urlrewritefilter</artifactId>
