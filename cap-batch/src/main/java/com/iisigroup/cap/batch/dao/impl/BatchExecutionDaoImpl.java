@@ -1,5 +1,6 @@
 package com.iisigroup.cap.batch.dao.impl;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -18,7 +19,9 @@ import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
 import com.iisigroup.cap.db.model.Page;
 
 @Repository
-public class BatchExecutionDaoImpl extends GenericDaoImpl<Object> implements BatchExecutionDao {
+public class BatchExecutionDaoImpl extends GenericDaoImpl<Object> implements BatchExecutionDao, Cloneable, Serializable {
+
+    private static final long serialVersionUID = -8349686130412116420L;
 
     @Override
     public Page<Map<String, Object>> findExecutionsForPage(SearchSetting search) {

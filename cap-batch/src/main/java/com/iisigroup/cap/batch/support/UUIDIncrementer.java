@@ -11,6 +11,8 @@
  */
 package com.iisigroup.cap.batch.support;
 
+import java.io.Serializable;
+
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersIncrementer;
@@ -29,7 +31,9 @@ import com.iisigroup.cap.utils.UUIDGenerator;
  *          <li>2012/11/14,iristu,new
  *          </ul>
  */
-public class UUIDIncrementer implements JobParametersIncrementer {
+public class UUIDIncrementer implements JobParametersIncrementer, Cloneable, Serializable {
+
+    private static final long serialVersionUID = 2039250241231487310L;
 
     private static String ID_KEY = "uuid";
 

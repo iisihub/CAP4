@@ -1,5 +1,6 @@
 package com.iisigroup.cap.batch.dao.impl;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,9 @@ import com.iisigroup.cap.db.model.Page;
 import com.iisigroup.cap.utils.CapBeanUtil;
 
 @Repository
-public class BatchScheduleDaoImpl extends GenericDaoImpl<BatchSchedule> implements BatchScheduleDao {
+public class BatchScheduleDaoImpl extends GenericDaoImpl<BatchSchedule> implements BatchScheduleDao, Cloneable, Serializable {
+
+    private static final long serialVersionUID = 351364928821650438L;
 
     @Override
     public Page<BatchSchedule> findForPage(SearchSetting search) {

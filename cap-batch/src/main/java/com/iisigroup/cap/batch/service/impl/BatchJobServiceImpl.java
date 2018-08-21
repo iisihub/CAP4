@@ -11,6 +11,7 @@
  */
 package com.iisigroup.cap.batch.service.impl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,9 @@ import com.iisigroup.cap.utils.CapSystemConfig;
  *          <li>2012/11/6,iristu,new
  *          </ul>
  */
-public class BatchJobServiceImpl implements BatchJobService {
+public class BatchJobServiceImpl implements BatchJobService, Cloneable, Serializable {
+
+    private static final long serialVersionUID = 5907476773223031218L;
 
     @Resource
     private BatchJobDao batchJobDao;

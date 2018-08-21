@@ -1,5 +1,6 @@
 package com.iisigroup.cap.batch.dao.impl;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,9 @@ import com.iisigroup.cap.db.model.Page;
 import com.iisigroup.cap.utils.CapBeanUtil;
 
 @Repository
-public class BatchJobDaoImpl extends GenericDaoImpl<BatchJob> implements BatchJobDao {
+public class BatchJobDaoImpl extends GenericDaoImpl<BatchJob> implements BatchJobDao, Cloneable, Serializable {
+
+    private static final long serialVersionUID = -6151705406619724589L;
 
     @SuppressWarnings("unchecked")
     @Override

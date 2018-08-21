@@ -11,6 +11,7 @@
  */
 package com.iisigroup.cap.batch.core;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -41,6 +42,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.support.PropertiesConverter;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.iisigroup.cap.batch.constants.CapBatchConstants;
 import com.iisigroup.cap.batch.model.BatchSchedule;
@@ -59,7 +61,9 @@ import com.iisigroup.cap.batch.service.BatchJobService;
  *          <li>2012/11/12,iristu,new
  *          </ul>
  */
-public class CapBatchScheduler implements CapBatchConstants {
+public class CapBatchScheduler implements CapBatchConstants, Cloneable, Serializable {
+
+    private static final long serialVersionUID = -7713248164710408512L;
 
     private final Logger logger = LoggerFactory.getLogger(CapBatchScheduler.class);
 
@@ -73,6 +77,7 @@ public class CapBatchScheduler implements CapBatchConstants {
 
     @SuppressWarnings({ "unchecked" })
     public void loadSchedule() throws Exception {
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
         Set<String> hosts = new HashSet<String>();
         hosts.add(getHostId());
         hosts.add(LOCALHOST);
@@ -158,7 +163,7 @@ public class CapBatchScheduler implements CapBatchConstants {
         map.put(JOB_NAME, sch.getJobId());
         map.put("jobLauncher", jobLauncher);
         map.put("jobLocator", jobLocator);
-        map.put("batchService", batchService);
+        // map.put("batchService", batchService);
         // 放入JobParametersIncrementer要確保不會有重覆的Parameters出現
         map.put("defaultIncrementer", defaultIncrementer);
         JobDetailFactoryBean jobFactory = new JobDetailFactoryBean();

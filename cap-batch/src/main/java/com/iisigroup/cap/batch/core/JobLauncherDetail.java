@@ -11,6 +11,7 @@
  */
 package com.iisigroup.cap.batch.core;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.HashSet;
@@ -47,7 +48,9 @@ import com.iisigroup.cap.batch.service.BatchJobService;
  *          <li>2012/11/1,iristu,new
  *          </ul>
  */
-public class JobLauncherDetail extends QuartzJobBean implements CapBatchConstants {
+public class JobLauncherDetail extends QuartzJobBean implements CapBatchConstants, Cloneable, Serializable {
+
+    private static final long serialVersionUID = 2511400138176943967L;
 
     private final Logger logger = LoggerFactory.getLogger(JobLauncherDetail.class);
 

@@ -6,7 +6,7 @@
     <!-- <bean class="org.springframework.batch.core.scope.StepScope" /> -->
     <bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
     <batch:job-repository id="jobRepository" data-source="cap-db" transaction-manager="transactionManager" isolation-level-for-create="SERIALIZABLE" table-prefix="${batch.table-prefix}" />
-    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+    <bean id="jobLauncher" class="com.iisigroup.cap.batch.support.SimpleJobLauncher">
         <property name="jobRepository" ref="jobRepository" />
         <property name="taskExecutor">
             <bean class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
@@ -20,7 +20,7 @@
         </property>
         <property name="jobLoader" ref="jobLoader" />
     </bean>
-    <bean id="jobRegistry" class="org.springframework.batch.core.configuration.support.MapJobRegistry" />
+    <bean id="jobRegistry" class="com.iisigroup.cap.batch.support.MapJobRegistry" />
     <bean id="jobService" class="org.springframework.batch.admin.service.SimpleJobServiceFactoryBean">
         <property name="tablePrefix" value="${batch.table-prefix}" />
         <property name="jobRepository" ref="jobRepository" />

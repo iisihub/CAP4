@@ -12,6 +12,7 @@
 package com.iisigroup.cap.utils;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Properties;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -28,8 +29,9 @@ import org.springframework.beans.factory.InitializingBean;
  *          <li>2011/12/26,rodeschen,new
  *          </ul>
  */
-public class CapSystemConfig implements InitializingBean {
+public class CapSystemConfig implements InitializingBean, Cloneable, Serializable {
 
+    private static final long serialVersionUID = 2468325614388524540L;
     private Properties properties = new Properties();
 
     public CapSystemConfig() {
