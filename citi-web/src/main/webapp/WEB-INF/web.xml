@@ -36,6 +36,10 @@
         <description>spring-request-listener</description>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
+    <!-- COLA context listener -->
+    <listener>
+        <listener-class>com.iisigroup.colabase.common.mvc.listener.COLAContextListener</listener-class>
+    </listener>
     <!-- Filter
         <filter>
         <filter-name>shallowEtagHeaderFilter</filter-name>

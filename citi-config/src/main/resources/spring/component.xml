@@ -35,13 +35,6 @@
             </bean>
         </property>
     </bean>
-    <bean id="sysProp" class="com.iisigroup.cap.base.CapSystemProperties">
-        <property name="ignoreCache">
-            <list>
-                <value>TIME_OUT</value>
-            </list>
-        </property>
-    </bean>
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPaths">
             <list>
@@ -55,6 +48,19 @@
             </props>
         </property>
     </bean>
-<!--     <bean id="init" class="com.iisigroup.colabase.va.util.LoadAllCaCertAndCRLBean"> -->
-<!--     </bean> -->
+    <!-- <bean id="init" class="com.iisigroup.colabase.va.util.LoadAllCaCertAndCRLBean"> -->
+    <!-- </bean> -->
+    <!-- cola system properties -->
+    <bean id="sysProp" class="com.iisigroup.colabase.common.jsp.COLASystemProperties">
+        <property name="ignoreCache">
+            <list>
+                <value>MAX_FILE_COUNT</value>
+                <value>MAX_FILE_SIZE</value>
+                <value>TIME_OUT</value>
+                <value>VA_BASE_URL</value>
+                <value>VA_TIMEOUT_IN_MS</value>
+                <value>VA_SSL</value>
+            </list>
+        </property>
+    </bean>
 </beans>

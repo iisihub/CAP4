@@ -9,9 +9,9 @@
         <property name="ignoreResourceNotFound" value="false" />
         <property name="locations">
             <list>
-				<value>classpath:db/database.properties</value>
-				<value>classpath:db/hibernate.properties</value>
-				<value>classpath:config.properties</value>
+                <value>classpath:db/database.properties</value>
+                <value>classpath:db/hibernate.properties</value>
+                <value>classpath:config.properties</value>
             </list>
         </property>
     </bean>
@@ -48,4 +48,6 @@
     <import resource="classpath:spring/captcha.xml" />
     <!-- report -->
     <import resource="classpath:report/report.xml" />
+    <!-- quartz -->
+    <import resource="classpath:batch/quartz.xml" />
 </beans>

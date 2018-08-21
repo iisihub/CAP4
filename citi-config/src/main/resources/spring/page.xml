@@ -34,4 +34,7 @@
             </util:list>
         </property>
     </bean>
+    <bean id="pageRouteInterceptor" class="com.iisigroup.colabase.common.mvc.interceptor.COLAPageRouteInterceptor">
+        <property name="include" value="^\/index$|^\/timeout$|^\/error$" />
+    </bean>
 </beans>

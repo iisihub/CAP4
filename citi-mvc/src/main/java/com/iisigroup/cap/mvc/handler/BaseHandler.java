@@ -23,7 +23,7 @@ import com.iisigroup.cap.mvc.i18n.MessageBundleScriptCreator;
  *          <li>2012/8/23,RodesChen,add default locale
  *          </ul>
  */
-@Controller("basehandler")
+//@Controller("basehandler")
 public class BaseHandler extends MFormHandler {
 
     /**

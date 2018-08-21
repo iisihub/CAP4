@@ -17,6 +17,7 @@
         <!-- base -->
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <class>com.iisigroup.cap.base.model.SysParm</class>
+        <class>com.iisigroup.colabase.common.model.COLASysParm</class>
         <!-- VA -->
         <class>com.iisigroup.colabase.va.model.CAInfo</class>
         <class>com.iisigroup.colabase.va.model.TransLog</class>

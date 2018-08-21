@@ -31,6 +31,10 @@
         <!-- <mapper class="com.opensymphony.module.sitemesh.mapper.PrintableDecoratorMapper">
             <param name="decorator" value="none" /> <param name="parameter.name" value="printable"
             /> <param name="parameter.value" value="true" /> </mapper> -->
+		<mapper class="com.iisigroup.colabase.common.sitemesh.mapper.COLARequestJSONMapper">
+			<param name="ignoreParams" value="_isAjax,formAction,_pa"/>
+			<param name="keepInSessions" value="" />
+		</mapper>
         <mapper class="com.iisigroup.cap.sitemesh.mapper.CapI18nMapper">
             <param name="ignorePathReg" value="(page/index)" />
         </mapper>
