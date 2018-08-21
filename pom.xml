@@ -18,6 +18,10 @@
             <id>localRepository</id>
             <url>file://${project.basedir}/../${localRepositoryPath}</url>
         </repository>
+        <repository>
+            <id>spring-plugins-release</id>
+            <url>http://repo.spring.io/plugins-release/</url>
+        </repository>
     </repositories>
     <dependencyManagement>
         <dependencies>
