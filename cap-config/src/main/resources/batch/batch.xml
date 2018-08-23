@@ -54,6 +54,16 @@
         <!-- 外部設定檔 -->
         <property name="configLocation" value="classpath:batch/quartz.properties" />
         <property name="applicationContextSchedulerContextKey" value="applicationContext" />
+        <property name="schedulerContextAsMap">
+            <map>
+                <entry key="batchService" value-ref="batchJobService" />
+                <entry key="tablePrefix" value="${batch.table-prefix}" />
+                <entry key="jobRepository" value-ref="jobRepository" />
+                <entry key="jobLauncher" value-ref="jobLauncher" />
+                <entry key="jobLocator" value-ref="jobRegistry" />
+                <entry key="dataSource" value-ref="cap-db" />
+            </map>
+        </property>
     </bean>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~ quartz listener ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <bean id="batchNofityListener" class="com.iisigroup.cap.batch.listener.CapBatchMailNotifyListener">

@@ -21,6 +21,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.quartz.JobExecutionContext;
+import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
@@ -69,6 +70,9 @@ public class JobLauncherDetail extends QuartzJobBean implements CapBatchConstant
         try {
             // 放入defaultIncrementer要確保不會有重覆的Parameters出現
             jobParameters = defaultIncrementer.getNext(jobParameters);
+            jobLocator = (JobLocator) context.getScheduler().getContext().get("jobLocator");
+            jobLauncher = (JobLauncher) context.getScheduler().getContext().get("jobLauncher");
+            batchService = (BatchJobService) context.getScheduler().getContext().get("batchService");
             Job job = jobLocator.getJob(jobName);
             if (job.getJobParametersIncrementer() != null) {
                 jobParameters = job.getJobParametersIncrementer().getNext(jobParameters);
@@ -77,6 +81,9 @@ public class JobLauncherDetail extends QuartzJobBean implements CapBatchConstant
             context.put(K_JOB_EXECUTION, jobExecution);
             batchService.updateExecution(jobExecution.getId(), (String) jobDataMap.get(EXECUTOR));
         } catch (JobExecutionException e) {
+            logger.error("Could not execute job.", e);
+            throw new org.quartz.JobExecutionException(e);
+        } catch (SchedulerException e) {
             logger.error("Could not execute job.", e);
             throw new org.quartz.JobExecutionException(e);
         }
