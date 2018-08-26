@@ -22,6 +22,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.iisigroup.cap.security.CapSecurityContext;
@@ -45,7 +46,7 @@ import com.iisigroup.cap.utils.CapAppContext;
 @RequestMapping("/*")
 public class PageAction extends BaseActionController {
 
-    @RequestMapping("/error")
+    @RequestMapping(method = { RequestMethod.GET }, value = { "/error" })
     public ModelAndView error(Locale locale, HttpServletRequest request, HttpServletResponse response) {
         String path = request.getPathInfo();
         ModelAndView model = new ModelAndView(path);
@@ -65,7 +66,12 @@ public class PageAction extends BaseActionController {
         return model;
     }
 
-    @RequestMapping("/**")
+    @RequestMapping(method = { RequestMethod.GET }, value = { "/login", "/index" })
+    public ModelAndView login(Locale locale, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return handleRequestInternal(locale, request, response);
+    }
+
+    @RequestMapping(method = { RequestMethod.POST }, value = { "/**" })
     public ModelAndView handleRequestInternal(Locale locale, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String path = request.getPathInfo();
         ModelAndView model = new ModelAndView(path);

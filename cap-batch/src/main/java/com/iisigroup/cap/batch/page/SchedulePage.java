@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.iisigroup.cap.base.service.CodeTypeService;
@@ -49,7 +50,7 @@ public class SchedulePage extends BaseActionController {
     @Autowired
     private BatchJobService batchSrv;
 
-    @RequestMapping(value = { "/batch/schedule" })
+    @RequestMapping(method = { RequestMethod.POST }, value = { "/batch/schedule" })
     public ModelAndView notifyStatus(Locale locale, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String path = request.getPathInfo();
         Map<String, Map<String, String>> codes = codeTypeSrv.findByCodeTypes(new String[] { "jobExitCode", "timeZoneId", "schExeHost" }, locale.toString());
