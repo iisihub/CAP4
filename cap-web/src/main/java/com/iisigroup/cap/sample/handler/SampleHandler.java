@@ -20,8 +20,6 @@ import javax.annotation.Resource;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,8 +50,6 @@ import com.iisigroup.cap.security.annotation.Captcha;
  */
 @Controller("samplehandler")
 public class SampleHandler extends MFormHandler {
-
-    private final Logger logger = LoggerFactory.getLogger(SampleHandler.class);
 
     @HandlerType(HandlerTypeEnum.FILE_UPLOAD)
     public Result upload(Request request) throws CapException {
