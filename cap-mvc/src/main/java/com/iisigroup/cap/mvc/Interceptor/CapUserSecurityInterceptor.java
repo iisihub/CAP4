@@ -1,7 +1,7 @@
 /* 
- * BQDUserSecurityInterceptor.java
+ * CapUserSecurityInterceptor.java
  * 
- * Copyright (c) 2009-2011 International Integrated System, Inc. 
+ * Copyright (c) 2011 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
