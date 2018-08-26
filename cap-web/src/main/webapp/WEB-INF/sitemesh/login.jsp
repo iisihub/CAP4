@@ -1,3 +1,4 @@
+<%-- Copyright (c) 2011 International Integrated System, Inc. All Rights Reserved. --%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
 <!DOCTYPE html>
 <html>

@@ -1,3 +1,4 @@
+<%-- Copyright (c) 2011 International Integrated System, Inc. All Rights Reserved. --%>
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
