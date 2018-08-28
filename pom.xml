@@ -12,6 +12,7 @@
         <hibernate.version>5.2.1.Final</hibernate.version>
         <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
         <bean.validation.version>1.1.0.Final</bean.validation.version>
+        <sonar.exclusions>src/main/webapp/static/lib/**/*, src/main/webapp/static/requirejs/**/*</sonar.exclusions>
     </properties>
     <repositories>
         <repository>
