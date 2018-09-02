@@ -194,6 +194,8 @@ public class CapSecurityKeypad {
             case 2:// byteArray
                 obj = convertImage(bi, false);
                 break;
+            default:
+                continue;
             }
             base64Image.add(obj);
         }

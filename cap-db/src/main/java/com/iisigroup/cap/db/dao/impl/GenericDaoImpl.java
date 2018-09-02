@@ -371,7 +371,7 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
             this._value = param.getValue();
         }
 
-        @SuppressWarnings({ "unchecked", "incomplete-switch" })
+        @SuppressWarnings("unchecked")
         public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder builder) {
             try {
                 if (_key instanceof SearchModeParameter && _value instanceof SearchModeParameter) {
@@ -452,6 +452,8 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
                     return builder.equal(path, _value);
                 case NOT_EQUALS:
                     return builder.notEqual(path, _value);
+                default:
+                    return null;
                 }
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);

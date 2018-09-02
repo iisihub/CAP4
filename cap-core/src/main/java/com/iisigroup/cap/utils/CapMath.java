@@ -435,6 +435,7 @@ public class CapMath implements Constants {
                     case '9':
                     case '.':
                         sb.append(ca[i]);
+                    default:
                     }
                 }
                 try {
