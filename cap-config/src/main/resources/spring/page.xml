@@ -18,10 +18,10 @@
         <property name="defaultEncoding" value="UTF-8" />
         <property name="useCodeAsDefaultMessage" value="true" />
     </bean>
-    <bean id="localeResolver" class="com.iisigroup.cap.mvc.i18n.SessionLocaleResolver">
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
         <property name="defaultLocale" value="zh_TW" />
     </bean>
-    <bean id="localeChangeInterceptor" class="com.iisigroup.cap.mvc.i18n.LocaleChangeInterceptor">
+    <bean id="localeChangeInterceptor" class="com.iisigroup.cap.mvc.i18n.UserLocaleChangeInterceptor">
         <property name="paramName" value="lang" />
     </bean>
     <bean id="userSecurityInterceptor" class="com.iisigroup.cap.mvc.Interceptor.CapUserSecurityInterceptor">

@@ -1,5 +1,5 @@
 /* 
- * LocaleChangeInterceptor.java
+ * UserLocaleChangeInterceptor.java
  * 
  * Copyright (c) 2011 International Integrated System, Inc. 
  * All Rights Reserved.
@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.iisigroup.cap.security.CapSecurityContext;
@@ -34,7 +35,7 @@ import com.iisigroup.cap.utils.CapWebUtil;
  *          <li>2013/12/30,tammy,以RequestContextUtils.getLocale(request)取得
  *          </ul>
  */
-public class LocaleChangeInterceptor extends org.springframework.web.servlet.i18n.LocaleChangeInterceptor {
+public class UserLocaleChangeInterceptor extends LocaleChangeInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
