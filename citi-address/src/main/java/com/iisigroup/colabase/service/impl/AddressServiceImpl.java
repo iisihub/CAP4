@@ -76,7 +76,7 @@ public class AddressServiceImpl extends AddressOriginalServiceImpl implements Ad
     }
 
     private String getZipCode(String address) {
-        String[] strings = address.split("");
+        String[] strings = NumberUtil.toStringArray(address);
         int noneNumberPos = 0;
         for(int i = 0 ; i < strings.length ; i ++) {
             if(!CapString.isNumeric(strings[i])) {

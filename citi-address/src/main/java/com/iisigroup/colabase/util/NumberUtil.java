@@ -3,6 +3,8 @@ package com.iisigroup.colabase.util;
 import com.iisigroup.cap.utils.CapString;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,7 +63,7 @@ public class NumberUtil {
     public static String getFirstNumers(String value) {
         String temp = "";
         boolean foundNum = false;
-        for (String key : value.split("")) {
+        for (String key : toStringArray(value)) {
             if (isNumber(key)) {
                 foundNum = true;
                 temp += key;
@@ -87,7 +89,7 @@ public class NumberUtil {
         String noneNumTemp = "";
         String temp = "";
         boolean foundNum = false;
-        for (String key : value.split("")) {
+        for (String key : toStringArray(value)) {
             if (isNumber(key)) {
                 foundNum = true;
                 temp += key;
@@ -116,9 +118,9 @@ public class NumberUtil {
      */
     public static String transNumberToAssignType(String numbers, Type type) {
         boolean checkMix = isMixNum(numbers);
-        if(checkMix) { //如果是混合數字就全部先轉成half
+        if (checkMix) { // 如果是混合數字就全部先轉成half
             String temp = "";
-            for (String s : numbers.split("")) {
+            for (String s : toStringArray(numbers)) {
                 Numbers nums = Numbers.numToNums(s);
                 temp += Objects.requireNonNull(nums).half;
             }
@@ -149,7 +151,7 @@ public class NumberUtil {
             if (length <= 2 && !String.valueOf(number).equals(tenFormat))
                 return tenFormat;
             StringBuilder result = new StringBuilder();
-            for (String key : numbers.split("")) {
+            for (String key : toStringArray(numbers)) {
                 for (Numbers num : Numbers.values()) {
                     if (num.half.equals(key)) {
                         result.append(num.chinese);
@@ -165,20 +167,25 @@ public class NumberUtil {
 
     private static boolean isMixNum(String value) {
         Type flagType = null;
-        for (String key : value.split("")) {
-            if(isNumber(key)) {
+        if (value == null)
+            return false;
+        value = value.trim();
+        for (String key : toStringArray(value)) {
+            if ("".equals(key))
+                continue;
+            if (isNumber(key)) {
                 for (Numbers number : Numbers.values()) {
                     Type type;
-                    if(isChineseNumber(key)) {
+                    if (isChineseNumber(key)) {
                         type = Type.CHINESE;
                     } else if (number.full.equals(key)) {
                         type = Type.FULL;
                     } else {
                         type = Type.HALF;
                     }
-                    if(flagType == null)
+                    if (flagType == null)
                         flagType = type;
-                    if(flagType != type) {
+                    if (flagType != type) {
                         return true;
                     }
                 }
@@ -186,7 +193,7 @@ public class NumberUtil {
                 throw new IllegalArgumentException("argument must be numbers");
             }
         }
-        if(flagType != null) {
+        if (flagType != null) {
             return false;
         }
         throw new IllegalArgumentException("argument must be numbers");
@@ -220,7 +227,7 @@ public class NumberUtil {
     }
 
     public static boolean isChineseNumber(String check) {
-        String[] split = check.split("");
+        String[] split = toStringArray(check);
         for (String key : split) {
             boolean found = false;
             for (NumberUtil.Numbers number : NumberUtil.Numbers.values()) {
@@ -279,7 +286,7 @@ public class NumberUtil {
 
     public static String matchChinStrToNumber(String chineseNums) {
         StringBuilder result = new StringBuilder();
-        for (String key : chineseNums.split("")) {
+        for (String key : toStringArray(chineseNums)) {
             char[] chars = key.toCharArray();
             result.append(matchChinStrToNumber(chars[0]));
         }
@@ -321,5 +328,16 @@ public class NumberUtil {
         default:
             return "";
         }
+    }
+
+    public static String[] toStringArray(String text) {
+        char[] chars = text.toCharArray();
+        List<String> list = new ArrayList<>();
+        String[] result = new String[chars.length];
+        for (char aChar : chars) {
+            list.add(String.valueOf(aChar));
+        }
+        list.toArray(result);
+        return result;
     }
 }
