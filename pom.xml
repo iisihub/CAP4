@@ -10,7 +10,7 @@
         <spring.version>4.3.18.RELEASE</spring.version>
         <spring-security.version>4.1.0.RELEASE</spring-security.version>
         <localRepositoryPath>src/localRepos</localRepositoryPath>
-        <hibernate.version>5.2.1.Final</hibernate.version>
+        <hibernate.version>4.3.10.Final</hibernate.version>
         <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
         <bean.validation.version>1.1.0.Final</bean.validation.version>
     </properties>
