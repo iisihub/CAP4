@@ -42,8 +42,8 @@
         </property>
         <property name="jpaPropertyMap">
             <map>
-                <entry key="hibernate.dialect.sql" value="${hibernate.dialect.sql}" />
-                <entry key="hibernate.default_schema.sql" value="${hibernate.default_schema.sql}" />
+                <entry key="hibernate.dialect" value="${hibernate.dialect.sql}" />
+                <entry key="hibernate.default_schema" value="${hibernate.default_schema.sql}" />
             </map>
         </property>
     </bean>

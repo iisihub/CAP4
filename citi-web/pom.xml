@@ -174,7 +174,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <configuration>
                     <webAppConfig>
-                        <extraClasspath>target/citi-web-4.0.1/WEB-INF/classes</extraClasspath>
+                        <extraClasspath>target/${project.build.finalName}/WEB-INF/classes</extraClasspath>
                     </webAppConfig>
                     <contextPath>/citi-web</contextPath>
                     <stopKey>foo</stopKey>
