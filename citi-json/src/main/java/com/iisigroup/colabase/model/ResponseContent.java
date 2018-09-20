@@ -19,9 +19,6 @@ public class ResponseContent implements ApiResponse {
     private Exception exception;
     
     private List<String> records = new ArrayList<>();
-    public ResponseContent() {
-        
-    }
 
     public ResponseContent(int statusCode, Map<String, List<String>> headers, JsonObject responseJson, List<String> records) {
         this.statusCode = statusCode;
