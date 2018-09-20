@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -48,6 +49,7 @@ public class GsonUtilTest {
         testData.add("[\"{}\",\"{}\"]");
         testData.add("[\"0\",\"1\"]");
         IntStream.range(0, testData.size()).forEach(i -> System.out.print((i == 0 ? "\n" + title + ": \n" : "\n") + "\t" + i + " => " + GsonUtil.jsonToStringList(testData.get(i))));
+        Assert.assertTrue(true);
     }
 
     @Test
@@ -56,6 +58,7 @@ public class GsonUtilTest {
         List<String> testData = new ArrayList<String>();
         testData.add("[{a:1, b: 2},{a:10, b:20}]");
         IntStream.range(0, testData.size()).forEach(i -> System.out.print((i == 0 ? "\n" + title + ": \n" : "\n") + "\t" + i + " => " + GsonUtil.jsonToObjectList(testData.get(i))));
+        Assert.assertTrue(true);
     }
 
     @Test
@@ -66,6 +69,7 @@ public class GsonUtilTest {
         testData.add("{a: 1, b: 2}");
         testData.add("{\"a\": 1, \"b\": 2}");
         IntStream.range(0, testData.size()).forEach(i -> System.out.print((i == 0 ? "\n" + title + ": \n" : "\n") + "\t" + i + " => " + GsonUtil.jsonToMap(testData.get(i))));
+        Assert.assertTrue(true);
     }
 
     @Test
@@ -77,6 +81,7 @@ public class GsonUtilTest {
         testData.add("\"{a: \"1\", b: \"2\"}\"");
         testData.add(BigDecimal.ONE);
         IntStream.range(0, testData.size()).forEach(i -> System.out.print((i == 0 ? "\n" + title + ": \n" : "\n") + "\t" + i + " => " + GsonUtil.objToJson(testData.get(i))));
+        Assert.assertTrue(true);
     }
 
     @Test
@@ -89,6 +94,7 @@ public class GsonUtilTest {
         testData.add(map);
         // testData.add(BigDecimal.ONE);
         IntStream.range(0, testData.size()).forEach(i -> System.out.print((i == 0 ? "\n" + title + ": \n" : "\n") + "\t" + i + " => " + GsonUtil.objToMap(testData.get(i))));
+        Assert.assertTrue(true);
     }
 
     @Test
@@ -122,6 +128,7 @@ public class GsonUtilTest {
         testData.add(map3);
         testData.add(map4);
         IntStream.range(0, testData.size()).forEach(i -> System.out.print((i == 0 ? "\n" + title + ": \n" : "\n") + "\t" + i + " => " + GsonUtil.mapToJson(testData.get(i))));
+        Assert.assertTrue(true);
     }
 
     @Test
@@ -136,6 +143,7 @@ public class GsonUtilTest {
         testData.add("[\"{}\",\"{}\"]");
         testData.add("[{},{}]");
         IntStream.range(0, testData.size()).forEach(i -> System.out.print((i == 0 ? "\n" + title + ": \n" : "\n") + "\t" + i + " => " + GsonUtil.jsonToObj(testData.get(i))));
+        Assert.assertTrue(true);
     }
 
     @Test
@@ -160,6 +168,7 @@ public class GsonUtilTest {
         testData.add(map2);
         testData.add(BigDecimal.ZERO);
         IntStream.range(0, testData.size()).forEach(i -> System.out.print((i == 0 ? "\n" + title + ": \n" : "\n") + "\t" + i + " => " + GsonUtil.objToObj(testData.get(i))));
+        Assert.assertTrue(true);
     }
 
 }

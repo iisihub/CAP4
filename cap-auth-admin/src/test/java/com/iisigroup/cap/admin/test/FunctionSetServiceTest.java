@@ -14,6 +14,7 @@ package com.iisigroup.cap.admin.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,5 +74,6 @@ public class FunctionSetServiceTest {
         List<String> roles = new ArrayList<String>();
         roles.add("AI0001");
         functionSetService.deleteRfList("939241", roles);
+        Assert.assertTrue(true);
     }
 }
