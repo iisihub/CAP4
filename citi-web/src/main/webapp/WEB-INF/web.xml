@@ -187,4 +187,20 @@
     <welcome-file-list>
         <welcome-file>page/index</welcome-file>
     </welcome-file-list>
+        <error-page>
+        <error-code>404</error-code>
+        <location>/page/error</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/page/error</location>
+    </error-page>
+    <error-page>
+        <exception-type>com.iisigroup.cap.exception.CapException</exception-type>
+        <location>/page/error</location>
+    </error-page>
+    <session-config>
+        <session-timeout>15</session-timeout>
+    </session-config>
+    
 </web-app>
