@@ -563,7 +563,9 @@ $.holdReady(true);
                         data: $.extend({}, window.responseJSON ? responseJSON : {}, {
                             _pa: s.handler || '',
                             formAction: s.action || ''
-                        }, s.data)
+                        }, s.data),
+                        success: function(){},//取消success預設行為
+                        error:function(){}//取消error預設行為
                     });
                     return $.__ajax(s).done(function(data, status) {
                         // 如有錯誤通知訊息則顯示於畫面上
