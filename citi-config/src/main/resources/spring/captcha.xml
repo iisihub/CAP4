@@ -67,10 +67,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                         <value type="java.lang.String">Arial</value>
                     </constructor-arg>
                     <constructor-arg index="1">
-                        <value type="java.lang.Integer">4</value>
+                        <value type="java.lang.Integer">0</value>
                     </constructor-arg>
                     <constructor-arg index="2">
-                        <value type="java.lang.Integer">18</value>
+                        <value type="java.lang.Integer">50</value>
                     </constructor-arg>
                 </bean>
                 <bean class="java.awt.Font">
@@ -78,10 +78,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                         <value type="java.lang.String">Arial</value>
                     </constructor-arg>
                     <constructor-arg index="1">
-                        <value type="java.lang.Integer">3</value>
+                        <value type="java.lang.Integer">0</value>
                     </constructor-arg>
                     <constructor-arg index="2">
-                        <value type="java.lang.Integer">18</value>
+                        <value type="java.lang.Integer">50</value>
                     </constructor-arg>
                 </bean>
                 <bean class="java.awt.Font">
@@ -89,10 +89,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                         <value type="java.lang.String">Arial</value>
                     </constructor-arg>
                     <constructor-arg index="1">
-                        <value type="java.lang.Integer">4</value>
+                        <value type="java.lang.Integer">0</value>
                     </constructor-arg>
                     <constructor-arg index="2">
-                        <value type="java.lang.Integer">18</value>
+                        <value type="java.lang.Integer">50</value>
                     </constructor-arg>
                 </bean>
                 <bean class="java.awt.Font">
@@ -100,10 +100,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                         <value type="java.lang.String">Arial</value>
                     </constructor-arg>
                     <constructor-arg index="1">
-                        <value type="java.lang.Integer">3</value>
+                        <value type="java.lang.Integer">0</value>
                     </constructor-arg>
                     <constructor-arg index="2">
-                        <value type="java.lang.Integer">18</value>
+                        <value type="java.lang.Integer">50</value>
                     </constructor-arg>
                 </bean>
             </list>
@@ -129,8 +129,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <constructor-arg index="1" value="abcdefghkmnprwxyABCDEFGHKMNPRWXY2345678" />
     </bean>
     <bean id="capCaptcha" class="com.iisigroup.cap.security.captcha.CapSecurityCaptcha" scope="session">
-        <property name="height" value="23" />
-        <property name="width" value="60" />
+        <property name="height" value="65" />
+        <property name="width" value="230" />
         <property name="timeout" value="300000" />
         <property name="border" value="false" />
         <property name="textProducer" ref="capTextProducer" />
