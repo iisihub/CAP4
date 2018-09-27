@@ -26,4 +26,5 @@ public interface ApiRequest {
     void afterSendRequest(ResponseContent responseContent);
 
     void showRequestJsonStrLog(String jsonStr);
+
 }
