@@ -81,8 +81,10 @@ public class SslClientImplTest {
         RequestContent requestContent = this.getDummyContent();
         requestContent.setUseOwnKeyAndTrustStore(false);
         requestContent.setIgnoreSSLcert(true);
+        //預設是走雙向SSL驗證 server，要測該case，要自定義單向的server
+//        requestContent.setTargetUrl("use your url");
         ResponseContent responseContent = sslClient.sendRequestWithDefaultHeader(requestContent);
-        Assert.assertNotEquals("http status should not equals 0", responseContent.getStatusCode(), 0);
+        Assert.assertEquals( "javax.net.ssl.SSLHandshakeException: Received fatal alert: bad_certificate", responseContent.getException().toString());
     }
 
     private RequestContent getDummyContent() throws InvocationTargetException, NoSuchMethodException,
