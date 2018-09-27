@@ -68,9 +68,12 @@ public class SslClientImplTest {
     @Test
     public void test_send_postForm() throws Exception {
         DemoPostDataRequestContent demoRequestContent = (DemoPostDataRequestContent)this.getDummyContent(DemoPostDataRequestContent.class);
-        demoRequestContent.putData("testKey1", "value1");
-        demoRequestContent.putData("testKey2", "value2");
-        demoRequestContent.putData("參數1", "國字1");
+        demoRequestContent.setTest1("value1");
+        demoRequestContent.setTest2("value2");
+        demoRequestContent.setTest3("value3");
+//        demoRequestContent.putData("testKey1", "value1");
+//        demoRequestContent.putData("testKey2", "value2");
+//        demoRequestContent.putData("參數1", "國字1");
         demoRequestContent.setSendType(ApiRequest.SendType.POST_FORM);
         ResponseContent responseContent = sslClient.sendRequest(demoRequestContent);
         Assert.assertNotEquals("http status should not equals 0", responseContent.getStatusCode(), 0);
