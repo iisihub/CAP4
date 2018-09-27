@@ -17,6 +17,9 @@ import com.iisigroup.colabase.service.test.TestServiceImpl2;
 import com.iisigroup.colabase.util.JsonFactory;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by AndyChen on 2018/5/15.
@@ -144,7 +147,7 @@ public class TestRequestDetailTest {
         TestService testService = new TestServiceImpl();
         TestService2 testService2 = new TestServiceImpl2();
         requestContent = JsonFactory.getInstance(TestRequestDetail.class, testService, testService2);
-        ResponseContent response = new ResponseContent();
+        ResponseContent response = new ResponseContent(200,new HashMap<String, List<String>>(),new JsonObject(),new ArrayList<String>());
         requestContent.afterSendRequest(response);
     }
 

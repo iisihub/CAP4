@@ -1,10 +1,9 @@
 package com.iisigroup.colabase.demo.sslclient.model;
 
+import com.iisigroup.colabase.model.RequestContent;
+import com.iisigroup.colabase.model.ResponseContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.iisigroup.colabase.model.PostFormData;
-import com.iisigroup.colabase.model.ResponseContent;
 
 /**
  * @author AndyChen
@@ -13,7 +12,7 @@ import com.iisigroup.colabase.model.ResponseContent;
  *          </ul>
  * @since 2018/4/10
  */
-public class DemoPostDataRequestContent extends PostFormData {
+public class DemoJsonRequestContent extends RequestContent {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 

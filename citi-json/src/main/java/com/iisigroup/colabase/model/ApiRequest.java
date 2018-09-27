@@ -23,6 +23,10 @@ public interface ApiRequest {
         }
     }
 
+    enum SendType {
+        POST_FORM, JSON
+    }
+
     void afterSendRequest(ResponseContent responseContent);
 
     void showRequestJsonStrLog(String jsonStr);

@@ -3,6 +3,7 @@ package com.iisigroup.colabase.model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,12 +53,35 @@ public abstract class RequestContent extends JsonAbstract implements ApiRequest 
     /**
      * 請求Header
      */
-    private Map<String, List<String>> requestHeaders;
+    private Map<String, List<String>> requestHeaders = new LinkedHashMap<>();
 
     /**
      * 需要重試的http status
      */
     private int[] retryHttpStatus;
+
+    /**
+     * 要送出的Data格式
+     */
+    private SendType sendType;
+
+    /**
+     * 是否忽略檢查server SSL憑證
+     */
+    private boolean isIgnoreSSLcert = false;
+
+    /**
+     * SslClientImpl default protocol is TLS
+     * following params u can use:
+     * SSL	    Supports some version of SSL; may support other versions
+     * SSLv2	Supports SSL version 2 or later; may support other versions
+     * SSLv3	Supports SSL version 3; may support other versions
+     * TLS	    Supports some version of TLS; may support other versions
+     * TLSv1	Supports RFC 2246: TLS version 1.0 ; may support other versions
+     * TLSv1.1	Supports RFC 4346: TLS version 1.1 ; may support other versions
+     * TLSv1.2	Supports RFC 5246: TLS version 1.2 ; may support other versions
+     */
+    private String protocol;
 
     /**
      * 紀錄request中的json字串
@@ -133,4 +157,27 @@ public abstract class RequestContent extends JsonAbstract implements ApiRequest 
         this.apiName = apiName;
     }
 
+    public SendType getSendType() {
+        return sendType;
+    }
+
+    public void setSendType(SendType sendType) {
+        this.sendType = sendType;
+    }
+
+    public boolean isIgnoreSSLcert() {
+        return isIgnoreSSLcert;
+    }
+
+    public void setIgnoreSSLcert(boolean ignoreSSLcert) {
+        isIgnoreSSLcert = ignoreSSLcert;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
 }
