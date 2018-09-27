@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import com.iisigroup.colabase.demo.sslclient.model.DemoJsonRequestContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -16,7 +17,6 @@ import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
 import com.iisigroup.cap.utils.CapString;
-import com.iisigroup.colabase.demo.sslclient.model.DemoRequestContent;
 import com.iisigroup.colabase.model.RequestContent;
 import com.iisigroup.colabase.model.ResponseContent;
 import com.iisigroup.colabase.service.SslClient;
@@ -75,7 +75,7 @@ public class SslClientHandler extends MFormHandler {
     }
 
     private RequestContent getDummyContent(String targetUrl, Map<String, List<String>> headers, JsonObject jsonData){
-        RequestContent requestContent = new DemoRequestContent();
+        RequestContent requestContent = new DemoJsonRequestContent();
         requestContent.setRequestHeaders(headers);
         requestContent.setHttpMethod(RequestContent.HTTPMethod.POST);
         requestContent.setRetryTimes(3);
