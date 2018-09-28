@@ -1,11 +1,13 @@
 package com.iisigroup.colabase.demo.sslclient.model;
 
 import com.iisigroup.colabase.annotation.ApiRequest;
+import com.iisigroup.colabase.service.SslClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.iisigroup.colabase.model.PostFormData;
 import com.iisigroup.colabase.model.ResponseContent;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author AndyChen
@@ -17,6 +19,9 @@ import com.iisigroup.colabase.model.ResponseContent;
 public class DemoPostDataRequestContent extends PostFormData {
 
     Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private SslClient sslClient;
 
     @ApiRequest
     private String test1;
