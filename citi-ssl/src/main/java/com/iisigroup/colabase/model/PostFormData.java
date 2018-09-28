@@ -1,5 +1,6 @@
 package com.iisigroup.colabase.model;
 
+import com.google.gson.JsonObject;
 import com.iisigroup.colabase.annotation.ApiRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,10 @@ public abstract class PostFormData extends RequestContent {
         ArrayList<String> list = new ArrayList<>();
         list.add("application/x-www-form-urlencoded");
         requestHeaders.put("Content-Type", list);
+
+        JsonObject requestContent = super.getRequestContent();
+        if(requestContent == null)
+            super.setRequestContent(new JsonObject());
     }
 
     private Map<String, String> dataMap = new LinkedHashMap<>();
@@ -54,6 +59,15 @@ public abstract class PostFormData extends RequestContent {
             }
         }
         return this.dataMap;
+    }
+
+    /**
+     * 避免call父類getJsonString因沒代理，出錯。
+     * @return original RequestContent toString
+     */
+    @Override
+    public String getJsonString() {
+        return super.getRequestContent().toString();
     }
 
 }

@@ -8,6 +8,7 @@ import com.iisigroup.colabase.model.ApiRequest;
 import com.iisigroup.colabase.model.RequestContent;
 import com.iisigroup.colabase.model.ResponseContent;
 import com.iisigroup.colabase.service.SslClient;
+import com.iisigroup.colabase.util.PostFormDataFactory;
 import org.apache.log4j.varia.NullAppender;
 import org.junit.Assert;
 import org.junit.Before;
@@ -67,7 +68,15 @@ public class SslClientImplTest {
 
     @Test
     public void test_send_postForm() throws Exception {
-        DemoPostDataRequestContent demoRequestContent = (DemoPostDataRequestContent)this.getDummyContent(DemoPostDataRequestContent.class);
+        DemoPostDataRequestContent demoRequestContent =
+            PostFormDataFactory.getInstance(DemoPostDataRequestContent.class, sslClient);
+//            PostFormDataFactory.getInstance(DemoPostDataRequestContent.class);
+
+        demoRequestContent.setHttpMethod(RequestContent.HTTPMethod.POST);
+        demoRequestContent.setRetryTimes(3);
+        demoRequestContent.setTimeout(30000);
+        demoRequestContent.setTargetUrl(targetUrl);
+        demoRequestContent.setRetryHttpStatus(new int[]{404});
         demoRequestContent.setTest1("value1");
         demoRequestContent.setTest2("value2");
         demoRequestContent.setTest3("value3");
