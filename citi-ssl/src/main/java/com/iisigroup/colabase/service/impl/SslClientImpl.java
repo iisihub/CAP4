@@ -251,10 +251,13 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
                                             boolean isUseOwnSslFactory, boolean isIgnoreSSLcert,
                                             String protocol, Map<String, List<String>> requestHeaders, ArrayList<String> recordInfo) throws IOException {
 
-        HttpsURLConnection connection = (HttpsURLConnection) new URL(targetURL).openConnection();
+        HttpURLConnection connection = (HttpURLConnection)new URL(targetURL).openConnection();
 
-        // 設定 HttpsURLConnection 的 SSLSocketFactory and 是否忽略憑證驗證
-        this.processSSLSettings(connection, isUseOwnSslFactory, isIgnoreSSLcert, protocol);
+        //如果對象是https才需要進行憑證相關設定
+        if(connection instanceof HttpsURLConnection) {
+            // 設定 HttpsURLConnection 的 SSLSocketFactory and 是否忽略憑證驗證
+            this.processSSLSettings((HttpsURLConnection)connection, isUseOwnSslFactory, isIgnoreSSLcert, protocol);
+        }
 
         logger.debug("Request: use own ssl factory = {}", isUseOwnSslFactory);
         logger.debug("Request: ignore ssl certify = {}", isIgnoreSSLcert);
