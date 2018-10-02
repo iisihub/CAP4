@@ -16,6 +16,7 @@ import javax.net.ssl.*;
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.*;
@@ -176,7 +177,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
             logger.debug("Request: need retry status = {}", requestContent.getRetryHttpStatus());
 
             //取得連線
-            HttpsURLConnection connection = this.getConnection(targetURL, timeOut, method, isUseOwnSslFactory, isIgnoreSSLcert, protocol, requestHeaders, recordInfo);
+            HttpURLConnection connection = this.getConnection(targetURL, timeOut, method, isUseOwnSslFactory, isIgnoreSSLcert, protocol, requestHeaders, recordInfo);
 
             if (!RequestContent.HTTPMethod.GET.equals(method)) {
                 if(sendType == null)
@@ -246,9 +247,9 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
         return responseContent;
     }
 
-    private HttpsURLConnection getConnection(String targetURL, int timeOut, ApiRequest.HTTPMethod method,
-                                             boolean isUseOwnSslFactory, boolean isIgnoreSSLcert,
-                                             String protocol, Map<String, List<String>> requestHeaders, ArrayList<String> recordInfo) throws IOException {
+    private HttpURLConnection getConnection(String targetURL, int timeOut, ApiRequest.HTTPMethod method,
+                                            boolean isUseOwnSslFactory, boolean isIgnoreSSLcert,
+                                            String protocol, Map<String, List<String>> requestHeaders, ArrayList<String> recordInfo) throws IOException {
 
         HttpsURLConnection connection = (HttpsURLConnection) new URL(targetURL).openConnection();
 
@@ -329,7 +330,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
         }
     }
 
-    private void sendJsonDataToRemote(HttpsURLConnection connection, String jsonStr, List<String> recordInfo) throws IOException {
+    private void sendJsonDataToRemote(HttpURLConnection connection, String jsonStr, List<String> recordInfo) throws IOException {
         try (OutputStream output = connection.getOutputStream(); PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, "UTF-8"), true)) {
             writer.write(jsonStr);
             output.flush();
@@ -342,7 +343,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
         }
     }
 
-    private void sendPostFormDataToRemote(HttpsURLConnection connection, Map<String, String> dataMap, List<String> recordInfo) throws IOException {
+    private void sendPostFormDataToRemote(HttpURLConnection connection, Map<String, String> dataMap, List<String> recordInfo) throws IOException {
         final StringBuilder stringBuilder = new StringBuilder();
         boolean isFirst = true;
         for (String key : dataMap.keySet()) {
