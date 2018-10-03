@@ -89,7 +89,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
             String mailAddress = CapString.trimNull(request.get("mailAddress"));
             logRecord.info("[EDM] emailAccount is : {}", mailAddress);
             if (!CapString.isEmpty(mailAddress) && pdfContent != null) {
-                sendEDM(mailAddress, pdfContent.getByteArray(), request);
+                sendEDM(mailAddress, pdfContent.getByteArray(), dataMap);
             } else {
                 logRecord.error("[EDM] pdfContent is null: {}", (pdfContent == null));
                 throw new NullPointerException();
@@ -103,16 +103,16 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
      * @see com.iisigroup.colabase.edm.service.EDMService#sendEDM(java.lang.String, byte[], java.lang.String, com.iisigroup.cap.component.Request)
      */
     @Override
-    public Result sendEDM(String mailAddress, byte[] datas, Request request) {
+    public Result sendEDM(String mailAddress, byte[] datas, Map<String, Object> dataMap) {
         AjaxFormResult result = new AjaxFormResult();
 
         try {
-            final String FROM_ADDRESS = getSysConfig().getProperty("fromAddress", "citi@imta.citicorp.com");
-            final String FROM_PERSON = getSysConfig().getProperty("fromPerson", "花旗（台灣）銀行");
-            final String EDM_HOST = getSysConfig().getProperty("edmHost", "smtp.gmail.com");
-            final String EDM_USR = getSysConfig().getProperty("edmUsr", "css123456tw@gmail.com");
-            final String EDM_PWD = getSysConfig().getProperty("edmPwd", "kvzulwkqdoiprtfb");
-            String edmSubject = getSysConfig().getProperty("edmSubject", "花旗(台灣)銀行 圓滿貸線上申請確認通知函");
+            final String FROM_ADDRESS = (String) dataMap.get("fromAddress");
+            final String FROM_PERSON = (String) dataMap.get("fromPerson");
+            final String EDM_HOST = (String) dataMap.get("edmHost");
+            final String EDM_USR = (String) dataMap.get("edmUsr");
+            final String EDM_PWD = (String) dataMap.get("edmPwd");
+            String edmSubject = (String) dataMap.get("edmSubject");
 
             if (CapString.isEmpty(edmSubject)) {
                 edmSubject = "Citi Cola Notification";
@@ -194,7 +194,10 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
                     index = org.indexOf(keyword2, index + keyword2.length());
                 }
                 // 處理附加檔案
-                multipart = sendFile(multipart);
+                boolean isSendFile = dataMap.get("edmSendFileLocation") != null ? true : false;
+                if(isSendFile) {
+                    multipart = sendFile(multipart, dataMap);
+                }
             }
 
             // put everything together
@@ -244,14 +247,14 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
         return null;
     }
     
-    private MimeMultipart sendFile(MimeMultipart multipart) {
+    private MimeMultipart sendFile(MimeMultipart multipart, Map<String, Object> dataMap) {
         // 處理附加檔案
         File sendFile;
         MimeBodyPart filePart = new MimeBodyPart();
         
         // send file
         try {
-            String imagePath = getSysConfig().getProperty("edmSendFileLocation", "/ftl/colabaseDemo/edmImages/blue.jpg");
+            String imagePath = (String) dataMap.get("edmSendFileLocation");
             imagePath = getClass().getResource(imagePath).getPath();
             sendFile = new File(imagePath);
             filePart.attachFile(sendFile);

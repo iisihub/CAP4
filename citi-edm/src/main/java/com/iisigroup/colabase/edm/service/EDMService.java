@@ -30,6 +30,8 @@ public interface EDMService {
     /**
      * 寄送EDM from
      * @param request
+     * @param String ftl路徑
+     * @param Map<String, Object>
      */
     void sendEDM(Request request, String edmFtlPath, Map<String, Object> dataMap);
     
@@ -37,9 +39,8 @@ public interface EDMService {
      * 寄送EDM from
      * @param String mail地址
      * @param byte 
-     * @param String
-     * @param request
+     * @param Map<String, Object>
      */
-    Result sendEDM(String mailAddress, byte[] datas, Request request);
+    Result sendEDM(String mailAddress, byte[] datas, Map<String, Object> dataMap);
     
 }

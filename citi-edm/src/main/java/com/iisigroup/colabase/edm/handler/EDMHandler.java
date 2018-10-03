@@ -59,6 +59,13 @@ public class EDMHandler extends MFormHandler {
               dataMap.put("mailAddress", mailAddress);
               dataMap.put("edmCustomerName", edmCustomerName);
               dataMap.put("edmProject", edmProject);
+              dataMap.put("fromAddress", "citi@imta.citicorp.com");
+              dataMap.put("fromPerson", "花旗（台灣）銀行");
+              dataMap.put("edmHost", "smtp.gmail.com");
+              dataMap.put("edmUsr", "css123456tw@gmail.com");
+              dataMap.put("edmPwd", "kvzulwkqdoiprtfb");
+              dataMap.put("edmSubject", "花旗(台灣)銀行 圓滿貸線上申請確認通知函");
+              dataMap.put("edmSendFileLocation", "/ftl/colabaseDemo/edmImages/blue.jpg");
               
               edmService.sendEDM(request, "report/" + edmFtlPath, dataMap);
             
