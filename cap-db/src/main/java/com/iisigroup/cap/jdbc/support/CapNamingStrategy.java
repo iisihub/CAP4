@@ -11,7 +11,9 @@
  */
 package com.iisigroup.cap.jdbc.support;
 
-import org.hibernate.cfg.ImprovedNamingStrategy;
+import org.hibernate.boot.model.naming.Identifier;
+import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
+import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 import org.hibernate.internal.util.StringHelper;
 
 /**
@@ -24,28 +26,18 @@ import org.hibernate.internal.util.StringHelper;
  * @version
  *          <ul>
  *          <li>2014/3/31,Sunkist Wang,new
+ *          <li>2018/10/4,Sunkist Wang,update
  *          </ul>
  */
-public class CapNamingStrategy extends ImprovedNamingStrategy {
+public class CapNamingStrategy extends PhysicalNamingStrategyStandardImpl {
 
     /***/
     private static final long serialVersionUID = 1L;
 
     private static final String TABLE_PREFIX = "";
 
-    public String classToTableName(String className) {
-        return (new StringBuilder()).append(TABLE_PREFIX).append(StringHelper.unqualify(className)).toString();
+    public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment context) {
+        return context.getIdentifierHelper().toIdentifier((new StringBuilder()).append(TABLE_PREFIX).append(StringHelper.unqualify(name.getText())).toString(), name.isQuoted());
     }
 
-    public String tableName(String tableName) {
-        return (new StringBuilder()).append(TABLE_PREFIX).append(tableName).toString();
-    }
-
-    public String columnName(String columnName) {
-        return columnName;
-    }
-
-    public String propertyToColumnName(String propertyName) {
-        return propertyName;
-    }
 }
