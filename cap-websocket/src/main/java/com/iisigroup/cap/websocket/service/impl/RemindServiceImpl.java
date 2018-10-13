@@ -66,7 +66,7 @@ public class RemindServiceImpl implements RemindService {
     }
 
     public String getLocale() {
-        return SimpleContextHolder.get(CapWebUtil.localeKey) == null ? "zh_TW" : SimpleContextHolder.get(CapWebUtil.localeKey).toString();
+        return SimpleContextHolder.get(CapWebUtil.LOCALE_KEY) == null ? "zh_TW" : SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString();
     }
 
     @Override

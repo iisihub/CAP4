@@ -98,11 +98,11 @@ public class CapHandlerServlet extends HttpServlet {
         if (logger.isTraceEnabled()) {
             logger.trace("Request Data: {}", GsonUtil.objToJson(req.getParameterMap()));
         }
-        Object locale = req.getSession().getAttribute(CapWebUtil.localeKey);
+        Object locale = req.getSession().getAttribute(CapWebUtil.LOCALE_KEY);
         if (locale != null) {
-            SimpleContextHolder.put(CapWebUtil.localeKey, locale);
+            SimpleContextHolder.put(CapWebUtil.LOCALE_KEY, locale);
         } else {
-            SimpleContextHolder.put(CapWebUtil.localeKey, Locale.getDefault());
+            SimpleContextHolder.put(CapWebUtil.LOCALE_KEY, Locale.getDefault());
         }
         Result result;
         Logger pluginlogger = logger;

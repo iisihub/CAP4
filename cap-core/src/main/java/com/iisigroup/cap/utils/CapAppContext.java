@@ -64,12 +64,12 @@ public class CapAppContext implements ApplicationContextAware {
     }
 
     public static String getMessage(String key) {
-        Locale locale = (Locale) SimpleContextHolder.get(CapWebUtil.localeKey);
+        Locale locale = (Locale) SimpleContextHolder.get(CapWebUtil.LOCALE_KEY);
         return getMessage(key, null, locale == null ? Locale.getDefault() : locale);
     }
 
     public static String getMessage(String key, Object[] args) {
-        Locale locale = (Locale) SimpleContextHolder.get(CapWebUtil.localeKey);
+        Locale locale = (Locale) SimpleContextHolder.get(CapWebUtil.LOCALE_KEY);
         return getMessage(key, args, locale == null ? Locale.getDefault() : locale);
     }
 

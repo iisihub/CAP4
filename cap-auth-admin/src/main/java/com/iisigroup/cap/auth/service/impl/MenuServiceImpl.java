@@ -47,7 +47,7 @@ public class MenuServiceImpl implements MenuService {
     I18nDao i18nDao;
 
     public MenuItem getMenuByRoles(Set<String> roles) {
-        Map<String, I18n> menuI18n = i18nDao.findAsMapByCodeType("menu", SimpleContextHolder.get(CapWebUtil.localeKey).toString());
+        Map<String, I18n> menuI18n = i18nDao.findAsMapByCodeType("menu", SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString());
         Map<Integer, MenuItem> menuMap = new HashMap<Integer, MenuItem>();
         MenuItem root = new MenuItem();
         List<DefaultFunction> list = codeItemDao.findMenuDataByRoles(roles, config.getProperty("systemType"));

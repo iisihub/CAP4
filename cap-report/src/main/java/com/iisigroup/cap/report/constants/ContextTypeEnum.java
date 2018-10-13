@@ -24,11 +24,11 @@ package com.iisigroup.cap.report.constants;
  *          </ul>
  */
 public enum ContextTypeEnum {
-    text("text/html"),
-    pdf("application/pdf"),
-    doc("application/msword"),
+    TEXT("text/html"),
+    PDF("application/pdf"),
+    DOC("application/msword"),
     UNKNOW("application/octet-stream"),
-    xls("application/vnd.ms-excel");
+    XLS("application/vnd.ms-excel");
 
     private String code;
 

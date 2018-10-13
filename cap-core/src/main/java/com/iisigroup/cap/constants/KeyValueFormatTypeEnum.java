@@ -25,9 +25,9 @@ package com.iisigroup.cap.constants;
  */
 public enum KeyValueFormatTypeEnum {
     /** print:key-value */
-    Key_Value,
+    KEY_VALUE,
     /** print:value */
-    Value,
+    VALUE,
     /** print:key value */
-    KeySpaceValue
+    KEY_SPACE_VALUE
 }

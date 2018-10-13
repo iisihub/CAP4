@@ -36,6 +36,6 @@ public class CalendarServiceImpl implements CalendarService {
         if (CapString.isEmpty(start) || CapString.isEmpty(end)) {
             return null;
         }
-        return remindDao.getCalendarData(userId, new Timestamp(Long.parseLong(start)), new Timestamp(Long.parseLong(end)), SimpleContextHolder.get(CapWebUtil.localeKey).toString());
+        return remindDao.getCalendarData(userId, new Timestamp(Long.parseLong(start)), new Timestamp(Long.parseLong(end)), SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString());
     }
 }

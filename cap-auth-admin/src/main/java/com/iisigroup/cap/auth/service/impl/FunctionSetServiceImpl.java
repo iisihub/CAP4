@@ -98,7 +98,7 @@ public class FunctionSetServiceImpl implements FunctionSetService {
         functionDao.save(function);
         // insert menu i18n
         String i18nKey = "menu." + function.getCode();
-        I18n i18n = i18nDao.findByCodeTypeAndCodeValue("menu", i18nKey, SimpleContextHolder.get(CapWebUtil.localeKey).toString());
+        I18n i18n = i18nDao.findByCodeTypeAndCodeValue("menu", i18nKey, SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString());
         if (i18n == null) {
             i18n = new I18n();
         }
@@ -106,7 +106,7 @@ public class FunctionSetServiceImpl implements FunctionSetService {
         i18n.setCodeOrder(function.getSequence());
         i18n.setCodeType("menu");
         i18n.setCodeValue(i18nKey);
-        i18n.setLocale(SimpleContextHolder.get(CapWebUtil.localeKey).toString());
+        i18n.setLocale(SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString());
         i18n.setUpdater(CapSecurityContext.getUserId());
         i18n.setUpdateTime(CapDate.getCurrentTimestamp());
         i18nDao.save(i18n);

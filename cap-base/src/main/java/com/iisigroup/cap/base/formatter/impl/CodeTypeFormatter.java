@@ -43,7 +43,7 @@ public class CodeTypeFormatter implements Formatter {
 
     public CodeTypeFormatter(CodeTypeService service, String codeType, Locale locale) {
         this.codeMap = service.findByCodeType(codeType, locale.toString());
-        this.show = KeyValueFormatTypeEnum.Value;
+        this.show = KeyValueFormatTypeEnum.VALUE;
     }
 
     public CodeTypeFormatter(CodeTypeService service, String codeType, Locale locale, KeyValueFormatTypeEnum show) {
@@ -52,12 +52,12 @@ public class CodeTypeFormatter implements Formatter {
     }
 
     public CodeTypeFormatter(CodeTypeService service, String codeType) {
-        this.codeMap = service.findByCodeType(codeType, SimpleContextHolder.get(CapWebUtil.localeKey).toString());
-        this.show = KeyValueFormatTypeEnum.Value;
+        this.codeMap = service.findByCodeType(codeType, SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString());
+        this.show = KeyValueFormatTypeEnum.VALUE;
     }
 
     public CodeTypeFormatter(CodeTypeService service, String codeType, KeyValueFormatTypeEnum show) {
-        this.codeMap = service.findByCodeType(codeType, SimpleContextHolder.get(CapWebUtil.localeKey).toString());
+        this.codeMap = service.findByCodeType(codeType, SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString());
         this.show = show;
     }
 
@@ -79,9 +79,9 @@ public class CodeTypeFormatter implements Formatter {
                 value = codeMap.get(k);
             }
             switch (show) {
-            case Key_Value:
+            case KEY_VALUE:
                 return new StringBuffer(k).append("-").append(value).toString();
-            case KeySpaceValue:
+            case KEY_SPACE_VALUE:
                 return new StringBuffer(k).append(" ").append(value).toString();
             default:
                 return value;

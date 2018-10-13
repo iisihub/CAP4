@@ -58,7 +58,7 @@ public abstract class AbstractReportWordService implements ReportService {
     @Override
     public ByteArrayOutputStream generateReport(Request request) throws CapException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, getSysConfig().getProperty(ReportParamEnum.defaultEncoding.toString(), DEFAULT_ENCORDING)));) {
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, getSysConfig().getProperty(ReportParamEnum.DEFAULT_ENCODING.toString(), DEFAULT_ENCORDING)));) {
             Template t = getFmConfg().getConfiguration().getTemplate(getReportDefinition() + REPORT_SUFFIX);
             Map<String, Object> reportData = execute(request);
             t.process(reportData, writer);

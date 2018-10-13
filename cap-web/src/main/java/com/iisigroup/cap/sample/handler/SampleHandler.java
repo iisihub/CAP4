@@ -92,7 +92,7 @@ public class SampleHandler extends MFormHandler {
         ByteArrayOutputStream file = null;
         try {
             file = sampleRptService.generateReport(request);
-            return new ByteArrayDownloadResult(request, file.toByteArray(), ContextTypeEnum.pdf.toString(), "test.pdf");
+            return new ByteArrayDownloadResult(request, file.toByteArray(), ContextTypeEnum.PDF.toString(), "test.pdf");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         } finally {

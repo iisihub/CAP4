@@ -24,10 +24,10 @@ package com.iisigroup.cap.report.constants;
  *          </ul>
  */
 public enum ReportParamEnum {
-    templateName("templateName"),
-    defaultEncoding("defaultEncoding"),
-    encrypt("encryptPassword"),
-    defaultFont("report.defaultFont");
+    TEMPLATE_NAME("templateName"),
+    DEFAULT_ENCODING("defaultEncoding"),
+    ENCRYPT("encryptPassword"),
+    DEFAULT_FONT("report.defaultFont");
 
     private String code;
 

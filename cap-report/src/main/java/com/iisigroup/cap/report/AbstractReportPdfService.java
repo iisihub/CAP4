@@ -78,7 +78,7 @@ public abstract class AbstractReportPdfService implements ReportService {
     public ByteArrayOutputStream generateReport(Request request) throws CapException {
         ByteArrayOutputStream templateOut = new ByteArrayOutputStream();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(templateOut, getSysConfig().getProperty(ReportParamEnum.defaultEncoding.toString(), DEFAULT_ENCORDING)));) {
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(templateOut, getSysConfig().getProperty(ReportParamEnum.DEFAULT_ENCODING.toString(), DEFAULT_ENCORDING)));) {
             Template t = getFmConfg().getConfiguration().getTemplate(getReportDefinition() + REPORT_SUFFIX);
             Map<String, Object> reportData = execute(request);
             t.process(reportData, writer);
@@ -94,8 +94,8 @@ public abstract class AbstractReportPdfService implements ReportService {
             fontResolver.addFont(getFontPath(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             PDFEncryption pdfEncryption = new PDFEncryption();
             // 設定加密
-            if (reportData.containsKey(ReportParamEnum.encrypt.toString())) {
-                String password = (String) reportData.get(ReportParamEnum.encrypt.toString());
+            if (reportData.containsKey(ReportParamEnum.ENCRYPT.toString())) {
+                String password = (String) reportData.get(ReportParamEnum.ENCRYPT.toString());
                 if (!CapString.isEmpty(password)) {
                     pdfEncryption.setUserPassword(password.getBytes());
                 }
@@ -138,7 +138,7 @@ public abstract class AbstractReportPdfService implements ReportService {
 
     // 設定PDF權限
     protected String getFontPath() throws IOException {
-        return getFontFactory().getFontPath(getSysConfig().getProperty(ReportParamEnum.defaultFont.toString(), "MSJH.TTF"), "");
+        return getFontFactory().getFontPath(getSysConfig().getProperty(ReportParamEnum.DEFAULT_FONT.toString(), "MSJH.TTF"), "");
     }
 
     /*

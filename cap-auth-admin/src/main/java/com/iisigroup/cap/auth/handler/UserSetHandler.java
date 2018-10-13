@@ -88,7 +88,7 @@ public class UserSetHandler extends MFormHandler {
         fmt.put("createTime", new ADDateFormatter());
         fmt.put("updateTime", new ADDateFormatter());
         fmt.put("pwdExpiredTime", new ADDateFormatter());
-        fmt.put("status", new CodeTypeFormatter(codeTypeService, "userStatus", (Locale) SimpleContextHolder.get(CapWebUtil.localeKey)));
+        fmt.put("status", new CodeTypeFormatter(codeTypeService, "userStatus", (Locale) SimpleContextHolder.get(CapWebUtil.LOCALE_KEY)));
         return new MapGridResult(page.getContent(), page.getTotalRow(), fmt);
     }
 
@@ -166,7 +166,7 @@ public class UserSetHandler extends MFormHandler {
     public BeanGridResult queryAllUserStatus(SearchSetting search, Request params) {
         search.addOrderBy("codeValue", false);
         search.addSearchModeParameters(SearchMode.EQUALS, "codeType", "userStatus");
-        search.addSearchModeParameters(SearchMode.EQUALS, "locale", ((Locale) SimpleContextHolder.get(CapWebUtil.localeKey)).toString());
+        search.addSearchModeParameters(SearchMode.EQUALS, "locale", ((Locale) SimpleContextHolder.get(CapWebUtil.LOCALE_KEY)).toString());
         Page<CodeType> page = commonService.findPage(CodeType.class, search);
         return new BeanGridResult(page.getContent(), page.getTotalRow(), null);
     }

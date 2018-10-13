@@ -44,7 +44,7 @@ public class UserLocaleChangeInterceptor extends LocaleChangeInterceptor {
             super.preHandle(request, response, handler);
             CapUserDetails user = CapSecurityContext.getUser();
             user.setLocale(RequestContextUtils.getLocale(request));
-            request.getSession(false).setAttribute(CapWebUtil.localeKey, RequestContextUtils.getLocale(request));
+            request.getSession(false).setAttribute(CapWebUtil.LOCALE_KEY, RequestContextUtils.getLocale(request));
         }
         return true;
     }

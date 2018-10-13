@@ -160,7 +160,7 @@ public class RespMsgHelper {
     protected static String getMsgString(String key, Object workComp, Object[] params) {
         String msgstr = null;
         if (DB_SOURCE) {
-            String localeStr = SimpleContextHolder.get(CapWebUtil.localeKey).toString();
+            String localeStr = SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString();
             // String localeStr = "zh_TW";
             ErrorCode errorCode = RespMsgFactory.getInstance().getErrorCode(key, localeStr);
 

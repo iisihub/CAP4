@@ -36,7 +36,7 @@ import com.iisigroup.cap.component.Request;
  */
 public class CapWebUtil {
 
-    public static final String localeKey = "localeKey";
+    public static final String LOCALE_KEY = "localeKey";
 
     /**
      * 下載檔名中文依IE及FireFox做區分

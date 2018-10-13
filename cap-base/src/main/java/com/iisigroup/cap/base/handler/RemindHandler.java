@@ -159,7 +159,7 @@ public class RemindHandler extends MFormHandler {
         CapBeanUtil.map2Bean(request, remind, Remind.class);
         remind.setUpdater(CapSecurityContext.getUserId());
         remind.setUpdTime(CapDate.getCurrentTimestamp());
-        remind.setLocale(SimpleContextHolder.get(CapWebUtil.localeKey).toString());
+        remind.setLocale(SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString());
 
         commonSrv.save(remind);
 

@@ -158,7 +158,7 @@ public class DefaultErrorResult implements ErrorResult {
     }
 
     public Locale getLocale(Request request) {
-        return (Locale) SimpleContextHolder.get(CapWebUtil.localeKey);
+        return (Locale) SimpleContextHolder.get(CapWebUtil.LOCALE_KEY);
 
     }
 

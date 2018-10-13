@@ -62,7 +62,7 @@ public class SampleRptService extends AbstractReportPdfService {
         reportData.put("mapList", list);
 
         // 加密密碼
-        reportData.put(ReportParamEnum.encrypt.toString(), request.get("password"));
+        reportData.put(ReportParamEnum.ENCRYPT.toString(), request.get("password"));
 
         return reportData;
     }

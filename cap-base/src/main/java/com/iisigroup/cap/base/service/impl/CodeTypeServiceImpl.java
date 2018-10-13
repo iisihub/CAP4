@@ -197,7 +197,7 @@ public class CodeTypeServiceImpl implements CodeTypeService {
      */
     @Override
     public Map<String, String> findByCodeType(String codeType) {
-        return findByCodeType(codeType, SimpleContextHolder.get(CapWebUtil.localeKey).toString());
+        return findByCodeType(codeType, SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString());
     }
 
     /*
@@ -207,7 +207,7 @@ public class CodeTypeServiceImpl implements CodeTypeService {
      */
     @Override
     public Map<String, Map<String, String>> findByCodeTypes(String[] types) {
-        return findByCodeTypes(types, SimpleContextHolder.get(CapWebUtil.localeKey).toString());
+        return findByCodeTypes(types, SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString());
     }
 
     /*
@@ -217,7 +217,7 @@ public class CodeTypeServiceImpl implements CodeTypeService {
      */
     @Override
     public Map<String, AjaxFormResult> getCodeTypeByTypes(String[] types) {
-        return getCodeTypeByTypes(types, SimpleContextHolder.get(CapWebUtil.localeKey).toString());
+        return getCodeTypeByTypes(types, SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString());
     }
 
     /*
@@ -227,7 +227,7 @@ public class CodeTypeServiceImpl implements CodeTypeService {
      */
     @Override
     public CodeType getByCodeTypeAndValue(String type, String value) {
-        return getByCodeTypeAndValue(type, value, SimpleContextHolder.get(CapWebUtil.localeKey).toString());
+        return getByCodeTypeAndValue(type, value, SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString());
     }
 
     /*
