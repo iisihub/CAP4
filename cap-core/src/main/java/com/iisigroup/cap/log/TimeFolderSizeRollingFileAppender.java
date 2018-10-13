@@ -34,7 +34,6 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Layout;
 import org.apache.log4j.helpers.CountingQuietWriter;
@@ -279,38 +278,20 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
     public void zipFiles(List<String> fileList, String destUrl) throws IOException {
 
         FileUtils.forceMkdir(new File(FilenameUtils.getFullPathNoEndSeparator(destUrl)));
-        BufferedInputStream origin = null;
-        FileOutputStream fos = null;
-        BufferedOutputStream bos = null;
-        ZipArchiveOutputStream out = null;
-        FileInputStream fi = null;
         byte data[] = new byte[BUFFER];
-        try {
-            fos = new FileOutputStream(destUrl);
-            bos = new BufferedOutputStream(fos);
-            out = new ZipArchiveOutputStream(bos);
-
+        try (ZipArchiveOutputStream out = new ZipArchiveOutputStream(new BufferedOutputStream(new FileOutputStream(destUrl)));) {
             for (String fName : fileList) {
                 File file = new File(fName);
-                fi = new FileInputStream(file);
-                origin = new BufferedInputStream(fi, BUFFER);
-                ZipArchiveEntry entry = new ZipArchiveEntry(file.getName());
-                out.putArchiveEntry(entry);
-                int count;
-                while ((count = origin.read(data, 0, BUFFER)) != -1) {
-                    out.write(data, 0, count);
+                try (BufferedInputStream origin = new BufferedInputStream(new FileInputStream(file), BUFFER);) {
+                    ZipArchiveEntry entry = new ZipArchiveEntry(file.getName());
+                    out.putArchiveEntry(entry);
+                    int count;
+                    while ((count = origin.read(data, 0, BUFFER)) != -1) {
+                        out.write(data, 0, count);
+                    }
+                    out.closeArchiveEntry();
                 }
-                out.closeArchiveEntry();
-                fi.close();
-                origin.close();
             }
-
-        } finally {
-            IOUtils.closeQuietly(out);
-            IOUtils.closeQuietly(bos);
-            IOUtils.closeQuietly(fos);
-            IOUtils.closeQuietly(origin);
-            IOUtils.closeQuietly(fi);
         }
     }
 

@@ -14,12 +14,10 @@ package com.iisigroup.cap.report;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
@@ -60,13 +58,9 @@ public abstract class AbstractReportWordService implements ReportService {
     @Override
     public ByteArrayOutputStream generateReport(Request request) throws CapException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        Writer writer = null;
-        OutputStreamWriter wr = null;
-        try {
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, getSysConfig().getProperty(ReportParamEnum.defaultEncoding.toString(), DEFAULT_ENCORDING)));) {
             Template t = getFmConfg().getConfiguration().getTemplate(getReportDefinition() + REPORT_SUFFIX);
             Map<String, Object> reportData = execute(request);
-            wr = new OutputStreamWriter(out, getSysConfig().getProperty(ReportParamEnum.defaultEncoding.toString(), DEFAULT_ENCORDING));
-            writer = new BufferedWriter(wr);
             t.process(reportData, writer);
         } catch (Exception e) {
             if (e.getCause() != null) {
@@ -74,10 +68,6 @@ public abstract class AbstractReportWordService implements ReportService {
             } else {
                 throw new CapException(e, e.getClass());
             }
-        } finally {
-            IOUtils.closeQuietly(wr);
-            IOUtils.closeQuietly(writer);
-            IOUtils.closeQuietly(out);
         }
         return out;
     }

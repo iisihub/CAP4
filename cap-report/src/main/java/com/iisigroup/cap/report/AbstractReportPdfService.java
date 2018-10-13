@@ -16,7 +16,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -77,34 +76,22 @@ public abstract class AbstractReportPdfService implements ReportService {
      */
     @Override
     public ByteArrayOutputStream generateReport(Request request) throws CapException {
-        ByteArrayOutputStream templateOut = null;
-        ByteArrayOutputStream out = null;
-        Writer writer = null;
-        OutputStreamWriter wr = null;
-        try {
+        ByteArrayOutputStream templateOut = new ByteArrayOutputStream();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(templateOut, getSysConfig().getProperty(ReportParamEnum.defaultEncoding.toString(), DEFAULT_ENCORDING)));) {
             Template t = getFmConfg().getConfiguration().getTemplate(getReportDefinition() + REPORT_SUFFIX);
             Map<String, Object> reportData = execute(request);
-
-            templateOut = new ByteArrayOutputStream();
-            wr = new OutputStreamWriter(templateOut, getSysConfig().getProperty(ReportParamEnum.defaultEncoding.toString(), DEFAULT_ENCORDING));
-            writer = new BufferedWriter(wr);
             t.process(reportData, writer);
-
             /**
              * 1.FOR 非使用 JDK 1.7 避免找不到TransformerFactoryImpl 所以指定org.apache.xalanz裡的實作 2.當使用 org.apache.xalan.processor.TransformerFactoryImpl 會發生org.w3c.dom.DOMException: NAMESPACE_ERR:
              */
             System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.xsltc.trax.TransformerFactoryImpl");
-
             // process core-render
             Document document = XMLResource.load(new ByteArrayInputStream(templateOut.toByteArray())).getDocument();
-
             ITextRenderer iTextRenderer = new ITextRenderer();
-            out = new ByteArrayOutputStream();
-
             // 設定字型
             ITextFontResolver fontResolver = iTextRenderer.getFontResolver();
             fontResolver.addFont(getFontPath(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-
             PDFEncryption pdfEncryption = new PDFEncryption();
             // 設定加密
             if (reportData.containsKey(ReportParamEnum.encrypt.toString())) {
@@ -118,36 +105,14 @@ public abstract class AbstractReportPdfService implements ReportService {
                 pdfEncryption.setAllowedPrivileges(getAllowedPrivileges());
             }
             iTextRenderer.setPDFEncryption(pdfEncryption);
-
             iTextRenderer.setDocument(document, FIL_URL_PREFIX + servletContext.getRealPath("").replace("\\", "/") + "/");
-
             iTextRenderer.layout();
             iTextRenderer.createPDF(out);
-
         } catch (Exception e) {
             if (e.getCause() != null) {
                 throw new CapException(e.getCause(), e.getClass());
             } else {
                 throw new CapException(e, e.getClass());
-            }
-        } finally {
-            if (templateOut != null) {
-                try {
-                    templateOut.close();
-                } catch (IOException e) {
-                    if (logger.isErrorEnabled()) {
-                        logger.error(e.getMessage());
-                    }
-                }
-            }
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    if (logger.isErrorEnabled()) {
-                        logger.error(e.getMessage());
-                    }
-                }
             }
         }
         return out;

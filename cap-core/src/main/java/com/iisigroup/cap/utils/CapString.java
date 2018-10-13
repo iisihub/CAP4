@@ -12,7 +12,6 @@
 package com.iisigroup.cap.utils;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -522,9 +521,7 @@ public final class CapString {
      */
     public static String stream2String(InputStream is) {
         StringBuilder sb = new StringBuilder();
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
             String line = null;
             while ((line = reader.readLine()) != null) {
                 if (sb.length() > 0) {
@@ -534,12 +531,6 @@ public final class CapString {
             }
         } catch (Exception ex) {
             sb.append("<<Exception>>:" + ex.getLocalizedMessage());
-        } finally {
-            try {
-                is.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
         }
         return sb.toString();
     }

@@ -20,7 +20,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.iisigroup.cap.component.Request;
@@ -99,9 +98,7 @@ public class ByteArrayDownloadResult extends FileDownloadResult {
     @Override
     public void respondResult(ServletResponse response) {
         int length = -1;
-        InputStream in = null;
-        OutputStream output = null;
-        try {
+        try (InputStream in = new ByteArrayInputStream(_byteArray); OutputStream output = response.getOutputStream();) {
             response.setContentType(getContentType());
             response.setContentLength(_byteArray.length);
             if (getOutputName() != null && response instanceof HttpServletResponse) {
@@ -116,20 +113,15 @@ public class ByteArrayDownloadResult extends FileDownloadResult {
                 resp.setHeader("Cache-Control", "public");
                 resp.setHeader("Pragma", "public");
             }
-            output = response.getOutputStream();
             // Stream to the requester.
             byte[] bbuf = new byte[1024 * 1024];
 
-            in = new ByteArrayInputStream(_byteArray);
             while ((in != null) && ((length = in.read(bbuf)) != -1)) {
                 output.write(bbuf, 0, length);
             }
             output.flush();
         } catch (IOException e) {
             e.getMessage();
-        } finally {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(output);
         }
     }
 }// ~

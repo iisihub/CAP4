@@ -20,7 +20,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -116,9 +115,8 @@ public class FileDownloadResult implements Result {
     }
 
     public void respondResult(ServletResponse response) {
-        InputStream in = null;
-        OutputStream output = null;
-        try {
+        File file = new File(_file);
+        try (InputStream in = new FileInputStream(file); OutputStream output = response.getOutputStream();) {
             response.setContentType(_contentType);
             if (_outputName != null && response instanceof HttpServletResponse) {
                 HttpServletResponse resp = (HttpServletResponse) response;
@@ -126,13 +124,10 @@ public class FileDownloadResult implements Result {
                 resp.setHeader("Cache-Control", "public");
                 resp.setHeader("Pragma", "public");
             }
-            output = response.getOutputStream();
-            File file = new File(_file);
             int length = -1;
             // Stream to the requester.
             byte[] bbuf = new byte[1024 * 1024];
             int len = 0;
-            in = new FileInputStream(file);
             while ((in != null) && ((length = in.read(bbuf)) != -1)) {
                 output.write(bbuf, 0, length);
                 len += length;
@@ -141,9 +136,6 @@ public class FileDownloadResult implements Result {
             output.flush();
         } catch (Exception e) {
             throw new CapException(e, getClass());
-        } finally {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(output);
         }
 
     }
