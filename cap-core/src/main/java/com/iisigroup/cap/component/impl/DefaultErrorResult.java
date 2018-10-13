@@ -61,11 +61,8 @@ public class DefaultErrorResult implements ErrorResult {
     private String contentType;
     private String encoding;
 
-    public DefaultErrorResult() {
-    }
-
     public DefaultErrorResult(Request request, Exception e) {
-        this.putError(request, e);
+        putError(request, e);
     }
 
     /*
@@ -82,7 +79,7 @@ public class DefaultErrorResult implements ErrorResult {
         return logMessage;
     }
 
-    public void putError(Request request, Exception e) {
+    public final void putError(Request request, Exception e) {
         if (e instanceof CapMessageException) {
             CapMessageException ce = (CapMessageException) e;
             logMessage = ce.getMessage();

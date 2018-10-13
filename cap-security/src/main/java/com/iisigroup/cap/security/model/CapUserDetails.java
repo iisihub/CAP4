@@ -68,7 +68,7 @@ public class CapUserDetails implements UserDetails {
         setAuthorities(roles);
     }
 
-    protected void setAuthorities(Map<String, String> roles) {
+    private void setAuthorities(Map<String, String> roles) {
         authorities = new ArrayList<GrantedAuthority>();
         for (String roleOid : roles.keySet()) {
             authorities.add(new SimpleGrantedAuthority(roleOid));

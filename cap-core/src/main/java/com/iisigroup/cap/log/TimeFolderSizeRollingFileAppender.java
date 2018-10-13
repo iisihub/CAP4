@@ -295,7 +295,7 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
         }
     }
 
-    public void activateOptions() {
+    public final void activateOptions() {
         super.activateOptions();
         if (datePattern != null && fileName != null) {
             now.setTime(System.currentTimeMillis());

@@ -126,7 +126,7 @@ public class BeanGridResult extends AjaxFormResult implements GridResult<BeanGri
      *            總筆數
      * @return this
      */
-    public BeanGridResult setRecords(int rowCount) {
+    public final BeanGridResult setRecords(int rowCount) {
         resultMap.put(GridEnum.RECORDS.getCode(), rowCount);
         return this;
     }
@@ -152,7 +152,7 @@ public class BeanGridResult extends AjaxFormResult implements GridResult<BeanGri
      *            資料
      * @return this
      */
-    public BeanGridResult setRowData(List<? extends GenericBean> rowData) {
+    public final BeanGridResult setRowData(List<? extends GenericBean> rowData) {
         this.rowData = rowData;
         return this;
     }
@@ -215,7 +215,7 @@ public class BeanGridResult extends AjaxFormResult implements GridResult<BeanGri
      * @param dataReformatter
      *            Map<String, IFormatter>
      */
-    public void setDataReformatter(Map<String, Formatter> dataReformatter) {
+    public final void setDataReformatter(Map<String, Formatter> dataReformatter) {
         this.dataReformatter = dataReformatter;
     }
 

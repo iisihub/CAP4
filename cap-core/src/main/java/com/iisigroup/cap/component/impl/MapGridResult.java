@@ -131,7 +131,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
      *            總筆數
      * @return this
      */
-    public MapGridResult setRecords(int rowCount) {
+    public final MapGridResult setRecords(int rowCount) {
         resultMap.put(GridEnum.RECORDS.getCode(), rowCount);
         return this;
     }
@@ -157,7 +157,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
      *            資料
      * @return this
      */
-    public MapGridResult setRowData(List<? extends Map<String, Object>> rowData) {
+    public final MapGridResult setRowData(List<? extends Map<String, Object>> rowData) {
         this.rowData = rowData;
         return this;
     }
@@ -293,7 +293,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
      * @param dataReformatter
      *            Map<String, IFormatter>
      */
-    public void setDataReformatter(Map<String, Formatter> dataReformatter) {
+    public final void setDataReformatter(Map<String, Formatter> dataReformatter) {
         this.dataReformatter = dataReformatter;
     }
 
