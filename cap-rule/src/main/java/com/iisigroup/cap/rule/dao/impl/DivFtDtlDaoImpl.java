@@ -81,8 +81,9 @@ public class DivFtDtlDaoImpl extends GenericDaoImpl<DivFtDtl> implements DivFtDt
     @Override
     public void merge(List<DivFtDtl> divFtDtls) {
         for (DivFtDtl ftDtl : divFtDtls) {
-            if (!CapString.isEmpty(ftDtl.getOid()))
+            if (!CapString.isEmpty(ftDtl.getOid())) {
                 merge(ftDtl);
+            }
         }
     }
 

@@ -170,7 +170,7 @@ public class ConditionMntHandler extends MFormHandler {
                 delCtDtl = ctItm.getDivCtDtls();
             }
             for (int i = 0; i < ftGridData.length; i++) {
-                Map<String,Object> jsData = GsonUtil.jsonToMap(ftGridData[i]);
+                Map<String, Object> jsData = GsonUtil.jsonToMap(ftGridData[i]);
                 DivCtDtl ctDtl = new DivCtDtl();
                 // int j = 0;
                 // boolean haveOld = false;
@@ -201,14 +201,16 @@ public class ConditionMntHandler extends MFormHandler {
             ctItm.setDivCtDtls(ctDtls);
         }
         String userId = CapSecurityContext.getUserId();
-        if (userId.length() > 6)
+        if (userId.length() > 6) {
             userId = userId.substring(0, 6);
+        }
         ctItm.setUpdater(userId);
         ctItm.setUpdateTime(CapDate.getCurrentTimestamp());
         ctItm.setDivCtTyp("C");
         conditionMntService.saveDivCtItm(ctItm);
-        if (!delCtDtl.isEmpty())
+        if (!delCtDtl.isEmpty()) {
             conditionMntService.deleteCtDtlByList(delCtDtl);
+        }
         result.set(Constants.AJAX_NOTIFY_MESSAGE, CapAppContext.getMessage("condition.0002"));
         return result;
     }

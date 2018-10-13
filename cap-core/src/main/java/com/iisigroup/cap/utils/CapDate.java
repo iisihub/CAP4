@@ -368,8 +368,9 @@ public class CapDate {
      * @return if valid return true.
      */
     public static boolean validDate(String date, String dateFormat) {
-        if (date == null)
+        if (date == null) {
             return false;
+        }
         int y, m, d;
 
         try {
@@ -446,8 +447,9 @@ public class CapDate {
      * 
      */
     public static String formatDateFormatToyyyyMMdd(String date, String dateFormat) {
-        if (!validDate(date, dateFormat))
+        if (!validDate(date, dateFormat)) {
             return null;
+        }
         String tempValue = "";
 
         if (Pattern.matches("YYY[/-]?MM[/-]?DD", dateFormat)) {
@@ -505,8 +507,9 @@ public class CapDate {
      * @return fromatted date string, if any exception or date not valid, return null
      */
     public static String formatyyyyMMddToDateFormat(String date, String dateFormat) {
-        if (!validDate(date, "yyyyMMdd"))
+        if (!validDate(date, "yyyyMMdd")) {
             return null;
+        }
         String tempValue = "";
         try {
             if ("YYYMMDD".equals(dateFormat)) {

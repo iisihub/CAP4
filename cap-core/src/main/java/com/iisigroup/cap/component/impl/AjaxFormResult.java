@@ -237,8 +237,9 @@ public class AjaxFormResult implements Result {
      * @return this FormResult
      */
     public AjaxFormResult removeField(String key) {
-        if (resultMap.containsKey(key))
+        if (resultMap.containsKey(key)) {
             resultMap.remove(key);
+        }
         return this;
     }
 

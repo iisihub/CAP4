@@ -218,8 +218,9 @@ public class FunctionDaoImpl extends GenericDaoImpl<DefaultFunction> implements 
             }
             for (Integer auth : entry.getValue().keySet()) {
                 DefaultFunction code = getFuncsBySysType(sysType).get(auth);
-                if (code == null)
+                if (code == null) {
                     continue;
+                }
                 String key = getRoleStepKey(role, code.getLevel());
                 List<DefaultFunction> stepCodes = roleLevelCodes.get(key);
                 if (stepCodes == null) {

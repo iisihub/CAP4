@@ -299,8 +299,9 @@ public class CapBeanUtil {
         while (!Object.class.equals(searchClazz) && searchClazz != null) {
             Field[] fields = searchClazz.getDeclaredFields();
             for (Field f : fields) {
-                if ("serialVersionUID".equals(f.getName()))
+                if ("serialVersionUID".equals(f.getName())) {
                     continue;
+                }
                 cols.add(f.getName());
             }
             searchClazz = containSuperClazz ? searchClazz.getSuperclass() : null;
@@ -324,8 +325,9 @@ public class CapBeanUtil {
         while (!Object.class.equals(searchClazz) && searchClazz != null) {
             Field[] fields = searchClazz.getDeclaredFields();
             for (Field f : fields) {
-                if ("serialVersionUID".equals(f.getName()))
+                if ("serialVersionUID".equals(f.getName())) {
                     continue;
+                }
                 cols.add(f);
             }
             searchClazz = containSuperClazz ? searchClazz.getSuperclass() : null;
@@ -397,8 +399,9 @@ public class CapBeanUtil {
                 Object val = map.containsKey(tmpKey) ? map.get(tmpKey) : "";
                 if (val instanceof Object[]) {
                     Object[] v = (Object[]) val;
-                    if (v.length == 1)
+                    if (v.length == 1) {
                         val = v[0];
+                    }
                 }
                 tmpMap.put(tmpKey, val);
             }

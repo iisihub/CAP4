@@ -219,15 +219,17 @@ public class RuleTbMntHandler extends MFormHandler {
             rlItm.setDivRlDtls(rlDtls);
         }
         String userId = CapSecurityContext.getUserId();
-        if (userId.length() > 6)
+        if (userId.length() > 6) {
             userId = userId.substring(0, 6);
+        }
         rlItm.setUpdater(userId);
         rlItm.setUpdateTime(CapDate.getCurrentTimestamp());
         String divRltyp = request.get("RadioGroup1");
         rlItm.setDivRlTyp(divRltyp);
         ruleTbMntService.saveDivRlItm(rlItm);
-        if (!delRlDtl.isEmpty())
+        if (!delRlDtl.isEmpty()) {
             ruleTbMntService.deleteRlDtlByList(delRlDtl);
+        }
         result.set(Constants.AJAX_NOTIFY_MESSAGE, CapAppContext.getMessage("ruleTb.0002"));
         return result;
     }
@@ -731,8 +733,9 @@ public class RuleTbMntHandler extends MFormHandler {
                     for (DivCtDtl ctDtl : ctItm.getDivCtDtls()) {
                         result.append(ctDtl.getDivFtDtl().getRangeNm() + ",");
                     }
-                    if (result.length() > 0)
+                    if (result.length() > 0) {
                         result.deleteCharAt(result.lastIndexOf(","));
+                    }
                 }
             }
             return result.toString();
@@ -758,11 +761,13 @@ public class RuleTbMntHandler extends MFormHandler {
                 if (rlItm.getDivRlDtls() != null && !rlItm.getDivRlDtls().isEmpty()) {
                     for (DivRlDtl rlDtl : rlItm.getDivRlDtls()) {
                         DivCtItm ctItm = conditionMntService.findByDivCtItmNo(rlDtl.getDivCtNo());
-                        if (ctItm != null)
+                        if (ctItm != null) {
                             result.append(ctItm.getDivCtNm() + ",");
+                        }
                     }
-                    if (result.length() > 0)
+                    if (result.length() > 0) {
                         result.deleteCharAt(result.lastIndexOf(","));
+                    }
                 }
             }
             return result.toString();

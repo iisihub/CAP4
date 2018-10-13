@@ -258,8 +258,9 @@ public class CapMath implements Constants {
         second = second == null || second.length() == 0 ? S0 : second.trim();
         BigDecimal f = getBigDecimal(first);// new BigDecimal(first);
         BigDecimal s = getBigDecimal(second);// new BigDecimal(second);
-        if (s.compareTo(B0) == 0)
+        if (s.compareTo(B0) == 0) {
             return "0";
+        }
         int fs = f.scale();
         int ss = s.scale();
         int max = fs > ss ? fs : ss;

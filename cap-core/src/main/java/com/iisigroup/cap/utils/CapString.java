@@ -359,8 +359,9 @@ public final class CapString {
         if (isEmpty(source)) {
             return source;
         }
-        if (source.trim().length() == 0)
+        if (source.trim().length() == 0) {
             return Constants.EMPTY_STRING;
+        }
         int index = 0;
         for (int i = 0; i < source.length(); i++) {
             if (Character.isWhitespace(source.charAt(i))) {
@@ -420,15 +421,15 @@ public final class CapString {
      * @return String
      */
     public static String cutString(String in, String encoding, int len) {
-        if (in == null)
-            return in;
-        try {
-            if (in.getBytes(encoding).length > len) {
-                return new String(in.getBytes(encoding), 0, len, encoding);
-            }
-        } catch (UnsupportedEncodingException e) {
-            if (in.getBytes().length > len) {
-                return new String(in.getBytes(), 0, len);
+        if (in != null) {
+            try {
+                if (in.getBytes(encoding).length > len) {
+                    return new String(in.getBytes(encoding), 0, len, encoding);
+                }
+            } catch (UnsupportedEncodingException e) {
+                if (in.getBytes().length > len) {
+                    return new String(in.getBytes(), 0, len);
+                }
             }
         }
         return in;

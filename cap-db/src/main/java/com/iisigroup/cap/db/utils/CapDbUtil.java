@@ -51,8 +51,9 @@ public class CapDbUtil {
      */
     public static String convertToSQLCommand(String cmd, Map<String, ?> data) {
         String sql = NamedParameterUtils.parseSqlStatementIntoString(cmd);
-        if (data == null || data.isEmpty())
+        if (data == null || data.isEmpty()) {
             return cmd;
+        }
         Object[] oa = NamedParameterUtils.buildValueArray(cmd, data);
         StringBuffer sb = new StringBuffer(sql);
         try {

@@ -144,13 +144,15 @@ public class FactorMntHandler extends MFormHandler {
             ftItm.setDivFtDtls(ftDtls);
         }
         String userId = CapSecurityContext.getUserId();
-        if (userId.length() > 6)
+        if (userId.length() > 6) {
             userId = userId.substring(0, 6);
+        }
         ftItm.setUpdater(userId);
         ftItm.setUpdateTime(CapDate.getCurrentTimestamp());
         factorMntService.saveDivFtItm(ftItm);
-        if (!delFtDtl.isEmpty())
+        if (!delFtDtl.isEmpty()) {
             factorMntService.deleteFtDtlByList(delFtDtl);
+        }
         result.set(Constants.AJAX_NOTIFY_MESSAGE, CapAppContext.getMessage("factorMntPage.0002"));
         return result;
     }
