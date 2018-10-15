@@ -314,7 +314,7 @@ public class RespMsgHelper {
         }
 
         String exTrace = (obj instanceof Throwable) ? StringEscapeUtils.escapeHtml(ExceptionUtils.getStackTrace((Throwable) obj)) : obj.toString();
-        exTrace = exTrace.getBytes().length > EX_MAX_LEN ? new String(exTrace.getBytes(), 0, EX_MAX_LEN) + "..." : exTrace;
+        exTrace = exTrace.getBytes().length > EX_MAX_LEN ? (new String(exTrace.getBytes(), 0, EX_MAX_LEN) + "...") : exTrace;
         return CapString.addStrByFixedLength(exTrace, EX_MAX_LINE_LEN, "<BR>");
     }
 }

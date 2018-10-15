@@ -141,7 +141,7 @@ public class CapBeanUtil {
         Map<String, Object> map = new LinkedHashMap<String, Object>();
         GenericBean s = (GenericBean) source;
         for (String col : columns) {
-            String key = (fixString == null) ? col : (isPrefix) ? fixString + col : col + fixString;
+            String key = (fixString == null) ? col : (isPrefix ? (fixString + col) : (col + fixString));
             map.put(key, s.get(col));
         }
         return map;

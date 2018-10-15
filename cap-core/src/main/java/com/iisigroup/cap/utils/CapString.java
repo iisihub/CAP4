@@ -158,7 +158,7 @@ public final class CapString {
         if (inLength >= length) {
             return in;
         } else {
-            int loopLength = ch < 256 ? length - inLength : (length - inLength) / 2;
+            int loopLength = ch < 256 ? (length - inLength) : ((length - inLength) / 2);
             for (int i = 0; i < loopLength; i++) {
                 sb.append(ch);
             }
@@ -550,7 +550,7 @@ public final class CapString {
         byte[] bmsg = str.getBytes();
         int blen = bmsg.length;
         while (idx < blen) {
-            String tmp = new String(bmsg, idx, idx + len < blen ? len : blen - idx);
+            String tmp = new String(bmsg, idx, idx + len < blen ? len : (blen - idx));
             tempList.add(tmp);
             idx += len;
 

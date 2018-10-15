@@ -63,7 +63,7 @@ public class CapDbUtil {
                     int pos = npos[j];
                     String value = getSqlValue(oa[j]);
                     sb.deleteCharAt(pos);
-                    sb.insert(pos, value == null ? "null" : "'" + value + "'");
+                    sb.insert(pos, value == null ? "null" : ("'" + value + "'"));
                 }
             }
         } catch (ArrayIndexOutOfBoundsException e) {

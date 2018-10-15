@@ -425,7 +425,7 @@ public class CapDate {
                     maxDay = 28;
                 }
             }
-            if (d == -1 || d > 0 && d <= maxDay) {
+            if (d == -1 || (d > 0 && d <= maxDay)) {
                 return true;
             }
         } catch (Exception e) {
@@ -539,7 +539,7 @@ public class CapDate {
      */
     public static String convertDateToTaiwanYear(String year) {
         int fixYear = Integer.parseInt(year) - 1911;
-        return CapString.fillZeroHead(String.valueOf((fixYear < 1) ? fixYear - 1 : fixYear), 3);
+        return CapString.fillZeroHead(String.valueOf((fixYear < 1) ? (fixYear - 1) : fixYear), 3);
     }
 
     /**

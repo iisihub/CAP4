@@ -68,7 +68,7 @@ public class ItextFontFactory {
     }
 
     public String getFontPath(String fontname, String fontType) throws IOException {
-        return CapAppContext.getResource(basePath + fontname).getURI().getPath() + (CapString.isEmpty(fontType) ? "" : "," + fontType);
+        return CapAppContext.getResource(basePath + fontname).getURI().getPath() + (CapString.isEmpty(fontType) ? "" : ("," + fontType));
     }
 
 }
