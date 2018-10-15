@@ -33,18 +33,22 @@ public class CapNamingStrategy extends ImprovedNamingStrategy {
 
     private static final String TABLE_PREFIX = "";
 
+    @Override
     public String classToTableName(String className) {
         return (new StringBuilder()).append(TABLE_PREFIX).append(StringHelper.unqualify(className)).toString();
     }
 
+    @Override
     public String tableName(String tableName) {
         return (new StringBuilder()).append(TABLE_PREFIX).append(tableName).toString();
     }
 
+    @Override
     public String columnName(String columnName) {
         return columnName;
     }
 
+    @Override
     public String propertyToColumnName(String propertyName) {
         return propertyName;
     }

@@ -58,6 +58,7 @@ public class CapSystemPropertiesJSONMapper extends AbstractDecoratorMapper {
     private Set<String> decoratorFile;
     private Map<String, Object> sysProp;
 
+    @Override
     public void init(Config config, Properties properties, DecoratorMapper parent) throws InstantiationException {
         super.init(config, properties, parent);
         String decorator = properties.getProperty("decoratorFile");

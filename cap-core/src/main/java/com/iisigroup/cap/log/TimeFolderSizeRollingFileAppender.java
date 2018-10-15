@@ -295,6 +295,7 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
         }
     }
 
+    @Override
     public final void activateOptions() {
         super.activateOptions();
         if (datePattern != null && fileName != null) {
@@ -336,6 +337,7 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
         maxFileSize = value;
     }
 
+    @Override
     protected void setQWForFiles(Writer writer) {
         this.qw = new CountingQuietWriter(writer, errorHandler);
     }
@@ -464,6 +466,7 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
      * <p>
      * Before actually logging, this method will check whether it is time to do a rollover. If it is, it will schedule the next rollover time and then rollover.
      */
+    @Override
     protected void subAppend(LoggingEvent event) {
         long n = System.currentTimeMillis();
         if (n >= nextCheck) {

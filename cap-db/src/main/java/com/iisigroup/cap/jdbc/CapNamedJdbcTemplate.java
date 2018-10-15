@@ -91,6 +91,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         this.causeClass = clazz;
     }
 
+    @Override
     public void query(String sqlId, Map<String, ?> args, RowCallbackHandler rch) {
         StringBuilder sql = new StringBuilder((String) sqlp.getValue(sqlId, sqlId));
         if (!sql.toString().trim().toUpperCase().startsWith("CALL")) {
@@ -228,6 +229,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
      * @return T
      * @throws GWException
      */
+    @Override
     public <T> T queryForObject(String sqlId, Map<String, ?> args, RowMapper<T> rm) {
         return this.queryForObject(sqlId, null, args, rm);
     }
@@ -286,6 +288,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
      * @return Map<String, Object>
      * @throws GWException
      */
+    @Override
     public Map<String, Object> queryForMap(String sqlId, Map<String, ?> args) {
         return this.queryForMap(sqlId, null, args);
     }
@@ -301,6 +304,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
      * @throws GWException
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
     public int update(String sqlId, Map<String, ?> args) {
         String sql = sqlp.getValue(sqlId, sqlId);
         if (logger.isTraceEnabled()) {
@@ -407,6 +411,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
      *            參數
      * @return SqlRowSet
      */
+    @Override
     public SqlRowSet queryForRowSet(String sqlId, Map<String, ?> args) {
         StringBuilder sql = new StringBuilder((String) sqlp.getValue(sqlId, sqlId));
         sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));

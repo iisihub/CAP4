@@ -110,6 +110,7 @@ public class DefaultFunction extends GenericBean implements Function, DataObject
         this.code = code;
     }
 
+    @Override
     public String toString() {
         return "Function [code=" + code + ", sequence=" + sequence + ", level=" + level + ", parent=" + parent + ", name=" + name + ", path=" + path + "]";
     }

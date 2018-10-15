@@ -55,6 +55,7 @@ public class CapRequestJSONMapper extends AbstractDecoratorMapper {
     private Set<String> ignoreParams;
     private Set<String> decoratorFile;
 
+    @Override
     public void init(Config config, Properties properties, DecoratorMapper parent) throws InstantiationException {
         super.init(config, properties, parent);
         ignorePathReg = properties.getProperty("ignorePathReg");

@@ -45,6 +45,7 @@ public class CapI18nMapper extends AbstractDecoratorMapper {
     private final static String PROP_I18N = "i18n";
     private String ignorePathReg;
 
+    @Override
     public void init(Config config, Properties properties, DecoratorMapper parent) throws InstantiationException {
         super.init(config, properties, parent);
         ignorePathReg = properties.getProperty("ignorePathReg");
