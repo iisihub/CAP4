@@ -19,6 +19,8 @@ import java.io.ObjectOutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import org.apache.commons.io.serialization.ValidatingObjectInputStream;
+
 /**
  * <pre>
  * Object seriaization utilities
@@ -111,15 +113,16 @@ public class CapSerialization {
      *            the saved string
      * @return the original data
      */
-    public Object loadData(String in) {
-        return loadDataFromByteArray(CapString.hexStrToByteArray(in), compress);
+    public Object loadData(String in, Class<?> acceptedClass) {
+        return loadDataFromByteArray(CapString.hexStrToByteArray(in), compress, acceptedClass);
     }
 
-    public Object loadDataFromByteArray(byte[] in, boolean compress) {
+    public Object loadDataFromByteArray(byte[] in, boolean compress, Class<?> acceptedClass) {
         if (in == null) {
             return null;
         }
-        try (ByteArrayInputStream bais = compress ? new ByteArrayInputStream(decompress(in)) : new ByteArrayInputStream(in); ObjectInputStream ois = new ObjectInputStream(bais);) {
+        try (ByteArrayInputStream bais = compress ? new ByteArrayInputStream(decompress(in)) : new ByteArrayInputStream(in);
+                ObjectInputStream ois = new ValidatingObjectInputStream(bais).accept(acceptedClass);) {
             Object o = ois.readObject();
             return o;
         } catch (Exception e) {
