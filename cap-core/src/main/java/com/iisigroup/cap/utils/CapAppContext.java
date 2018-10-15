@@ -38,12 +38,14 @@ import com.iisigroup.cap.operation.simple.SimpleContextHolder;
 public class CapAppContext implements ApplicationContextAware {
     protected final static Logger LOGGER = LoggerFactory.getLogger(CapAppContext.class);
 
+    private static ApplicationContext applicationContext;
+
     @Override
     public void setApplicationContext(ApplicationContext ctx) {
-        applicationContext = ctx;
+        synchronized (this) {
+            applicationContext = ctx;
+        }
     }
-
-    private static ApplicationContext applicationContext;
 
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
