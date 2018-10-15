@@ -67,14 +67,6 @@ public class AuditLog extends GenericBean implements DataObject {
     @Column(length = 50)
     private String remark;
 
-    public String getId() {
-        return oid;
-    }
-
-    public void setId(String id) {
-        this.oid = id;
-    }
-
     public String getUserId() {
         return userId;
     }

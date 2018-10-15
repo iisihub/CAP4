@@ -253,7 +253,7 @@ public class CapAuditLog4HandlerAdvice {
         AuditLog auditLog = null;
         if (haveToAudit) {
             auditLog = new AuditLog();
-            auditLog.setId(UUIDGenerator.getUUID());
+            auditLog.setOid(UUIDGenerator.getUUID());
             auditLog.setUserId(uid);
             auditLog.setIpAddress(trimByLen(CapString.trimNull(ipAddress), 50));
             auditLog.setFunctionId(trimByLen(function, 20));

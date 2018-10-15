@@ -205,7 +205,7 @@ public class DefaultFunction extends GenericBean implements Function, DataObject
 
     @Override
     public String getFuncUrl() {
-        return path;
+        return getPath();
     }
 
     @Override
@@ -215,6 +215,6 @@ public class DefaultFunction extends GenericBean implements Function, DataObject
 
     @Override
     public int getFuncOrder() {
-        return sequence;
+        return getSequence();
     }
 }
