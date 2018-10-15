@@ -135,9 +135,6 @@ public class CapDate {
 
         date1 = formatDateFormatToyyyyMMdd(date1, dateFormat1);
         date2 = formatDateFormatToyyyyMMdd(date2, dateFormat2);
-        if ((date1 == null) || (date2 == null)) {
-            throw new IllegalArgumentException("DATE INPUT ERROR");
-        }
         int y1 = Integer.parseInt(date1.substring(0, 4));
         int y2 = Integer.parseInt(date2.substring(0, 4));
         int m1 = Integer.parseInt(date1.substring(4, 6));
@@ -232,10 +229,6 @@ public class CapDate {
     public static Date getDate(String date, String dateFormat) {
 
         String date1 = formatDateFormatToyyyyMMdd(date, dateFormat);
-        if (date1 == null) {
-            throw new IllegalArgumentException("DATE (" + date + ") AND DATEFORMAT (" + dateFormat + ") IS NOT SUPPORTED");
-        }
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         sdf.setLenient(false);
         ParsePosition pos = new ParsePosition(0);
@@ -322,27 +315,19 @@ public class CapDate {
      * @return int
      */
     public static int getDayOfWeek(String date, String dateFormat) {
-        try {
-            int year = 1;
-            int month = 1;
-            int day = 1;
-
-            date = formatDateFormatToyyyyMMdd(date, dateFormat);
-
-            year = Integer.parseInt(date.substring(0, 4));
-            month = Integer.parseInt(date.substring(4, 6));
-            day = Integer.parseInt(date.substring(6));
-
-            Calendar c = Calendar.getInstance();
-            synchronized (c) {
-                c.set(Calendar.YEAR, year);
-                c.set(Calendar.MONTH, month - 1);
-                c.set(Calendar.DATE, day);
-                return c.get(Calendar.DAY_OF_WEEK);
-            }
-
-        } catch (Exception e) {
-            throw new IllegalArgumentException("THIS DATE (" + date + ") IS NOT SUPPORT"); //$NON-NLS-1$ //$NON-NLS-2$
+        int year = 1;
+        int month = 1;
+        int day = 1;
+        date = formatDateFormatToyyyyMMdd(date, dateFormat);
+        year = Integer.parseInt(date.substring(0, 4));
+        month = Integer.parseInt(date.substring(4, 6));
+        day = Integer.parseInt(date.substring(6));
+        Calendar c = Calendar.getInstance();
+        synchronized (c) {
+            c.set(Calendar.YEAR, year);
+            c.set(Calendar.MONTH, month - 1);
+            c.set(Calendar.DATE, day);
+            return c.get(Calendar.DAY_OF_WEEK);
         }
     }
 
@@ -448,7 +433,7 @@ public class CapDate {
      */
     public static String formatDateFormatToyyyyMMdd(String date, String dateFormat) {
         if (!validDate(date, dateFormat)) {
-            return null;
+            throw new IllegalArgumentException("DATE (" + date + ") AND DATEFORMAT (" + dateFormat + ") IS NOT SUPPORTED");
         }
         String tempValue = "";
 
@@ -471,7 +456,7 @@ public class CapDate {
                 d1 = new SimpleDateFormat(dateFormat).parse(date);
                 tempValue = df.format(d1);
             } catch (ParseException e) {
-                return null;
+                throw new IllegalArgumentException("DATE (" + date + ") AND DATEFORMAT (" + dateFormat + ") IS NOT SUPPORTED");
             }
         }
 
@@ -796,7 +781,11 @@ public class CapDate {
                 result = getDate(date, "yyyy/MM/dd");
             } else if (validDate(date, "yyyyMMdd")) {
                 result = getDate(date, "yyyyMMdd");
+            } else {
+                throw new IllegalArgumentException("DATE (" + date + ") IS NOT SUPPORTED");
             }
+        } else {
+            throw new IllegalArgumentException("DATE (" + date + ") IS NOT SUPPORTED");
         }
         return result;
     }

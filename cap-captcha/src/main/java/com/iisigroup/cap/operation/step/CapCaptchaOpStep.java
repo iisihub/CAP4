@@ -49,7 +49,8 @@ public class CapCaptchaOpStep extends AbstractCustomizeOpStep {
                         CheckCodeService captcha = CapAppContext.getBean(CaptchaHandler.DEFAULT_RENDER);
                         if (captcha == null || CheckStatus.SUCCESS != captcha.valid(params.get(key))) {
                             // 驗証碼無效請重新輸入
-                            throw new CapMessageException(CapAppContext.getMessage(captcha.getErrorMessage()), getClass());
+                            String messageKey = captcha == null ? "security.captcha" : captcha.getErrorMessage();
+                            throw new CapMessageException(CapAppContext.getMessage(messageKey), getClass());
                         }
                     }
                 }

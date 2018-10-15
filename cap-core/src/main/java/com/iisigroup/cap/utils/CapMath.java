@@ -442,7 +442,7 @@ public class CapMath implements Constants {
                 try {
                     out = new BigDecimal(sb.toString());
                 } catch (Exception ex2) {
-                    return null;
+                    throw new IllegalArgumentException("Can't convert " + in + " to BigDecimal.");
                 }
             }
         }
