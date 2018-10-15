@@ -30,6 +30,10 @@ import java.lang.management.MemoryUsage;
 public class ManagementUtil {
     private static final long MEGABYTE = 1024L * 1024L;
 
+    private ManagementUtil() {
+
+    }
+
     public static MemoryUsage getCurrentMemUsage() {
         MemoryMXBean mem = ManagementFactory.getMemoryMXBean();
         return mem.getHeapMemoryUsage();
@@ -42,8 +46,10 @@ public class ManagementUtil {
     }
 
     public static String formatHeapMemoryUsage(MemoryUsage heap) {
-        return heap != null ? CapString.concat("Heap Usage: Committed=", bytesToMegabytes(heap.getCommitted()), "->", bytesToMegabytes(heap.getCommitted()), " MB, Init=",
-                bytesToMegabytes(heap.getInit()), " MB, Max=", bytesToMegabytes(heap.getMax()), " MB, Used=", bytesToMegabytes(heap.getUsed()), " MB ") : "";
+        return heap != null
+                ? CapString.concat("Heap Usage: Committed=", bytesToMegabytes(heap.getCommitted()), "->", bytesToMegabytes(heap.getCommitted()), " MB, Init=", bytesToMegabytes(heap.getInit()),
+                        " MB, Max=", bytesToMegabytes(heap.getMax()), " MB, Used=", bytesToMegabytes(heap.getUsed()), " MB ")
+                : "";
     }
 
     private static long bytesToMegabytes(long bytes) {

@@ -52,6 +52,10 @@ public class MessageBundleScriptCreator {
         defaultFilter.add("js.");
     }
 
+    private MessageBundleScriptCreator() {
+
+    }
+
     /**
      * 將properties轉成json格式
      *

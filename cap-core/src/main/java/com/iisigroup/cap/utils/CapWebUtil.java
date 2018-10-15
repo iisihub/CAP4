@@ -38,6 +38,10 @@ public class CapWebUtil {
 
     public static final String LOCALE_KEY = "localeKey";
 
+    private CapWebUtil() {
+
+    }
+
     /**
      * 下載檔名中文依IE及FireFox做區分
      * 

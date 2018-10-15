@@ -45,6 +45,10 @@ public class CapMath implements Constants {
         toPlainString = m;
     }
 
+    private CapMath() {
+
+    }
+
     /**
      * Set number's scale.
      * 

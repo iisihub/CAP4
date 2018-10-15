@@ -31,6 +31,10 @@ import com.google.gson.reflect.TypeToken;
  */
 public class GsonUtil {
 
+    private GsonUtil() {
+
+    }
+
     /**
      * <pre>
      * test data:

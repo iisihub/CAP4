@@ -53,6 +53,10 @@ public class CapDate {
 
     public final static String DEFAULT_DATE_FORMAT = "yyyyMMdd";
 
+    private CapDate() {
+
+    }
+
     /**
      * calculate between date1 and date2 by using default format: "yyyyMMdd"
      * 

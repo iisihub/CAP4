@@ -58,6 +58,10 @@ public class RespMsgHelper {
 
     private static final boolean DB_SOURCE = true;
 
+    private RespMsgHelper() {
+
+    }
+
     /**
      * 格式化回應訊息
      *

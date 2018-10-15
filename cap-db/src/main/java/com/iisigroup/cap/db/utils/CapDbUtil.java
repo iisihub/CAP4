@@ -40,6 +40,10 @@ public class CapDbUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CapDbUtil.class);
 
+    private CapDbUtil() {
+
+    }
+
     /**
      * Convert a prepared statment to standard SQL command Can be used to debug SQL command
      * 

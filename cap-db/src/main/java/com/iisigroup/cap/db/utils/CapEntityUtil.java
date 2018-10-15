@@ -44,6 +44,10 @@ public class CapEntityUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CapEntityUtil.class);
 
+    private CapEntityUtil() {
+
+    }
+
     /**
      * 取得傳入entity所有欄位名稱
      * 

@@ -48,6 +48,10 @@ import com.iisigroup.cap.exception.CapMessageException;
 public class CapXmlUtil {
     protected static final Logger LOGGER = LoggerFactory.getLogger(CapXmlUtil.class);
 
+    private CapXmlUtil() {
+
+    }
+
     /**
      * 取得 xPath 節點 text
      * 

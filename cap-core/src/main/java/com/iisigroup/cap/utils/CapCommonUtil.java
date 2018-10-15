@@ -34,6 +34,10 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
  */
 public class CapCommonUtil {
 
+    private CapCommonUtil() {
+
+    }
+
     /**
      * use Spring Expression Language (SpEL) parse
      * 

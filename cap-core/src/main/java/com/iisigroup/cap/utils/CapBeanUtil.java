@@ -52,6 +52,10 @@ public class CapBeanUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CapBeanUtil.class);
 
+    private CapBeanUtil() {
+
+    }
+
     /**
      * Copy Bean
      * 

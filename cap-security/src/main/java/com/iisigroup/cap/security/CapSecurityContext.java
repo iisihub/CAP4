@@ -39,6 +39,10 @@ import com.iisigroup.cap.security.model.CapUserDetails;
  */
 public class CapSecurityContext {
 
+    private CapSecurityContext() {
+
+    }
+
     /**
      * <pre>
      * 取得Spring Security登入者的user information.

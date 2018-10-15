@@ -28,6 +28,10 @@ import com.iisigroup.cap.base.service.ErrorCodeService;
 public class RespMsgFactory {
     private static ErrorCodeService errCodeService;
 
+    private RespMsgFactory() {
+
+    }
+
     /**
      * @param errCodeService
      *            the errorCodeService to set
