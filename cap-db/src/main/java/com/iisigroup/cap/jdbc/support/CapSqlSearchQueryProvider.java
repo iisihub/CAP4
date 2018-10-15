@@ -150,7 +150,7 @@ public class CapSqlSearchQueryProvider {
         switch (search.getMode()) {
         case BETWEEN:
             Object[] values = asArray(value);
-            if (values != null) {
+            if (values != null && values.length != 0) {
                 sb.append(key).append(" between :").append(paramKey).append("1 and :").append(paramKey).append('2');
                 params.put(paramKey + "1", values[0]);
                 params.put(paramKey + "2", values[1]);
@@ -224,7 +224,7 @@ public class CapSqlSearchQueryProvider {
         } else if (value instanceof Collection) {
             return ((Collection) value).toArray();
         }
-        return null;
+        return new Object[0];
     }
 
 }// ~

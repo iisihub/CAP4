@@ -11,6 +11,7 @@
  */
 package com.iisigroup.cap.rule.service.impl;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,6 +141,6 @@ public class ConditionMntServiceImpl implements ConditionMntService {
         if (!CapString.isEmpty(conditionNo)) {
             return ctDtlDao.findCtDtlsByCtNoAndSort(conditionNo);
         }
-        return null;
+        return new ArrayList<DivCtDtl>();
     }
 }

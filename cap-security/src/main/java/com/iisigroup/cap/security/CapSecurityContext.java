@@ -12,6 +12,7 @@
 package com.iisigroup.cap.security;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Locale;
@@ -123,7 +124,7 @@ public class CapSecurityContext {
         if (user != null) {
             return user.getAuthorities();
         }
-        return null;
+        return new ArrayList<GrantedAuthority>();
     }
 
     public static Set<String> getRoleIds() {

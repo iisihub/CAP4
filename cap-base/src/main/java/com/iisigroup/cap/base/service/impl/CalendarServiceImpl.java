@@ -12,6 +12,7 @@
 package com.iisigroup.cap.base.service.impl;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -34,7 +35,7 @@ public class CalendarServiceImpl implements CalendarService {
     @Override
     public List<Remind> getCalendarData(String userId, String start, String end) {
         if (CapString.isEmpty(start) || CapString.isEmpty(end)) {
-            return null;
+            return new ArrayList<Remind>();
         }
         return remindDao.getCalendarData(userId, new Timestamp(Long.parseLong(start)), new Timestamp(Long.parseLong(end)), SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString());
     }

@@ -420,7 +420,7 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 
                 case BETWEEN:
                     Object[] values = asArray(_value);
-                    if (values != null) {
+                    if (values != null && values.length != 0) {
                         return builder.between((Path<Comparable>) path, asComparable(values[0]), asComparable(values[1]));
                     } else {
                         return null;
@@ -486,7 +486,7 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
             } else if (value instanceof Collection) {
                 return ((Collection) value).toArray();
             }
-            return null;
+            return new Object[0];
         }
     }
 

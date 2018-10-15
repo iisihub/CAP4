@@ -144,7 +144,7 @@ public class CapSerialization {
 
     public byte[] saveDataToByteArray(Object o, boolean compress) {
         if (o == null) {
-            return null;
+            return new byte[0];
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -155,7 +155,7 @@ public class CapSerialization {
         } catch (Exception e) {
             e.getMessage();
         }
-        return null;
+        return new byte[0];
     }
 
 }

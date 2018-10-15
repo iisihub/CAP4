@@ -55,7 +55,7 @@ public final class CapString {
      * @return 轉換後的字串陣列
      */
     public static String byteArrayToHexString(byte[] ba) {
-        if (ba == null) {
+        if (ba == null || ba.length == 0) {
             return Constants.EMPTY_STRING;
         }
         char[] ca = new char[2 * ba.length];

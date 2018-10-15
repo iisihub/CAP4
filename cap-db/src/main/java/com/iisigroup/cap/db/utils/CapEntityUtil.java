@@ -89,7 +89,7 @@ public class CapEntityUtil {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }
-        return null;
+        return new String[0];
     }
 
     /**

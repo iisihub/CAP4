@@ -12,6 +12,7 @@
 package com.iisigroup.cap.auth.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -147,7 +148,7 @@ public class DefaultUser extends GenericBean implements DataObject, User {
 
     @Override
     public List<? extends Role> getRoles() {
-        return null;
+        return new ArrayList<Role>();
     }
 
     @Override
