@@ -99,7 +99,7 @@ public abstract class MFormHandler extends HandlerPlugin {
                 Method method = CapBeanUtil.findMethod(executeHandler.getClass(), methodId, (Class<?>) null);
                 if (method != null) {
                     HandlerType type = method.getAnnotation(HandlerType.class);
-                    if (type != null && HandlerTypeEnum.GRID.equals(type.value())) {
+                    if (type != null && HandlerTypeEnum.GRID == type.value()) {
                         rtn = getGridData(method, params);
                     } else {
                         rtn = (Result) method.invoke(executeHandler, params);

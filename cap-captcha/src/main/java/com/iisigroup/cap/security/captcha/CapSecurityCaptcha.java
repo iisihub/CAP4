@@ -184,7 +184,7 @@ public class CapSecurityCaptcha implements CheckCodeService {
         }
         this.captcha = null;
 
-        if (CheckStatus.SUCCESS.equals(status)) {
+        if (CheckStatus.SUCCESS == status) {
             return status;
         }
 

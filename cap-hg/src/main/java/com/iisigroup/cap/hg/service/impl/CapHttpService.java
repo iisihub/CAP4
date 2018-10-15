@@ -232,7 +232,7 @@ public class CapHttpService extends AbstractHGservice {
      */
     @Override
     public void execute() throws Exception {
-        if (!ConnStatus.INIT.equals(status)) {
+        if (ConnStatus.INIT != status) {
             throw new CapException("init error", getClass());
         }
         setStatus(ConnStatus.RUNNING);
