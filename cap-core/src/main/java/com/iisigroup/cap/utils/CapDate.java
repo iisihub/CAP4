@@ -624,7 +624,7 @@ public class CapDate {
             return str;
         }
         StringBuilder bRegEx = new StringBuilder();
-        boolean hasSign = (type.indexOf("/") != -1);
+        boolean hasSign = (type.indexOf('/') != -1);
         boolean isYYYY = CapString.checkRegularMatch(type, "YYYY");
         boolean yyFirst = CapString.checkRegularMatch(type, "^Y");
         boolean mmFirst = CapString.checkRegularMatch(type, "MM/?DD");

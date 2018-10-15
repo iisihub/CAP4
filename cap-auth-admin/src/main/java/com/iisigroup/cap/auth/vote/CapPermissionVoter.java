@@ -102,12 +102,12 @@ public class CapPermissionVoter extends RoleVoter {
         if (stripQueryStringFromUrls) {
             // Strip anything after a question mark symbol, as per SEC-161. See
             // also SEC-321
-            int firstQuestionMarkIndex = url.indexOf("?");
+            int firstQuestionMarkIndex = url.indexOf('?');
             if (firstQuestionMarkIndex != -1) {
                 url = url.substring(0, firstQuestionMarkIndex);
             }
         } else {
-            int firstQuestionMarkIndex = url.indexOf("?");
+            int firstQuestionMarkIndex = url.indexOf('?');
             if (firstQuestionMarkIndex != -1) {
                 String queryString = url.substring(firstQuestionMarkIndex + 1);
                 StringBuilder newQueryString = new StringBuilder();

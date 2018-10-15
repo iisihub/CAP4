@@ -504,9 +504,9 @@ public class CapMath implements Constants {
         String amtFraction = "";
         StringBuilder result = new StringBuilder();
 
-        if (amount.indexOf(".") >= 0) {
-            amtInteger = formatAmount(amount.substring(0, amount.indexOf(".")), 4).split(",");
-            amtFraction = amount.substring(amount.indexOf(".") + 1);
+        if (amount.indexOf('.') >= 0) {
+            amtInteger = formatAmount(amount.substring(0, amount.indexOf('.')), 4).split(",");
+            amtFraction = amount.substring(amount.indexOf('.') + 1);
         } else {
             amtInteger = formatAmount(amount, 4).split(",");
         }

@@ -383,7 +383,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
      */
     public Map<String, Object> callSPForMap(String spName, SqlParameter[] params, Map<String, ?> inParams) {
 
-        int idx = spName.indexOf(".");
+        int idx = spName.indexOf('.');
         String schemaName = null;
         if (idx != -1) {
             schemaName = spName.substring(0, idx);

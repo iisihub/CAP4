@@ -95,7 +95,7 @@ public class GenericBean {
         }
         try {
             String field = fieldId;
-            int index = fieldId.indexOf(".");
+            int index = fieldId.indexOf('.');
             if (index > 0) {
                 field = fieldId.substring(0, index);
                 Object keyClazz = get(field);
