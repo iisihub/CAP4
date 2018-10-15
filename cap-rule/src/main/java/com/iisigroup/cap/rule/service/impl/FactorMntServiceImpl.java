@@ -85,7 +85,6 @@ public class FactorMntServiceImpl implements FactorMntService {
                 count++;
             }
             caseInfoDao.save(caseList);
-            logger.debug(" case info records :: " + caseList.size());
         }
     }
 

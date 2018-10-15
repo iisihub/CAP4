@@ -623,7 +623,6 @@ public class RuleTbMntHandler extends MFormHandler {
                         logger.error(((KnowledgeBuilderError) obj).getMessage());
                     }
                 }
-                logger.error(kbuilder.getErrors().toString());
                 result.set("tMsg", "試算發生錯誤，" + kbuilder.getErrors());
                 return result;
             }
