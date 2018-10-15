@@ -107,7 +107,8 @@ public class CapReminderTimerTask extends TimerTask {
             subject.append(formatter.reformat(content.getStartDate()));
             subject.append(" ");
             subject.append(CapAppContext.getMessage("remind.subject2"));
-            subject.append(CapString.isEmpty(content.getContent()) ? "" : content.getContent().substring(0, content.getContent().length() > 40 ? 40 : content.getContent().length()));
+            int contextLen = content.getContent().length() > 40 ? 40 : content.getContent().length();
+            subject.append(CapString.isEmpty(content.getContent()) ? "" : content.getContent().substring(0, contextLen));
             // 內文
             StringBuilder sendContext = new StringBuilder();
             sendContext.append(CapAppContext.getMessage("remind.startDate"));
