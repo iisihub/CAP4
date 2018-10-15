@@ -47,7 +47,7 @@ public class CapUserSecurityInterceptor extends HandlerInterceptorAdapter {
         if (user == null) {
             user = new CapUserDetails();
         }
-        if (user != null && request.getRequestURI().equals(request.getContextPath() + "/")) {
+        if (request.getRequestURI().equals(request.getContextPath() + "/")) {
             response.sendRedirect(request.getContextPath() + "/page/index");
             return false;
         }

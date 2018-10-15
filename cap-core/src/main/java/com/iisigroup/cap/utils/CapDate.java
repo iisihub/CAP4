@@ -156,7 +156,7 @@ public class CapDate {
                 if (d2 >= d1) {
                     d2 = d1;
                 }
-            } else if (b2) {
+            } else {
                 if (d1 >= d2) {
                     d1 = d2;
                 }

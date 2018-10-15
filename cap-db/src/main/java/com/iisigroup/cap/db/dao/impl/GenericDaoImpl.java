@@ -341,11 +341,9 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
             query.orderBy(orders);
         }
         TypedQuery<S> tQuery = getEntityManager().createQuery(query);
-        if (search != null) {
-            // set pagination if needed
-            tQuery.setFirstResult(search.getFirstResult());
-            tQuery.setMaxResults(search.getMaxResults());
-        }
+        // set pagination if needed
+        tQuery.setFirstResult(search.getFirstResult());
+        tQuery.setMaxResults(search.getMaxResults());
         return tQuery;
     }
 

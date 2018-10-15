@@ -128,7 +128,7 @@ public class FileDownloadResult implements Result {
             // Stream to the requester.
             byte[] bbuf = new byte[1024 * 1024];
             int len = 0;
-            while ((in != null) && ((length = in.read(bbuf)) != -1)) {
+            while ((length = in.read(bbuf)) != -1) {
                 output.write(bbuf, 0, length);
                 len += length;
             }

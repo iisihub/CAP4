@@ -128,7 +128,7 @@ public class RuleTbMntServiceImpl implements RuleTbMntService {
     @Override
     public void deleteById(String oid) {
         DivRlItm rlItm = rlItmDao.find(oid);
-        if (rlItm.getDivRlDtls() != null && !rlItm.getDivRlDtls().isEmpty()) {
+        if (rlItm != null && rlItm.getDivRlDtls() != null && !rlItm.getDivRlDtls().isEmpty()) {
             rlDtlDao.delete(rlItm.getDivRlDtls());
         }
         if (rlItm != null) {

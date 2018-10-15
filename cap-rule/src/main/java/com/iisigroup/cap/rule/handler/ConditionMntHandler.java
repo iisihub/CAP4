@@ -336,9 +336,7 @@ public class ConditionMntHandler extends MFormHandler {
             StringBuilder rangeNm = new StringBuilder();
             if (in instanceof DivFtDtl) {
                 DivFtDtl ftDtl = ((DivFtDtl) in);
-                if (ftDtl != null) {
-                    rangeNm.append(ftDtl.getRangeNm());
-                }
+                rangeNm.append(ftDtl.getRangeNm());
             }
             return rangeNm.toString();
         }
