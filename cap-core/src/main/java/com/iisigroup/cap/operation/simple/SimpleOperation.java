@@ -54,14 +54,9 @@ public class SimpleOperation implements Operation {
         try {
             while (step != null) {
                 OpStepContext result = ctx;
-                try {
-                    long startStep = System.currentTimeMillis();
-                    result = step.execute(result, params, handler);
-                    logger.debug("{} cost : {} ms", step.getName(), (System.currentTimeMillis() - startStep));
-                } catch (CapException e) {
-                    result = step.handleException(result, e);
-                    throw e;
-                }
+                long startStep = System.currentTimeMillis();
+                result = step.execute(result, params, handler);
+                logger.debug("{} cost : {} ms", step.getName(), (System.currentTimeMillis() - startStep));
                 if (result != null) {
                     if (OperationStep.NEXT.equals(result.getGoToStep())) {
                         step = getNextStep(step.getName());

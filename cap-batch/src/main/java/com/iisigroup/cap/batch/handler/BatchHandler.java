@@ -417,34 +417,28 @@ public class BatchHandler extends MFormHandler {
      */
     public Result executionRestart(Request request) {
         AjaxFormResult result = new AjaxFormResult();
+        String jobName = request.get("jobId");
         try {
-            String jobName = request.get("jobId");
             long jobInstanceId = Long.parseLong(request.get("jobInsId"));
             Collection<JobExecution> jobExecutions = jobService.getJobExecutionsForJobInstance(jobName, jobInstanceId);
             new JobInfo(jobName, jobExecutions.size() + 1);
             JobExecution jobExecution = jobExecutions.iterator().next();
             new JobExecutionInfo(jobExecution, TimeZone.getDefault());
-
             Long jobExecutionId = jobExecution.getId();
-
-            try {
-
-                jobExecution = jobService.restart(jobExecutionId);
-                new JobExecutionInfo(jobExecution, TimeZone.getDefault());
-
-            } catch (NoSuchJobExecutionException e) {
-                throw new CapMessageException("msg.job.noSuchJob", getClass());
-            } catch (JobExecutionAlreadyRunningException e) {
-                throw new CapMessageException("msg.job.alreadyRunning", getClass());
-            } catch (JobRestartException e) {
-                throw new CapMessageException("msg.job.restartExecption", getClass()).setExtraInformation(new Object[] { jobName });
-            } catch (JobInstanceAlreadyCompleteException e) {
-                throw new CapMessageException("msg.job.alreadyComplete", getClass());
-            } catch (JobParametersInvalidException e) {
-                throw new CapMessageException("msg.job.parametersInvalid", getClass()).setExtraInformation(new Object[] { jobName });
-            }
+            jobExecution = jobService.restart(jobExecutionId);
+            new JobExecutionInfo(jobExecution, TimeZone.getDefault());
         } catch (NoSuchJobException e) {
             throw new CapMessageException("msg.job.noSuchJob", getClass());
+        } catch (NoSuchJobExecutionException e) {
+            throw new CapMessageException("msg.job.noSuchJob", getClass());
+        } catch (JobExecutionAlreadyRunningException e) {
+            throw new CapMessageException("msg.job.alreadyRunning", getClass());
+        } catch (JobRestartException e) {
+            throw new CapMessageException("msg.job.restartExecption", getClass()).setExtraInformation(new Object[] { jobName });
+        } catch (JobInstanceAlreadyCompleteException e) {
+            throw new CapMessageException("msg.job.alreadyComplete", getClass());
+        } catch (JobParametersInvalidException e) {
+            throw new CapMessageException("msg.job.parametersInvalid", getClass()).setExtraInformation(new Object[] { jobName });
         }
         return result;
     }

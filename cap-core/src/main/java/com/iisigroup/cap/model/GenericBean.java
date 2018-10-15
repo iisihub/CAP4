@@ -143,29 +143,25 @@ public class GenericBean {
         for (String str : columns) {
             Object val = null;
             try {
-                try {
-                    String[] s = str.split(SPLIT);
-                    val = s.length == 1 ? get(s[0]) : get(s[1]);
-                    str = s[0];
-                } catch (Exception e) {
-                    val = "";
-                }
-                if (reformat != null && reformat.containsKey(str)) {
-                    Formatter callback = reformat.get(str);
-                    if (callback instanceof BeanFormatter) {
-                        val = callback.reformat(this);
-                    } else {
-                        val = callback.reformat(val);
-                    }
-                } else if (val instanceof Timestamp) {
-                    val = new ADDateTimeFormatter().reformat(val);
-                } else if (val instanceof Date || val instanceof Calendar) {
-                    val = new ADDateFormatter().reformat(val);
-                }
-                row.add(String.valueOf(val));
+                String[] s = str.split(SPLIT);
+                val = s.length == 1 ? get(s[0]) : get(s[1]);
+                str = s[0];
             } catch (Exception e) {
-                throw new CapException(e.getMessage(), e, getClass());
+                val = "";
             }
+            if (reformat != null && reformat.containsKey(str)) {
+                Formatter callback = reformat.get(str);
+                if (callback instanceof BeanFormatter) {
+                    val = callback.reformat(this);
+                } else {
+                    val = callback.reformat(val);
+                }
+            } else if (val instanceof Timestamp) {
+                val = new ADDateTimeFormatter().reformat(val);
+            } else if (val instanceof Date || val instanceof Calendar) {
+                val = new ADDateFormatter().reformat(val);
+            }
+            row.add(String.valueOf(val));
         }
         return GsonUtil.objToJson(row);
     }
@@ -191,27 +187,23 @@ public class GenericBean {
         for (String str : columns) {
             Object val = null;
             try {
-                try {
-                    val = get(str);
-                } catch (Exception e) {
-                    val = "";
-                }
-                if (reformat != null && reformat.containsKey(str)) {
-                    Formatter callback = reformat.get(str);
-                    if (callback instanceof BeanFormatter) {
-                        val = callback.reformat(this);
-                    } else {
-                        val = callback.reformat(val);
-                    }
-                } else if (val instanceof Timestamp) {
-                    val = new ADDateTimeFormatter().reformat(val);
-                } else if (val instanceof Date || val instanceof Calendar) {
-                    val = new ADDateFormatter().reformat(val);
-                }
-                map.put(str, val);
+                val = get(str);
             } catch (Exception e) {
-                throw new CapException(e.getMessage(), e, getClass());
+                val = "";
             }
+            if (reformat != null && reformat.containsKey(str)) {
+                Formatter callback = reformat.get(str);
+                if (callback instanceof BeanFormatter) {
+                    val = callback.reformat(this);
+                } else {
+                    val = callback.reformat(val);
+                }
+            } else if (val instanceof Timestamp) {
+                val = new ADDateTimeFormatter().reformat(val);
+            } else if (val instanceof Date || val instanceof Calendar) {
+                val = new ADDateFormatter().reformat(val);
+            }
+            map.put(str, val);
         }
         return map;
     }

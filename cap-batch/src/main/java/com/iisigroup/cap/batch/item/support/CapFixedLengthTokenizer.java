@@ -49,31 +49,30 @@ public class CapFixedLengthTokenizer extends FixedLengthTokenizer {
         List<String> tokens = new ArrayList<String>(columns.length);
         int lineLength;
         String token;
-
+        byte[] b;
         try {
-            byte[] b = line.getBytes(encoding);
-            lineLength = b.length;
-            int startPos = 0;
-            for (int i = 0; i < columns.length; i++) {
-                int endPos = columns[i];
-                try {
-                    if (lineLength >= endPos) {
-                        token = new String(b, startPos, endPos, encoding).trim();
-                        startPos += endPos;
-                    } else if (lineLength >= startPos) {
-                        token = new String(b, startPos, lineLength - startPos, encoding).trim();
-                    } else {
-                        token = "";
-                    }
-                } catch (StringIndexOutOfBoundsException e) {
-                    token = new String(line.getBytes(), startPos, line.getBytes().length - startPos).trim();
-                }
-                tokens.add(token);
-            }
+            b = line.getBytes(encoding);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
-
+        lineLength = b.length;
+        int startPos = 0;
+        for (int i = 0; i < columns.length; i++) {
+            int endPos = columns[i];
+            try {
+                if (lineLength >= endPos) {
+                    token = new String(b, startPos, endPos, encoding).trim();
+                    startPos += endPos;
+                } else if (lineLength >= startPos) {
+                    token = new String(b, startPos, lineLength - startPos, encoding).trim();
+                } else {
+                    token = "";
+                }
+            } catch (Exception e) {
+                token = new String(line.getBytes(), startPos, line.getBytes().length - startPos).trim();
+            }
+            tokens.add(token);
+        }
         return tokens;
     }
 }
