@@ -206,7 +206,7 @@ public class RuleTbMntHandler extends MFormHandler {
                 rlDtl.setDivRlNo(rlItm.getDivRlNo());
                 rlDtl.setDivRlSor(new BigDecimal(i + 1));
                 rlDtl.setDivCtNo(CapString.trimNull(jsData.get("divCtNo")));
-                DivCtItm ctItm = conditionMntService.getById(CapString.trimNull(jsData.get("divCtOid")));
+                // DivCtItm ctItm = conditionMntService.getById(CapString.trimNull(jsData.get("divCtOid")));
                 // rlDtl.setDivCtItm(ctItm);
                 rlDtl.setDivRlItm(rlItm);
                 // if(haveOld){
@@ -281,7 +281,6 @@ public class RuleTbMntHandler extends MFormHandler {
         // String importClass = "com.iisigroup.cap.base.model.CaseInfo,com.iisigroup.cap.utils.CapDroolsUtil";r
         // String variablesName = "com.iisigroup.cap.utils.CapDroolsUtil comUtil";
         String divRlNo = request.get("divRlNo");
-        String oid = request.get("oid");
         DivRlItm rlItm = ruleTbMntService.getByRlItmNo(divRlNo);
         if (rlItm == null || rlItm.getDivRlDtls() == null) {
             return null;
@@ -421,7 +420,6 @@ public class RuleTbMntHandler extends MFormHandler {
             sheet1.setRowView(12, 900);
 
             // DecisionTable開頭宣告-參數
-            NumberFormat nf = new DecimalFormat("#.00");
             sheet1.addCell(new Label(1, 2, "RuleSet", headCellFmt));
             sheet1.addCell(new Label(1, 3, "Import", headCellFmt));
             sheet1.addCell(new Label(1, 4, "EscapeQuotes", headCellFmt));

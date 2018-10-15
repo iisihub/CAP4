@@ -176,7 +176,6 @@ public class RespMsgHelper {
 
         } else {
             if (workComp instanceof Request) {
-                Request request = (Request) workComp;
                 if (params == null) {
                     msgstr = CapAppContext.getMessage(key);
                 } else {

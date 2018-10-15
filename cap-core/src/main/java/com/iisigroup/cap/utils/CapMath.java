@@ -365,7 +365,7 @@ public class CapMath implements Constants {
      * @return String
      */
     public static String round(String num, int roundIndex) {
-        String result = S0;
+        String result;
         String multiple = S1;
         if (roundIndex < 0) {
             for (int i = roundIndex; i < 0; i++) {
@@ -500,7 +500,7 @@ public class CapMath implements Constants {
         String[] aa = { "", "拾", "佰", "仟" };
         String[] bb = { "", "萬", "億", "兆" };
         String[] cc = { "角", "分", "厘" };
-        String[] amtInteger = {};
+        String[] amtInteger;
         String amtFraction = "";
         StringBuilder result = new StringBuilder();
 

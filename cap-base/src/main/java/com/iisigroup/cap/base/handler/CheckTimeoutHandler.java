@@ -146,7 +146,7 @@ public class CheckTimeoutHandler extends MFormHandler {
 
                 long time = Long.parseLong(openTime);
                 long curTime = CapDate.getCurrentTimestamp().getTime();
-                long propTimeOut = sreq.getSession(false).getMaxInactiveInterval();
+                long propTimeOut;
                 if (!CapString.isEmpty(stout)) {
                     propTimeOut = Long.parseLong(stout);
                     long remindTime = (propTimeOut - 1) * 60;
@@ -184,9 +184,6 @@ public class CheckTimeoutHandler extends MFormHandler {
     public Result checkClosePage(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         HttpServletRequest sreq = (HttpServletRequest) request.getServletRequest();
-
-        String refPath = sreq.getHeader("referer");
-        refPath = StringEscapeUtils.unescapeHtml(refPath);
 
         HttpSession session = sreq.getSession(false);
         HashMap<String, String> map = (HashMap<String, String>) session.getAttribute(TOCM);
