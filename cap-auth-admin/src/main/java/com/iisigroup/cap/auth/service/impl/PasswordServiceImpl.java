@@ -80,10 +80,8 @@ public class PasswordServiceImpl implements PasswordService {
             PasswordEncoder passwordEncoder = new StandardPasswordEncoder(userId);
             for (PwdLog h : list) {
                 // user status 不為 1 時，check change interval: 最近一次變更不得小於間隔
-                if (i == 0 && !"1".equals(user.getStatus()) && !forcePwdChange) {
-                    if (CapDate.calculateDays(Calendar.getInstance().getTime(), h.getUpdateTime()) <= changeInteval) {
-                        throw new CapMessageException(CapAppContext.getMessage("error.005", new Object[] { changeInteval }), getClass());
-                    }
+                if (i == 0 && !"1".equals(user.getStatus()) && !forcePwdChange && CapDate.calculateDays(Calendar.getInstance().getTime(), h.getUpdateTime()) <= changeInteval) {
+                    throw new CapMessageException(CapAppContext.getMessage("error.005", new Object[] { changeInteval }), getClass());
                 }
                 if (passwordEncoder.matches(password, h.getPassword())) {
                     throw new CapMessageException(CapAppContext.getMessage("error.003", new Object[] { maxHistory }), getClass());

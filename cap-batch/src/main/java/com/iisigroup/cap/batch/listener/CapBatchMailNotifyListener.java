@@ -76,15 +76,13 @@ public class CapBatchMailNotifyListener implements JobListener, InitializingBean
         String jobName = context.getJobDetail().getKey().getName();
         final BatchSchedule sch = batchSerivce.findSchById(jobName);
         final JobExecution job = (JobExecution) context.get(CapBatchConstants.K_JOB_EXECUTION);
-        if (sch != null && job != null) {
-            if (sch.isNotify() && !CapString.isEmpty(sch.getNotifyStatus()) && !CapString.isEmpty(sch.getNotifyTo())) {
-                for (String status : sch.getNotifyStatus().split(",")) {
-                    if (CapString.trimNull(status).equals(job.getExitStatus().getExitCode())) {
-                        // 主旨
-                        String subject = MessageFormat.format(mailSubject, new Object[] { sch.getSchId(), sch.getSchDesc(), job.getExitStatus().getExitCode() });
-                        mailSender.sendEmail(sch.getNotifyTo().split(","), subject, buildText(job));
-                        break;
-                    }
+        if (sch != null && job != null && sch.isNotify() && !CapString.isEmpty(sch.getNotifyStatus()) && !CapString.isEmpty(sch.getNotifyTo())) {
+            for (String status : sch.getNotifyStatus().split(",")) {
+                if (CapString.trimNull(status).equals(job.getExitStatus().getExitCode())) {
+                    // 主旨
+                    String subject = MessageFormat.format(mailSubject, new Object[] { sch.getSchId(), sch.getSchDesc(), job.getExitStatus().getExitCode() });
+                    mailSender.sendEmail(sch.getNotifyTo().split(","), subject, buildText(job));
+                    break;
                 }
             }
         }

@@ -43,15 +43,13 @@ public class CapCaptchaOpStep extends AbstractCustomizeOpStep {
         String methodId = params.get(Handler.FORM_ACTION, "");
         if (!CapString.isEmpty(methodId)) {
             for (Method method : handler.getClass().getDeclaredMethods()) {
-                if (methodId.equals(method.getName())) {
-                    if (method.isAnnotationPresent(Captcha.class)) {
-                        String key = method.getAnnotation(Captcha.class).value();
-                        CheckCodeService captcha = CapAppContext.getBean(CaptchaHandler.DEFAULT_RENDER);
-                        if (captcha == null || CheckStatus.SUCCESS != captcha.valid(params.get(key))) {
-                            // 驗証碼無效請重新輸入
-                            String messageKey = captcha == null ? "security.captcha" : captcha.getErrorMessage();
-                            throw new CapMessageException(CapAppContext.getMessage(messageKey), getClass());
-                        }
+                if (methodId.equals(method.getName()) && method.isAnnotationPresent(Captcha.class)) {
+                    String key = method.getAnnotation(Captcha.class).value();
+                    CheckCodeService captcha = CapAppContext.getBean(CaptchaHandler.DEFAULT_RENDER);
+                    if (captcha == null || CheckStatus.SUCCESS != captcha.valid(params.get(key))) {
+                        // 驗証碼無效請重新輸入
+                        String messageKey = captcha == null ? "security.captcha" : captcha.getErrorMessage();
+                        throw new CapMessageException(CapAppContext.getMessage(messageKey), getClass());
                     }
                 }
             }
