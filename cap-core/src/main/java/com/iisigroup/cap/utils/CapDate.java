@@ -39,8 +39,6 @@ import java.util.regex.Pattern;
  */
 public class CapDate {
 
-    protected final static GregorianCalendar GC = new GregorianCalendar();
-
     public final static String[] MONTH = { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
 
     protected final static int[] DAYS_OF_MONTH = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
@@ -343,7 +341,8 @@ public class CapDate {
      * @return boolean true, if leap year, otherwise is not.
      */
     public static boolean isLeapYear(int year) {
-        return GC.isLeapYear(year);
+        GregorianCalendar gc = new GregorianCalendar();
+        return gc.isLeapYear(year);
     }
 
     /**
@@ -404,11 +403,12 @@ public class CapDate {
      * @return if valid return true.
      */
     public static boolean validDate(int y, int m, int d) {
+        GregorianCalendar gc = new GregorianCalendar();
         try {
             int maxDay = m == -1 ? 31 : DAYS_OF_MONTH[m - 1];
 
             if (y != -1 && m == 2) {
-                if (GC.isLeapYear(y)) {
+                if (gc.isLeapYear(y)) {
                     maxDay = 29;
                 } else {
                     maxDay = 28;
@@ -698,8 +698,6 @@ public class CapDate {
         return val;
     }// end function
 
-    private final static SimpleDateFormat sdateTimef = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     /**
      * fomat data time yyyy-MM-dd HH:mm:ss
      * 
@@ -708,6 +706,7 @@ public class CapDate {
      * @return String
      */
     public static String getDateTimeFormat(Timestamp time) {
+        SimpleDateFormat sdateTimef = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdateTimef.format(new Date(time.getTime()));
     }
 
@@ -825,8 +824,6 @@ public class CapDate {
         return new java.sql.Date(date.getTime());
     }
 
-    private static SimpleDateFormat _tdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     /**
      * 將Timestamp 轉換為 String yyyy-MM-dd HH:mm:ss
      * 
@@ -835,6 +832,7 @@ public class CapDate {
      * @return String
      */
     public static String parseToString(Timestamp time) {
+        SimpleDateFormat _tdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return _tdf.format(time);
     }
 
