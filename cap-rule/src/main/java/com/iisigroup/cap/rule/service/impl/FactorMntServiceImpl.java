@@ -22,6 +22,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.iisigroup.cap.component.impl.AjaxFormResult;
@@ -47,6 +49,8 @@ import com.iisigroup.cap.rule.service.FactorMntService;
  */
 @Service
 public class FactorMntServiceImpl implements FactorMntService {
+
+    private final Logger logger = LoggerFactory.getLogger(FactorMntServiceImpl.class);
 
     @Resource
     private DivFtItmDao ftItmDao;
@@ -81,7 +85,7 @@ public class FactorMntServiceImpl implements FactorMntService {
                 count++;
             }
             caseInfoDao.save(caseList);
-            System.out.println(" case info records :: " + caseList.size());
+            logger.debug(" case info records :: " + caseList.size());
         }
     }
 

@@ -620,10 +620,10 @@ public class RuleTbMntHandler extends MFormHandler {
                 while (rr.hasNext()) {
                     Object obj = rr.next();
                     if (obj instanceof KnowledgeBuilderError) {
-                        System.err.println(((KnowledgeBuilderError) obj).getMessage());
+                        logger.error(((KnowledgeBuilderError) obj).getMessage());
                     }
                 }
-                System.err.print(kbuilder.getErrors());
+                logger.error(kbuilder.getErrors().toString());
                 result.set("tMsg", "試算發生錯誤，" + kbuilder.getErrors());
                 return result;
             }
@@ -642,7 +642,7 @@ public class RuleTbMntHandler extends MFormHandler {
                 }
             }
             ruleTbMntService.updateCaseInfo(csinfoList);
-            System.out.println(" test dispatch success !");
+            logger.debug(" test dispatch success !");
             result.set("tMsg", "試算完成");
         } catch (Exception e) {
             result.set("tMsg", "試算發生錯誤，" + e.getLocalizedMessage());
