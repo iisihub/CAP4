@@ -135,31 +135,31 @@ public class CapSecurityCaptcha implements CheckCodeService {
     }
 
     public BufferedImage crateImage() {
-        Builder captcha = new Captcha.Builder(width, height);
+        Builder builder = new Captcha.Builder(width, height);
         if (this.wordRenderer == null) {
-            captcha.addText(textProducer);
+            builder.addText(textProducer);
         } else {
-            captcha.addText(textProducer, this.wordRenderer);
+            builder.addText(textProducer, this.wordRenderer);
         }
 
         if (producers != null && !producers.isEmpty()) {
             for (Object producer : producers) {
                 if (producer instanceof BackgroundProducer) {
-                    captcha.addBackground((BackgroundProducer) producer);
+                    builder.addBackground((BackgroundProducer) producer);
                 } else if (producer instanceof GimpyRenderer) {
-                    captcha.gimp((GimpyRenderer) producer);
+                    builder.gimp((GimpyRenderer) producer);
                 } else if (producer instanceof NoiseProducer) {
-                    captcha.addNoise((NoiseProducer) producer);
+                    builder.addNoise((NoiseProducer) producer);
                 }
 
             }
         }
         if (isBorder()) {
-            captcha.addBorder();
+            builder.addBorder();
         }
-        this.captcha = captcha.build();
+        this.captcha = builder.build();
 
-        return captcha.build().getImage();
+        return builder.build().getImage();
     }
 
     public Sample createAudio() {

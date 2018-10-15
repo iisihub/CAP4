@@ -177,13 +177,13 @@ public class CapSecurityKeypad {
     }
 
     private SecurityKey generate(int type) {
-        List<String> words = getWords();
+        List<String> displayWords = getWords();
         List<String> answer = new ArrayList<String>();
         List<Object> base64Image = new ArrayList<Object>();
-        while (!words.isEmpty()) {
-            int randomInt = random ? RAND.nextInt(words.size()) : 0;
+        while (!displayWords.isEmpty()) {
+            int randomInt = random ? RAND.nextInt(displayWords.size()) : 0;
             // shift render number
-            String value = words.remove(randomInt);
+            String value = displayWords.remove(randomInt);
             answer.add(value);
             BufferedImage bi = crateImage(value);
             Object obj = null;

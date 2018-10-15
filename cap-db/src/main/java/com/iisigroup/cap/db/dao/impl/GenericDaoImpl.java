@@ -384,8 +384,8 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
                 } else if (SearchMode.OR == _key || SearchMode.AND == _key) {
                     List<SearchModeParameter> list = (List<SearchModeParameter>) _value;
                     List<Predicate> predicates = new ArrayList<Predicate>(list.size());
-                    for (SearchModeParameter param : list) {
-                        predicates.add(new CapSpecifications(param).toPredicate(root, query, builder));
+                    for (SearchModeParameter p : list) {
+                        predicates.add(new CapSpecifications(p).toPredicate(root, query, builder));
                     }
                     if (SearchMode.OR == _key) {
                         return builder.or(predicates.toArray(new Predicate[predicates.size()]));
