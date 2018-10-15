@@ -132,7 +132,7 @@ public class SearchSettingImpl implements SearchSetting {
         return this;
     }
 
-    public SearchSettingImpl setOrderBy(Map<String, Boolean> orderBy) {
+    public final SearchSettingImpl setOrderBy(Map<String, Boolean> orderBy) {
         this.orderBy = orderBy;
         return this;
     }
@@ -154,7 +154,7 @@ public class SearchSettingImpl implements SearchSetting {
      *            查詢的筆數
      * @return this
      */
-    public SearchSettingImpl setMaxResults(int maxResults) {
+    public final SearchSettingImpl setMaxResults(int maxResults) {
         Assert.isTrue(maxResults > 0, "maxResults must be > 0");
         // this.maxResults = Math.min(maxResults, maxResultsLimit);
         this.maxResults = maxResults;
@@ -175,7 +175,7 @@ public class SearchSettingImpl implements SearchSetting {
      *            查詢的頁碼
      * @return this
      */
-    public SearchSettingImpl setFirstResult(int firstResult) {
+    public final SearchSettingImpl setFirstResult(int firstResult) {
         Assert.isTrue(firstResult >= 0, "maxResults must be >= 0");
         this.firstResult = firstResult;
         return this;
