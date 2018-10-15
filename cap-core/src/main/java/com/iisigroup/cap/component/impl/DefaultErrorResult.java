@@ -154,7 +154,7 @@ public class DefaultErrorResult implements ErrorResult {
         new StringResponse(getContextType(), getEncoding(), getResult()).respond(response);
     }
 
-    public Locale getLocale(Request request) {
+    public Locale getLocale() {
         return (Locale) SimpleContextHolder.get(CapWebUtil.LOCALE_KEY);
 
     }
@@ -171,7 +171,7 @@ public class DefaultErrorResult implements ErrorResult {
      * @return 錯誤訊息
      */
     protected String formatMessage(Request request, String msgKey, Object extraInfo) {
-        Locale locale = getLocale(request);
+        Locale locale = getLocale();
         if (extraInfo != null) {
             return CapAppContext.getMessage(msgKey, (Object[]) extraInfo, locale);
         } else {

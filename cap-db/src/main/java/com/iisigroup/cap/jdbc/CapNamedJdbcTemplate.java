@@ -431,7 +431,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
     public List<Map<String, Object>> queryPaging(String sqlId, Map<String, Object> args, int startRow, int fetchSize) {
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, getSourceSql(sqlId, args, startRow, fetchSize));
+        params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, getSourceSql(sqlId));
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_ORDER, CapJdbcConstants.SQL_PAGING_DUMMY_ORDER_BY);
         StringBuilder sql = new StringBuilder().append(CapCommonUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_QUERY), params, sqltemp.getParserContext()));
         sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));
@@ -456,7 +456,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
     public Page<Map<String, Object>> queryForPage(String sqlId, Map<String, Object> args, int startRow, int fetchSize) {
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, getSourceSql(sqlId, args, startRow, fetchSize));
+        params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, getSourceSql(sqlId));
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_ORDER, CapJdbcConstants.SQL_PAGING_DUMMY_ORDER_BY);
         StringBuilder sql = new StringBuilder().append(CapCommonUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_TOTAL_PAGE), params, sqlp.getParserContext()));
         sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));
@@ -475,7 +475,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         }
     }
 
-    private String getSourceSql(String sqlId, Map<String, Object> args, int startRow, int fetchSize) {
+    private String getSourceSql(String sqlId) {
         // Rewrite sql map. (ex: SQL Server => top n)
         String countAllSqlId = sqlId + ".countAll()";
         if (sqltemp.containsKey(sqlId)) {

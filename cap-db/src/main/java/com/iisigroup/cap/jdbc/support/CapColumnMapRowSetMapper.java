@@ -42,7 +42,7 @@ public class CapColumnMapRowSetMapper {
         return this;
     }
 
-    public Map<String, Object> mapRow(SqlRowSet rs, int rowNum) {
+    public Map<String, Object> mapRow(SqlRowSet rs) {
         SqlRowSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
         Map<String, Object> mapOfColValues = new HashMap<String, Object>(columnCount);
