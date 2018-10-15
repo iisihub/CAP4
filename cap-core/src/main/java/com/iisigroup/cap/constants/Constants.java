@@ -71,17 +71,17 @@ public interface Constants {
     /**
      * a BigDecimal, value is 0.
      */
-    public final static BigDecimal B0 = new BigDecimal(0d);
+    public final static BigDecimal B0 = BigDecimal.ZERO;
 
     /**
      * a BigDecimal, value is 1.
      */
-    public final static BigDecimal B1 = new BigDecimal(1d);
+    public final static BigDecimal B1 = BigDecimal.ONE;
 
     /**
      * a BigDecimal, value is -1.
      */
-    public final static BigDecimal B1N = new BigDecimal(-1d);
+    public final static BigDecimal B1N = BigDecimal.valueOf(-1d);
 
     /**
      * a empty string array.
