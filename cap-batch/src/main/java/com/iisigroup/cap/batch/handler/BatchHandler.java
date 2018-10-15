@@ -481,8 +481,6 @@ public class BatchHandler extends MFormHandler {
             if (f == null || !f.exists()) {
                 throw new CapMessageException("msg.job.fileNotFund", getClass());
             }
-        } catch (NullPointerException e) {
-            throw new CapMessageException("msg.job.fileNotFund", getClass());
         } catch (CapMessageException me) {
             throw me;
         } catch (Exception e1) {
