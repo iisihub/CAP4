@@ -73,22 +73,13 @@ public abstract class AbstractReportExcelService implements ReportService {
     protected WritableFont defaultFont = new WritableFont(WritableFont.createFont("標楷體"), 12);
 
     private Workbook readTemplate() {
-        InputStream inputWorkbook = null;
         Workbook w = null;
-        try {
-            inputWorkbook = getClass().getClassLoader().getResourceAsStream("/ftl/" + getReportDefinition() + REPORT_SUFFIX);
+        try (InputStream inputWorkbook = getClass().getClassLoader().getResourceAsStream("/ftl/" + getReportDefinition() + REPORT_SUFFIX);) {
             w = Workbook.getWorkbook(inputWorkbook);
         } catch (BiffException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (inputWorkbook != null) {
-                try {
-                    inputWorkbook.close();
-                } catch (IOException e) {
-                }
-            }
         }
         return w;
     }

@@ -54,8 +54,6 @@ public class SampleRptService extends AbstractReportPdfService {
                 int totalCount = list.size();
                 totalCount -= 30;
                 totalPageNo = totalCount / 35 + 2;
-            } else {
-
             }
         }
         reportData.put("totalPageNo", String.valueOf(totalPageNo));
