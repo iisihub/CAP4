@@ -333,7 +333,7 @@ public class ConditionMntHandler extends MFormHandler {
 
         @SuppressWarnings("unchecked")
         public String reformat(Object in) throws CapFormatException {
-            StringBuffer rangeNm = new StringBuffer();
+            StringBuilder rangeNm = new StringBuilder();
             if (in instanceof DivFtDtl) {
                 DivFtDtl ftDtl = ((DivFtDtl) in);
                 if (ftDtl != null) {
@@ -358,7 +358,7 @@ public class ConditionMntHandler extends MFormHandler {
 
         @SuppressWarnings("unchecked")
         public String reformat(Object in) throws CapFormatException {
-            StringBuffer result = new StringBuffer();
+            StringBuilder result = new StringBuilder();
             if (in instanceof DivCtItm) {
                 DivCtItm ctItm = ((DivCtItm) in);
                 if (ctItm.getDivCtDtls() != null && !ctItm.getDivCtDtls().isEmpty()) {
@@ -381,7 +381,7 @@ public class ConditionMntHandler extends MFormHandler {
 
         @SuppressWarnings("unchecked")
         public String reformat(Object in) throws CapFormatException {
-            StringBuffer factorNm = new StringBuffer();
+            StringBuilder factorNm = new StringBuilder();
             if (in instanceof DivFtDtl) {
                 DivFtDtl ftDtl = ((DivFtDtl) in);
                 if (ftDtl.getDivFtItm() != null) {
@@ -400,7 +400,7 @@ public class ConditionMntHandler extends MFormHandler {
 
         @SuppressWarnings("unchecked")
         public String reformat(Object in) throws CapFormatException {
-            StringBuffer rangeNm = new StringBuffer();
+            StringBuilder rangeNm = new StringBuilder();
             if (in instanceof DivCtDtl) {
                 DivCtDtl ctDtl = ((DivCtDtl) in);
                 if (ctDtl.getDivFtDtl() != null) {
@@ -420,7 +420,7 @@ public class ConditionMntHandler extends MFormHandler {
 
         @SuppressWarnings("unchecked")
         public String reformat(Object in) throws CapFormatException {
-            StringBuffer rangeNm = new StringBuffer();
+            StringBuilder rangeNm = new StringBuilder();
             if (in instanceof DivCtDtl) {
                 DivCtDtl ctDtl = ((DivCtDtl) in);
                 if (ctDtl.getDivFtDtl() != null) {

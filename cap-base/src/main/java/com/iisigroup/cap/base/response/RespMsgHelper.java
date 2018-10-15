@@ -248,7 +248,7 @@ public class RespMsgHelper {
      */
     public static String getMessage(String code, String severty, String msg, String suggestion) {
 
-        StringBuffer errmsg = new StringBuffer();
+        StringBuilder errmsg = new StringBuilder();
         errmsg.append("[").append(severty).append("]");
         errmsg.append("").append(code).append(OUT_SEPARATOR);
         errmsg.append(msg);

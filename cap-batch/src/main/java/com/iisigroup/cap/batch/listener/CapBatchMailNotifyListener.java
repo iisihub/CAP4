@@ -99,7 +99,7 @@ public class CapBatchMailNotifyListener implements JobListener, InitializingBean
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-        return new StringBuffer("<html><body>").append(result.toString().replace(",", ",<br/>")).append("</body></html>").toString();
+        return new StringBuilder("<html><body>").append(result.toString().replace(",", ",<br/>")).append("</body></html>").toString();
     }
 
     private DurationFormatter durationFmt = new DurationFormatter("START_TIME", "END_TIME", "HH:mm:ss.SSS");

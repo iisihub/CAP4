@@ -52,7 +52,7 @@ public class CapPlugInNotFoundException extends CapException {
      */
     @Override
     public String getLocalizedMessage() {
-        return new StringBuffer("Plugin id: ").append(pluginId).append(" name: ").append(pluginName).append(" not found.").toString();
+        return new StringBuilder("Plugin id: ").append(pluginId).append(" name: ").append(pluginName).append(" not found.").toString();
     }
 
     /*

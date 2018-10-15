@@ -351,7 +351,7 @@ public class BatchHandler extends MFormHandler {
         Date theDate = new Date();
         String startDate = !CapString.isEmpty(request.get("startDate")) ? request.get("startDate") : CapDate.formatDate(theDate, "yyyy-MM-dd");
         String startTime = !CapString.isEmpty(request.get("startTime")) ? request.get("startTime") : CapDate.formatDate(theDate, "HH:mm");
-        search.addSearchModeParameters(SearchMode.GREATER_EQUALS, "e.start_time", new StringBuffer(startDate).append(" ").append(startTime).append(":00.000"));
+        search.addSearchModeParameters(SearchMode.GREATER_EQUALS, "e.start_time", new StringBuilder(startDate).append(" ").append(startTime).append(":00.000"));
 
         Page<Map<String, Object>> page = batchSrv.findExecutionsPage(search);
         Map<String, Formatter> fmt = new HashMap<String, Formatter>();

@@ -195,7 +195,7 @@ public class CapAuditLog4HandlerAdvice {
             Class clazz = joinPoint.getTarget().getClass();
             AuditLog auditLog = loggedFunction(TITLE, targetName, clazz, params);
             if (auditLog != null) {
-                auditLog.setRemark(trimByLen(CapString.trimNull(new StringBuffer().append("Exception: ").append(exception.getMessage()).toString()), 50));
+                auditLog.setRemark(trimByLen(CapString.trimNull(new StringBuilder().append("Exception: ").append(exception.getMessage()).toString()), 50));
                 commonSrv.save(auditLog);
             }
 
@@ -326,7 +326,7 @@ public class CapAuditLog4HandlerAdvice {
 
 class StrUtils {
     public final static String concat(Object... params) {
-        StringBuffer strBuf = new StringBuffer();
+        StringBuilder strBuf = new StringBuilder();
         for (Object o : params) {
             if (o instanceof byte[]) {
                 strBuf.append(new String((byte[]) o));

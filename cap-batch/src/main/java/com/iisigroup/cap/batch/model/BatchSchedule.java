@@ -209,7 +209,7 @@ public class BatchSchedule extends GenericBean {
     }
 
     public String toTriggerString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("schId=").append(schId).append(',');
         for (String c : CapBatchConstants.SCHEDULE_KEYWORDS) {
             sb.append(c).append('=').append(get(c)).append(',');

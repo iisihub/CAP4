@@ -102,14 +102,14 @@ public class CapReminderTimerTask extends TimerTask {
         for (Reminds remind : reminds) {
             Remind content = reminderService.findRemind(remind.getPid());
             // 主旨
-            StringBuffer subject = new StringBuffer();
+            StringBuilder subject = new StringBuilder();
             subject.append(CapAppContext.getMessage("remind.subject1"));
             subject.append(formatter.reformat(content.getStartDate()));
             subject.append(" ");
             subject.append(CapAppContext.getMessage("remind.subject2"));
             subject.append(CapString.isEmpty(content.getContent()) ? "" : content.getContent().substring(0, content.getContent().length() > 40 ? 40 : content.getContent().length()));
             // 內文
-            StringBuffer sendContext = new StringBuffer();
+            StringBuilder sendContext = new StringBuilder();
             sendContext.append(CapAppContext.getMessage("remind.startDate"));
             sendContext.append(formatter.reformat(content.getStartDate()));
             sendContext.append("<br/>");

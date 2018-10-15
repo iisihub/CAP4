@@ -55,7 +55,7 @@ public class CapDbUtil {
             return cmd;
         }
         Object[] oa = NamedParameterUtils.buildValueArray(cmd, data);
-        StringBuffer sb = new StringBuffer(sql);
+        StringBuilder sb = new StringBuilder(sql);
         try {
             int[] npos = getQuestionPos(sb, oa.length);
             for (int j = npos.length - 1; j >= 0; j--) {
@@ -80,7 +80,7 @@ public class CapDbUtil {
         } else {
             if (o instanceof String) {
                 rtn = (String) o;
-            } else if (o instanceof Number || o instanceof BigDecimal || o instanceof StringBuffer) {
+            } else if (o instanceof Number || o instanceof BigDecimal || o instanceof StringBuilder) {
                 rtn = o.toString();
             } else if (o instanceof Timestamp) {
                 rtn = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSS").format(o);
@@ -92,7 +92,7 @@ public class CapDbUtil {
                 rtn = getSqlValue(((Collection) o).toArray());
             } else if (o.getClass().isArray()) {
                 if (Array.getLength(o) > 0) {
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < Array.getLength(o); ++i) {
                         sb.append(i == 0 ? "" : "'").append(Array.get(o, i)).append("',");
                     }
@@ -113,12 +113,12 @@ public class CapDbUtil {
      * getQuestionPos
      * 
      * @param sb
-     *            StringBuffer
+     *            StringBuilder
      * @param len
      *            len
      * @return int[]
      */
-    protected static int[] getQuestionPos(StringBuffer sb, int len) {
+    protected static int[] getQuestionPos(StringBuilder sb, int len) {
         int[] pos = new int[len];
         int npos = 0;
         int i = 0;

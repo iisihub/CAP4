@@ -129,7 +129,7 @@ public class Department extends GenericBean implements DataObject {
     }
 
     public String toString() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         buffer.append("[Def_depVo:");
         buffer.append(" oid: ");
         buffer.append(oid);

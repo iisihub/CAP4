@@ -89,7 +89,7 @@ public class CapSystemPropertiesJSONMapper extends AbstractDecoratorMapper {
                     }
                 }
             }
-            StringBuffer str = new StringBuffer("<script type=\"text/javascript\">var prop=");
+            StringBuilder str = new StringBuilder("<script type=\"text/javascript\">var prop=");
             str.append(GsonUtil.mapToJson(hm)).append(";</script>");
             page.addProperty(PROP_KEY, str.toString());
         }

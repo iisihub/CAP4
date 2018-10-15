@@ -70,14 +70,14 @@ public class GenericBean {
         try {
             Field f = ReflectionUtils.findField(getClass(), field);
             if (f != null) {
-                String setter = new StringBuffer("set").append(String.valueOf(f.getName().charAt(0)).toUpperCase()).append(f.getName().substring(1)).toString();
+                String setter = new StringBuilder("set").append(String.valueOf(f.getName().charAt(0)).toUpperCase()).append(f.getName().substring(1)).toString();
                 Method method = ReflectionUtils.findMethod(this.getClass(), setter, new Class[] { f.getType() });
                 if (method != null) {
                     method.invoke(this, value);
                 }
             }
         } catch (Exception e) {
-            throw new CapException(new StringBuffer("field:").append(field).append(" ").append(e.getMessage()).toString(), e, getClass());
+            throw new CapException(new StringBuilder("field:").append(field).append(" ").append(e.getMessage()).toString(), e, getClass());
         }
         return (T) this;
     }
@@ -103,7 +103,7 @@ public class GenericBean {
                     return ((GenericBean) keyClazz).get(fieldId.substring(index + 1));
                 }
             } else {
-                String getter = new StringBuffer("get").append(String.valueOf(field.charAt(0)).toUpperCase()).append(field.substring(1)).toString();
+                String getter = new StringBuilder("get").append(String.valueOf(field.charAt(0)).toUpperCase()).append(field.substring(1)).toString();
                 Method method = ReflectionUtils.findMethod(getClass(), getter);
                 if (method == null) {
                     getter = "is" + getter.substring(3);
@@ -119,7 +119,7 @@ public class GenericBean {
                     }
                 }
             }
-            throw new CapException(new StringBuffer("field:").append(field).append(" is not exist!!").toString(), getClass());
+            throw new CapException(new StringBuilder("field:").append(field).append(" is not exist!!").toString(), getClass());
 
         } catch (Exception e) {
             throw new CapException(e, getClass());

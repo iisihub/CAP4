@@ -419,7 +419,7 @@ public class CapMath implements Constants {
                 out = new BigDecimal(in);
             } catch (Exception ex) {
                 char[] ca = in.toCharArray();
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < ca.length; i++) {
                     switch (ca[i]) {
                     case '-':
@@ -502,7 +502,7 @@ public class CapMath implements Constants {
         String[] cc = { "角", "分", "厘" };
         String[] amtInteger = {};
         String amtFraction = "";
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
 
         if (amount.indexOf(".") >= 0) {
             amtInteger = formatAmount(amount.substring(0, amount.indexOf(".")), 4).split(",");
@@ -514,7 +514,7 @@ public class CapMath implements Constants {
         try {
             for (int i = 1; i <= amtInteger.length && i <= bb.length; i++) {
                 boolean behindZeroDigit = false;
-                StringBuffer ans = new StringBuffer();
+                StringBuilder ans = new StringBuilder();
                 String aThousandAmount = amtInteger[i - 1];
                 for (int j = aThousandAmount.length(); j > 0; j--) {
                     String d = digit[Integer.parseInt(String.valueOf(aThousandAmount.charAt(aThousandAmount.length() - j)))];
@@ -571,7 +571,7 @@ public class CapMath implements Constants {
     }
 
     public static String formatAmount(String amount, int delimiterDigit) {
-        StringBuffer formattedAmount = new StringBuffer();
+        StringBuilder formattedAmount = new StringBuilder();
         int firstTokenLength = amount.length() % delimiterDigit;
         if (firstTokenLength > 0) {
             formattedAmount.append(amount.substring(0, firstTokenLength));

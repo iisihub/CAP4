@@ -338,7 +338,7 @@ public class CapBeanUtil {
     public static <T> T setField(T entry, String fieldId, Object value) {
         Field field = ReflectionUtils.findField(entry.getClass(), fieldId);
         if (field != null) {
-            String setter = new StringBuffer("set").append(String.valueOf(field.getName().charAt(0)).toUpperCase()).append(field.getName().substring(1)).toString();
+            String setter = new StringBuilder("set").append(String.valueOf(field.getName().charAt(0)).toUpperCase()).append(field.getName().substring(1)).toString();
             Method method = ReflectionUtils.findMethod(entry.getClass(), setter, new Class[] { field.getType() });
             if (method != null) {
                 try {

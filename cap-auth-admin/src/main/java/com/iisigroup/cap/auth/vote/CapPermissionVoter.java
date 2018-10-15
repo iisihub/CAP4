@@ -110,7 +110,7 @@ public class CapPermissionVoter extends RoleVoter {
             int firstQuestionMarkIndex = url.indexOf("?");
             if (firstQuestionMarkIndex != -1) {
                 String queryString = url.substring(firstQuestionMarkIndex + 1);
-                StringBuffer newQueryString = new StringBuffer();
+                StringBuilder newQueryString = new StringBuilder();
                 String[] query = queryString.split("&");
                 for (String q : query) {
                     if (q.startsWith("x=") || q.startsWith("jsessionid=")) {
@@ -122,7 +122,7 @@ public class CapPermissionVoter extends RoleVoter {
                 if (newQueryString.length() > 0) {
                     newQueryString.deleteCharAt(newQueryString.length() - 1);
                 }
-                return new StringBuffer(url.substring(0, firstQuestionMarkIndex)).append("?").append(newQueryString.toString()).toString();
+                return new StringBuilder(url.substring(0, firstQuestionMarkIndex)).append("?").append(newQueryString.toString()).toString();
             }
         }
         if (url.endsWith("/")) {

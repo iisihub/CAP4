@@ -85,7 +85,7 @@ public class CapRequestJSONMapper extends AbstractDecoratorMapper {
                     hm.put(field, value);
                 }
             }
-            StringBuffer str = new StringBuffer("<script type=\"text/javascript\">var reqJSON=");
+            StringBuilder str = new StringBuilder("<script type=\"text/javascript\">var reqJSON=");
             str.append(GsonUtil.objToJson(hm)).append(";</script>");
             page.addProperty(PROP_KEY, str.toString());
         }

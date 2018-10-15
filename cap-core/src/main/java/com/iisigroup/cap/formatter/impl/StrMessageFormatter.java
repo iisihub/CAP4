@@ -52,7 +52,7 @@ public class StrMessageFormatter implements Formatter {
     @Override
     public String reformat(Object in) {
         final Map<String, Object> params = (Map<String, Object>) in;
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         // For each occurrences of "${"
         int start;
         int pos = 0;

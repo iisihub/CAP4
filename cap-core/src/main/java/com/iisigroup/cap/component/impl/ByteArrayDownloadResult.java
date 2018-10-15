@@ -68,7 +68,7 @@ public class ByteArrayDownloadResult extends FileDownloadResult {
         if (_outputName == null) {
             return _contentType + " byteArrayDownload complete!!";
         } else {
-            return new StringBuffer("Download file:").append(_outputName).toString();
+            return new StringBuilder("Download file:").append(_outputName).toString();
         }
     }
 

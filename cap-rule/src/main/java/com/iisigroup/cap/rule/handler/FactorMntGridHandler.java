@@ -114,7 +114,7 @@ public class FactorMntGridHandler extends MFormHandler {
          */
         @SuppressWarnings("unchecked")
         public String reformat(Object in) throws CapFormatException {
-            StringBuffer rangeNm = new StringBuffer();
+            StringBuilder rangeNm = new StringBuilder();
             if (in instanceof DivFtItm) {
                 DivFtItm ftItm = ((DivFtItm) in);
                 if (ftItm.getDivFtDtls() != null && !ftItm.getDivFtDtls().isEmpty()) {

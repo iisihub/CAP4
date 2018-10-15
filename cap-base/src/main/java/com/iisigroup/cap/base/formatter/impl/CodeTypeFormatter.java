@@ -80,9 +80,9 @@ public class CodeTypeFormatter implements Formatter {
             }
             switch (show) {
             case KEY_VALUE:
-                return new StringBuffer(k).append("-").append(value).toString();
+                return new StringBuilder(k).append("-").append(value).toString();
             case KEY_SPACE_VALUE:
-                return new StringBuffer(k).append(" ").append(value).toString();
+                return new StringBuilder(k).append(" ").append(value).toString();
             default:
                 return value;
             }

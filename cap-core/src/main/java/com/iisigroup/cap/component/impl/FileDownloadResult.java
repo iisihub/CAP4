@@ -80,7 +80,7 @@ public class FileDownloadResult implements Result {
 
     @Override
     public String getLogMessage() {
-        return new StringBuffer("Download file:").append(_file).toString();
+        return new StringBuilder("Download file:").append(_file).toString();
     }
 
     @Override

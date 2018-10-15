@@ -150,7 +150,7 @@ public final class CapString {
      */
     public static String fillString(String in, int length, boolean rightAlign, char ch) {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if (in == null) {
             in = Constants.EMPTY_STRING; // $NON-NLS-1$
         }
@@ -191,7 +191,7 @@ public final class CapString {
             rStr = Constants.EMPTY_STRING;
         }
         try {
-            StringBuffer st = new StringBuffer(rStr);
+            StringBuilder st = new StringBuilder(rStr);
             while (st.toString().getBytes(charset).length < length) {
                 if (rightAlign) {
                     st.insert(0, ch);
@@ -459,7 +459,7 @@ public final class CapString {
      * @return String
      */
     public static String array2String(String[] ary) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if (ary != null && ary.length > 0) {
             for (String s : ary) {
                 sb.append(s).append(',');
@@ -501,7 +501,7 @@ public final class CapString {
      * @return 組合字串
      */
     public final static String concat(Object... params) {
-        StringBuffer strBuf = new StringBuffer();
+        StringBuilder strBuf = new StringBuilder();
         for (Object o : params) {
             if (o instanceof byte[]) {
                 strBuf.append(new String((byte[]) o));

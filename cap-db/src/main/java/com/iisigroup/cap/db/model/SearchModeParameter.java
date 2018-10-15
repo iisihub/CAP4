@@ -52,7 +52,7 @@ public class SearchModeParameter {
 
     @Override
     public String toString() {
-        return new StringBuffer().append(key).append(" ").append(mode).append(" ").append(value).toString();
+        return new StringBuilder().append(key).append(" ").append(mode).append(" ").append(value).toString();
     }
 
 }

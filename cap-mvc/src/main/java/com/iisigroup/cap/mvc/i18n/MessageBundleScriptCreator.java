@@ -136,7 +136,7 @@ public class MessageBundleScriptCreator {
         if (CapString.isEmpty(message)) {
             return null;
         }
-        StringBuffer script = new StringBuffer();
+        StringBuilder script = new StringBuilder();
         script.append("<script type='text/javascript'> require(['cust-common'], function(){i18n.set(\"").append(i18nKeyName).append("\",").append(message).append(");});</script>");
         return script.toString();
     }
@@ -186,13 +186,13 @@ public class MessageBundleScriptCreator {
         String i18nFile = null;
         InputStream is = null;
         try {
-            i18nFile = new StringBuffer("classpath:/i18n/").append(i18nPath).append("_").append(locale.toString()).append(".properties").toString();
+            i18nFile = new StringBuilder("classpath:/i18n/").append(i18nPath).append("_").append(locale.toString()).append(".properties").toString();
             Resource rs = CapAppContext.getApplicationContext().getResource(i18nFile);
             if (rs != null) {
                 is = rs.getInputStream();
                 prop.load(is);
             } else {
-                i18nFile = new StringBuffer("classpath:/i18n/").append(i18nPath).append("_").append(".properties").toString();
+                i18nFile = new StringBuilder("classpath:/i18n/").append(i18nPath).append("_").append(".properties").toString();
                 rs = CapAppContext.getApplicationContext().getResource(i18nFile);
                 if (rs != null) {
                     is = rs.getInputStream();
@@ -220,7 +220,7 @@ public class MessageBundleScriptCreator {
             filterList = defaultFilter;
         }
         if (!filterList.isEmpty()) {
-            StringBuffer regSb = new StringBuffer("^(");
+            StringBuilder regSb = new StringBuilder("^(");
             for (Iterator<String> it = filterList.iterator(); it.hasNext();) {
                 regSb.append(it.next()).append(Constants.VALUES_SEPARATOR);
             }

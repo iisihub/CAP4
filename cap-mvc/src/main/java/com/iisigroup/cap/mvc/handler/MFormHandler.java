@@ -179,7 +179,7 @@ public abstract class MFormHandler extends HandlerPlugin {
         for (int i = 0; i < arr.size(); i++) {
             Map<String, String> m = (Map<String, String>) GsonUtil.objToObj(arr.get(i));
             if (m.containsKey(GridEnum.COL_INDEX.getCode())) {
-                colNames[i] = new StringBuffer().append(m.get(GridEnum.COL_NAME.getCode())).append("|").append(m.get(GridEnum.COL_INDEX.getCode())).toString();
+                colNames[i] = new StringBuilder().append(m.get(GridEnum.COL_NAME.getCode())).append("|").append(m.get(GridEnum.COL_INDEX.getCode())).toString();
             } else {
                 colNames[i] = m.get(GridEnum.COL_NAME.getCode());
             }

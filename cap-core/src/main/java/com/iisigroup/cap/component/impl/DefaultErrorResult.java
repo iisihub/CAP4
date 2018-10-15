@@ -106,7 +106,7 @@ public class DefaultErrorResult implements ErrorResult {
             errorMessage.put(AJAX_SESSION_EXPIRE_EXCEPTION, logMessage);
         } else if (e instanceof CapException) {
             CapException ce = (CapException) e;
-            logMessage = new StringBuffer(ce.getCauseClass().getName()).append(":").append(e.getMessage()).toString();
+            logMessage = new StringBuilder(ce.getCauseClass().getName()).append(":").append(e.getMessage()).toString();
             errorMessage.put(AJAX_HANDLER_EXCEPTION, logMessage);
         } else {
             logMessage = e.getLocalizedMessage();

@@ -297,7 +297,7 @@ public class RuleTbMntHandler extends MFormHandler {
             // 使用Char(3.6) 取得承辦分行資料。
             List<Map<String, Object>> lnf312Data = new ArrayList<Map<String, Object>>();
             String BRNO = "", BRNM = "";
-            StringBuffer BRNoNm = new StringBuffer();
+            StringBuilder BRNoNm = new StringBuilder();
             if (!CollectionUtils.isEmpty(lnf312Data)) {
                 for (Map<String, Object> map : lnf312Data) {
                     BRNO = MapUtils.getString(map, "BRNO") + " ";
@@ -726,7 +726,7 @@ public class RuleTbMntHandler extends MFormHandler {
 
         @SuppressWarnings("unchecked")
         public String reformat(Object in) throws CapFormatException {
-            StringBuffer result = new StringBuffer();
+            StringBuilder result = new StringBuilder();
             if (in instanceof DivCtItm) {
                 DivCtItm ctItm = ((DivCtItm) in);
                 if (ctItm.getDivCtDtls() != null) {
@@ -755,7 +755,7 @@ public class RuleTbMntHandler extends MFormHandler {
 
         @SuppressWarnings("unchecked")
         public String reformat(Object in) throws CapFormatException {
-            StringBuffer result = new StringBuffer();
+            StringBuilder result = new StringBuilder();
             if (in instanceof DivRlItm) {
                 DivRlItm rlItm = ((DivRlItm) in);
                 if (rlItm.getDivRlDtls() != null && !rlItm.getDivRlDtls().isEmpty()) {
@@ -787,7 +787,7 @@ public class RuleTbMntHandler extends MFormHandler {
 
         @SuppressWarnings("unchecked")
         public String reformat(Object in) throws CapFormatException {
-            StringBuffer result = new StringBuffer();
+            StringBuilder result = new StringBuilder();
             if (in instanceof DivRlDtl) {
                 DivRlDtl rlDtl = ((DivRlDtl) in);
                 DivCtItm ctItm = conditionMntService.findByDivCtItmNo(rlDtl.getDivCtNo());
@@ -807,7 +807,7 @@ public class RuleTbMntHandler extends MFormHandler {
     //
     // @SuppressWarnings("unchecked")
     // public String reformat(Object in) throws CapFormatException {
-    // StringBuffer rangeNm = new StringBuffer();
+    // StringBuilder rangeNm = new StringBuilder();
     // if (in instanceof DivCtDtl) {
     // DivCtDtl ctDtl = ((DivCtDtl) in);
     // if(ctDtl.getDivFtDtl()!=null){

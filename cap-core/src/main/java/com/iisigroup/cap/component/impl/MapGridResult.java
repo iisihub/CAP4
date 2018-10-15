@@ -170,7 +170,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
 
     @Override
     public String getLogMessage() {
-        StringBuffer b = new StringBuffer();
+        StringBuilder b = new StringBuilder();
         b.append("page=").append(resultMap.get(GridEnum.PAGE.getCode())).append(",pagerow=").append(resultMap.get(GridEnum.PAGEROWS.getCode())).append(",rowData=")
                 .append(resultMap.get(GridEnum.PAGEROWS.getCode()));
         return b.toString();

@@ -623,7 +623,7 @@ public class CapDate {
         if (!type.matches("((YY|YYYY)(MMDD|/MM/DD|DDMM|/DD/MM)|(MMDD|MM/DD/|DDMM|DD/MM/)(YY|YYYY))")) {
             return str;
         }
-        StringBuffer bRegEx = new StringBuffer();
+        StringBuilder bRegEx = new StringBuilder();
         boolean hasSign = (type.indexOf("/") != -1);
         boolean isYYYY = CapString.checkRegularMatch(type, "YYYY");
         boolean yyFirst = CapString.checkRegularMatch(type, "^Y");
@@ -648,13 +648,13 @@ public class CapDate {
 
         type = type.replaceAll("Y", "y").replaceAll("m", "M").replaceAll("D", "d");
         String regEx = bRegEx.toString();
-        regEx = new StringBuffer("(^").append(regEx).append("$| ").append(regEx).append("|^").append(regEx).append(" | ").append(regEx).append("$)").toString();
+        regEx = new StringBuilder("(^").append(regEx).append("$| ").append(regEx).append("|^").append(regEx).append(" | ").append(regEx).append("$)").toString();
 
         String match = CapString.getRegularMatch(str, regEx);
         // 因確保不會找錯所以每次都重找一次
         while (!CapString.isEmpty(match)) {
-            StringBuffer date = new StringBuffer(match.trim());
-            StringBuffer twDate = new StringBuffer();
+            StringBuilder date = new StringBuilder(match.trim());
+            StringBuilder twDate = new StringBuilder();
             int year;
             if (!isYYYY && yyFirst) {
                 year = Integer.valueOf(date.substring(0, 2));

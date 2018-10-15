@@ -73,7 +73,7 @@ public class BatchJobServiceImpl implements BatchJobService {
 
     @Override
     public org.springframework.core.io.Resource getJobResource(BatchJob job) {
-        return CapAppContext.getResource(new StringBuffer(config.getProperty("batch.jobsroot", "")).append(job.getJobResource()).toString());
+        return CapAppContext.getResource(new StringBuilder(config.getProperty("batch.jobsroot", "")).append(job.getJobResource()).toString());
     }
 
     @Override

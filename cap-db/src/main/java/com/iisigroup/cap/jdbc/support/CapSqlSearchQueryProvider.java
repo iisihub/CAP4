@@ -57,7 +57,7 @@ public class CapSqlSearchQueryProvider {
     }
 
     public String generateWhereCause() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if (!CollectionUtils.isEmpty(search.getSearchModeParameters())) {
             for (SearchModeParameter s : search.getSearchModeParameters()) {
                 Object _key = s.getKey();
@@ -125,7 +125,7 @@ public class CapSqlSearchQueryProvider {
     }
 
     public String generateOrderCause() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if (search.hasOrderBy()) {
             sb.append(" order by ");
             Map<String, Boolean> orderMap = search.getOrderBy();
@@ -146,7 +146,7 @@ public class CapSqlSearchQueryProvider {
         String key = search.getKey();
         String paramKey = key + search.hashCode();
         Object value = search.getValue();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         switch (search.getMode()) {
         case BETWEEN:
             Object[] values = asArray(value);

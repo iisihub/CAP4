@@ -165,7 +165,7 @@ public class BeanGridResult extends AjaxFormResult implements GridResult<BeanGri
 
     @Override
     public String getLogMessage() {
-        StringBuffer b = new StringBuffer();
+        StringBuilder b = new StringBuilder();
         b.append("page=").append(resultMap.get(GridEnum.PAGE.getCode())).append(",pagerow=").append(resultMap.get(GridEnum.PAGEROWS.getCode())).append(",rowData=")
                 .append(resultMap.get(GridEnum.PAGEROWS.getCode()));
         return b.toString();
