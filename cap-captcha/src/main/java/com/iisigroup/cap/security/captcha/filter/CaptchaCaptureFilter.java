@@ -24,6 +24,7 @@ import com.iisigroup.cap.security.CapSecurityContext;
 
 public class CaptchaCaptureFilter extends OncePerRequestFilter {
 
+    private final Object lockObj = new Object();
     private String userCaptchaResponse;
     private HttpServletRequest request;
 
@@ -35,7 +36,7 @@ public class CaptchaCaptureFilter extends OncePerRequestFilter {
         // Without this condition the values will be reset due to redirection
         // and CaptchaVerifierFilter will enter an infinite loop
 
-        synchronized (req) {
+        synchronized (lockObj) {
             if (req.getParameter("captcha") != null) {
                 CapSecurityContext.getUser().getExtraAttrib().put("request", req);
                 request = req;

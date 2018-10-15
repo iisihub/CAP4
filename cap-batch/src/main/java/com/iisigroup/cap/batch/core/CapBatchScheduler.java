@@ -63,6 +63,7 @@ import com.iisigroup.cap.batch.service.BatchJobService;
 public class CapBatchScheduler implements CapBatchConstants {
 
     private final Logger logger = LoggerFactory.getLogger(CapBatchScheduler.class);
+    private final Object lockObj = new Object();
 
     private BatchJobService batchService;
     private String hostId = LOCALHOST;
@@ -181,7 +182,7 @@ public class CapBatchScheduler implements CapBatchConstants {
 
     public String getHostId() {
         if (!LOCALHOST.equals(hostId)) {
-            synchronized (hostId) {
+            synchronized (lockObj) {
                 try {
                     hostId = InetAddress.getLocalHost().getHostName();
                 } catch (UnknownHostException e) {
