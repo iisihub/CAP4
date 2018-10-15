@@ -101,7 +101,7 @@ class LogContext extends InheritableThreadLocal {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogContext.class);
 
-    private static ThreadLocal<Map> logContext = new InheritableThreadLocal<Map>();
+    private static ThreadLocal<Map> context = new InheritableThreadLocal<Map>();
 
     private static boolean useMDC = false;
 
@@ -140,10 +140,10 @@ class LogContext extends InheritableThreadLocal {
         if (useMDC) {
             return org.apache.log4j.MDC.getContext();
         } else {
-            Map m = logContext.get();
+            Map m = context.get();
             if (m == null) {
                 m = new LinkedHashMap();
-                logContext.set(m);
+                context.set(m);
             }
             return m;
         }
