@@ -58,13 +58,8 @@ public class CapHttpService extends AbstractHGservice {
 
     private DefaultHttpClient httpClient;
     private HttpPost httpPost;
-    // private HttpResponse httpResponse;
     private int httpStatus;
     private byte[] responseData;
-    /** default Connection Timeout **/
-    // private int defaultConnectTimeout = 3000;
-    /** default socket Timeout **/
-    // private int defaultSocketTimeout = 55000;
     /** default encode **/
     private String defaultEncode = HTTP.UTF_8;
     /** connection status **/
@@ -213,10 +208,6 @@ public class CapHttpService extends AbstractHGservice {
             InputStream instream = entity.getContent();
             try {
                 responseData = IOUtils.toByteArray(instream);
-
-                // responseData = StringUtils.join(IOUtils.readLines(instream,
-                // defaultEncode).toArray());
-
             } catch (RuntimeException ex) {
                 httpPost.abort();
                 throw ex;
@@ -226,13 +217,6 @@ public class CapHttpService extends AbstractHGservice {
 
             httpClient.getConnectionManager().shutdown();
         }
-        // httpClient.setHttpRequestRetryHandler(new HttpRequestRetryHandler() {
-        // @Override
-        // public boolean retryRequest(IOException exception, int count,
-        // HttpContext context) {
-        // return !(count > 3);
-        // }
-        // });
         if (logger.isTraceEnabled()) {
             logger.trace("host response:" + new String(responseData));
         }

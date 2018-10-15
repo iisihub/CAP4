@@ -28,17 +28,6 @@ public class CapSocketServiceImpl implements CapSocketService {
     @Resource
     private CapNettyWebSocketServer server;
 
-    // @OnConnect
-    // public void onConnectHandler(SocketIOClient client) {
-    //
-    // }
-    //
-    // @OnEvent("xxx")
-    // public void onAddEventHandler(SocketIOClient client, NotifyObject data,
-    // AckRequest ackRequest) {
-    //
-    // }
-
     @Override
     public SocketIOClient onConnectHandler(String sessionId) {
         SocketIOServer socket = server.getServer();

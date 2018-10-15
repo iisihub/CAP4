@@ -545,7 +545,6 @@ public final class CapString {
      * @return 分割後字串陣列
      */
     public static String[] splitFixedLength(String str, final int len) {
-        // return str.split("(?<=\\G.{" + len + "})");
         List<String> tempList = new ArrayList<String>();
         int idx = 0;
         byte[] bmsg = str.getBytes();

@@ -237,7 +237,6 @@ public class CapAuditLog4HandlerAdvice {
         CapUserDetails user = CapSecurityContext.getUser();
         if (user != null) {
             uid = user.getUserId();
-            // ipAddress = user.getIpAddress();
         } else {
             uid = auth.getPrincipal().toString();
         }
@@ -259,8 +258,6 @@ public class CapAuditLog4HandlerAdvice {
             auditLog.setIpAddress(trimByLen(CapString.trimNull(ipAddress), 50));
             auditLog.setFunctionId(trimByLen(function, 20));
             auditLog.setAction(trimByLen(action.toLowerCase(), 20));
-            // auditLog.setRemark(trimByLen(CapString.trimNull(params.toString()),
-            // 50));
 
             long tstart = NumberUtils.toLong(CapString.trimNull(params.get(CapConstants.C_AUDITLOG_START_TS)));
             if (tstart > 0) {

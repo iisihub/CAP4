@@ -106,23 +106,6 @@ public abstract class MFormHandler extends HandlerPlugin {
                     }
                     hasMethod = true;
                 }
-                // for (Method method : ReflectionUtils
-                // .getAllDeclaredMethods(executeHandler.getClass())) {
-                // if (methodId.equals(method.getName())) {
-                // HandlerType type = method
-                // .getAnnotation(HandlerType.class);
-                // if (type == null
-                // || HandlerTypeEnum.FORM.equals(type.value())) {
-                // rtn = (IResult) method.invoke(executeHandler,
-                // params);
-                // } else if (HandlerTypeEnum.GRID.equals(type.value())) {
-                // rtn = execute(method, params);
-                // }
-                // hasMethod = true;
-                // break;
-                // }
-                // }
-
             } catch (InvocationTargetException e) {
                 if (e.getCause() instanceof CapMessageException) {
                     throw (CapMessageException) e.getCause();

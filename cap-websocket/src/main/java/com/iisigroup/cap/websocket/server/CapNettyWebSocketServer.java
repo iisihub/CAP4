@@ -66,7 +66,6 @@ public class CapNettyWebSocketServer {
             }
         });
 
-        // server.addListeners(new CapReminderService());
         server.start();
     }
 

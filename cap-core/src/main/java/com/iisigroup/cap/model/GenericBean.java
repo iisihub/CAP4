@@ -182,7 +182,7 @@ public class GenericBean {
     public Map<String, Object> toJSONObject(String[] columns, Map<String, Formatter> reformat) {
         Map<String, Object> map = new HashMap<String, Object>();
         if (columns == null) {
-            Field[] cols = CapBeanUtil.getField(this.getClass(), true);// this.getClass().getDeclaredFields();
+            Field[] cols = CapBeanUtil.getField(this.getClass(), true);
             columns = new String[cols.length];
             for (int i = 0; i < columns.length; i++) {
                 columns[i] = cols[i].getName();

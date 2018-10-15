@@ -37,7 +37,6 @@ public class CaptchaCaptureFilter extends OncePerRequestFilter {
 
         synchronized (req) {
             if (req.getParameter("captcha") != null) {
-                // CapSecurityContext.getUser().put("request", req);
                 CapSecurityContext.getUser().getExtraAttrib().put("request", req);
                 request = req;
             }

@@ -97,9 +97,9 @@ public interface Constants {
     /**
      * http
      */
-    public final static String HOST_URL = "HOST_URL";// HTTP.TARGET_HOST;
+    public final static String HOST_URL = "HOST_URL";
 
-    public final static String CONNECTION_TIMEOUT = "TIMEOUT";// HttpConnectionParams.CONNECTION_TIMEOUT;
+    public final static String CONNECTION_TIMEOUT = "TIMEOUT";
 
     public final static String ASYNC = "ASYNC";
 

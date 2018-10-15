@@ -330,11 +330,9 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
      */
     public void setMaxFileSize(String value) {
         maxFileSize = OptionConverter.toFileSize(value, maxFileSize + 1);
-        // maxFileSize=value;
     }
 
     public void setMaximumFileSize(long value) {
-        // maxFileSize=OptionConverter.toFileSize(value,maxFileSize+1);
         maxFileSize = value;
     }
 
@@ -431,9 +429,6 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
             file = new File(fileName + '.' + maxBackupIndex);
             if (file.exists()) {
                 file.delete();
-
-                // Map {(maxBackupIndex - 1), ..., 2, 1} to {maxBackupIndex,
-                // ..., 3, 2}
             }
             for (int i = maxBackupIndex - 1; i >= 1; i--) {
                 file = new File(fileName + "." + i);

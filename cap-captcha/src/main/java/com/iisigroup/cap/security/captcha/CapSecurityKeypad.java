@@ -218,7 +218,6 @@ public class CapSecurityKeypad {
             }
 
         } catch (IOException e) {
-            // set default number base64 str ;
             e.printStackTrace();
         } finally {
             try {

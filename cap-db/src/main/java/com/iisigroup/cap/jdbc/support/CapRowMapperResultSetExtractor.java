@@ -70,13 +70,6 @@ public class CapRowMapperResultSetExtractor<T> implements ResultSetExtractor<Lis
      */
     public List<T> extractData(ResultSet rs) throws SQLException {
         List<T> results = new ArrayList<T>();
-        // if (startRow > 1) {
-        // for (int i = 0; i < startRow - 1; i++) {
-        // if (!rs.next()) {
-        // break;
-        // }
-        // }
-        // }
         if (rs.absolute(startRow)) {
             for (int rows = 0; rows < fetchSize && rs.next(); rows++) {
                 results.add(this.rowMapper.mapRow(rs, rows));

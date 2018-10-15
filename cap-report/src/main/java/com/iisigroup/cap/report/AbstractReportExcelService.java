@@ -112,7 +112,6 @@ public abstract class AbstractReportExcelService implements ReportService {
             NumberFormat nf2 = new NumberFormat("#,##0.00");
             // 設定字形和字體大小
             WritableFont titleWf = new WritableFont(WritableFont.createFont("標楷體"), 12);
-            // WritableFont titleWf = new WritableFont(WritableFont.createFont("DFKai-sb"),12);
             WritableCellFormat timesString = new WritableCellFormat(defaultFont);
             WritableCellFormat timesNumber = new WritableCellFormat(nf);
             WritableCellFormat timesDouble = new WritableCellFormat(nf2);

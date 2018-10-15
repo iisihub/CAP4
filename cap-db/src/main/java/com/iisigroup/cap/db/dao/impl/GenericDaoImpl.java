@@ -321,7 +321,6 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 
             Map<String, Boolean> orderMap = search.getOrderBy();
             List<Order> orders = new ArrayList<Order>();
-            // int i = 0;
             for (Entry<String, Boolean> entry : orderMap.entrySet()) {
                 Expression<?> expression = null;
                 String[] pathElements = entry.getKey().split("\\.");

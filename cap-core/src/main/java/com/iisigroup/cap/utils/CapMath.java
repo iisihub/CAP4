@@ -98,8 +98,8 @@ public class CapMath implements Constants {
         first = first == null || first.length() == 0 ? S0 : first.trim();
         second = second == null || second.length() == 0 ? S0 : second.trim();
 
-        BigDecimal f = getBigDecimal(first);// new BigDecimal(first);
-        BigDecimal s = getBigDecimal(second);// new BigDecimal(second);
+        BigDecimal f = getBigDecimal(first);
+        BigDecimal s = getBigDecimal(second);
         int fs = f.scale();
         int ss = s.scale();
         int max = fs > ss ? fs : ss;
@@ -122,8 +122,8 @@ public class CapMath implements Constants {
         first = first == null || first.length() == 0 ? S0 : first.trim();
         second = second == null || second.length() == 0 ? S0 : second.trim();
 
-        BigDecimal f = getBigDecimal(first);// new BigDecimal(first);
-        BigDecimal s = getBigDecimal(second);// new BigDecimal(second);
+        BigDecimal f = getBigDecimal(first);
+        BigDecimal s = getBigDecimal(second);
         BigDecimal result = f.add(s).setScale(scale, DEFAULT_ROUNDING_MODE);
         return bigDecimalToString(result);
     }
@@ -156,8 +156,8 @@ public class CapMath implements Constants {
         first = first == null || first.length() == 0 ? S0 : first.trim();
         second = second == null || second.length() == 0 ? S0 : second.trim();
 
-        BigDecimal f = getBigDecimal(first);// new BigDecimal(first);
-        BigDecimal s = getBigDecimal(second);// new BigDecimal(second);
+        BigDecimal f = getBigDecimal(first);
+        BigDecimal s = getBigDecimal(second);
         int fs = f.scale();
         int ss = s.scale();
         int max = fs > ss ? fs : ss;
@@ -180,8 +180,8 @@ public class CapMath implements Constants {
         first = first == null || first.length() == 0 ? S0 : first.trim();
         second = second == null || second.length() == 0 ? S0 : second.trim();
 
-        BigDecimal f = getBigDecimal(first);// new BigDecimal(first);
-        BigDecimal s = getBigDecimal(second);// new BigDecimal(second);
+        BigDecimal f = getBigDecimal(first);
+        BigDecimal s = getBigDecimal(second);
         BigDecimal result = f.subtract(s).setScale(scale, DEFAULT_ROUNDING_MODE);
         return bigDecimalToString(result);
     }
@@ -214,8 +214,8 @@ public class CapMath implements Constants {
         first = first == null || first.length() == 0 ? S0 : first.trim();
         second = second == null || second.length() == 0 ? S0 : second.trim();
 
-        BigDecimal f = getBigDecimal(first);// new BigDecimal(first);
-        BigDecimal s = getBigDecimal(second);// new BigDecimal(second);
+        BigDecimal f = getBigDecimal(first);
+        BigDecimal s = getBigDecimal(second);
         int fs = f.scale();
         int ss = s.scale();
         int max = fs > ss ? fs : ss;
@@ -238,8 +238,8 @@ public class CapMath implements Constants {
         first = first == null || first.length() == 0 ? S0 : first.trim();
         second = second == null || second.length() == 0 ? S0 : second.trim();
 
-        BigDecimal f = getBigDecimal(first);// new BigDecimal(first);
-        BigDecimal s = getBigDecimal(second);// new BigDecimal(second);
+        BigDecimal f = getBigDecimal(first);
+        BigDecimal s = getBigDecimal(second);
         BigDecimal result = f.multiply(s).setScale(scale, DEFAULT_ROUNDING_MODE);
         return bigDecimalToString(result);
     }
@@ -256,8 +256,8 @@ public class CapMath implements Constants {
     public static String divide(String first, String second) {
         first = first == null || first.length() == 0 ? S0 : first.trim();
         second = second == null || second.length() == 0 ? S0 : second.trim();
-        BigDecimal f = getBigDecimal(first);// new BigDecimal(first);
-        BigDecimal s = getBigDecimal(second);// new BigDecimal(second);
+        BigDecimal f = getBigDecimal(first);
+        BigDecimal s = getBigDecimal(second);
         if (s.compareTo(B0) == 0) {
             return "0";
         }
@@ -284,8 +284,8 @@ public class CapMath implements Constants {
         first = first == null || first.length() == 0 ? S0 : first.trim();
         second = second == null || second.length() == 0 ? S0 : second.trim();
 
-        BigDecimal f = getBigDecimal(first);// new BigDecimal(first);
-        BigDecimal s = getBigDecimal(second);// new BigDecimal(second);
+        BigDecimal f = getBigDecimal(first);
+        BigDecimal s = getBigDecimal(second);
         BigDecimal result = f.setScale(scale, DEFAULT_DIVIDE_ROUNDING_MODE[0]).divide(s, DEFAULT_DIVIDE_ROUNDING_MODE[1]).setScale(scale, DEFAULT_DIVIDE_ROUNDING_MODE[2]);
         return bigDecimalToString(result);
     }
@@ -314,7 +314,7 @@ public class CapMath implements Constants {
      */
     public static int compare(BigDecimal first, String second) {
         second = second == null || second.length() == 0 ? S0 : second.trim();
-        BigDecimal s = getBigDecimal(second);// new BigDecimal(second);
+        BigDecimal s = getBigDecimal(second);
         return first.compareTo(s);
     }
 
@@ -329,7 +329,7 @@ public class CapMath implements Constants {
      */
     public static int compare(String first, BigDecimal second) {
         first = first == null || first.length() == 0 ? S0 : first.trim();
-        BigDecimal f = getBigDecimal(first);// new BigDecimal(first);
+        BigDecimal f = getBigDecimal(first);
         return f.compareTo(second);
     }
 
@@ -347,8 +347,8 @@ public class CapMath implements Constants {
             first = first == null || first.length() == 0 ? S0 : first.trim();
             second = second == null || second.length() == 0 ? S0 : second.trim();
 
-            BigDecimal f = getBigDecimal(first);// new BigDecimal(first);
-            BigDecimal s = getBigDecimal(second);// new BigDecimal(second);
+            BigDecimal f = getBigDecimal(first);
+            BigDecimal s = getBigDecimal(second);
             return f.compareTo(s);
         } catch (Exception ex) {
             return 0;
@@ -582,7 +582,6 @@ public class CapMath implements Constants {
             }
             formattedAmount.append(amount.substring(i, i + delimiterDigit));
         }
-        // System.out.println(formattedAmount);
         return formattedAmount.toString();
     }
 }

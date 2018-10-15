@@ -89,7 +89,6 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
 
     public void setCauseClass(Class<?> clazz) {
         this.causeClass = clazz;
-        // this.logger = LoggerFactory.getLogger(clazz);
     }
 
     public void query(String sqlId, Map<String, ?> args, RowCallbackHandler rch) {
@@ -499,7 +498,6 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         }
         String sqlRow = sql.toString();
         // 準備查詢list sql
-        // sourceSql.append(provider.generateOrderCause());
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, sourceSql.toString());
         String orderBy = search.hasOrderBy() ? provider.generateOrderCause() : CapJdbcConstants.SQL_PAGING_DUMMY_ORDER_BY;
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_ORDER, orderBy);
@@ -536,7 +534,6 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         }
         String sqlRow = sql.toString();
         // 準備查詢list sql
-        // sourceSql.append(provider.generateOrderCause());
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, sourceSql.toString());
         String orderBy = search.hasOrderBy() ? provider.generateOrderCause() : CapJdbcConstants.SQL_PAGING_DUMMY_ORDER_BY;
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_ORDER, orderBy);

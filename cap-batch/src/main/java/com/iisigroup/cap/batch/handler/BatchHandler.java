@@ -235,7 +235,6 @@ public class BatchHandler extends MFormHandler {
             String jobName = batchJob.getJobId();
             try {
                 JobExecution jobExecution = jobService.launch(jobName, jobParameters);
-                // new JobExecutionInfo(jobExecution, TimeZone.getDefault());
                 batchSrv.updateExecution(jobExecution.getId(), CapSecurityContext.getUserId());
             } catch (NoSuchJobException e) {
                 throw new CapMessageException("msg.job.noSuchJob", getClass());

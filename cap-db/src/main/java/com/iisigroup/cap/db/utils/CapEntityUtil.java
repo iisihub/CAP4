@@ -129,9 +129,6 @@ public class CapEntityUtil {
     @SuppressWarnings({ "unchecked" })
     public static <T> Class<T> getEntityClass(T entity) throws ClassNotFoundException {
         return (Class<T>) entity.getClass();
-        // String entityName = PCEnhancer.toManagedTypeName(entity.getClass()
-        // .getName());
-        // return (Class<T>) Class.forName(entityName);
     }
 
     @SuppressWarnings("rawtypes")

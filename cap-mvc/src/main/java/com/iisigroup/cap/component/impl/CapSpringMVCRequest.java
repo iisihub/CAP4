@@ -46,8 +46,6 @@ public class CapSpringMVCRequest extends HashMap<String, Object> implements Requ
 
     private ServletRequest request;
 
-    // Map<String, Object> custParams = new HashMap<String, Object>();
-
     /*
      * (non-Javadoc)
      * 
@@ -120,8 +118,6 @@ public class CapSpringMVCRequest extends HashMap<String, Object> implements Requ
         Object value = null;
         value = super.containsKey(key) ? super.get(key) : request.getParameter(key);
         if (value != null) {
-            // String s = ((String[]) value)[0];
-            // return StringEscapeUtils.escapeHtml(s);
             return xssEncode(((String[]) value)[0]);
         }
         logger.trace("can't find request parameter :" + key);

@@ -72,12 +72,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         String password = obtainPassword(user);
 
         Map<String, String> roles = obtainRole(user);
-        // TODO
-        //
-        // boolean enabled = user.isEnabled();
-        // boolean accountNonExpired = true;
-        // boolean credentialsNonExpired = true;
-        // boolean accountNonLocked = true;
+
         return obtainUserDetails(user, password, roles);
 
     }

@@ -161,7 +161,6 @@ public class RespMsgHelper {
         String msgstr = null;
         if (DB_SOURCE) {
             String localeStr = SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString();
-            // String localeStr = "zh_TW";
             ErrorCode errorCode = RespMsgFactory.getInstance().getErrorCode(key, localeStr);
 
             if (errorCode == null) {
@@ -248,12 +247,6 @@ public class RespMsgHelper {
      * @return 回應訊息
      */
     public static String getMessage(String code, String severty, String msg, String suggestion) {
-
-        // UFO@2011.07.29 MessageFormat速度比StringBuffer慢了快10倍
-        // String fmtstr = "[{0}]{1}-{2}\n{3}";
-        // MessageFormat msgfmt = new MessagegetMessage(fmtstr);
-        // String[] params = { severty, code, msg, suggestion };
-        // return msgfmt.getMessage(params);
 
         StringBuffer errmsg = new StringBuffer();
         errmsg.append("[").append(severty).append("]");

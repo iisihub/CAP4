@@ -44,7 +44,6 @@ public class BaseActionController extends MultiActionController {
      *            json String
      */
     protected void outputString(HttpServletResponse response, String contentType, String string) {
-        // response.setContentType("text/xml;charset=UTF-8");
         response.setContentType(contentType);
         try {
             response.setContentLength(string.getBytes("UTF-8").length);

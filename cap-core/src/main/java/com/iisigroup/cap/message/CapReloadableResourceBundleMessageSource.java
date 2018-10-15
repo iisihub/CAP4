@@ -40,9 +40,6 @@ import com.iisigroup.cap.utils.CapString;
  */
 public class CapReloadableResourceBundleMessageSource extends ReloadableResourceBundleMessageSource implements ApplicationContextAware, InitializingBean {
 
-    // private final String i18nFileREG = "(_zh_CN|_en|_zh_TW).properties$";
-    // private final String i18nPattern = "classpath:/i18n/**/*.properties";
-
     private String[] languages;
     private String basePath;
     // 設定預設語系 - 如有使用Spring MVC 可省略

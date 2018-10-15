@@ -44,19 +44,9 @@ public class CapUserSecurityInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object arg2) throws Exception {
         CapUserDetails user = CapSecurityContext.getUser();
-        // try {
         if (user == null) {
             user = new CapUserDetails();
-            // user.setUnitNo("XXX");
-            // user.setUserId("testUser");
-            // user.setUserName("測試使用者");
         }
-        // } catch (CapException e) {
-        // Map<String, String> mapMessage = new HashMap<String, String>();
-        // mapMessage.put("ERRMSG", e.getMessage());
-        // throw new ModelAndViewDefiningException(new ModelAndView("/error",
-        // mapMessage));
-        // }
         if (user != null && request.getRequestURI().equals(request.getContextPath() + "/")) {
             response.sendRedirect(request.getContextPath() + "/page/index");
             return false;

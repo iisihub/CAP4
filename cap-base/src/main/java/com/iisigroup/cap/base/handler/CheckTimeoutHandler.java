@@ -60,8 +60,6 @@ public class CheckTimeoutHandler extends MFormHandler {
     public Result check(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         HttpServletRequest sreq = (HttpServletRequest) request.getServletRequest();
-        // String path = sreq.getPathInfo();
-        // boolean isNewSes = sreq.getSession(false).isNew();
         long time1 = sreq.getSession(false).getLastAccessedTime();
         long time2 = CapDate.getCurrentTimestamp().getTime();
         // session設定時間
@@ -82,10 +80,8 @@ public class CheckTimeoutHandler extends MFormHandler {
         String refPath = sreq.getHeader("referer");
         refPath = StringEscapeUtils.unescapeHtml(refPath);
         if ((diffSec > time3 && refPath.lastIndexOf("error") < 0 && refPath.lastIndexOf("timeout") < 0) || "false".equals(isContinues)) {
-            // if(!isNewSes){
             result.set("errorPage", "/cap-web/page/timeout");
             sreq.getSession(false).invalidate();
-            // }
         }
         result.set("msg", "cccheked");
         return result;
@@ -192,8 +188,6 @@ public class CheckTimeoutHandler extends MFormHandler {
         String refPath = sreq.getHeader("referer");
         refPath = StringEscapeUtils.unescapeHtml(refPath);
 
-        // boolean isNewSes = sreq.getSession(false).isNew();
-
         HttpSession session = sreq.getSession(false);
         HashMap<String, String> map = (HashMap<String, String>) session.getAttribute(TOCM);
         Map<String, Object> pmor = (Map<String, Object>) session.getAttribute("pmorq");
@@ -211,10 +205,6 @@ public class CheckTimeoutHandler extends MFormHandler {
             }
         }
 
-        // if(refPath.indexOf("moica")!=-1){
-        // String SERVER_O_REQUEST = "sorq";
-        // session.setAttribute(SERVER_O_REQUEST, null);
-        // }
         return result;
     }
 

@@ -144,7 +144,6 @@ public class SearchSettingImpl implements SearchSetting {
     // -----------------------------------
     // Pagination support
     // -----------------------------------
-    // private int maxResultsLimit = 2000;
     private int maxResults = 100;
 
     /**
@@ -156,7 +155,6 @@ public class SearchSettingImpl implements SearchSetting {
      */
     public final SearchSettingImpl setMaxResults(int maxResults) {
         Assert.isTrue(maxResults > 0, "maxResults must be > 0");
-        // this.maxResults = Math.min(maxResults, maxResultsLimit);
         this.maxResults = maxResults;
         return this;
     }

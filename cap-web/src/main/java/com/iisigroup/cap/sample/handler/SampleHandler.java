@@ -54,10 +54,10 @@ public class SampleHandler extends MFormHandler {
     @HandlerType(HandlerTypeEnum.FILE_UPLOAD)
     public Result upload(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
-        // String str = request.get("testStr");
+        String str = request.get("testStr");
         MultipartFile f = request.getFile("ufile");
         try {
-            FileUtils.writeByteArrayToFile(new File("xxxx.txt"), f.getBytes());
+            FileUtils.writeByteArrayToFile(new File(str + "xxxx.txt"), f.getBytes());
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
@@ -68,7 +68,6 @@ public class SampleHandler extends MFormHandler {
 
     @HandlerType(HandlerTypeEnum.FILE_DOWNLOAD)
     public Result dwnload(Request request) throws CapException {
-        // String outputName = request.get("fileName", "CapLog.log");
         File file = new File("logs/CapLog.log");
         FileInputStream is = null;
         try {
@@ -80,8 +79,6 @@ public class SampleHandler extends MFormHandler {
             IOUtils.closeQuietly(is);
         }
         return null;
-        // return new FileDownloadResult(request, "logs/CapLog.log", outputName,
-        // "text/plain");
     }
 
     @Resource
@@ -99,8 +96,6 @@ public class SampleHandler extends MFormHandler {
             IOUtils.closeQuietly(file);
         }
         return null;
-        // return new FileDownloadResult(request, "logs/CapLog.log", outputName,
-        // "text/plain");
     }
 
     public Result queryMenu(Request request) {

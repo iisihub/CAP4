@@ -202,7 +202,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
         List<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
         if (rowData != null && !rowData.isEmpty()) {
             for (Map<String, Object> data : rowData) {
-            	Map<String, Object> row = new HashMap<String, Object>();
+                Map<String, Object> row = new HashMap<String, Object>();
                 try {
                     row.put(GridEnum.CELL.getCode(), dataToJsonObject(data));
                 } catch (CapException e) {
@@ -222,30 +222,23 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
         for (String str : columns) {
             Object val = null;
             try {
-                try {
-                    String[] s = str.split(SPLIT);
-                    val = s.length == 1 ? data.get(s[0]) : data.get(s[1]);
-                    str = s[0];
-                } catch (Exception e) {
-                    val = "";
-                }
-                if (dataReformatter != null && dataReformatter.containsKey(str)) {
-                    Formatter callback = dataReformatter.get(str);
-                    if (callback instanceof BeanFormatter) {
-                        val = callback.reformat(data);
-                    } else {
-                        val = callback.reformat(val);
-                    }
-                } else if (val instanceof Timestamp) {
-                    val = new ADDateTimeFormatter().reformat(val);
-                } else if (val instanceof Date || val instanceof Calendar) {
-                    val = new ADDateFormatter().reformat(val);
-                }
-                // row.add(String.valueOf(val));
+                String[] s = str.split(SPLIT);
+                val = s.length == 1 ? data.get(s[0]) : data.get(s[1]);
+                str = s[0];
             } catch (Exception e) {
-                // 2013/5/21,rodeschen,修改format錯誤放入原值
-                // val = "";
-                // new CapException(e.getMessage(), e, getClass());
+                val = "";
+            }
+            if (dataReformatter != null && dataReformatter.containsKey(str)) {
+                Formatter callback = dataReformatter.get(str);
+                if (callback instanceof BeanFormatter) {
+                    val = callback.reformat(data);
+                } else {
+                    val = callback.reformat(val);
+                }
+            } else if (val instanceof Timestamp) {
+                val = new ADDateTimeFormatter().reformat(val);
+            } else if (val instanceof Date || val instanceof Calendar) {
+                val = new ADDateFormatter().reformat(val);
             }
             row.put(str, val);
         }
@@ -257,30 +250,23 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
         for (String str : columns) {
             Object val = null;
             try {
-                try {
-                    String[] s = str.split(SPLIT);
-                    val = s.length == 1 ? data.get(s[0]) : data.get(s[1]);
-                    str = s[0];
-                } catch (Exception e) {
-                    val = "";
-                }
-                if (dataReformatter != null && dataReformatter.containsKey(str)) {
-                    Formatter callback = dataReformatter.get(str);
-                    if (callback instanceof BeanFormatter) {
-                        val = callback.reformat(data);
-                    } else {
-                        val = callback.reformat(val);
-                    }
-                } else if (val instanceof Timestamp) {
-                    val = new ADDateTimeFormatter().reformat(val);
-                } else if (val instanceof Date || val instanceof Calendar) {
-                    val = new ADDateFormatter().reformat(val);
-                }
-                // row.add(String.valueOf(val));
+                String[] s = str.split(SPLIT);
+                val = s.length == 1 ? data.get(s[0]) : data.get(s[1]);
+                str = s[0];
             } catch (Exception e) {
-                // 2013/5/21,rodeschen,修改format錯誤放入原值
-                // val = "";
-                // new CapException(e.getMessage(), e, getClass());
+                val = "";
+            }
+            if (dataReformatter != null && dataReformatter.containsKey(str)) {
+                Formatter callback = dataReformatter.get(str);
+                if (callback instanceof BeanFormatter) {
+                    val = callback.reformat(data);
+                } else {
+                    val = callback.reformat(val);
+                }
+            } else if (val instanceof Timestamp) {
+                val = new ADDateTimeFormatter().reformat(val);
+            } else if (val instanceof Date || val instanceof Calendar) {
+                val = new ADDateFormatter().reformat(val);
             }
             row.add(String.valueOf(val));
         }

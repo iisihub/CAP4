@@ -9,7 +9,7 @@ pageInit(function() {
         limitSize : 1 * 1024 * 1024,
         fileEncoding : 'UTF-8',
         data : {
-          testStr : "test!!test!!"
+          testStr : "test"
         },
         success : function(data) {
           //API.showMessage(data.mktMatlType, data.mktMatl, $("#showMessage"), data.size);
