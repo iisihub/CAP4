@@ -121,7 +121,7 @@ class LogContext extends InheritableThreadLocal {
         try {
             Class.forName("org.apache.log4j.MDC");
             useMDC = true;
-        } catch (Throwable t) {
+        } catch (Exception e) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("org.apache.log4j.MDC was not found on the classpath, continue without");
             }

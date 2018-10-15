@@ -114,8 +114,8 @@ public abstract class MFormHandler extends HandlerPlugin {
                 } else {
                     throw new CapException(e.getCause(), executeHandler.getClass());
                 }
-            } catch (Throwable t) {
-                throw new CapException(t, executeHandler.getClass());
+            } catch (Exception e) {
+                throw new CapException(e, executeHandler.getClass());
             }
             if (!hasMethod) {
                 throw new CapMessageException("action not found", getClass());
@@ -159,8 +159,8 @@ public abstract class MFormHandler extends HandlerPlugin {
             } else {
                 throw new CapException(e.getCause(), this.getClass());
             }
-        } catch (Throwable t) {
-            throw new CapException(t, this.getClass());
+        } catch (Exception e) {
+            throw new CapException(e, this.getClass());
         }
         return result;
     }
