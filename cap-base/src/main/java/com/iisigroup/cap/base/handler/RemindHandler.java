@@ -69,7 +69,7 @@ public class RemindHandler extends MFormHandler {
     @Resource
     private CommonService commonSrv;
 
-    @Autowired
+    @Resource
     private CodeTypeService codeTypeService;
 
     @HandlerType(HandlerTypeEnum.GRID)

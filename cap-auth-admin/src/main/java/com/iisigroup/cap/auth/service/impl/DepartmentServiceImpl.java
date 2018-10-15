@@ -13,7 +13,8 @@ package com.iisigroup.cap.auth.service.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.iisigroup.cap.auth.dao.DepartmentDao;
@@ -35,7 +36,7 @@ import com.iisigroup.cap.auth.service.DepartmentService;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
 
-    @Autowired
+    @Resource
     private DepartmentDao departmentDao;
 
     @Override

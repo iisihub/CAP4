@@ -19,7 +19,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.google.gson.JsonArray;
@@ -68,7 +67,7 @@ public class FunctionSetHandler extends MFormHandler {
     @Resource
     private CommonService commonSrv;
 
-    @Autowired
+    @Resource
     private CodeTypeService codeTypeService;
 
     @Resource
