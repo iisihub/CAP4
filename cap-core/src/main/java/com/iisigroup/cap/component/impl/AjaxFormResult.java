@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletResponse;
 
@@ -260,9 +261,9 @@ public class AjaxFormResult implements Result {
      *            Map<String, FormResult>
      */
     public void setResultMap(Map<String, AjaxFormResult> m) {
-        for (String key : m.keySet()) {
-            AjaxFormResult form = m.get(key);
-            resultMap.put(key, form.getResultMap());
+        for (Entry<String, AjaxFormResult> entry : m.entrySet()) {
+            AjaxFormResult form = entry.getValue();
+            resultMap.put(entry.getKey(), form.getResultMap());
         }
     }
 

@@ -15,8 +15,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import javax.annotation.Resource;
@@ -478,10 +477,11 @@ public class RuleTbMntHandler extends MFormHandler {
             } // 算完rule detail的內容
 
             // 開始寫RuleTable第二行(抬頭)
-            int i = 0, j = 0;
+            int j = 0;
             Map<String, Integer> colSortNo = new HashMap<String, Integer>();
-            for (String key : colNms.keySet()) {
-                DivCtDtl ctDtl = colNms.get(key);
+            for (Entry<String, DivCtDtl> entry : colNms.entrySet()) {
+                DivCtDtl ctDtl = entry.getValue();
+                String key = entry.getKey();
                 // CONDITOIN宣告欄位
                 sheet1.addCell(new Label(1 + j, 10, DroolsConstants.CONDITION_COL, setCellFmt));
                 // 資料型別宣告
@@ -499,7 +499,6 @@ public class RuleTbMntHandler extends MFormHandler {
                 sheet1.addCell(new Label(1 + j, 12, operand, setCellFmt));
                 sheet1.addCell(new Label(1 + j, 13, key, blueCellFmt));
                 colSortNo.put(key, 1 + j);
-                i++;
                 j++;
             }
             // Bean 宣告合併欄位

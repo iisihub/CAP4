@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -180,16 +181,16 @@ public class CapHttpService extends AbstractHGservice {
      */
     public void setRequestParams(Map<String, String> map) throws UnsupportedEncodingException {
         List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-        for (String key : map.keySet()) {
-            nvps.add(new BasicNameValuePair(key, map.get(key)));
+        for (Entry<String, String> entry : map.entrySet()) {
+            nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
         }
         httpPost.setEntity(new UrlEncodedFormEntity(nvps, defaultEncode));
 
     }
 
     public void setRequestHeader(Map<String, String> map) {
-        for (String key : map.keySet()) {
-            httpPost.addHeader(key, map.get(key));
+        for (Entry<String, String> entry : map.entrySet()) {
+            httpPost.addHeader(entry.getKey(), entry.getValue());
         }
     }
 
