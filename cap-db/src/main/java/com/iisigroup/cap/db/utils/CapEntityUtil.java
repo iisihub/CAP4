@@ -131,7 +131,7 @@ public class CapEntityUtil {
      * @throws ClassNotFoundException
      */
     @SuppressWarnings({ "unchecked" })
-    public static <T> Class<T> getEntityClass(T entity) throws ClassNotFoundException {
+    public static <T> Class<T> getEntityClass(T entity) {
         return (Class<T>) entity.getClass();
     }
 

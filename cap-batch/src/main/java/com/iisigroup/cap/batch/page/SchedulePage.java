@@ -51,7 +51,7 @@ public class SchedulePage extends BaseActionController {
     private BatchJobService batchSrv;
 
     @RequestMapping(method = { RequestMethod.POST }, value = { "/batch/schedule" })
-    public ModelAndView notifyStatus(Locale locale, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView notifyStatus(Locale locale, HttpServletRequest request, HttpServletResponse response) {
         String path = request.getPathInfo();
         Map<String, Map<String, String>> codes = codeTypeSrv.findByCodeTypes(new String[] { "jobExitCode", "timeZoneId", "schExeHost" }, locale.toString());
         ModelAndView model = new ModelAndView(path);

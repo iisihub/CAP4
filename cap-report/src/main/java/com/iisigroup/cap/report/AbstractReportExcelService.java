@@ -91,7 +91,7 @@ public abstract class AbstractReportExcelService implements ReportService {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public ByteArrayOutputStream generateReport(Request request) throws CapException {
+    public ByteArrayOutputStream generateReport(Request request) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         Workbook t = null;
         try {

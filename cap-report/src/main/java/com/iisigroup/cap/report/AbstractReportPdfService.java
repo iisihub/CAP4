@@ -75,7 +75,7 @@ public abstract class AbstractReportPdfService implements ReportService {
      * @see com.iisigroup.cap.report.ReportService#generateReport(com.iisigroup.cap.component.Request)
      */
     @Override
-    public ByteArrayOutputStream generateReport(Request request) throws CapException {
+    public ByteArrayOutputStream generateReport(Request request) {
         ByteArrayOutputStream templateOut = new ByteArrayOutputStream();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(templateOut, getSysConfig().getProperty(ReportParamEnum.DEFAULT_ENCODING.toString(), DEFAULT_ENCORDING)));) {

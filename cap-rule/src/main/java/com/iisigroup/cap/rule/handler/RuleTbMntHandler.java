@@ -58,8 +58,6 @@ import com.iisigroup.cap.db.constants.SearchMode;
 import com.iisigroup.cap.db.dao.SearchSetting;
 import com.iisigroup.cap.db.model.Page;
 import com.iisigroup.cap.db.service.CommonService;
-import com.iisigroup.cap.exception.CapException;
-import com.iisigroup.cap.exception.CapFormatException;
 import com.iisigroup.cap.exception.CapMessageException;
 import com.iisigroup.cap.formatter.BeanFormatter;
 import com.iisigroup.cap.formatter.Formatter;
@@ -260,7 +258,7 @@ public class RuleTbMntHandler extends MFormHandler {
     }
 
     @HandlerType(HandlerTypeEnum.FILE_DOWNLOAD)
-    public Result dwnload(Request request) throws CapException {
+    public Result dwnload(Request request) {
         File file = createDecisionTable(request);
         FileInputStream is = null;
         try {
@@ -721,7 +719,7 @@ public class RuleTbMntHandler extends MFormHandler {
         private static final long serialVersionUID = 1L;
 
         @SuppressWarnings("unchecked")
-        public String reformat(Object in) throws CapFormatException {
+        public String reformat(Object in) {
             StringBuilder result = new StringBuilder();
             if (in instanceof DivCtItm) {
                 DivCtItm ctItm = ((DivCtItm) in);
@@ -750,7 +748,7 @@ public class RuleTbMntHandler extends MFormHandler {
         }
 
         @SuppressWarnings("unchecked")
-        public String reformat(Object in) throws CapFormatException {
+        public String reformat(Object in) {
             StringBuilder result = new StringBuilder();
             if (in instanceof DivRlItm) {
                 DivRlItm rlItm = ((DivRlItm) in);
@@ -782,7 +780,7 @@ public class RuleTbMntHandler extends MFormHandler {
         }
 
         @SuppressWarnings("unchecked")
-        public String reformat(Object in) throws CapFormatException {
+        public String reformat(Object in) {
             StringBuilder result = new StringBuilder();
             if (in instanceof DivRlDtl) {
                 DivRlDtl rlDtl = ((DivRlDtl) in);

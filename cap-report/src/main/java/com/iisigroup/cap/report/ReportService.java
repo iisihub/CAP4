@@ -48,9 +48,8 @@ public interface ReportService {
      * @param comp
      *            Component
      * @return ByteArrayOutputStream
-     * @throws CapException
      */
-    ByteArrayOutputStream generateReport(Request request) throws CapException;
+    ByteArrayOutputStream generateReport(Request request);
 
     /**
      * Gets the report definition.從ReportDirectory之後的完整路徑 如：batch/jobExecutionResult

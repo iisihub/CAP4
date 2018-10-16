@@ -57,7 +57,7 @@ public class CheckTimeoutHandler extends MFormHandler {
     public static final String CCPAGE_NO = "CCPAGENO";
     public static final String TIME_OUT = "CLIENT_TIME_OUT";
 
-    public Result check(Request request) throws CapException {
+    public Result check(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         HttpServletRequest sreq = (HttpServletRequest) request.getServletRequest();
         long time1 = sreq.getSession(false).getLastAccessedTime();
@@ -88,7 +88,7 @@ public class CheckTimeoutHandler extends MFormHandler {
     }
 
     @SuppressWarnings("unchecked")
-    public Result checkTO(Request request) throws CapException {
+    public Result checkTO(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         HttpServletRequest sreq = (HttpServletRequest) request.getServletRequest();
 
@@ -181,7 +181,7 @@ public class CheckTimeoutHandler extends MFormHandler {
 
     // @SuppressWarnings("unchecked")
     @SuppressWarnings("unchecked")
-    public Result checkClosePage(Request request) throws CapException {
+    public Result checkClosePage(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         HttpServletRequest sreq = (HttpServletRequest) request.getServletRequest();
 

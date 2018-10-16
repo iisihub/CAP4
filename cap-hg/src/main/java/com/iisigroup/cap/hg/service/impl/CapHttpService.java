@@ -111,11 +111,11 @@ public class CapHttpService extends AbstractHGservice {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Object getReceiveData() throws CapException {
+    public Object getReceiveData() {
         return responseData;
     }
 
-    public String getReceiveStringData() throws CapException {
+    public String getReceiveStringData() {
         try {
             return new String(responseData, defaultEncode);
         } catch (UnsupportedEncodingException e) {
@@ -148,7 +148,7 @@ public class CapHttpService extends AbstractHGservice {
      * @see com.iisi.cap.hg.service.IHGService#setSendMessage(java.lang.Object)
      */
     @Override
-    public void setSendData(Object data) throws CapException {
+    public void setSendData(Object data) {
         this.sendData = data;
     }
 
@@ -166,9 +166,8 @@ public class CapHttpService extends AbstractHGservice {
      * 
      * @param body
      *            string
-     * @throws UnsupportedEncodingException
      */
-    public void setRequestBody(String body) throws UnsupportedEncodingException {
+    public void setRequestBody(String body) {
         httpPost.setEntity(new StringEntity(body, defaultEncode));
     }
 
@@ -275,7 +274,7 @@ public class CapHttpService extends AbstractHGservice {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void initConnection() throws CapException {
+    public void initConnection() {
         httpPost = new HttpPost();
         if (this.header instanceof Map) {
             setRequestHeader((Map<String, String>) this.header);

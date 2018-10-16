@@ -33,7 +33,6 @@ import com.iisigroup.cap.db.constants.SearchMode;
 import com.iisigroup.cap.db.dao.SearchSetting;
 import com.iisigroup.cap.db.model.Page;
 import com.iisigroup.cap.db.service.CommonService;
-import com.iisigroup.cap.exception.CapFormatException;
 import com.iisigroup.cap.exception.CapMessageException;
 import com.iisigroup.cap.formatter.BeanFormatter;
 import com.iisigroup.cap.formatter.Formatter;
@@ -332,7 +331,7 @@ public class ConditionMntHandler extends MFormHandler {
         private static final long serialVersionUID = 1L;
 
         @SuppressWarnings("unchecked")
-        public String reformat(Object in) throws CapFormatException {
+        public String reformat(Object in) {
             StringBuilder rangeNm = new StringBuilder();
             if (in instanceof DivFtDtl) {
                 DivFtDtl ftDtl = ((DivFtDtl) in);
@@ -355,7 +354,7 @@ public class ConditionMntHandler extends MFormHandler {
         }
 
         @SuppressWarnings("unchecked")
-        public String reformat(Object in) throws CapFormatException {
+        public String reformat(Object in) {
             StringBuilder result = new StringBuilder();
             if (in instanceof DivCtItm) {
                 DivCtItm ctItm = ((DivCtItm) in);
@@ -378,7 +377,7 @@ public class ConditionMntHandler extends MFormHandler {
         private static final long serialVersionUID = 1L;
 
         @SuppressWarnings("unchecked")
-        public String reformat(Object in) throws CapFormatException {
+        public String reformat(Object in) {
             StringBuilder factorNm = new StringBuilder();
             if (in instanceof DivFtDtl) {
                 DivFtDtl ftDtl = ((DivFtDtl) in);
@@ -397,7 +396,7 @@ public class ConditionMntHandler extends MFormHandler {
         private static final long serialVersionUID = 1L;
 
         @SuppressWarnings("unchecked")
-        public String reformat(Object in) throws CapFormatException {
+        public String reformat(Object in) {
             StringBuilder rangeNm = new StringBuilder();
             if (in instanceof DivCtDtl) {
                 DivCtDtl ctDtl = ((DivCtDtl) in);
@@ -417,7 +416,7 @@ public class ConditionMntHandler extends MFormHandler {
         private static final long serialVersionUID = 1L;
 
         @SuppressWarnings("unchecked")
-        public String reformat(Object in) throws CapFormatException {
+        public String reformat(Object in) {
             StringBuilder rangeNm = new StringBuilder();
             if (in instanceof DivCtDtl) {
                 DivCtDtl ctDtl = ((DivCtDtl) in);

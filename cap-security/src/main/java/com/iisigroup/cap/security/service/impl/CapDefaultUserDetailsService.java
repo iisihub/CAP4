@@ -13,7 +13,6 @@ package com.iisigroup.cap.security.service.impl;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.iisigroup.cap.security.model.CapUserDetails;
 
@@ -37,8 +36,7 @@ public class CapDefaultUserDetailsService implements UserDetailsService {
      * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
      */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // TODO Auto-generated method stub
+    public UserDetails loadUserByUsername(String username) {
         CapUserDetails u = new CapUserDetails();
         u.setPassword("P@ssw0rd");
         return u;

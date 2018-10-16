@@ -140,7 +140,7 @@ public class FunctionSetHandler extends MFormHandler {
         return result;
     }
 
-    public Result loadFunc(Request request) throws CapException {
+    public Result loadFunc(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         String sysType = request.get("sysType");
         String level = request.get("level");

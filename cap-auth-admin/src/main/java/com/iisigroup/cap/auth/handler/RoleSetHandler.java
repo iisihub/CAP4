@@ -36,7 +36,6 @@ import com.iisigroup.cap.db.model.Page;
 import com.iisigroup.cap.db.service.CommonService;
 import com.iisigroup.cap.db.utils.CapEntityUtil;
 import com.iisigroup.cap.exception.CapException;
-import com.iisigroup.cap.exception.CapFormatException;
 import com.iisigroup.cap.exception.CapMessageException;
 import com.iisigroup.cap.formatter.BeanFormatter;
 import com.iisigroup.cap.formatter.Formatter;
@@ -77,7 +76,7 @@ public class RoleSetHandler extends MFormHandler {
             private static final long serialVersionUID = 1L;
 
             @SuppressWarnings("unchecked")
-            public Integer reformat(Object in) throws CapFormatException {
+            public Integer reformat(Object in) {
                 if (in instanceof DefaultRole) {
                     return ((DefaultRole) in).getUrList().size();
                 }
@@ -112,7 +111,7 @@ public class RoleSetHandler extends MFormHandler {
     }
 
     @HandlerType(HandlerTypeEnum.GRID)
-    public MapGridResult queryEditUsr(SearchSetting search, Request params) throws CapException {
+    public MapGridResult queryEditUsr(SearchSetting search, Request params) {
         String depCode = params.get("depCode");
         String roleCode = params.get("roleCode");
 
@@ -121,7 +120,7 @@ public class RoleSetHandler extends MFormHandler {
     }
 
     @HandlerType(HandlerTypeEnum.GRID)
-    public MapGridResult queryEditFunc(SearchSetting search, Request params) throws CapException {
+    public MapGridResult queryEditFunc(SearchSetting search, Request params) {
         String parent = params.get("parent");
         String code = params.get("code");
         String sysType = params.get("sysType");
@@ -146,7 +145,7 @@ public class RoleSetHandler extends MFormHandler {
         return result;
     }
 
-    public Result getAllDepartment(Request request) throws CapException {
+    public Result getAllDepartment(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         result.set("All", CapAppContext.getMessage("All"));
         result.putAll(roleSetService.findAllDepartment());
@@ -154,7 +153,7 @@ public class RoleSetHandler extends MFormHandler {
         return result;
     }
 
-    public Result getAllFunc(Request request) throws CapException {
+    public Result getAllFunc(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         String sysType = request.get("sysType");
         if (CapString.isEmpty(sysType)) {

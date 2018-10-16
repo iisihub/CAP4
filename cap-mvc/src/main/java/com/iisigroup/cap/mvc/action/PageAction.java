@@ -67,12 +67,12 @@ public class PageAction extends BaseActionController {
     }
 
     @RequestMapping(method = { RequestMethod.GET }, value = { "/login", "/index" })
-    public ModelAndView login(Locale locale, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView login(Locale locale, HttpServletRequest request, HttpServletResponse response) {
         return handleRequestInternal(locale, request, response);
     }
 
     @RequestMapping(method = { RequestMethod.POST }, value = { "/**" })
-    public ModelAndView handleRequestInternal(Locale locale, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView handleRequestInternal(Locale locale, HttpServletRequest request, HttpServletResponse response) {
         String path = request.getPathInfo();
         ModelAndView model = new ModelAndView(path);
         CapUserDetails userDetails = CapSecurityContext.getUser();

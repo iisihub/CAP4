@@ -11,7 +11,6 @@
  */
 package com.iisigroup.cap.utils;
 
-import java.io.IOException;
 import java.util.Properties;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -35,7 +34,7 @@ public class CapSystemConfig implements InitializingBean {
     public CapSystemConfig() {
     }
 
-    public CapSystemConfig(Properties properties) throws IOException {
+    public CapSystemConfig(Properties properties) {
         this.properties = properties;
     }
 

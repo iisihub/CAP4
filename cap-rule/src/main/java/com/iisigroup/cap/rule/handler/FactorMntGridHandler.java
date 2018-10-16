@@ -26,7 +26,6 @@ import com.iisigroup.cap.db.constants.SearchMode;
 import com.iisigroup.cap.db.dao.SearchSetting;
 import com.iisigroup.cap.db.model.Page;
 import com.iisigroup.cap.db.service.CommonService;
-import com.iisigroup.cap.exception.CapFormatException;
 import com.iisigroup.cap.formatter.BeanFormatter;
 import com.iisigroup.cap.formatter.Formatter;
 import com.iisigroup.cap.formatter.impl.ADDateFormatter;
@@ -113,7 +112,7 @@ public class FactorMntGridHandler extends MFormHandler {
          * @see tw.com.iisi.cap.formatter.IFormatter#reformat(java.lang.Object)
          */
         @SuppressWarnings("unchecked")
-        public String reformat(Object in) throws CapFormatException {
+        public String reformat(Object in) {
             StringBuilder rangeNm = new StringBuilder();
             if (in instanceof DivFtItm) {
                 DivFtItm ftItm = ((DivFtItm) in);

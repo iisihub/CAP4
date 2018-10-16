@@ -30,7 +30,6 @@ import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
 import com.iisigroup.cap.constants.Constants;
-import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
 import com.iisigroup.cap.report.constants.ContextTypeEnum;
 import com.iisigroup.cap.sample.service.impl.SampleRptService;
@@ -52,7 +51,7 @@ import com.iisigroup.cap.security.annotation.Captcha;
 public class SampleHandler extends MFormHandler {
 
     @HandlerType(HandlerTypeEnum.FILE_UPLOAD)
-    public Result upload(Request request) throws CapException {
+    public Result upload(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         String str = request.get("testStr");
         MultipartFile f = request.getFile("ufile");
@@ -67,7 +66,7 @@ public class SampleHandler extends MFormHandler {
     }
 
     @HandlerType(HandlerTypeEnum.FILE_DOWNLOAD)
-    public Result dwnload(Request request) throws CapException {
+    public Result dwnload(Request request) {
         File file = new File("logs/CapLog.log");
         FileInputStream is = null;
         try {
@@ -85,7 +84,7 @@ public class SampleHandler extends MFormHandler {
     private SampleRptService sampleRptService;
 
     @HandlerType(HandlerTypeEnum.FILE_DOWNLOAD)
-    public Result dwnloadPdf(Request request) throws CapException {
+    public Result dwnloadPdf(Request request) {
         ByteArrayOutputStream file = null;
         try {
             file = sampleRptService.generateReport(request);

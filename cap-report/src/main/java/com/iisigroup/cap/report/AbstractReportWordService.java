@@ -56,7 +56,7 @@ public abstract class AbstractReportWordService implements ReportService {
      * @see com.iisigroup.cap.report.ReportService#generateReport(com.iisigroup.cap.component.Request)
      */
     @Override
-    public ByteArrayOutputStream generateReport(Request request) throws CapException {
+    public ByteArrayOutputStream generateReport(Request request) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, getSysConfig().getProperty(ReportParamEnum.DEFAULT_ENCODING.toString(), DEFAULT_ENCORDING)));) {
             Template t = getFmConfg().getConfiguration().getTemplate(getReportDefinition() + REPORT_SUFFIX);
