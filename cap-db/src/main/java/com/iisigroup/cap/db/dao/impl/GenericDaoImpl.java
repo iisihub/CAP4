@@ -294,7 +294,8 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
             int i = 0;
             for (SearchModeParameter param : search.getSearchModeParameters()) {
                 CapSpecifications spec = new CapSpecifications(param);
-                aryWhere[i++] = spec.toPredicate(root, query, builder);
+                aryWhere[i] = spec.toPredicate(root, query, builder);
+                i++;
             }
             query.where(builder.and(aryWhere));
         }
