@@ -30,7 +30,7 @@ import com.iisigroup.cap.utils.CapWebUtil;
 public class CalendarServiceImpl implements CalendarService {
 
     @Resource
-    RemindDao remindDao;
+    private RemindDao remindDao;
 
     @Override
     public List<Remind> getCalendarData(String userId, String start, String end) {

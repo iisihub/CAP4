@@ -35,9 +35,9 @@ public abstract class AbstractCustomizeOpStep implements OperationStep {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    String name;
+    private String name;
 
-    Map<String, String> ruleMap;
+    private Map<String, String> ruleMap;
 
     /*
      * (non-Javadoc)

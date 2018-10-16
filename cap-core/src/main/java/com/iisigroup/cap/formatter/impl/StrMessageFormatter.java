@@ -37,7 +37,7 @@ import com.iisigroup.cap.formatter.Formatter;
 @SuppressWarnings("serial")
 public class StrMessageFormatter implements Formatter {
 
-    String unformatMsg;
+    private String unformatMsg;
 
     public StrMessageFormatter(String unformatMsg) {
         this.unformatMsg = unformatMsg;

@@ -31,8 +31,9 @@ import com.iisigroup.cap.utils.CapString;
 @SuppressWarnings("serial")
 public class I18NFormatter implements Formatter {
 
-    String prefix;
-    boolean hasPrefix = false;
+    private String prefix;
+
+    private boolean hasPrefix = false;
 
     public I18NFormatter() {
         hasPrefix = false;

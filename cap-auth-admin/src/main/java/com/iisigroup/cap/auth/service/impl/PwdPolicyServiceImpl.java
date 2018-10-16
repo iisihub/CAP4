@@ -32,9 +32,10 @@ import com.iisigroup.cap.utils.CapDate;
 public class PwdPolicyServiceImpl implements PwdPolicyService {
 
     @Resource
-    CommonDao commonDao;
+    private CommonDao commonDao;
+
     @Resource
-    UserDao userDao;
+    private UserDao userDao;
 
     @Override
     public void updatePwdPolicy(Request request) {

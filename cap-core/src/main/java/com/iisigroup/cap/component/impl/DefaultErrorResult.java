@@ -55,9 +55,9 @@ public class DefaultErrorResult implements ErrorResult {
     /** 關閉畫面錯誤類別 */
     public static final String AJAX_CLOSE_PAGE_HANDLER_EXCEPTION = "AJAX_CLOSE_PAGE_HANDLER_EXCEPTION";
 
-    Map<String, Object> errorMessage = new HashMap<String, Object>();
+    private Map<String, Object> errorMessage = new HashMap<String, Object>();
 
-    String logMessage = "";
+    private String logMessage = "";
     private String contentType;
     private String encoding;
 

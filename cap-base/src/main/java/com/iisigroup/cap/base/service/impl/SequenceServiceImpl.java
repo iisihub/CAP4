@@ -157,9 +157,9 @@ public class SequenceServiceImpl implements SequenceService {
      */
     private class NodeSeq {
         @SuppressWarnings("unused")
-        String seqNode;
-        int nextSeqNo;
-        int currentSeq;
+        private String seqNode;
+        private int nextSeqNo;
+        private int currentSeq;
 
         NodeSeq(String seqNode) {
             this.seqNode = seqNode;

@@ -29,9 +29,9 @@ import com.iisigroup.cap.constants.Constants;
  */
 public class CapMath implements Constants {
 
-    final static int[] DEFAULT_DIVIDE_ROUNDING_MODE = { BigDecimal.ROUND_HALF_UP, BigDecimal.ROUND_HALF_UP, BigDecimal.ROUND_HALF_UP };
+    private static final int[] DEFAULT_DIVIDE_ROUNDING_MODE = { BigDecimal.ROUND_HALF_UP, BigDecimal.ROUND_HALF_UP, BigDecimal.ROUND_HALF_UP };
 
-    final static int DEFAULT_ROUNDING_MODE = BigDecimal.ROUND_HALF_UP;
+    private static final int DEFAULT_ROUNDING_MODE = BigDecimal.ROUND_HALF_UP;
 
     private static final Method toPlainString;
 

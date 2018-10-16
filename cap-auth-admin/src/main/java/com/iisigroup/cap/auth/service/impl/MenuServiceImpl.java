@@ -38,13 +38,13 @@ import com.iisigroup.cap.utils.CapWebUtil;
 public class MenuServiceImpl implements MenuService {
 
     @Resource
-    FunctionDao codeItemDao;
+    private FunctionDao codeItemDao;
 
     @Resource
     private CapSystemConfig config;
 
     @Resource
-    I18nDao i18nDao;
+    private I18nDao i18nDao;
 
     public MenuItem getMenuByRoles(Set<String> roles) {
         Map<String, I18n> menuI18n = i18nDao.findAsMapByCodeType("menu", SimpleContextHolder.get(CapWebUtil.LOCALE_KEY).toString());

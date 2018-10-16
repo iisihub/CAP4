@@ -31,9 +31,9 @@ import org.springframework.expression.ParserContext;
  */
 public class CapSqlStatement {
 
-    final Map<String, Object> parameter;
+    private final Map<String, Object> parameter;
 
-    ParserContext parserContext;
+    private ParserContext parserContext;
 
     public CapSqlStatement(Map<String, Object> map) {
         this.parameter = map;

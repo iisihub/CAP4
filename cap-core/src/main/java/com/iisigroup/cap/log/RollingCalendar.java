@@ -31,12 +31,10 @@ import java.util.TimeZone;
  *          </ul>
  */
 public class RollingCalendar extends GregorianCalendar {
-    /**
-     * serialVersionUID.
-     */
+
     private static final long serialVersionUID = 2238807139240434580L;
 
-    int type = TimeFolderSizeRollingFileAppender.TOP_OF_TROUBLE;
+    private int type = TimeFolderSizeRollingFileAppender.TOP_OF_TROUBLE;
 
     RollingCalendar() {
         super();

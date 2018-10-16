@@ -36,7 +36,7 @@ public class ADDateTimeFormatter implements Formatter {
 
     private SimpleDateFormat _df;
 
-    String DEF_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    private static final String DEF_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     public ADDateTimeFormatter() {
         _df = new SimpleDateFormat(DEF_PATTERN);

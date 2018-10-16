@@ -43,7 +43,7 @@ public class CapFileUploadOpStep extends AbstractCustomizeOpStep {
 
     private CommonsMultipartResolver multipartResolver;
 
-    String fileSizeLimitErrorCode;
+    private String fileSizeLimitErrorCode;
 
     public void setMultipartResolver(CommonsMultipartResolver multipartResolver) {
         this.multipartResolver = multipartResolver;

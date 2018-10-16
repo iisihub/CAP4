@@ -36,6 +36,8 @@ public abstract class HandlerPlugin implements Plugin, Handler {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
+    private Request request;
+
     /**
      * execute
      * 
@@ -44,8 +46,6 @@ public abstract class HandlerPlugin implements Plugin, Handler {
      * @return String
      */
     public abstract Result execute(Request params);
-
-    Request request;
 
     public Request getRequest() {
         return request;

@@ -41,8 +41,9 @@ public class SimpleOperation implements Operation {
 
     private final Logger logger = LoggerFactory.getLogger(SimpleOperation.class);
 
-    String operName;
-    Map<String, OperationStep> ruleMap;
+    private String operName;
+
+    private Map<String, OperationStep> ruleMap;
 
     /*
      * (non-Javadoc)

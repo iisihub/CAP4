@@ -30,8 +30,9 @@ import com.iisigroup.cap.utils.CapDate;
 @SuppressWarnings("serial")
 public class CapDateFormatter implements Formatter {
 
-    String fromDateFormat;
-    String toDateFormat;
+    private String fromDateFormat;
+
+    private String toDateFormat;
 
     public CapDateFormatter(String fromDateFormat, String toDateFormat) {
         this.fromDateFormat = fromDateFormat;

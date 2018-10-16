@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Sequence {
-    Map<String, Object> thisSeq;
+    private Map<String, Object> thisSeq;
 
     public Sequence() {
         this.thisSeq = new HashMap<String, Object>();

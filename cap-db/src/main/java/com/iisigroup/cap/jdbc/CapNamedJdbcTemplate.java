@@ -44,7 +44,7 @@ import com.iisigroup.cap.jdbc.support.CapColumnMapRowMapper;
 import com.iisigroup.cap.jdbc.support.CapRowMapperResultSetExtractor;
 import com.iisigroup.cap.jdbc.support.CapSqlSearchQueryProvider;
 import com.iisigroup.cap.jdbc.support.CapSqlStatement;
-import com.iisigroup.cap.utils.CapCommonUtil;
+import com.iisigroup.cap.utils.SpELUtil;
 
 /**
  * <pre>
@@ -69,7 +69,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
 
     private Class<?> causeClass;
 
-    DataSource dataSource;
+    private DataSource dataSource;
 
     public CapNamedJdbcTemplate(DataSource dataSource) {
         super(dataSource);
@@ -433,7 +433,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, getSourceSql(sqlId));
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_ORDER, CapJdbcConstants.SQL_PAGING_DUMMY_ORDER_BY);
-        StringBuilder sql = new StringBuilder().append(CapCommonUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_QUERY), params, sqltemp.getParserContext()));
+        StringBuilder sql = new StringBuilder().append(SpELUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_QUERY), params, sqltemp.getParserContext()));
         sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));
         if (args == null) {
             args = new HashMap<String, Object>();
@@ -458,7 +458,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, getSourceSql(sqlId));
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_ORDER, CapJdbcConstants.SQL_PAGING_DUMMY_ORDER_BY);
-        StringBuilder sql = new StringBuilder().append(CapCommonUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_TOTAL_PAGE), params, sqlp.getParserContext()));
+        StringBuilder sql = new StringBuilder().append(SpELUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_TOTAL_PAGE), params, sqlp.getParserContext()));
         sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));
         if (logger.isTraceEnabled()) {
             logger.trace(new StringBuilder("\n\t").append(CapDbUtil.convertToSQLCommand(sql.toString(), args)).toString());
@@ -483,7 +483,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
             if (sqltemp.containsKey(countAllSqlId)) {
                 preParams.put("countAll", sqltemp.getValue(countAllSqlId, countAllSqlId));
             }
-            return CapCommonUtil.spelParser(sqltemp.getValue(sqlId, sqlId), preParams, sqltemp.getParserContext());
+            return SpELUtil.spelParser(sqltemp.getValue(sqlId, sqlId), preParams, sqltemp.getParserContext());
         } else {
             return sqlp.getValue(sqlId, sqlId);
         }
@@ -496,7 +496,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, sourceSql.toString());
         // 準備查詢筆數sql
-        StringBuilder sql = new StringBuilder().append(CapCommonUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_TOTAL_PAGE), params, sqlp.getParserContext()));
+        StringBuilder sql = new StringBuilder().append(SpELUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_TOTAL_PAGE), params, sqlp.getParserContext()));
         sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));
         if (logger.isTraceEnabled()) {
             logger.trace(new StringBuilder("\n\t").append(CapDbUtil.convertToSQLCommand(sql.toString(), provider.getParams())).toString());
@@ -506,7 +506,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, sourceSql.toString());
         String orderBy = search.hasOrderBy() ? provider.generateOrderCause() : CapJdbcConstants.SQL_PAGING_DUMMY_ORDER_BY;
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_ORDER, orderBy);
-        sql = new StringBuilder().append(CapCommonUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_QUERY), params, sqlp.getParserContext()));
+        sql = new StringBuilder().append(SpELUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_QUERY), params, sqlp.getParserContext()));
         sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));
         // 此處的 order by 是組完分頁 sql 後，再做一次 order by，因為子查詢中的 order by 不會反映在最後的查詢結果
         sql.append(provider.generateOrderCause());
@@ -532,7 +532,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, sourceSql.toString());
         // 準備查詢筆數sql
-        StringBuilder sql = new StringBuilder().append(CapCommonUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_TOTAL_PAGE), params, sqlp.getParserContext()));
+        StringBuilder sql = new StringBuilder().append(SpELUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_TOTAL_PAGE), params, sqlp.getParserContext()));
         sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));
         if (logger.isTraceEnabled()) {
             logger.trace(new StringBuilder("\n\t").append(CapDbUtil.convertToSQLCommand(sql.toString(), provider.getParams())).toString());
@@ -542,7 +542,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_SQL, sourceSql.toString());
         String orderBy = search.hasOrderBy() ? provider.generateOrderCause() : CapJdbcConstants.SQL_PAGING_DUMMY_ORDER_BY;
         params.put(CapJdbcConstants.SQL_PAGING_SOURCE_ORDER, orderBy);
-        sql = new StringBuilder().append(CapCommonUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_QUERY), params, sqlp.getParserContext()));
+        sql = new StringBuilder().append(SpELUtil.spelParser((String) sqltemp.getValue(CapJdbcConstants.SQL_PAGING_QUERY), params, sqlp.getParserContext()));
         sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));
         // 此處的 order by 是組完分頁 sql 後，再做一次 order by，因為子查詢中的 order by 不會反映在最後的查詢結果
         sql.append(provider.generateOrderCause());

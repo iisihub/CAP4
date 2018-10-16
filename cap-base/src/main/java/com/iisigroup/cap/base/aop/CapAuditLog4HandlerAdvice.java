@@ -80,7 +80,7 @@ public class CapAuditLog4HandlerAdvice {
     /**
      * 子系統代碼(COLA...)
      */
-    String sysId = null;
+    private String sysId = null;
 
     /**
      * Log Around AjaxHandler execute.

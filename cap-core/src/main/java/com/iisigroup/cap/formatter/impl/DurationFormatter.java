@@ -39,7 +39,7 @@ public class DurationFormatter implements BeanFormatter {
     private String startCol;
     private String endCol;
     private SimpleDateFormat _df;
-    String DEF_PATTERN = "HH:mm:ss";
+    private static final String DEF_PATTERN = "HH:mm:ss";
 
     public DurationFormatter(String startCol, String endCol, String pattern) {
         this.startCol = startCol;

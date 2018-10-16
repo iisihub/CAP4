@@ -81,7 +81,7 @@ public abstract class MFormHandler extends HandlerPlugin {
      */
     private class MethodExecuteAction implements Action {
 
-        MFormHandler executeHandler;
+        private MFormHandler executeHandler;
 
         public MethodExecuteAction(MFormHandler executeObj) {
             this.executeHandler = executeObj;

@@ -42,8 +42,9 @@ import com.iisigroup.cap.db.model.SearchModeParameter;
  */
 public class CapSqlSearchQueryProvider {
 
-    Map<String, Object> params;
-    SearchSetting search;
+    private Map<String, Object> params;
+
+    private SearchSetting search;
 
     public CapSqlSearchQueryProvider(SearchSetting search) {
         this.search = search;

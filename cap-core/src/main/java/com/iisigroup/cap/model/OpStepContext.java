@@ -27,8 +27,9 @@ import com.iisigroup.cap.component.Result;
  */
 public class OpStepContext {
 
-    String goToStep;
-    Result result;
+    private String goToStep;
+
+    private Result result;
 
     public OpStepContext(String goToStep) {
         this.goToStep = goToStep;

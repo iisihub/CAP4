@@ -22,10 +22,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -76,6 +74,8 @@ import com.iisigroup.cap.utils.CapDate;
 public class TimeFolderSizeRollingFileAppender extends FileAppender implements ErrorCode {
     private String logRootPath = ".";
 
+    private static final int BUFFER = 2048;
+
     public void setLogRootPath(String logrootpath) {
         this.logRootPath = logrootpath;
     }
@@ -95,19 +95,19 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
     protected int maxBackupIndex = 1;
     // The code assumes that the following constants are in a increasing
     // sequence.
-    static final int TOP_OF_TROUBLE = -1;
+    protected static final int TOP_OF_TROUBLE = -1;
 
-    static final int TOP_OF_MINUTE = 0;
+    protected static final int TOP_OF_MINUTE = 0;
 
-    static final int TOP_OF_HOUR = 1;
+    protected static final int TOP_OF_HOUR = 1;
 
-    static final int HALF_DAY = 2;
+    protected static final int HALF_DAY = 2;
 
-    static final int TOP_OF_DAY = 3;
+    protected static final int TOP_OF_DAY = 3;
 
-    static final int TOP_OF_WEEK = 4;
+    protected static final int TOP_OF_WEEK = 4;
 
-    static final int TOP_OF_MONTH = 5;
+    protected static final int TOP_OF_MONTH = 5;
 
     /**
      * The date pattern. By default, the pattern is set to "'.'yyyy-MM-dd" meaning daily rollover.
@@ -129,16 +129,14 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
     private int zipDayBefore = 1;
     private String zipPath = "zips";
 
-    Date now = new Date();
+    private Date now = new Date();
 
-    SimpleDateFormat sdf;
+    private SimpleDateFormat sdf;
 
-    RollingCalendar rc = new RollingCalendar();
-
-    int checkPeriod = TOP_OF_TROUBLE;
+    private RollingCalendar rc = new RollingCalendar();
 
     // The gmtTimeZone is used only in computeCheckPeriod() method.
-    static final TimeZone gmtTimeZone = TimeZone.getTimeZone("GMT");
+    private static final TimeZone gmtTimeZone = TimeZone.getTimeZone("GMT");
 
     private File currFile;
 
@@ -260,8 +258,6 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
         }
         LogLog.debug("setFile ended");
     }
-
-    final int BUFFER = 2048;
 
     public void zipFiles(String source, String dest) throws IOException {
         FileUtils.forceMkdir(new File(source));

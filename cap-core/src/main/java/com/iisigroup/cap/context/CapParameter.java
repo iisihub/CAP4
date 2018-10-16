@@ -32,9 +32,9 @@ import com.iisigroup.cap.formatter.Formatter;
  */
 public class CapParameter {
 
-    final Map<String, Object> parameter;
+    private final Map<String, Object> parameter;
 
-    Formatter formatter;
+    private Formatter formatter;
 
     public CapParameter(Map<String, Object> map) {
         this.parameter = map;

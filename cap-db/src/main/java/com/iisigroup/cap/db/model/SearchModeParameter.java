@@ -27,9 +27,9 @@ import com.iisigroup.cap.db.constants.SearchMode;
  */
 public class SearchModeParameter {
 
-    SearchMode mode;
-    Object key;
-    Object value;
+    private SearchMode mode;
+    private Object key;
+    private Object value;
 
     public SearchModeParameter(SearchMode searchMode, Object key, Object value) {
         this.mode = searchMode;

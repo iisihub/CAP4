@@ -28,7 +28,7 @@ import com.iisigroup.cap.utils.CapString;
 @SuppressWarnings({ "serial" })
 public class CapSessioniExpireException extends CapException {
 
-    String i18nKey;
+    private String i18nKey;
 
     /**
      * Instantiates a new cap exception.

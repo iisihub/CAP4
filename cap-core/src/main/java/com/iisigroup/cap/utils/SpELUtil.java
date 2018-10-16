@@ -1,5 +1,5 @@
 /*
- * CapCommonUtil.java
+ * SpELUtil.java
  *
  * Copyright (c) 2011 International Integrated System, Inc.
  * All Rights Reserved.
@@ -21,7 +21,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 /**
  * <pre>
- * CapCommonUtil
+ * SpELUtil
  * </pre>
  * 
  * @since 2010/12/29
@@ -32,9 +32,11 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
  *          <li>2011/11/1,rodeschen,from cap
  *          </ul>
  */
-public class CapCommonUtil {
+public class SpELUtil {
 
-    private CapCommonUtil() {
+    private static final ParserContext DEF_PARSER = new TemplateParserContext();
+
+    private SpELUtil() {
 
     }
 
@@ -55,8 +57,6 @@ public class CapCommonUtil {
         return spel.parseExpression(expressionStr, parserContext).getValue(context, String.class);
     }
 
-    final static ParserContext defParser = new TemplateParserContext();
-
     /**
      * use Spring Expression Language (SpEL) parse
      * 
@@ -67,7 +67,7 @@ public class CapCommonUtil {
      * @return String
      */
     public static String spelParser(String expressionStr, Map<String, Object> params) {
-        return spelParser(expressionStr, params, defParser);
+        return spelParser(expressionStr, params, DEF_PARSER);
     }
 
 }

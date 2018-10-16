@@ -39,6 +39,22 @@ public class SearchSettingImpl implements SearchSetting {
 
     private static final long serialVersionUID = 1L;
 
+    private String entityName;
+
+    private boolean isDistinct;
+
+    // Order by support
+    private Map<String, Boolean> orderBy;
+
+    // Pagination support
+    private int maxResults = 100;
+
+    // the first result
+    private int firstResult = 0;
+
+    // Search mode support
+    private List<SearchModeParameter> searchModeParameters = new ArrayList<SearchModeParameter>();
+
     public SearchSettingImpl() {
 
     }
@@ -55,8 +71,6 @@ public class SearchSettingImpl implements SearchSetting {
         setMaxResults(searchSetting.getMaxResults());
     }
 
-    String entityName;
-
     public String getEntityName() {
         return entityName;
     }
@@ -65,8 +79,6 @@ public class SearchSettingImpl implements SearchSetting {
         this.entityName = entityName;
         return this;
     }
-
-    private boolean isDistinct;
 
     /**
      * <pre>
@@ -90,11 +102,6 @@ public class SearchSettingImpl implements SearchSetting {
     public boolean isDistinct() {
         return isDistinct;
     }
-
-    // -----------------------------------
-    // Order by support
-    // -----------------------------------
-    private Map<String, Boolean> orderBy;
 
     public boolean hasOrderBy() {
         return !(orderBy == null || orderBy.isEmpty());
@@ -141,11 +148,6 @@ public class SearchSettingImpl implements SearchSetting {
         return this.orderBy;
     }
 
-    // -----------------------------------
-    // Pagination support
-    // -----------------------------------
-    private int maxResults = 100;
-
     /**
      * 設定查詢的筆數
      * 
@@ -163,9 +165,6 @@ public class SearchSettingImpl implements SearchSetting {
         return maxResults;
     }
 
-    // the first result
-    private int firstResult = 0;
-
     /**
      * 設定查詢的頁碼
      * 
@@ -182,11 +181,6 @@ public class SearchSettingImpl implements SearchSetting {
     public int getFirstResult() {
         return this.firstResult;
     }
-
-    // -----------------------------------
-    // Search mode support
-    // -----------------------------------
-    private List<SearchModeParameter> searchModeParameters = new ArrayList<SearchModeParameter>();
 
     public List<SearchModeParameter> getSearchModeParameters() {
         return this.searchModeParameters;

@@ -361,8 +361,6 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
         private Object _key;
         private Object _value;
 
-        SearchModeParameter param;
-
         CapSpecifications(SearchModeParameter param) {
             this._searchMode = param.getMode();
             this._key = param.getKey();

@@ -35,7 +35,7 @@ package com.iisigroup.cap.exception;
 public class CapException extends RuntimeException {
 
     @SuppressWarnings("rawtypes")
-    Class causeClass;
+    private Class causeClass;
     private Object extraInformation;
 
     /**
