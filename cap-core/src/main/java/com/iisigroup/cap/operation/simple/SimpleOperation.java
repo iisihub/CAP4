@@ -11,6 +11,7 @@
  */
 package com.iisigroup.cap.operation.simple;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -97,7 +98,9 @@ public class SimpleOperation implements Operation {
     public OperationStep getStartStep() {
         if (ruleMap != null && !ruleMap.isEmpty()) {
             Set<Entry<String, OperationStep>> steps = ruleMap.entrySet();
-            for (Entry<String, OperationStep> entry : steps) {
+            Iterator<Entry<String, OperationStep>> it = steps.iterator();
+            if (it.hasNext()) {
+                Entry<String, OperationStep> entry = it.next();
                 OperationStep step = entry.getValue();
                 step.setName(entry.getKey());
                 return step;
