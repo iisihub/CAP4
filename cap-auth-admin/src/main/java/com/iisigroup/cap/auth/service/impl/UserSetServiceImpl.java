@@ -62,7 +62,7 @@ public class UserSetServiceImpl implements UserSetService {
         user.setLastLoginTime(CapDate.getCurrentTimestamp());
         user.setCreateTime(CapDate.getCurrentTimestamp());
         user.setCreator(CapSecurityContext.getUserId());
-        user = setUserFields(user, userId, userName, password, email);
+        setUserFields(user, userId, userName, password, email);
         user.setUrList(createUserRoleData(userId, roleOids));
         userDao.save(user);
         createUserPwdHistory(user.getCode(), encodePassword(userId, password));
