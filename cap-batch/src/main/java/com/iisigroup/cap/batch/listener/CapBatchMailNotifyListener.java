@@ -66,6 +66,8 @@ public class CapBatchMailNotifyListener implements JobListener, InitializingBean
 
     private String mailSubject;
 
+    private DurationFormatter durationFmt = new DurationFormatter("START_TIME", "END_TIME", "HH:mm:ss.SSS");
+
     /*
      * (non-Javadoc)
      * 
@@ -99,8 +101,6 @@ public class CapBatchMailNotifyListener implements JobListener, InitializingBean
         }
         return new StringBuilder("<html><body>").append(result.toString().replace(",", ",<br/>")).append("</body></html>").toString();
     }
-
-    private DurationFormatter durationFmt = new DurationFormatter("START_TIME", "END_TIME", "HH:mm:ss.SSS");
 
     private Map<String, Object> getExecutionResult(JobExecution job) {
         String exeId = String.valueOf(job.getId());

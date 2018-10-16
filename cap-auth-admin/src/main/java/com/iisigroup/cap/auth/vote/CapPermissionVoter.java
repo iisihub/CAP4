@@ -39,6 +39,8 @@ public class CapPermissionVoter extends RoleVoter {
 
     protected AccessControlService securityService;
 
+    private boolean stripQueryStringFromUrls;
+
     @SuppressWarnings("rawtypes")
     @Override
     public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
@@ -77,8 +79,6 @@ public class CapPermissionVoter extends RoleVoter {
     public void setSecurityService(AccessControlService securityService) {
         this.securityService = securityService;
     }
-
-    private boolean stripQueryStringFromUrls;
 
     public boolean isStripQueryStringFromUrls() {
         return stripQueryStringFromUrls;

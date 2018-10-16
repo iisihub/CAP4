@@ -38,6 +38,10 @@ public class CapWebUtil {
 
     public static final String LOCALE_KEY = "localeKey";
 
+    private static String hostName;
+
+    private static String ip;
+
     private CapWebUtil() {
 
     }
@@ -90,8 +94,6 @@ public class CapWebUtil {
         return url;
     }
 
-    private static String hostName;
-
     /**
      * 取得電腦名稱
      * 
@@ -107,8 +109,6 @@ public class CapWebUtil {
         }
         return hostName;
     }
-
-    private static String ip;
 
     /**
      * 取得電腦IP

@@ -104,6 +104,8 @@ public class BatchHandler extends MFormHandler {
 
     private JobParametersExtractor jobParametersExtractor = new JobParametersExtractor();
 
+    private final ResourceLoader resourceLoader = new DefaultResourceLoader(getClass().getClassLoader());
+
     @SuppressWarnings("serial")
     @HandlerType(HandlerTypeEnum.GRID)
     public BeanGridResult jobQuery(SearchSetting search, Request params) {
@@ -471,8 +473,6 @@ public class BatchHandler extends MFormHandler {
         }
         return applicationContextFactory.createApplicationContext();
     }
-
-    public final ResourceLoader resourceLoader = new DefaultResourceLoader(getClass().getClassLoader());
 
     private void checkFileExist(BatchJob job) {
         String location = config.getProperty("batch.jobsroot", "") + job.getJobResource();

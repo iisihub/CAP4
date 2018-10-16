@@ -35,6 +35,10 @@ public class BaseActionController extends MultiActionController {
 
     public static final String SUCCESS_VIEW = "success";
 
+    private static final String CONTENT_TYPE_JSON = "text/plain;charset=UTF-8";
+
+    private static final String CONTENT_TYPE_XML = "text/xml;charset=UTF-8";
+
     /**
      * json 回传写入
      * 
@@ -60,8 +64,6 @@ public class BaseActionController extends MultiActionController {
         }
     }
 
-    private static String CONTENT_TYPE_JSON = "text/plain;charset=UTF-8";
-
     /**
      * json 回传写入
      * 
@@ -73,8 +75,6 @@ public class BaseActionController extends MultiActionController {
     protected void outJsonString(HttpServletResponse response, String str) {
         outputString(response, CONTENT_TYPE_JSON, str);
     }
-
-    private static String CONTENT_TYPE_XML = "text/xml;charset=UTF-8";
 
     /**
      * xml 回传写入

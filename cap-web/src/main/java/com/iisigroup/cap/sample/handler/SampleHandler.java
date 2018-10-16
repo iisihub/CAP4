@@ -50,6 +50,9 @@ import com.iisigroup.cap.security.annotation.Captcha;
 @Controller("samplehandler")
 public class SampleHandler extends MFormHandler {
 
+    @Resource
+    private SampleRptService sampleRptService;
+
     @HandlerType(HandlerTypeEnum.FILE_UPLOAD)
     public Result upload(Request request) {
         AjaxFormResult result = new AjaxFormResult();
@@ -79,9 +82,6 @@ public class SampleHandler extends MFormHandler {
         }
         return null;
     }
-
-    @Resource
-    private SampleRptService sampleRptService;
 
     @HandlerType(HandlerTypeEnum.FILE_DOWNLOAD)
     public Result dwnloadPdf(Request request) {

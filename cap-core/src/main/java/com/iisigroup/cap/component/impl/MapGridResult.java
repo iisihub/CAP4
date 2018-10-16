@@ -57,6 +57,12 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
 
     protected Map<String, Formatter> dataReformatter;
 
+    /** column split regularre char **/
+    private static final String SPLIT = "\\|";
+
+    // Order by support
+    private Map<String, Boolean> orderBy;
+
     public MapGridResult() {
         resultMap = new HashMap<String, Object>();
     }
@@ -214,9 +220,6 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
         return rows;
     }
 
-    /** column split regularre char **/
-    private static String SPLIT = "\\|";
-
     protected Map<String, Object> dataToJsonObject(Map<String, Object> data) {
         Map<String, Object> row = new HashMap<String, Object>();
         for (String str : columns) {
@@ -282,11 +285,6 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
     public final void setDataReformatter(Map<String, Formatter> dataReformatter) {
         this.dataReformatter = dataReformatter;
     }
-
-    // -----------------------------------
-    // Order by support
-    // -----------------------------------
-    private Map<String, Boolean> orderBy;
 
     public boolean hasOrderBy() {
         return !(orderBy == null || orderBy.isEmpty());

@@ -49,6 +49,21 @@ public final class CapString {
 
     private static final char[] HEX_CHAR = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
+    private static Map<Character, Character> helfConvertMap;
+
+    static {
+        helfConvertMap = new HashMap<Character, Character>();
+        helfConvertMap.put(' ', '\u3000');
+        helfConvertMap.put('"', '”');
+        helfConvertMap.put('\'', '’');
+        helfConvertMap.put('.', '。');
+        helfConvertMap.put('[', '〔');
+        helfConvertMap.put(']', '〕');
+        helfConvertMap.put('^', '︿');
+        helfConvertMap.put('_', '﹍');
+        helfConvertMap.put('`', '‵');
+    }
+
     private CapString() {
     }
 
@@ -309,21 +324,6 @@ public final class CapString {
      */
     public static boolean isNumeric(String str) {
         return str.matches("^[0-9]+$");
-    }
-
-    private static Map<Character, Character> helfConvertMap;
-
-    static {
-        helfConvertMap = new HashMap<Character, Character>();
-        helfConvertMap.put(' ', '\u3000');
-        helfConvertMap.put('"', '”');
-        helfConvertMap.put('\'', '’');
-        helfConvertMap.put('.', '。');
-        helfConvertMap.put('[', '〔');
-        helfConvertMap.put(']', '〕');
-        helfConvertMap.put('^', '︿');
-        helfConvertMap.put('_', '﹍');
-        helfConvertMap.put('`', '‵');
     }
 
     /**

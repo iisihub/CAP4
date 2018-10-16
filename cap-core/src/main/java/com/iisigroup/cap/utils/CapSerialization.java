@@ -37,13 +37,12 @@ import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 public class CapSerialization {
 
     private boolean compress = false;
+    private static CapSerialization inst = new CapSerialization(false);
+    private static CapSerialization compressInst = new CapSerialization(true);
 
     CapSerialization(boolean compress) {
         this.compress = compress;
     }
-
-    private static CapSerialization inst = new CapSerialization(false);
-    private static CapSerialization compressInst = new CapSerialization(true);
 
     public static CapSerialization newInstance() {
         return inst;

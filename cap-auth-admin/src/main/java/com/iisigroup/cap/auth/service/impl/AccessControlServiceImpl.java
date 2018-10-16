@@ -38,12 +38,12 @@ public class AccessControlServiceImpl implements AccessControlService {
 
     private String systemType;
 
-    public void setSystemType(String systemType) {
-        this.systemType = systemType;
-    }
-
     public AccessControlServiceImpl() {
         super();
+    }
+    
+    public void setSystemType(String systemType) {
+        this.systemType = systemType;
     }
 
     @Override

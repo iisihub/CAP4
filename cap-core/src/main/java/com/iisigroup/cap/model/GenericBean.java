@@ -51,6 +51,8 @@ import com.iisigroup.cap.utils.GsonUtil;
  */
 public class GenericBean {
 
+    private static final String SPLIT = "\\|";
+
     /**
      * set值
      * 
@@ -126,8 +128,6 @@ public class GenericBean {
         }
 
     }
-
-    private static String SPLIT = "\\|";
 
     /**
      * 取得每個欄位的值

@@ -76,14 +76,6 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
 
     private static final int BUFFER = 2048;
 
-    public void setLogRootPath(String logrootpath) {
-        this.logRootPath = logrootpath;
-    }
-
-    public String getLogRootPath() {
-        return logRootPath;
-    }
-
     /**
      * The default maximum file size is 10MB.
      */
@@ -506,4 +498,13 @@ public class TimeFolderSizeRollingFileAppender extends FileAppender implements E
     public void setZipPath(String zipPath) {
         this.zipPath = zipPath;
     }
+
+    public void setLogRootPath(String logrootpath) {
+        this.logRootPath = logrootpath;
+    }
+
+    public String getLogRootPath() {
+        return logRootPath;
+    }
+
 }
