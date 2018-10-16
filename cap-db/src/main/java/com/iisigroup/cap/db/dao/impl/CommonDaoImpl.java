@@ -31,5 +31,5 @@ import com.iisigroup.cap.db.model.DataObject;
  *            T extends IDataObject
  */
 @Repository
-public class CommonDaoImpl<T extends DataObject> extends GenericDaoImpl<DataObject> implements CommonDao {
+public class CommonDaoImpl extends GenericDaoImpl<DataObject> implements CommonDao {
 }
