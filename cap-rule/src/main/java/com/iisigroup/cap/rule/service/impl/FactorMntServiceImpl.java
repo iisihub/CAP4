@@ -50,8 +50,6 @@ import com.iisigroup.cap.rule.service.FactorMntService;
 @Service
 public class FactorMntServiceImpl implements FactorMntService {
 
-    private final Logger logger = LoggerFactory.getLogger(FactorMntServiceImpl.class);
-
     @Resource
     private DivFtItmDao ftItmDao;
 

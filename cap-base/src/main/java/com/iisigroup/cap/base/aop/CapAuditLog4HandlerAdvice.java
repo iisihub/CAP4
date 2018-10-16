@@ -20,7 +20,6 @@ import java.util.Set;
 import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -40,7 +39,6 @@ import com.iisigroup.cap.security.CapSecurityContext;
 import com.iisigroup.cap.security.model.CapUserDetails;
 import com.iisigroup.cap.utils.CapBeanUtil;
 import com.iisigroup.cap.utils.CapString;
-import com.iisigroup.cap.utils.CapWebUtil;
 import com.iisigroup.cap.utils.UUIDGenerator;
 
 /**
@@ -59,9 +57,6 @@ import com.iisigroup.cap.utils.UUIDGenerator;
  */
 public class CapAuditLog4HandlerAdvice {
 
-    private static String HOST_NAME = CapWebUtil.getHostName();
-    private static String HOST_ID = HOST_NAME.trim().substring(HOST_NAME.length() - 1);
-    private static final String DEF_PROP = "def";
     private static final String MENU_PREFIX = "menu.";
     private static final String ACTION_PREFIX = "btn.";
     private static final String DISABLE_TYPE = "DisableType";
@@ -283,10 +278,6 @@ public class CapAuditLog4HandlerAdvice {
      */
     public void setSysId(String sysId) {
         this.sysId = CapString.trimNull(sysId).toUpperCase();
-    }
-
-    private String getSno(String userId, String rno) {
-        return CapString.concat(System.nanoTime(), "-", userId, "-", HOST_ID, "-", rno + RandomStringUtils.randomNumeric(2));
     }
 
     private String trimByLen(String src, int maxLen) {
