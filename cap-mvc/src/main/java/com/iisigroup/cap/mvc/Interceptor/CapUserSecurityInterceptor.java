@@ -18,9 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.iisigroup.cap.security.CapSecurityContext;
-import com.iisigroup.cap.security.model.CapUserDetails;
-
 /**
  * <pre>
  * 交易權限判斷
@@ -43,10 +40,6 @@ public class CapUserSecurityInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object arg2) throws Exception {
-        CapUserDetails user = CapSecurityContext.getUser();
-        if (user == null) {
-            user = new CapUserDetails();
-        }
         if (request.getRequestURI().equals(request.getContextPath() + "/")) {
             response.sendRedirect(request.getContextPath() + "/page/index");
             return false;
