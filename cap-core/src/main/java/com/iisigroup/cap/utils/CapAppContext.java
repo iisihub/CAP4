@@ -47,7 +47,7 @@ public class CapAppContext implements ApplicationContextAware {
         }
     }
 
-    public static ApplicationContext getApplicationContext() {
+    public synchronized static ApplicationContext getApplicationContext() {
         return applicationContext;
     }
 
