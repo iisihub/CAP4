@@ -37,7 +37,7 @@ public interface DivRlItmDao extends GenericDao<DivRlItm> {
      *            規則代號
      * @return T
      */
-    public DivRlItm findByDivRlNo(String divRlNo);
+    DivRlItm findByDivRlNo(String divRlNo);
 
     /**
      * find by DivRlItm and inputFlag
@@ -48,7 +48,7 @@ public interface DivRlItmDao extends GenericDao<DivRlItm> {
      *            是否啟用
      * @return T
      */
-    public DivRlItm findByDivRlNoAndInputFlg(String divRlNo, String inputFlag);
+    DivRlItm findByDivRlNoAndInputFlg(String divRlNo, String inputFlag);
 
     /**
      * find by DivRlNos.
@@ -57,7 +57,7 @@ public interface DivRlItmDao extends GenericDao<DivRlItm> {
      *            多個規則代號
      * @return T List
      */
-    public List<DivRlItm> findByDivRlNo(String[] divRlNos);
+    List<DivRlItm> findByDivRlNo(String[] divRlNos);
 
     /**
      * find by Division Rule Item Nos and inputFlag
@@ -68,7 +68,7 @@ public interface DivRlItmDao extends GenericDao<DivRlItm> {
      *            是否啟用
      * @return DivRlItm
      */
-    public List<DivRlItm> findByDivRlNoAndInputFlg(String[] divRlNos, String inputFlag);
+    List<DivRlItm> findByDivRlNoAndInputFlg(String[] divRlNos, String inputFlag);
 
     /**
      * 查詢OID
@@ -77,6 +77,6 @@ public interface DivRlItmDao extends GenericDao<DivRlItm> {
      *            OID
      * @return DivRlItm
      */
-    public DivRlItm findByOid(String oid);
+    DivRlItm findByOid(String oid);
 
 }

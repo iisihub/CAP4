@@ -39,6 +39,6 @@ public interface Formatter extends Serializable {
      * @return String
      * @throws CapFormatException
      */
-    public <T> T reformat(Object in);
+    <T> T reformat(Object in);
 
 }

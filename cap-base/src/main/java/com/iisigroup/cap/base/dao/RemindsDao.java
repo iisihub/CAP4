@@ -30,8 +30,8 @@ import com.iisigroup.cap.db.dao.GenericDao;
  */
 public interface RemindsDao extends GenericDao<Reminds> {
 
-    public List<Reminds> findCurrentRemindItem(String[] styleTyp, String locale);
+    List<Reminds> findCurrentRemindItem(String[] styleTyp, String locale);
 
-    public void merge(Reminds entity);
+    void merge(Reminds entity);
 
 }

@@ -37,7 +37,7 @@ public interface DivFtItmDao extends GenericDao<DivFtItm> {
      *            因子代號
      * @return T
      */
-    public DivFtItm findByDivFtItmNo(String divFtItmNo);
+    DivFtItm findByDivFtItmNo(String divFtItmNo);
 
     /**
      * find by factorNos.
@@ -46,7 +46,7 @@ public interface DivFtItmDao extends GenericDao<DivFtItm> {
      *            多個因子代號
      * @return T List
      */
-    public List<DivFtItm> findByDivFtItmNo(String[] factorNos);
+    List<DivFtItm> findByDivFtItmNo(String[] factorNos);
 
     /**
      * 查詢OID
@@ -55,7 +55,7 @@ public interface DivFtItmDao extends GenericDao<DivFtItm> {
      *            OID
      * @return DivFtItm
      */
-    public DivFtItm findByOid(String oid);
+    DivFtItm findByOid(String oid);
 
     /**
      * 取得所有因子項目

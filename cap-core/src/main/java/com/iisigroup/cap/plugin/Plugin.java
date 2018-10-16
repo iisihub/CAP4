@@ -29,13 +29,13 @@ import org.springframework.beans.factory.InitializingBean;
 public interface Plugin extends InitializingBean {
 
     /** The Constant PLUGIN_NOT_FOUND_MSG. */
-    public static final String PLUGIN_NOT_FOUND_MSG = "cap.core.pluginNotFound";
+    String PLUGIN_NOT_FOUND_MSG = "cap.core.pluginNotFound";
 
     /**
      * Gets the plugin name.
      * 
      * @return the plugin name
      */
-    public String getPluginName();
+    String getPluginName();
 
 }

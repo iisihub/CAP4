@@ -27,19 +27,19 @@ public interface DroolsConstants {
     /**
      * 
      */
-    public final static String PACKAGE_NAME = "com.iisigroup.cap.service";
+    String PACKAGE_NAME = "com.iisigroup.cap.service";
 
-    public final static String IMPORT_CLASS = "com.iisigroup.cap.rule.model.CaseInfo,com.iisigroup.cap.utils.CapDroolsUtil";
+    String IMPORT_CLASS = "com.iisigroup.cap.rule.model.CaseInfo,com.iisigroup.cap.utils.CapDroolsUtil";
 
-    public final static String VARIABLES_NAME = "com.iisigroup.cap.utils.CapDroolsUtil comUtil";
+    String VARIABLES_NAME = "com.iisigroup.cap.utils.CapDroolsUtil comUtil";
 
-    public final static String CONDITION_COL = "CONDITION";
+    String CONDITION_COL = "CONDITION";
 
-    public final static String ACTION_COL = "ACTION";
+    String ACTION_COL = "ACTION";
 
-    public final static String ACTIVATION_GROUP = "ACTIVATION-GROUP";
+    String ACTIVATION_GROUP = "ACTIVATION-GROUP";
 
-    public final static String NO_LOOP = "NO-LOOP";
+    String NO_LOOP = "NO-LOOP";
 
-    public final static String PRIORITY = "PRIORITY";
+    String PRIORITY = "PRIORITY";
 }

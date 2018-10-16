@@ -37,7 +37,7 @@ public interface DivCtDtlDao extends GenericDao<DivCtDtl> {
      *            條件代號
      * @return T
      */
-    public DivCtDtl findByConditionNo(String conditionNo);
+    DivCtDtl findByConditionNo(String conditionNo);
 
     /**
      * find by conditionNo.
@@ -46,7 +46,7 @@ public interface DivCtDtlDao extends GenericDao<DivCtDtl> {
      *            多個條件代號
      * @return T List
      */
-    public List<DivCtDtl> findByConditionNos(String[] conditionNos);
+    List<DivCtDtl> findByConditionNos(String[] conditionNos);
 
     /**
      * 查詢OID
@@ -55,7 +55,7 @@ public interface DivCtDtlDao extends GenericDao<DivCtDtl> {
      *            OID
      * @return DivFtItm
      */
-    public DivCtDtl findByOid(String oid);
+    DivCtDtl findByOid(String oid);
 
     /**
      * 使用ConditionNo查詢Details，並且排序divCtSor

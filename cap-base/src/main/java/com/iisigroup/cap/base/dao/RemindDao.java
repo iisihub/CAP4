@@ -31,7 +31,7 @@ import com.iisigroup.cap.db.dao.GenericDao;
  */
 public interface RemindDao extends GenericDao<Remind> {
 
-    public Remind findByPid(String pid);
+    Remind findByPid(String pid);
 
     /**
      * @param userId
@@ -44,6 +44,6 @@ public interface RemindDao extends GenericDao<Remind> {
      *            語系
      * @return
      */
-    public List<Remind> getCalendarData(String userId, Timestamp start, Timestamp end, String locale);
+    List<Remind> getCalendarData(String userId, Timestamp start, Timestamp end, String locale);
 
 }

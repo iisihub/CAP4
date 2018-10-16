@@ -39,5 +39,5 @@ public interface RoleDao extends GenericDao<DefaultRole> {
      *            系統代碼
      * @return List<IRole>
      */
-    public List<Role> findBySysTypeAndPath(String system, String url);
+    List<Role> findBySysTypeAndPath(String system, String url);
 }

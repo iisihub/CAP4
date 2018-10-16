@@ -37,7 +37,7 @@ public interface DivCtItmDao extends GenericDao<DivCtItm> {
      *            條件代碼
      * @return T
      */
-    public DivCtItm findByDivCtItmNo(String divCtItmNo);
+    DivCtItm findByDivCtItmNo(String divCtItmNo);
 
     /**
      * find by DivCtItm and inputFlag
@@ -48,7 +48,7 @@ public interface DivCtItmDao extends GenericDao<DivCtItm> {
      *            是否啟用
      * @return T
      */
-    public DivCtItm findByDivCtItmNoAndInputFlg(String divCtItmNo, String inputFlag);
+    DivCtItm findByDivCtItmNoAndInputFlg(String divCtItmNo, String inputFlag);
 
     /**
      * find by DivCtNos.
@@ -57,7 +57,7 @@ public interface DivCtItmDao extends GenericDao<DivCtItm> {
      *            多個條件代碼
      * @return T List
      */
-    public List<DivCtItm> findByDivCtItmNo(String[] divCtNos);
+    List<DivCtItm> findByDivCtItmNo(String[] divCtNos);
 
     /**
      * find by Division Rule Item Nos and inputFlag
@@ -68,7 +68,7 @@ public interface DivCtItmDao extends GenericDao<DivCtItm> {
      *            是否啟用
      * @return DivCtItm
      */
-    public List<DivCtItm> findByDivCtItmNoAndInputFlg(String[] divCtNos, String inputFlag);
+    List<DivCtItm> findByDivCtItmNoAndInputFlg(String[] divCtNos, String inputFlag);
 
     /**
      * 查詢OID
@@ -77,6 +77,6 @@ public interface DivCtItmDao extends GenericDao<DivCtItm> {
      *            OID
      * @return DivCtItm
      */
-    public DivCtItm findByOid(String oid);
+    DivCtItm findByOid(String oid);
 
 }

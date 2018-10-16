@@ -37,7 +37,7 @@ public interface DivRlDtlDao extends GenericDao<DivRlDtl> {
      *            規則代號
      * @return T
      */
-    public DivRlDtl findByRuleNo(String ruleNo);
+    DivRlDtl findByRuleNo(String ruleNo);
 
     /**
      * find by ruleNos.
@@ -46,7 +46,7 @@ public interface DivRlDtlDao extends GenericDao<DivRlDtl> {
      *            多個規則代號
      * @return T List
      */
-    public List<DivRlDtl> findByRuleNos(String[] ruleNos);
+    List<DivRlDtl> findByRuleNos(String[] ruleNos);
 
     /**
      * 查詢OID
@@ -55,7 +55,7 @@ public interface DivRlDtlDao extends GenericDao<DivRlDtl> {
      *            OID
      * @return DivFtItm
      */
-    public DivRlDtl findByOid(String oid);
+    DivRlDtl findByOid(String oid);
 
     /**
      * 使用RuleNo查詢Details，並且排序divRlSor

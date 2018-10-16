@@ -37,7 +37,7 @@ public interface CaseInfoDao extends GenericDao<CaseInfo> {
      *            條件代碼
      * @return T
      */
-    public CaseInfo findByCaseNo(String caseNo);
+    CaseInfo findByCaseNo(String caseNo);
 
     /**
      * 查詢OID
@@ -46,7 +46,7 @@ public interface CaseInfoDao extends GenericDao<CaseInfo> {
      *            OID
      * @return CaseInfo
      */
-    public CaseInfo findByOid(String oid);
+    CaseInfo findByOid(String oid);
 
     /**
      * save list

@@ -42,7 +42,7 @@ public enum CapFunctionCode {
     private String code;
     private String urlPath;
 
-    private CapFunctionCode(String code, String urlPath) {
+    CapFunctionCode(String code, String urlPath) {
         this.code = code;
         this.urlPath = urlPath;
     }

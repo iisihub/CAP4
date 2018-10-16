@@ -47,7 +47,7 @@ public interface HGService {
      * @param value
      *            value
      */
-    public void setProperty(String name, Object value);
+    void setProperty(String name, Object value);
 
     /**
      * get property

@@ -57,13 +57,13 @@ public interface ReportService {
      * 
      * @return the report definition
      */
-    public abstract String getReportDefinition();
+    String getReportDefinition();
 
     /**
      * 是否寫檔
      * 
      * @return boolean
      */
-    public abstract boolean isWriteToFile();
+    boolean isWriteToFile();
 
 }

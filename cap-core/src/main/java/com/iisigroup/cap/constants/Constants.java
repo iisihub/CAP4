@@ -30,102 +30,102 @@ public interface Constants {
     /**
      * Line break.
      */
-    public final static String LINE_BREAK = System.getProperty("line.separator");
+    String LINE_BREAK = System.getProperty("line.separator");
 
     /**
      * empty string.
      */
-    public final static String EMPTY_STRING = "";
+    String EMPTY_STRING = "";
 
     /**
      * a space string.
      */
-    public final static String SPACE = " ";
+    String SPACE = " ";
 
     /**
      * a "0" string.
      */
-    public final static String S0 = "0";
+    String S0 = "0";
 
     /**
      * a "1" string.
      */
-    public final static String S1 = "1";
+    String S1 = "1";
 
     /**
      * a "-1" string.
      */
-    public final static String S1N = "-1";
+    String S1N = "-1";
     /**
      * a "Y" string
      */
-    public static final String FLAG_Y = "Y";
+    String FLAG_Y = "Y";
     /**
      * a "N" string
      */
-    public static final String FLAG_N = "N";
+    String FLAG_N = "N";
     /**
      * a "-" string
      */
-    public final static String NEGATIVE = "-";
+    String NEGATIVE = "-";
     /**
      * a BigDecimal, value is 0.
      */
-    public final static BigDecimal B0 = BigDecimal.ZERO;
+    BigDecimal B0 = BigDecimal.ZERO;
 
     /**
      * a BigDecimal, value is 1.
      */
-    public final static BigDecimal B1 = BigDecimal.ONE;
+    BigDecimal B1 = BigDecimal.ONE;
 
     /**
      * a BigDecimal, value is -1.
      */
-    public final static BigDecimal B1N = BigDecimal.valueOf(-1d);
+    BigDecimal B1N = BigDecimal.valueOf(-1d);
 
     /**
      * a empty string array.
      */
-    public final static String[] EMPTY_ARRAY = new String[0];
+    String[] EMPTY_ARRAY = new String[0];
 
-    public final static String VALUES_SEPARATOR = "|";
+    String VALUES_SEPARATOR = "|";
 
-    public final static String COMMA = ",";
+    String COMMA = ",";
 
-    public final static String DATE_STAMP = "'";
+    String DATE_STAMP = "'";
 
     /**
      * http
      */
-    public final static String HOST_URL = "HOST_URL";
+    String HOST_URL = "HOST_URL";
 
-    public final static String CONNECTION_TIMEOUT = "TIMEOUT";
+    String CONNECTION_TIMEOUT = "TIMEOUT";
 
-    public final static String ASYNC = "ASYNC";
+    String ASYNC = "ASYNC";
 
-    public final static String HTTP_RETRY_COUNT = "HTTP_RETRY_COUNT";
+    String HTTP_RETRY_COUNT = "HTTP_RETRY_COUNT";
 
     /**
      * Empty Json
      */
-    public final static String EMPTY_JSON = "{}";
+    String EMPTY_JSON = "{}";
 
     /** The Constant AJAX_HANDLER_TIMEOUT. */
-    public final static String AJAX_HANDLER_TIMEOUT = "AJAX_HANDLER_TIMEOUT";
+    String AJAX_HANDLER_TIMEOUT = "AJAX_HANDLER_TIMEOUT";
 
     /** UI端顯示訊息 */
-    public final static String AJAX_NOTIFY_MESSAGE = "NOTIFY_MESSAGE";
+    String AJAX_NOTIFY_MESSAGE = "NOTIFY_MESSAGE";
 
     /**
      * security
      */
-    public final static String SECURITY_CONTEXT = "capSecurityContext";
+    String SECURITY_CONTEXT = "capSecurityContext";
 
     /**
      * system config
      */
-    public final static String SYSTEM_CONFIG = "systemConfig";
+    String SYSTEM_CONFIG = "systemConfig";
 
-    public static final String TXNCD = "transCde";
+    String TXNCD = "transCde";
 
 }

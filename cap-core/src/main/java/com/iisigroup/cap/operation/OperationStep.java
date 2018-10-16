@@ -28,11 +28,11 @@ import com.iisigroup.cap.model.OpStepContext;
  */
 public interface OperationStep {
 
-    static final String NEXT = "next";
+    String NEXT = "next";
 
-    static final String ERROR = "error";
+    String ERROR = "error";
 
-    static final String RETURN = "return";
+    String RETURN = "return";
 
     String getName();
 

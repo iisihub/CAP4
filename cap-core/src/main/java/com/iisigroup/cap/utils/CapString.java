@@ -500,7 +500,7 @@ public final class CapString {
      *            字串片斷
      * @return 組合字串
      */
-    public final static String concat(Object... params) {
+    public static String concat(Object... params) {
         StringBuilder strBuf = new StringBuilder();
         for (Object o : params) {
             if (o instanceof byte[]) {
