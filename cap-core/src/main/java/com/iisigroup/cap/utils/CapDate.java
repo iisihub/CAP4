@@ -52,6 +52,15 @@ public class CapDate {
 
     private static final String DEFAULT_DATE_FORMAT = "yyyyMMdd";
 
+    private static final String YY = "[0-9]{2}";
+    private static final String YYYY = "[0-9]{4}";
+    private static final String DDMM = "(((0[1-9]|[12][0-9]|3[0-1]))(0[13578]|1[02])|((0[1-9]|[12][0-9]|30)(0[469]|11))|((0[1-9]|[12][0-9])02))";
+    private static final String MMDD = "(((0[13578]|1[02])(0[1-9]|[12][0-9]|3[0-1]))|((0[469]|11)(0[1-9]|[12][0-9]|30))|(02(0[1-9]|[12][0-9])))";
+    private static final String DD_MM = "(((0[1-9]|[12][0-9]|3[0-1]))/(0[13578]|1[02])|((0[1-9]|[12][0-9]|30)/(0[469]|11))|((0[1-9]|[12]/[0-9])02))";
+    private static final String MM_DD = "(((0[13578]|1[02])/(0[1-9]|[12][0-9]|3[0-1]))|((0[469]|11)/(0[1-9]|[12][0-9]|30))|(02/(0[1-9]|[12][0-9])))";
+    private static final String DIVISION_SIGN = "/";
+    private static final String EMPTY_STRING = "";
+
     private CapDate() {
 
     }
@@ -578,29 +587,13 @@ public class CapDate {
 
     /**
      * <pre>
-     * 將字串中西元年轉換為民國年
+     * 將西元年日期字串轉為民國年日期字串格式
      * 9999年亦轉為999年
      * 支援格式 XX/XX/YYYY,XX/XX/YY (需為20xx年)
      *         YYYY/XX/XX,YY/XX/XX(需為20xx年)
      *         YYYYXXXX,YYXXXX    (需為20xx年)
      *         XXXXYYYY,XXXXYY    (需為20xx年)
      * </pre>
-     * 
-     * @param str
-     * @param type
-     * @return
-     */
-    public static String yy = "[0-9]{2}";
-    public static String yyyy = "[0-9]{4}";
-    public static String ddmm = "(((0[1-9]|[12][0-9]|3[0-1]))(0[13578]|1[02])|((0[1-9]|[12][0-9]|30)(0[469]|11))|((0[1-9]|[12][0-9])02))";
-    public static String mmdd = "(((0[13578]|1[02])(0[1-9]|[12][0-9]|3[0-1]))|((0[469]|11)(0[1-9]|[12][0-9]|30))|(02(0[1-9]|[12][0-9])))";
-    public static String dd_mm = "(((0[1-9]|[12][0-9]|3[0-1]))/(0[13578]|1[02])|((0[1-9]|[12][0-9]|30)/(0[469]|11))|((0[1-9]|[12]/[0-9])02))";
-    public static String mm_dd = "(((0[13578]|1[02])/(0[1-9]|[12][0-9]|3[0-1]))|((0[469]|11)/(0[1-9]|[12][0-9]|30))|(02/(0[1-9]|[12][0-9])))";
-    public static String DIVISION_SIGN = "/";
-    public static String EMPTY_STRING = "";
-
-    /**
-     * 將西元年日期字串轉為民國年日期字串格式
      * 
      * @param str
      *            西元年日期字串
@@ -620,14 +613,14 @@ public class CapDate {
         boolean mmFirst = CapString.checkRegularMatch(type, "MM/?DD");
 
         if (mmFirst) {
-            bRegEx.append(hasSign ? mm_dd : mmdd);
+            bRegEx.append(hasSign ? MM_DD : MMDD);
         } else {
-            bRegEx.append(hasSign ? dd_mm : ddmm);
+            bRegEx.append(hasSign ? DD_MM : DDMM);
         }
         if (yyFirst) {
-            bRegEx.insert(0, hasSign ? DIVISION_SIGN : EMPTY_STRING).insert(0, isYYYY ? yyyy : yy);
+            bRegEx.insert(0, hasSign ? DIVISION_SIGN : EMPTY_STRING).insert(0, isYYYY ? YYYY : YY);
         } else {
-            bRegEx.append((hasSign ? DIVISION_SIGN : EMPTY_STRING)).append(isYYYY ? yyyy : yy);
+            bRegEx.append((hasSign ? DIVISION_SIGN : EMPTY_STRING)).append(isYYYY ? YYYY : YY);
         }
 
         if (!isYYYY && yyFirst) {

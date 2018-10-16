@@ -48,7 +48,7 @@ import nl.captcha.audio.Sample;
 @Controller("captchahandler")
 public class CaptchaHandler extends MFormHandler {
 
-    public static String DEFAULT_RENDER = "capCaptcha";
+    public static final String DEFAULT_RENDER = "capCaptcha";
 
     /**
      * create captcha image
