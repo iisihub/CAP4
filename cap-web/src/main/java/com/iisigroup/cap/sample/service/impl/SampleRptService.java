@@ -49,12 +49,10 @@ public class SampleRptService extends AbstractReportPdfService {
             list.add(map);
         }
         int totalPageNo = 1;
-        if (!CollectionUtils.isEmpty(list)) {
-            if (list.size() > 30) {
-                int totalCount = list.size();
-                totalCount -= 30;
-                totalPageNo = totalCount / 35 + 2;
-            }
+        if (!CollectionUtils.isEmpty(list) && list.size() > 30) {
+            int totalCount = list.size();
+            totalCount -= 30;
+            totalPageNo = totalCount / 35 + 2;
         }
         reportData.put("totalPageNo", String.valueOf(totalPageNo));
         reportData.put("mapList", list);
