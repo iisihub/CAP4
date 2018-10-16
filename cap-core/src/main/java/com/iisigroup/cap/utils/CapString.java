@@ -23,6 +23,9 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.iisigroup.cap.constants.Constants;
 
 /**
@@ -41,6 +44,8 @@ import com.iisigroup.cap.constants.Constants;
  *          </ul>
  */
 public final class CapString {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CapString.class);
 
     public final static char[] hexChar = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
@@ -210,7 +215,7 @@ public final class CapString {
 
             }
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOGGER.trace(e.getMessage(), e);
         }
         return rStr;
     }

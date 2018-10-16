@@ -21,6 +21,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * <p>
  * 日期格式處理.
@@ -38,6 +41,8 @@ import java.util.regex.Pattern;
  *          </ul>
  */
 public class CapDate {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CapDate.class);
 
     public final static String[] MONTH = { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
 
@@ -418,7 +423,7 @@ public class CapDate {
                 return true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.trace(e.getMessage(), e);
         }
         return false;
     }

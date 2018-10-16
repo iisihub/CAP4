@@ -63,7 +63,7 @@ public class CaptchaHandler extends MFormHandler {
             ImageIO.write(img, "jpg", baos);
             baos.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.trace(e.getMessage(), e);
         }
         return new ByteArrayDownloadResult(request, baos.toByteArray(), "image");
     }
@@ -81,7 +81,7 @@ public class CaptchaHandler extends MFormHandler {
             AudioSystem.write(audio.getAudioInputStream(), AudioFileFormat.Type.WAVE, baos);
             baos.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.trace(e.getMessage(), e);
         }
         return new ByteArrayDownloadResult(request, baos.toByteArray(), "audio/wave");
     }

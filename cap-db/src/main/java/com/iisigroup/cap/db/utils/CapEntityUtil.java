@@ -140,7 +140,7 @@ public class CapEntityUtil {
         try {
             return clazz.getDeclaredField(filedName).getAnnotation(Column.class).length();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.trace(e.getMessage(), e);
             return defValue;
         }
     }

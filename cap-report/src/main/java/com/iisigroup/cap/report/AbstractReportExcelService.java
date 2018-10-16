@@ -77,9 +77,9 @@ public abstract class AbstractReportExcelService implements ReportService {
         try (InputStream inputWorkbook = getClass().getClassLoader().getResourceAsStream("/ftl/" + getReportDefinition() + REPORT_SUFFIX);) {
             w = Workbook.getWorkbook(inputWorkbook);
         } catch (BiffException e) {
-            e.printStackTrace();
+            logger.trace(e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.trace(e.getMessage(), e);
         }
         return w;
     }
@@ -187,7 +187,7 @@ public abstract class AbstractReportExcelService implements ReportService {
             workbook.close();
             IOUtils.closeQuietly(out);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.trace(e.getMessage(), e);
             if (e.getCause() != null) {
                 throw new CapException(e.getCause(), e.getClass());
             } else {

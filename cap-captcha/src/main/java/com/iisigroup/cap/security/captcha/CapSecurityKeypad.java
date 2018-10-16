@@ -23,6 +23,8 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.iisigroup.cap.security.captcha.producer.CapTextProducer;
 
@@ -47,6 +49,7 @@ import nl.captcha.text.renderer.WordRenderer;
  */
 public class CapSecurityKeypad {
 
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
     private static final Random RAND = new SecureRandom();
     private String metadata;
     private int height;
@@ -216,15 +219,8 @@ public class CapSecurityKeypad {
             } else {
                 resStr = baos.toByteArray();
             }
-
         } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                baos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            logger.trace(e.getMessage(), e);
         }
         return (T) resStr;
     }

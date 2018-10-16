@@ -587,7 +587,7 @@ public class RuleTbMntHandler extends MFormHandler {
             workbook.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.trace(e.getMessage(), e);
         }
         return relFile;
     }
@@ -645,7 +645,7 @@ public class RuleTbMntHandler extends MFormHandler {
             result.set("tMsg", "試算完成");
         } catch (Exception e) {
             result.set("tMsg", "試算發生錯誤，" + e.getLocalizedMessage());
-            e.printStackTrace();
+            logger.trace(e.getMessage(), e);
         }
 
         return result;
