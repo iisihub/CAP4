@@ -44,17 +44,13 @@ public class CapDate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CapDate.class);
 
-    public final static String[] MONTH = { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
-
-    protected final static int[] DAYS_OF_MONTH = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    private final static int[] DAYS_OF_MONTH = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
     private static final String[] DAY_OF_WEEK = { "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT" };
 
-    public final static long ONE_DAY_TIME_MILLIS = 1000 * 60 * 60 * 24L;
+    private static final long ONE_DAY_TIME_MILLIS = 1000 * 60 * 60 * 24L;
 
-    public final static String ZERO_DATE = "0001-01-01";
-
-    public final static String DEFAULT_DATE_FORMAT = "yyyyMMdd";
+    private static final String DEFAULT_DATE_FORMAT = "yyyyMMdd";
 
     private CapDate() {
 

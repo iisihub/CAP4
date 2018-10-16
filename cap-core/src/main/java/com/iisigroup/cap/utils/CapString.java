@@ -47,7 +47,7 @@ public final class CapString {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CapString.class);
 
-    public final static char[] hexChar = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+    private static final char[] HEX_CHAR = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
     private CapString() {
     }
@@ -66,8 +66,8 @@ public final class CapString {
         char[] ca = new char[2 * ba.length];
         for (int i = 0; i < ca.length; i += 2) {
             byte b = ba[i / 2];
-            ca[i] = hexChar[(b >> 4) & 0xf];
-            ca[i + 1] = hexChar[b & 0xf];
+            ca[i] = HEX_CHAR[(b >> 4) & 0xf];
+            ca[i + 1] = HEX_CHAR[b & 0xf];
         }
         return new String(ca);
     }

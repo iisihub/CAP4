@@ -12,6 +12,10 @@
  */
 package com.iisigroup.cap.batch.constants;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * <pre>
  * CapBatchConstants
@@ -34,6 +38,7 @@ public interface CapBatchConstants {
 
     String K_JOB_EXECUTION = "_jobExecution";
 
-    String[] SCHEDULE_KEYWORDS = new String[] { "isEnabled", "exeHost", "cronExpression", "timeZoneId", "repeatCount", "repeatInterval", "priority", "jobData" };
+    List<String> SCHEDULE_KEYWORDS = Collections
+            .unmodifiableList(Arrays.asList(new String[] { "isEnabled", "exeHost", "cronExpression", "timeZoneId", "repeatCount", "repeatInterval", "priority", "jobData" }));
 
 }
