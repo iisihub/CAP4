@@ -48,7 +48,6 @@ public class AccessControlServiceImpl implements AccessControlService {
 
     @Override
     public List<Role> getAuthRolesByUrl(String url) {
-        // FIXME
         url = url.replaceAll("/page/", "");
         if (url.lastIndexOf('_') >= 0) {
             url = url.substring(0, url.lastIndexOf('_'));
