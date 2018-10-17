@@ -10,8 +10,6 @@ $.extend(Properties || {}, {
         async : false,
         data : {
           CCPAGENO : window.CCPAGENO
-        },
-        success : function(d) {
         }
       });
     }

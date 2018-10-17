@@ -52,8 +52,6 @@ window.pageInit = function(settings) {
       type : 'post',
       data : {
         CCPAGENO : window.CCPAGENO
-      },
-      success : function(res) {
       }
     });
   }
