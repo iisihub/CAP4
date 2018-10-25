@@ -87,8 +87,10 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
     public T sendRequest(RequestContent requestContent) {
         if (!isInit) {
             SSLSocketFactory sslSocketFactory = this.initSslSocketFactory();
-            this.sslSocketFactory = sslSocketFactory;
-            isInit = true;
+            if(sslSocketFactory != null) {
+                this.sslSocketFactory = sslSocketFactory;
+                isInit = true;
+            }
         }
 
         T responseContent = null;
@@ -311,7 +313,8 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
             } else {
                 //使用自定義的protocol
                 SSLSocketFactory sslSocketFactory = this.initSslSocketFactory(protocol);
-                connection.setSSLSocketFactory(sslSocketFactory);
+                if(sslSocketFactory != null)
+                    connection.setSSLSocketFactory(sslSocketFactory);
             }
         }
 
@@ -396,9 +399,9 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
             }
             recordInfo.add("Response Body : " + responseJson);
         } catch (JsonSyntaxException e) {
-            responseJson = new JsonObject();
             recordInfo.add("Response Body: " + responseBodySB);
             recordInfo.add("Response Exception: " + e);
+            throw e;
         }
         return responseJson;
     }
