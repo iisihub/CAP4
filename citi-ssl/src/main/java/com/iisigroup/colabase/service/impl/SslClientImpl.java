@@ -67,7 +67,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
                 SSLSocketFactory sslSocketFactory = ColaSSLUtil.getSSLSocketFactory(protocol, keyStorePath, keyStorePWD, trustStorePath);
                 return sslSocketFactory;
             } catch (CertificateException | UnrecoverableKeyException | KeyStoreException | NoSuchAlgorithmException | IOException | KeyManagementException e) {
-                logger.error("init SslSocketFactory fail >>> {}", e.getCause());
+                logger.error("init SslSocketFactory fail >>> ", e);
             }
         }
         return null;
@@ -85,7 +85,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
      */
     @Override
     public T sendRequest(RequestContent requestContent) {
-        if (!isInit) {
+        if (!isInit && requestContent.isUseOwnKeyAndTrustStore()) {
             SSLSocketFactory sslSocketFactory = this.initSslSocketFactory();
             if(sslSocketFactory != null) {
                 this.sslSocketFactory = sslSocketFactory;
@@ -362,6 +362,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
             stringBuilder.append("=");
             stringBuilder.append(URLEncoder.encode(dataMap.get(key), "UTF-8"));
         }
+        recordInfo.add("ApiRequest: SendData = " + stringBuilder);
         logger.debug("ApiRequest: SendData = {}", stringBuilder);
 
         try (DataOutputStream out = new DataOutputStream(connection.getOutputStream())) {
