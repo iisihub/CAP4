@@ -51,7 +51,16 @@
     <!-- <bean id="init" class="com.iisigroup.colabase.va.util.LoadAllCaCertAndCRLBean"> -->
     <!-- </bean> -->
     <!-- cola system properties -->
-    <bean id="sysProp" class="com.iisigroup.colabase.common.jsp.COLASystemProperties">
+    <bean id="sysProp" class="com.iisigroup.colabase.common.jsp.ColaSysDbAndConfigProps">
+        <constructor-arg index="0">
+            <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+                <property name="locations">
+                    <list>
+                        <value>classpath:config.properties</value>
+                    </list>
+                </property>
+            </bean>
+        </constructor-arg>
         <property name="ignoreCache">
             <list>
                 <value>MAX_FILE_COUNT</value>
