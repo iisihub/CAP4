@@ -5,16 +5,20 @@
     <parent>
         <artifactId>citi</artifactId>
         <groupId>com.iisigroup.colabase</groupId>
-        <version>4.0.1-colabase-jdk1.7-201811141730</version>
+        <version>4.0.1-colabase-jdk1.7-201810301700</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>citi-json</artifactId>
+    <artifactId>citi-ssl</artifactId>
     <dependencies>
         <!-- cap dependency -->
         <dependency>
             <groupId>com.iisigroup.colabase</groupId>
             <artifactId>citi-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.iisigroup.colabase</groupId>
+            <artifactId>citi-json</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -28,12 +32,6 @@
             <version>2.7.22</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>2.2.2</version>
-        </dependency>
+
     </dependencies>
-
-
 </project>

@@ -3,9 +3,9 @@
     <parent>
         <artifactId>citi</artifactId>
         <groupId>com.iisigroup.colabase</groupId>
-        <version>4.0.1-colabase-jdk1.7-201811141730</version>
+        <version>4.0.1-colabase-jdk1.7-201810301700</version>
     </parent>
-    <artifactId>citi-net</artifactId>
+    <artifactId>citi-import</artifactId>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -13,10 +13,22 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.7.22</version>
+            <scope>test</scope>
+        </dependency>
         <!-- cap dependency -->
         <dependency>
             <groupId>com.iisigroup.colabase</groupId>
             <artifactId>citi-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>sqljdbc</artifactId>
+            <version>4.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

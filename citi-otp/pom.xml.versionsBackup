@@ -3,15 +3,20 @@
     <parent>
         <artifactId>citi</artifactId>
         <groupId>com.iisigroup.colabase</groupId>
-        <version>4.0.1-colabase-jdk1.7-201811141730</version>
+        <version>4.0.1-colabase-jdk1.7-201810301700</version>
     </parent>
-    <artifactId>citi-net</artifactId>
+    <artifactId>citi-otp</artifactId>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.4</version>
         </dependency>
         <!-- cap dependency -->
         <dependency>
