@@ -152,9 +152,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
 
             if (html != null) {
 
-                String imagePath = getSysConfig().getProperty("edmImageFileLocation", "/ftl/colabaseDemo/edmImages/");
-                imagePath = getClass().getResource(imagePath).getPath();
-
+                String imagePath = (String) dataMap.get("edmImageFileLocation");
                 messageBodyPart.setContent(html.toString(), "text/html;charset=utf-8");
                 // add it
                 multipart.addBodyPart(messageBodyPart);
