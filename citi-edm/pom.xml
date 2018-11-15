@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.iisigroup.colabase</groupId>
 		<artifactId>citi</artifactId>
-		<version>4.0.1-colabase-jdk1.7-201811151000</version>
+		<version>4.0.1-colabase-jdk1.7-201811151030</version>
 	</parent>
 	<artifactId>citi-edm</artifactId>
 	<dependencies>
