@@ -20,8 +20,10 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -36,6 +38,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimeUtility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -156,41 +159,15 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
                 messageBodyPart.setContent(html.toString(), "text/html;charset=utf-8");
                 // add it
                 multipart.addBodyPart(messageBodyPart);
-
+                logRecord.debug("[SendEmailServiceImpl] @ emailing orgStr >>" + html.toString());
                 // 處理img src
                 String org = html.toString();
                 String keyword = "<img src=\"cid:";
-                int index = org.indexOf(keyword);
-                int end = 0;
-                while (index >= 0) {
-                    end = org.indexOf('\"', index + keyword.length());
-                    String fileName = org.substring(index + keyword.length(), end);
-                    messageBodyPart = new MimeBodyPart();
+                processImage(multipart, org, imagePath, keyword, "\"");
 
-                    DataSource fds = new FileDataSource(imagePath + File.separator + fileName);
-                    messageBodyPart.setDataHandler(new DataHandler(fds));
-                    messageBodyPart.setHeader("Content-ID", "<" + fileName + ">");
-                    // add image to the multipart
-
-                    multipart.addBodyPart(messageBodyPart);
-                    index = org.indexOf(keyword, index + keyword.length());
-                }
                 String keyword2 = "background:url('cid:";
-                index = org.indexOf(keyword2);
-
-                while (index >= 0) {
-                    logRecord.info("[EDM] Index is : {}", index);
-                    end = org.indexOf('\"', index + keyword2.length());
-                    String fileName = org.substring(index + keyword2.length(), end);
-                    messageBodyPart = new MimeBodyPart();
-                    DataSource fds = new FileDataSource(imagePath + File.separator + fileName);
-                    messageBodyPart.setDataHandler(new DataHandler(fds));
-                    messageBodyPart.setHeader("Content-ID", "<" + fileName + ">");
-                    // add image to the multipart
-                    multipart.addBodyPart(messageBodyPart);
-
-                    index = org.indexOf(keyword2, index + keyword2.length());
-                }
+                processImage(multipart, org, imagePath, keyword2, "\'");
+                
                 // 處理附加檔案
                 boolean isSendFile = dataMap.get("edmSendFileLocation") != null ? true : false;
                 if(isSendFile) {
@@ -249,18 +226,68 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
         // 處理附加檔案
         File sendFile;
         MimeBodyPart filePart = new MimeBodyPart();
-        
         // send file
         try {
             String filePath = (String) dataMap.get("edmSendFileLocation");
             sendFile = new File(filePath);
-            filePart.attachFile(sendFile);
-            multipart.addBodyPart(filePart);
+            logRecord.debug("[SendEmailServiceImpl] @ attachedFile Found >>>>>> " + sendFile);
+            if (sendFile.exists()) {
+                logRecord.debug("[SendEmailServiceImpl] @ attachedFile has Found");
+                // 要顯示的檔名，檔名使用UTF-8編碼
+                filePart.setHeader("Content-Type",  "application/octet-stream; charset=\"utf-8\"");
+                /*
+                 * the legal values for "encoding" are "Q" and "B"... The "Q"
+                 * encoding is recommended for use when most of the characters to be
+                 * encoded are in the ASCII character set; otherwise, the "B"
+                 * encoding should be used.
+                 */
+                /** WAS 6.1 不支援 */
+                filePart.attachFile(sendFile);
+                String fileName = sendFile.getName();
+                filePart.setFileName(MimeUtility.encodeText(fileName, "UTF-8", "B"));
+                multipart.addBodyPart(filePart);
+            } else {
+                logRecord.debug("[SendEmailServiceImpl] @ attachedFile not Found");
+            }
         } catch (Exception e) {
             logRecord.debug("sendEdmFileNotification:" + e.getMessage(), e);
         }
         
         return multipart;
     }
-
+    
+    private void processImage(MimeMultipart multipart, String mailContent,
+            String imagePath, String tag, String indexMark) throws MessagingException {
+        BodyPart messageBodyPart;
+        int index = mailContent.indexOf(tag);
+        int end = 0;
+        logRecord.debug("[SendEmailServiceImpl] @ {} process >>>>>> ", tag);
+        Set<String> imageSet = new HashSet<String>();
+        while (index >= 0) {
+            int indexOfTag = index + tag.length();
+            end = mailContent.indexOf(indexMark, indexOfTag);
+            String fileName = mailContent.substring(indexOfTag, end);
+            if (!imageSet.contains(fileName)) {
+                messageBodyPart = new MimeBodyPart();
+                File file = new File(imagePath, fileName);
+                if (file.exists()) {
+                    DataSource fds = new FileDataSource(file);
+                    messageBodyPart.setDataHandler(new DataHandler(fds));
+                    messageBodyPart.setHeader("Content-ID", "<" + fileName + ">");
+                    if(fileName.endsWith(".gif")){                              // /** .gif若Content-Type設IMAGE/JPEG，IE瀏覽器看不到*/
+                        messageBodyPart.setHeader("Content-Type", "IMAGE/GIF");
+                    }else{
+                        messageBodyPart.setHeader("Content-Type", "IMAGE/JPEG");// /** WAS 8.5 Mail 在MAC會發生的問題 */
+                    }
+                    // add image to the multipart
+                    multipart.addBodyPart(messageBodyPart);
+                } else {
+                    logRecord.debug("[SendEmailServiceImpl] @ File Not Found >>>>>> {}", file.getPath());
+                }
+            }
+            imageSet.add(fileName);
+            index = mailContent.indexOf(tag, indexOfTag);
+        }
+    }
+    
 }

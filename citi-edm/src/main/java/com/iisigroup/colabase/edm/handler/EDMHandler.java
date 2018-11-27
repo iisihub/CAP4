@@ -65,7 +65,7 @@ public class EDMHandler extends MFormHandler {
               dataMap.put("edmUsr", "css123456tw@gmail.com");
               dataMap.put("edmPwd", "kvzulwkqdoiprtfb");
               dataMap.put("edmSubject", "花旗(台灣)銀行 圓滿貸線上申請確認通知函");
-              dataMap.put("edmSendFileLocation", "D:/COLA/skitch.zip");
+              dataMap.put("edmSendFileLocation", "D:/COLA/圓滿貸線上申請.pdf");
               dataMap.put("edmImageFileLocation", "D:/COLA/image");
               
               edmService.sendEDM(request, "report/" + edmFtlPath, dataMap);
