@@ -40,7 +40,7 @@ import com.iisigroup.cap.model.GenericBean;
 @SuppressWarnings("serial")
 @Entity
 @EntityListeners({ CapOidGeneratorListener.class })
-@Table(name = "CFG_CODETYPE", uniqueConstraints = @UniqueConstraint(columnNames = { "locale", "codeType", "codeValue" }))
+@Table(name = "CO_CFG_CODETYPE", uniqueConstraints = @UniqueConstraint(columnNames = { "locale", "codeType", "codeValue" }))
 public class CodeType extends GenericBean implements DataObject {
 
     @Id
