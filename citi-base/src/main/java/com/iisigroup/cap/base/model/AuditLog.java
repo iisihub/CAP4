@@ -36,7 +36,7 @@ import com.iisigroup.cap.model.GenericBean;
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "AUDIT_LOG", uniqueConstraints = @UniqueConstraint(columnNames = "oid"))
+@Table(name = "CO_AUDIT_LOG", uniqueConstraints = @UniqueConstraint(columnNames = "oid"))
 public class AuditLog extends GenericBean implements DataObject {
     /** unique id */
     @Id
