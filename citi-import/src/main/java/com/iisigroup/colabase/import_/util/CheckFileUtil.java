@@ -28,6 +28,34 @@ public class CheckFileUtil {
     
     private static final String FILE_DATE_FORMAT = "yyyyMMdd";
     
+    /**
+     * 判斷.bak檔案修改日是否為今日或昨日
+     * 
+     * @param File importFile
+     * @param int days
+     * @return 檔案修改日是否在今日或昨日
+     */
+    public static boolean checkFileModifiedDate(String filePath, String fileName) {
+        File file = new File(filePath, fileName);
+        if (file.exists() && file.canRead()) {
+        	//2015/9/21,Tim,修改計算單位為天
+        	long modifiedTime = file.lastModified();
+        	logger.debug("checkFileModifiedDate>>>>modifiedTime:" + modifiedTime);
+            logger.debug("checkFileModifiedDate>>>>modifiedTime:" + new Timestamp(modifiedTime));
+    		Timestamp tsp = new Timestamp(modifiedTime);
+    		String modDay = CapDate.convertTimestampToString(tsp, "yyyyMMdd");
+    		String nowDay = CapDate.getCurrentDate("yyyyMMdd");
+    		int shiftDay = CapDate.calculateDays(modDay, nowDay);
+    		//2017/1/24,修改為搬檔案完，隔天或當天就執行
+    		if(shiftDay==-1 || shiftDay==0){
+    			return true;
+    		}           
+        }else{
+            throw new CapMessageException("讀取不存在或無法讀取，無法檢查檔案時間", CheckFileUtil.class);
+        }
+        return false;
+    }
+    
 	/**
      * 判斷.bak檔案是否超過指定的天數
      * 

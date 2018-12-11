@@ -53,6 +53,11 @@ public class DemoImportFileServiceImpl implements DemoImportFileService {
         return custDao.spImport(importFile, storedProcedureName);
     }
     
+    public boolean checkTodayYesterday(String filePath, String fileName) {
+        fileName += ".bak";
+        return CheckFileUtil.checkFileModifiedDate(filePath, fileName);
+    }
+    
     public boolean checkTime(String filePath, String fileName, int days) {
         fileName += ".bak";
         return CheckFileUtil.checkFileModifiedDate(filePath, fileName, days);

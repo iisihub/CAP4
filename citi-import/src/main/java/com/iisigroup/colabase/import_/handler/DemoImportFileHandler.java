@@ -52,6 +52,25 @@ public class DemoImportFileHandler extends MFormHandler {
         return result;
     }
     
+    public Result checkTodayYesterday(Request request) throws CapException {
+        AjaxFormResult result = new AjaxFormResult();
+        String localFilePath1 = request.get(LOCAL_FILE_PATH_1);
+        String localFileName1 = request.get(LOCAL_FILE_NAME_1);
+        int days1 = Integer.valueOf(request.get(DAYS_1));
+        try {
+            boolean checkTodayYesterday = importFileSrv.checkTodayYesterday(localFilePath1, localFileName1);
+            if(checkTodayYesterday){
+                result.set(RESULT_MSG, "檔案是今日或昨日的檔案，可以執行Stored Procedure。");
+            }else{
+                result.set(RESULT_MSG, "檔案不是今日或昨日的檔案，不要執行Stored Procedure。");
+            }
+        } catch (Exception e) {
+            result.set(ERROR_MSG, e.getMessage());
+            logger.error("Check File Time Error", e);
+        }
+        return result;
+    }
+    
     public Result checkTime(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         String localFilePath1 = request.get(LOCAL_FILE_PATH_1);

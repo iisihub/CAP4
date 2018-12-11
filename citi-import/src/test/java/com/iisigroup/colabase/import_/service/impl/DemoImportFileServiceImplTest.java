@@ -24,7 +24,7 @@ public class DemoImportFileServiceImplTest {
     // 指定天數
     private final int days = 50; // 自訂
     // 指定天
-    private final String date = "20181207"; // 自訂
+    private final String date = "20181211"; // 自訂
     // 指定天格式(上面date的格式，例：yyyyMMdd)
     private final String dateFormat = "yyyyMMdd"; // 自訂
     // 檔案筆數
@@ -42,6 +42,12 @@ public class DemoImportFileServiceImplTest {
         importFileService = new DemoImportFileServiceImpl(custDao);
     }
 
+    @Test
+    public void testCheckTodayYesterday() throws Exception {
+        boolean result = importFileService.checkTodayYesterday(filePath, fileName);
+        assertEquals(true, result);
+    }
+    
     @Test
     public void testCheckTime() throws Exception {
         boolean result = importFileService.checkTime(filePath, fileName, days);

@@ -24,6 +24,7 @@
             <button id="sendBtn" class="sendbtn" type="button">測試匯檔</button><br/>
             <span>-----------------------------------------------------------------------------------------------------</span><br/>
             <h3>匯檔步驟</h3>
+            <button id="checkTodayYesterdayBtn" class="sendbtn" type="button">1-0.檢查本地檔案是否為今日或昨日的檔案</button><br/>
             <button id="checkTimeBtn" class="sendbtn" type="button">1-1.檢查本地檔案是否在指定天數之內</button><br/>
             <button id="checkDateBtn" class="sendbtn" type="button">1-2.檢查本地檔案是否在指定天(yyyyMMdd)</button><br/>
             <button id="countRowsBtn" class="sendbtn" type="button">2.算本地檔案的資料數</button><br/>
