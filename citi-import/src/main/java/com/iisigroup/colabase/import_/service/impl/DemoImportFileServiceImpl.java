@@ -17,20 +17,20 @@ import org.springframework.stereotype.Service;
 
 import com.iisigroup.cap.exception.CapMessageException;
 import com.iisigroup.cap.utils.CapDate;
-import com.iisigroup.colabase.import_.dao.ImportCustomerDao;
-import com.iisigroup.colabase.import_.service.ImportFileService;
+import com.iisigroup.colabase.import_.dao.DemoImportCustomerDao;
+import com.iisigroup.colabase.import_.service.DemoImportFileService;
 
 @Service
-public class ImportFileServiceImpl implements ImportFileService {
+public class DemoImportFileServiceImpl implements DemoImportFileService {
 
-    public ImportFileServiceImpl(ImportCustomerDao custDao){
+    public DemoImportFileServiceImpl(DemoImportCustomerDao custDao){
         this.custDao = custDao;
     }
     
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private ImportCustomerDao custDao;
+    private DemoImportCustomerDao custDao;
     
     private static final String FILE_DATE_FORMAT = "yyyyMMdd";
 

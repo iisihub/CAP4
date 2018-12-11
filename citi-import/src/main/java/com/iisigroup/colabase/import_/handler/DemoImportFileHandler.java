@@ -11,13 +11,13 @@ import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
-import com.iisigroup.colabase.import_.service.ImportFileService;
+import com.iisigroup.colabase.import_.service.DemoImportFileService;
 
 @Controller("demoimportfilehandler")
 public class DemoImportFileHandler extends MFormHandler {
     
     @Autowired
-    private ImportFileService importFileSrv;
+    private DemoImportFileService importFileSrv;
     
     private static final String FILE_DATE_FORMAT = "yyyyMMdd";
     private static final String LOCAL_FILE_PATH_1 = "localFilePath1";

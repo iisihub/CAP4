@@ -3,7 +3,7 @@ package com.iisigroup.colabase.import_.service;
 import java.util.List;
 import java.util.Map;
 
-public interface ImportFileService {
+public interface DemoImportFileService {
     
     boolean checkTime(String filePath, String fileName, int days);
     

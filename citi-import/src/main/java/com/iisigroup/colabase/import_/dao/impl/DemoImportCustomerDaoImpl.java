@@ -10,11 +10,11 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
-import com.iisigroup.colabase.import_.dao.ImportCustomerDao;
-import com.iisigroup.colabase.import_.model.ImportCustomer;
+import com.iisigroup.colabase.import_.dao.DemoImportCustomerDao;
+import com.iisigroup.colabase.import_.model.DemoImportCustomer;
 
 @Repository("importCustomerDao")
-public class ImportCustomerDaoImpl extends GenericDaoImpl<ImportCustomer> implements ImportCustomerDao {
+public class DemoImportCustomerDaoImpl extends GenericDaoImpl<DemoImportCustomer> implements DemoImportCustomerDao {
 
     public List spImport(String[] importFiles, String[] storedProcedureNames) {
         

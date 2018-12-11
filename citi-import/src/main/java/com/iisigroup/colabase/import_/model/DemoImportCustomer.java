@@ -16,7 +16,7 @@ import com.iisigroup.cap.model.GenericBean;
 //@Entity
 //@EntityListeners({ CapOidGeneratorListener.class })
 //@Table(name = "DEMO_CUSTOMER", uniqueConstraints = @UniqueConstraint(columnNames = { "ID" }))
-public class ImportCustomer extends GenericBean implements DataObject {
+public class DemoImportCustomer extends GenericBean implements DataObject {
 
     // OID
     @Id

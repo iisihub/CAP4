@@ -6,14 +6,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.iisigroup.colabase.import_.dao.ImportCustomerDao;
-import com.iisigroup.colabase.import_.dao.impl.ImportCustomerDaoImpl;
-import com.iisigroup.colabase.import_.service.ImportFileService;
+import com.iisigroup.colabase.import_.dao.DemoImportCustomerDao;
+import com.iisigroup.colabase.import_.dao.impl.DemoImportCustomerDaoImpl;
+import com.iisigroup.colabase.import_.service.DemoImportFileService;
 
 import static org.junit.Assert.*;
 
 @RunWith(value = MockitoJUnitRunner.class)
-public class ImportFileServiceImplTest {
+public class DemoImportFileServiceImplTest {
     
     // 測試前請設定netPath, domain, uName, uXwd，
 
@@ -31,15 +31,15 @@ public class ImportFileServiceImplTest {
     private final int count = 3; // 自訂
 
     @Spy
-    private ImportCustomerDao custDao;
+    private DemoImportCustomerDao custDao;
     
     @Spy
-    private ImportFileService importFileService;
+    private DemoImportFileService importFileService;
 
     @Before
     public void setUp() throws Exception {
-        custDao = new ImportCustomerDaoImpl();
-        importFileService = new ImportFileServiceImpl(custDao);
+        custDao = new DemoImportCustomerDaoImpl();
+        importFileService = new DemoImportFileServiceImpl(custDao);
     }
 
     @Test
