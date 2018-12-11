@@ -13,7 +13,7 @@ import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
 import com.iisigroup.colabase.import_.dao.DemoImportCustomerDao;
 import com.iisigroup.colabase.import_.model.DemoImportCustomer;
 
-@Repository("importCustomerDao")
+@Repository("demoImportCustomerDao")
 public class DemoImportCustomerDaoImpl extends GenericDaoImpl<DemoImportCustomer> implements DemoImportCustomerDao {
 
     public List spImport(String[] importFiles, String[] storedProcedureNames) {
