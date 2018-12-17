@@ -7,6 +7,8 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.iisigroup.colabase.otp.model.SmsConfig;
+
 public class OTPServiceImplTest {
 
     private final String mobilePhone = "09001234567";
@@ -20,19 +22,34 @@ public class OTPServiceImplTest {
 
     private final boolean isResendOTP = true;
     private OTPServiceImpl otpService;
+    private SmsConfig smsConfig;
+    // SMS Msg
+    private static final String SMS_MSG = "您的「簡訊動態密碼OTP」為{0}，密碼將於{1}秒後失效。請於網頁輸入密碼完成申請。";
+    private static final String RETRY_MSG = "若密碼失效請按『重送OTP簡訊動態密碼』重送，最多可重送{0}次，你已重送了{1}次。";
+    private static final String MAX_RETRY_MSG = "已達可重送次數{0}次限制。";
 
     @Before
     public void setUp() throws Exception {
+        String host = "sms-pp.sapmobileservices.com";
+        String entry = "/citi/citi_tw_ua97201/citi_tw_ua97201.sms";
+        String port = "443";
+        String username = "citi_tw_ua97201";
+        String password = "PeGdmtkD";
+        String encoding = "BIG5";
+        String proxyEnable = "true";
+        String proxyHost = "sgproxy-app.wlb.apac.nsroot.net";
+        String proxyPort = "8080";
+        smsConfig = new SmsConfig(host, entry, port, username, password, encoding, proxyEnable, proxyHost, proxyPort);
         otpService = new OTPServiceImpl();
     }
 
     @Test
     public void testGenAndSendOTP() {
         // 判斷OTP Map是為空值
-        Map<String, String> otpMap = otpService.genAndSendOTP("001231321312", otpTimeoutSeconds);
+        Map<String, String> otpMap = otpService.genAndSendOTP(smsConfig, "001231321312", SMS_MSG, otpTimeoutSeconds);
         assertTrue("otpMap is Empty", otpMap.isEmpty());
         // 判斷OTP Map是否有值
-        otpMap = otpService.genAndSendOTP(mobilePhone, otpTimeoutSeconds);
+        otpMap = otpService.genAndSendOTP(smsConfig, mobilePhone, SMS_MSG, otpTimeoutSeconds);
         assertNotNull("otpMap must be not null", otpMap);
         // 判斷是否有產生OTP密碼
         String otp = otpMap.get(OTPServiceImpl.OTP);
@@ -51,10 +68,10 @@ public class OTPServiceImplTest {
     @Test
     public void testResendOTP() {
         // 判斷RETRY Map是為空值
-        Map<String, String> retryOTPMap = otpService.genAndSendOTP("+88612312312", otpTimeoutSeconds);
+        Map<String, String> retryOTPMap = otpService.genAndSendOTP(smsConfig, "+88612312312", SMS_MSG, otpTimeoutSeconds);
         assertTrue("retryOTPMap is Empty", retryOTPMap.isEmpty());
         // 判斷RETRY OTP Map是否有值
-        retryOTPMap = otpService.resendOTP(mobilePhone, otpTimeoutSeconds, otpMaxRetry, isResendOTP, retryCount);
+        retryOTPMap = otpService.resendOTP(smsConfig, mobilePhone, SMS_MSG, RETRY_MSG, MAX_RETRY_MSG, otpTimeoutSeconds, otpMaxRetry, isResendOTP, retryCount);
         assertNotNull("retryOTPMap must be not null", retryOTPMap);
         // 判斷是否有產生OTP密碼
         String otp = retryOTPMap.get(OTPServiceImpl.OTP);
