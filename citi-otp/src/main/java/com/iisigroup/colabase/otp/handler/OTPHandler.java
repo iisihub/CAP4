@@ -25,6 +25,8 @@ import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
 import com.iisigroup.cap.utils.CapString;
+import com.iisigroup.cap.utils.CapSystemConfig;
+import com.iisigroup.colabase.otp.model.SmsConfig;
 import com.iisigroup.colabase.otp.service.OTPService;
 import com.iisigroup.colabase.otp.service.impl.OTPServiceImpl;
 
@@ -43,6 +45,9 @@ public class OTPHandler extends MFormHandler {
 
     @Autowired
     private OTPService otpService;
+    @Autowired
+    private CapSystemConfig sysConfig;
+
     // 前端送來的參數
     public static final String USER_OTP = "USER_OTP";// USER輸入的OTP
     public static final String MOBILE_PHONE = "MOBILE_PHONE";// 手機號碼
@@ -51,6 +56,13 @@ public class OTPHandler extends MFormHandler {
     public static final String OTP_MAX_RETRY = "OTP_MAX_RETRY";// OTP 重送最大次數
     // 回前端的參數
     private static final String IS_VERIFY = "isVerify";
+    // Session 計算OTP傳送次數
+    public static final String SESSION_RETRY_COUNT = "retryCount";
+    // OTP回傳的訊息
+    private static final String RETRY_MSG = "若密碼失效請按『重送OTP簡訊動態密碼』重送，最多可重送{0}次，你已重送了{1}次。";
+    private static final String MAX_RETRY_MSG = "已達可重送次數{0}次限制。";
+    // SMS Msg
+    private static final String SMS_MSG = "您的「簡訊動態密碼OTP」為{0}，密碼將於{1}秒後失效。請於網頁輸入密碼完成申請。";
 
     /**
      * 發/重送OTP密碼
@@ -68,15 +80,26 @@ public class OTPHandler extends MFormHandler {
         HttpSession session = ((HttpServletRequest) request.getServletRequest()).getSession(false);
         int retryCount = 0;
         // 紀錄於Session 開始重送次數
-        if (session.getAttribute(OTPServiceImpl.SESSION_RETRY_COUNT) == null) {
-            session.setAttribute(OTPServiceImpl.SESSION_RETRY_COUNT, retryCount);
+        if (session.getAttribute(SESSION_RETRY_COUNT) == null) {
+            session.setAttribute(SESSION_RETRY_COUNT, retryCount);
         } else {
-            retryCount = (int) session.getAttribute(OTPServiceImpl.SESSION_RETRY_COUNT);
+            retryCount = (int) session.getAttribute(SESSION_RETRY_COUNT);
         }
+        // SMS Config
+        String host = sysConfig.getProperty("sms.host");
+        String entry = sysConfig.getProperty("sms.entry");
+        String port = sysConfig.getProperty("sms.port");
+        String username = sysConfig.getProperty("sms.username");
+        String password = sysConfig.getProperty("sms.pass.word");
+        String encoding = sysConfig.getProperty("sms.encoding");
+        String proxyEnable = sysConfig.getProperty("proxy.enable");
+        String proxyHost = sysConfig.getProperty("proxy.host");
+        String proxyPort = sysConfig.getProperty(" proxy.port");
+        SmsConfig smsConfig = new SmsConfig(host, entry, port, username, password, encoding, proxyEnable, proxyHost, proxyPort);
         // 重送OTP
         if (isResendOTP) {
             int otpMaxRetry = CapString.isEmpty(request.get(OTP_MAX_RETRY)) ? 0 : Integer.parseInt(request.get(OTP_MAX_RETRY));
-            otpMap = otpService.resendOTP(mobilePhone, otpMaxRetry, otpMaxRetry, isResendOTP, retryCount);
+            otpMap = otpService.resendOTP(smsConfig, mobilePhone, SMS_MSG, RETRY_MSG, MAX_RETRY_MSG, otpMaxRetry, otpMaxRetry, isResendOTP, retryCount);
             String retryMsg = otpMap.get(OTPServiceImpl.OTP_RETRY_MSG);
             String isMaxRetry = otpMap.get(OTPServiceImpl.IS_MAX_RETRY);
             result.set(OTPServiceImpl.OTP_RETRY_MSG, retryMsg);
@@ -84,7 +107,7 @@ public class OTPHandler extends MFormHandler {
                 return result;
             }
         } else {
-            otpMap = otpService.genAndSendOTP(mobilePhone, otpTimeoutSeconds);
+            otpMap = otpService.genAndSendOTP(smsConfig, mobilePhone, SMS_MSG, otpTimeoutSeconds);
         }
         // OTP Msg
         String otp = otpMap.get(OTPServiceImpl.OTP);
@@ -92,7 +115,7 @@ public class OTPHandler extends MFormHandler {
         String otpRetryMsg = otpMap.get(OTPServiceImpl.OTP_RETRY_MSG);
         if (!CapString.isEmpty(otp)) {
             retryCount += 1;
-            session.setAttribute(OTPServiceImpl.SESSION_RETRY_COUNT, retryCount);// 紀錄於Session 重送次數
+            session.setAttribute(SESSION_RETRY_COUNT, retryCount);// 紀錄於Session 重送次數
             session.setAttribute(OTPServiceImpl.OTP, otp);// 紀錄於Session Verify OTP 用
         }
         if (!CapString.isEmpty(otpSmsMsg)) {
@@ -113,7 +136,7 @@ public class OTPHandler extends MFormHandler {
      */
     public Result invalidateSession(Request request) {
         AjaxFormResult result = new AjaxFormResult();
-        otpService.invalidateSession(request);
+        otpService.invalidateSession(request, SESSION_RETRY_COUNT);
         return result;
     }
 
@@ -124,7 +147,7 @@ public class OTPHandler extends MFormHandler {
      * @return
      * @throws CapException
      */
-    public Result verifyOTP(Request request){
+    public Result verifyOTP(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         HttpSession session = ((HttpServletRequest) request.getServletRequest()).getSession(false);
         String otp = (String) session.getAttribute(OTPServiceImpl.OTP);

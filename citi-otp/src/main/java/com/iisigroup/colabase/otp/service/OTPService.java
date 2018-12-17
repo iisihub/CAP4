@@ -4,29 +4,44 @@ import java.util.Map;
 
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.exception.CapException;
+import com.iisigroup.colabase.otp.model.SmsConfig;
 
 public interface OTPService {
 
     /**
      * 產生及傳送OTP密碼
      * 
+     * @param smsConfig
      * @param mobilePhone
+     * @param smsMsg
      * @param otpTimeoutSeconds
      * @return
      */
-    Map<String, String> genAndSendOTP(String mobilePhone, int otpTimeoutSeconds);
+    Map<String, String> genAndSendOTP(SmsConfig smsConfig, String mobilePhone, String smsMsg, int otpTimeoutSeconds);
 
     /**
      * 重新產生及傳送OTP密碼，若超過限制次數則不重新發送OTP密碼
      * 
+     * @param smsConfig
      * @param mobilePhone
+     * @param smsMsg
+     *            SMS簡訊文字
+     * @param retryMsg
+     *            重送SMS時訊息文字
+     * @param maxRetryMsg
+     *            達重送SMS次數時訊息文字
      * @param otpTimeoutSeconds
+     *            OTP timeout秒數
      * @param otpMaxRetry
+     *            OTP 最多重送次數
      * @param isResendOTP
+     *            是否重送OTP
      * @param retryCount
+     *            目前已重送次數
      * @return
      */
-    Map<String, String> resendOTP(String mobilePhone, int otpTimeoutSeconds, int otpMaxRetry, boolean isResendOTP, int retryCount);
+    Map<String, String> resendOTP(SmsConfig smsConfig, String mobilePhone, String smsMsg, String retryMsg, String maxRetryMsg, int otpTimeoutSeconds, int otpMaxRetry, boolean isResendOTP,
+            int retryCount);
 
     /**
      * 產生6碼OTP密碼
@@ -38,6 +53,8 @@ public interface OTPService {
     /**
      * 傳送 SMS。
      * 
+     * @param smsConfig
+     *            sms config 設定
      * @param mobilePhone
      *            需要去 0 加 +886 , 若為09開頭則會格式化為+886
      * @param message
@@ -45,7 +62,7 @@ public interface OTPService {
      * @return SMS Server 回傳的結果，記在 AP log 即可，無論成功失敗都不影響交易。
      * @throws CapException
      */
-    String sendOTPbySMS(String mobilePhone, String message);
+    String sendOTPbySMS(SmsConfig smsConfig, String mobilePhone, String message);
 
     /**
      * 限制OTP密碼重送次數
@@ -70,6 +87,6 @@ public interface OTPService {
      * 
      * @param request
      */
-    void invalidateSession(Request request);
+    void invalidateSession(Request request, String vaildateSessionKey);
 
 }

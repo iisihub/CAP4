@@ -145,7 +145,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
     }
 
     private T clientSendRequest(final RequestContent requestContent) {
-        logger.debug("==== send dual ssl request start ====");
+        logger.debug("==== send api module request start ====");
         if (requestContent.getRequestContent() == null) {
             throw new IllegalArgumentException("there is no json requestContent, please init RequestContent by JsonFactory");
         }
@@ -232,15 +232,15 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
             long endTime = new Date().getTime();
             long diffTime = endTime - startTime;
             logger.debug("[clientSendRequest] done. All cause time: {} ms", diffTime);
-            logger.debug("==== send dual ssl request end ====");
+            logger.debug("==== send api module request end ====");
 
             // 由於有可能上層method標記為@NonTransactional，會導致與DB有交易的方法會失敗，另開執行緒執行。
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    logger.debug("==== after send dual ssl request process start ====");
+                    logger.debug("==== after send api module request process start ====");
                     requestContent.afterSendRequest(renewResponseContent);
-                    logger.debug("==== after send dual ssl request process end ====");
+                    logger.debug("==== after send api module request process end ====");
                 }
             });
             thread.start();

@@ -16,7 +16,8 @@ import com.iisigroup.cap.model.GenericBean;
 //@Entity
 //@EntityListeners({ CapOidGeneratorListener.class })
 //@Table(name = "DEMO_CUSTOMER", uniqueConstraints = @UniqueConstraint(columnNames = { "ID" }))
-public class ImportCustomer extends GenericBean implements DataObject {
+// 實際使用時，將上述annotation解開，並將此model加入persistence設定
+public class DemoImportCustomer extends GenericBean implements DataObject {
 
     // OID
     @Id

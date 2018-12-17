@@ -23,20 +23,15 @@ public class CopyFileServiceImpl implements CopyFileService {
     @NonTransactional
     public void copyFile(String path, String domain, String userName, String userXwd, String exportFilePath, String importFilePath, String fileName) {
         
-        // TODO 寫文件，描寫運用在專案要注意的事項(2個)
+        // TODOed 寫文件，描寫運用在專案要注意的事項(2個)
         
-        // 2016/10/26,Tim,先判斷是否有可用的磁碟機代號
-        String pathValue = NetUseUtil.mappingLocalPath(path);
+    	// 最早的邏輯是全部先卸載，再掛載需要的磁碟機，然後最後全部卸載，但會發生卸載到正在使用的磁碟機，所以改成會先去找本地是否已掛載相同目的地的磁碟機，最後再卸載此磁碟機
+    	// 但若在job A先掛載了磁碟機，job B使用，而在其中一個做完，另一個尚未做完的情況下，disconnect，仍會影響另一個job
+    	// 所以改成跟現有邏輯相同的，不先判斷是否有已連接目的地的磁碟機代號(因之前這段沒作用)，自己建自己關
+    	// 修復之前的邏輯有不在最後disconnect的情形(若拋exception)，讓job最後都會disconnect，避免一直占用磁碟機代號。
+    	// ps.原本也想說改成掛載了就不要卸載，但不確定這樣一直處在掛載狀態有沒有其他議題，所以用不影響原本邏輯的方式做修改。
         String diskLtr = "";
         boolean needConnect = true;
-        if (!CapString.isEmpty(pathValue)) {
-            File diskDrive = new File(pathValue + File.separator);
-            if (diskDrive != null && diskDrive.canRead() && diskDrive.canWrite()) {
-                needConnect = false;
-                diskLtr = pathValue.substring(0, 1);
-                logger.debug("*****網路磁碟機已掛載於：{}:{}", diskLtr, File.separator);
-            }
-        }
         int contNetDiskStat = -1;
         if (needConnect) {
             try {
@@ -64,6 +59,7 @@ public class CopyFileServiceImpl implements CopyFileService {
         if (contNetDiskStat != -1 || !needConnect) {
             logger.debug("*****連線網路磁碟機於@{}:{}", diskLtr, File.separator);
             if (CapString.isEmpty(fileName)) {
+            	disconnect(diskLtr);
                 throw new CapMessageException("讀取本機匯出的檔案名稱失敗", getClass());
             }
             File diskDrive = new File(diskLtr + ":" + File.separator);
@@ -72,9 +68,11 @@ public class CopyFileServiceImpl implements CopyFileService {
                 hostFilePath = new File(exportFilePath + File.separator + fileName);
                 logger.debug("HOSTFILEPATH>>>{}", hostFilePath.getAbsolutePath());
             } else {
+            	disconnect(diskLtr);
                 throw new CapMessageException("讀取網路磁碟機路徑(netdisk folder)錯誤", getClass());
             }
             if (!hostFilePath.canRead()) {
+            	disconnect(diskLtr);
                 throw new CapMessageException("讀取本機匯出的檔案錯誤", getClass());
             }
             logger.debug("*****連線網路磁碟機IMPORT_PATH@{}{}{}{}", diskDrive, File.separator, importFilePath, File.separator);
@@ -109,12 +107,16 @@ public class CopyFileServiceImpl implements CopyFileService {
                 logger.error("*****無法搬檔案 IOException:", e);
                 throw new CapMessageException("複製匯入資料錯誤" + e.getLocalizedMessage(), getClass());
             } finally {
-                try {
-                    NetUseUtil.disconnectNetworkPath(diskLtr);
-                } catch (Exception e) {
-                    logger.debug("Disconnect Network Path", e);
-                }
+            	disconnect(diskLtr);
             }
+        }
+    }
+    
+    private void disconnect(String diskLtr){
+    	try {
+            NetUseUtil.disconnectNetworkPath(diskLtr);
+        } catch (Exception e) {
+            logger.debug("Disconnect Network Path", e);
         }
     }
 
