@@ -36,7 +36,7 @@ import com.iisigroup.cap.db.constants.SearchMode;
  @Repository("verPathDao")
 public class VerPathDao extends MOMJpaDao<VerPath> implements IVerPathDao {
      
-     private static final String PARMID = "parmId";
+     private static final String PARMID = "parmId"; 
      
     // @Override
     public VerPath findByOid(String oid) {

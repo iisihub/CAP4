@@ -17,7 +17,7 @@ public class TransLogDaoImpl extends MOMJpaDao<TransLog> implements ITransLogDao
 
     private static final String TRANSDATE = "transDate";
     
-    public TransLog findByPrintSeq(String seq) {
+    public TransLog findByPrintSeq(String seq) { 
         SearchSetting search = createSearchTemplete();
         search.addSearchModeParameters(SearchMode.EQUALS, "printSeq", seq);
         search.addOrderBy(TRANSDATE, true);
