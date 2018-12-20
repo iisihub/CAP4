@@ -1,5 +1,8 @@
 package com.iisigroup.colabase.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +20,8 @@ import javax.net.ssl.*;
  * @since 2018/9/27
  */
 public class ColaSSLUtil {
+
+    private final static Logger logger = LoggerFactory.getLogger(ColaSSLUtil.class);
 
     public static SSLSocketFactory getSSLSocketFactory(String keyStorePath, String keyStorePWD, String trustStorePath)
         throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
@@ -55,7 +60,7 @@ public class ColaSSLUtil {
     public static HostnameVerifier getAllowAllHostnameVerifier() {
         return new HostnameVerifier() {
             public boolean verify(String urlHostName, SSLSession session) {
-                System.out.println("Warning: URL Host: " + urlHostName + " vs. " + session.getPeerHost());
+                logger.debug("Warning: URL Host: " + urlHostName + " vs. " + session.getPeerHost());
                 return true;
             }
         };
