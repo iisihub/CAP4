@@ -15,11 +15,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.iisigroup.cap.db.constants.SearchMode;
+import com.iisigroup.cap.db.dao.SearchSetting;
+import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
 import com.iisigroup.colabase.va.dao.IVerPathDao;
 import com.iisigroup.colabase.va.model.VerPath;
-import com.iisigroup.cap.db.dao.SearchSetting;
-import com.iisigroup.colabase.common.dao.MOMJpaDao;
-import com.iisigroup.cap.db.constants.SearchMode;
 
 /**
  * <pre>
@@ -34,7 +34,7 @@ import com.iisigroup.cap.db.constants.SearchMode;
  *          </ul>
  */
  @Repository("verPathDao")
-public class VerPathDao extends MOMJpaDao<VerPath> implements IVerPathDao {
+public class VerPathDao extends GenericDaoImpl<VerPath> implements IVerPathDao {
      
      private static final String PARMID = "parmId"; 
      

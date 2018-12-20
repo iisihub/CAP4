@@ -36,7 +36,7 @@ import com.iisigroup.cap.model.GenericBean;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "CRL_CERT")
+@Table(name = "CO_CRL_CERT")
 public class CrlCert extends GenericBean implements DataObject {
 
     @EmbeddedId
