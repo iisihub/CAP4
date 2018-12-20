@@ -31,7 +31,9 @@
         <property name="persistenceUnitName" value="pu-cap-sql" />
         <property name="persistenceXmlLocation" value="classpath:META-INF/persistence-cap.xml" />
         <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" >
+                <property name="database" value="SQL_SERVER" />
+            </bean>
         </property>
         <property name="jpaProperties">
             <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean">
