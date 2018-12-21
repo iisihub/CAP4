@@ -662,8 +662,7 @@ public final class CryptoLibrary {
             if (x509der == null) {
                 break;
             }
-            byte[] der = base64Decode(new String(x509der));
-            try (ASN1InputStream ais = x509der[0] == 0x30 ? new ASN1InputStream(x509der) : new ASN1InputStream(der)){
+            try (ASN1InputStream ais = x509der[0] == 0x30 ? new ASN1InputStream(x509der) : new ASN1InputStream(base64Decode(new String(x509der)))){
                 ret = Certificate.getInstance((ASN1Sequence) ais.readObject());
             } catch (Exception e) {
                 ret = null;

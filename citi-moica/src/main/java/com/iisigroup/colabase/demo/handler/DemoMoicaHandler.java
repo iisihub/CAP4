@@ -33,7 +33,7 @@ public class DemoMoicaHandler extends MFormHandler {
     private VAService vaService;
 
     public Result demoMoica(Request params) {
-      String personalId = params.get("Login_PINCode");
+      String personalId = params.get("id");
       String p7b = params.get("PKCS7Data");
 //      p7b = URLDecoder.decode(p7b, "UTF-8");
       String msg = vaService.doVerifyPKCS7(personalId, p7b);
