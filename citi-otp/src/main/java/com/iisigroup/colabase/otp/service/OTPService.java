@@ -1,5 +1,6 @@
 package com.iisigroup.colabase.otp.service;
 
+import java.net.ProtocolException;
 import java.util.Map;
 
 import com.iisigroup.cap.component.Request;
@@ -60,9 +61,10 @@ public interface OTPService {
      * @param message
      *            要傳送的訊息
      * @return SMS Server 回傳的結果，記在 AP log 即可，無論成功失敗都不影響交易。
+     * @throws ProtocolException 
      * @throws CapException
      */
-    String sendOTPbySMS(SmsConfig smsConfig, String mobilePhone, String message);
+    String sendOTPbySMS(SmsConfig smsConfig, String mobilePhone, String message) throws ProtocolException;
 
     /**
      * 限制OTP密碼重送次數

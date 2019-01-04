@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.ProtocolException;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -135,7 +136,7 @@ public class OTPServiceImpl implements OTPService {
      * @see com.iisigroup.colabase.otp.service.OTPService#sendOTPbySMS(com.iisigroup.colabase.otp.model.SmsConfig, java.lang.String, java.lang.String)
      */
     @Override
-    public String sendOTPbySMS(SmsConfig smsConfig, String mobilePhone, String message) {
+    public String sendOTPbySMS(SmsConfig smsConfig, String mobilePhone, String message) throws ProtocolException {
         if (!StringUtils.isEmpty(mobilePhone) && mobilePhone.startsWith("09")) {
             mobilePhone = "+886" + mobilePhone.substring(1, mobilePhone.length());
             logger.debug("send SMS mobile phone number: {}", mobilePhone);
@@ -191,6 +192,9 @@ public class OTPServiceImpl implements OTPService {
         if (s == null) {
             throw new CapException("The httpd connection couldn't be opened ", getClass());
         }
+        s.setRequestMethod("POST");
+        s.addRequestProperty("Authorization", "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes())));
+        s.addRequestProperty("CONTENT-LENGTH", Integer.toString(message.getBytes().length));
         try (BufferedReader recv = new BufferedReader(new InputStreamReader(s.getInputStream())); BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), "BIG5"))) {
             String tempMessage = "[MSISDN]\n";
             tempMessage += "List=" + mobilePhone + "\n";
@@ -199,10 +203,6 @@ public class OTPServiceImpl implements OTPService {
             message += "\n[SETUP]\n";
             message += "DCS=" + encoding + "\n";
             message += "[END]";
-            // HTTPS
-            s.setRequestMethod("POST");
-            s.addRequestProperty("Authorization", "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes())));
-            s.addRequestProperty("CONTENT-LENGTH", Integer.toString(message.getBytes().length));
             int count = 0;
             int length = message.length() + count;
             if (length > 0) {
