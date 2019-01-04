@@ -46,7 +46,7 @@
                 <prop key="defaultEncoding">${defaultEncoding}</prop>
                 <prop key="locale">${defaultLocale}</prop>
             </props>
-        </property>
+        </property> 
     </bean>
     <!-- <bean id="init" class="com.iisigroup.colabase.va.util.LoadAllCaCertAndCRLBean"> -->
     <!-- </bean> -->

@@ -19,12 +19,11 @@ import javax.persistence.Table;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import com.iisigroup.cap.db.constants.SearchMode;
+import com.iisigroup.cap.db.dao.SearchSetting;
+import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
 import com.iisigroup.colabase.va.dao.ICrlCertDao;
 import com.iisigroup.colabase.va.model.CrlCert;
-import com.iisigroup.cap.db.dao.SearchSetting;
-import com.iisigroup.colabase.common.dao.MOMJpaDao;
-import com.iisigroup.colabase.common.dao.MOMNamingStrategy;
-import com.iisigroup.cap.db.constants.SearchMode;
 
 /**
  * <pre>
@@ -39,7 +38,7 @@ import com.iisigroup.cap.db.constants.SearchMode;
  *          </ul>
  */
 @Repository
-public class CrlCertDao extends MOMJpaDao<CrlCert> implements ICrlCertDao {
+public class CrlCertDao extends GenericDaoImpl<CrlCert> implements ICrlCertDao {
 
     private static final String SQL_COUNT_BY_CRL_TYPE;
     private static final String SQL_DELETE_BY_CRL_TYPE;
@@ -47,7 +46,7 @@ public class CrlCertDao extends MOMJpaDao<CrlCert> implements ICrlCertDao {
     static {
         Class<?> tableClz = CrlCert.class;
         Table tableAnnotation = tableClz.getAnnotation(Table.class);
-        final String TABLE_NAME = new MOMNamingStrategy().tableName(tableAnnotation.name());
+        final String TABLE_NAME = tableAnnotation.name();
 
         StringBuilder sql = new StringBuilder("select count(CRL_TYPE) from ");
         sql.append(TABLE_NAME).append(" where CRL_TYPE = :crlType");

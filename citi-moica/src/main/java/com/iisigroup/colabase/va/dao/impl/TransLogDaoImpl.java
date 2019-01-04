@@ -5,19 +5,19 @@ import java.util.Date;
 
 import org.springframework.stereotype.Repository;
 
+import com.iisigroup.cap.db.constants.SearchMode;
+import com.iisigroup.cap.db.dao.SearchSetting;
+import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
+import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.colabase.va.dao.ITransLogDao;
 import com.iisigroup.colabase.va.model.TransLog;
-import com.iisigroup.cap.db.dao.SearchSetting;
-import com.iisigroup.cap.db.constants.SearchMode;
-import com.iisigroup.cap.utils.CapDate;
-import com.iisigroup.colabase.common.dao.MOMJpaDao;
 
 @Repository("transLogDao")
-public class TransLogDaoImpl extends MOMJpaDao<TransLog> implements ITransLogDao {
+public class TransLogDaoImpl extends GenericDaoImpl<TransLog> implements ITransLogDao {
 
     private static final String TRANSDATE = "transDate";
     
-    public TransLog findByPrintSeq(String seq) {
+    public TransLog findByPrintSeq(String seq) { 
         SearchSetting search = createSearchTemplete();
         search.addSearchModeParameters(SearchMode.EQUALS, "printSeq", seq);
         search.addOrderBy(TRANSDATE, true);

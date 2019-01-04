@@ -16,7 +16,7 @@ import com.iisigroup.cap.model.GenericBean;
 @SuppressWarnings("serial")
 @Entity
 @EntityListeners({ CapOidGeneratorListener.class })
-@Table(name = "TRANSLOG", uniqueConstraints = @UniqueConstraint(columnNames = "oid") )
+@Table(name = "CO_TRANSLOG", uniqueConstraints = @UniqueConstraint(columnNames = "oid") )
 public class TransLog extends GenericBean implements DataObject {
 
     @Id
