@@ -160,7 +160,9 @@ public class OTPServiceImpl implements OTPService {
         String proxyPort = smsConfig.getProxyPort();
 
         int timeout = 3000;
+        BufferedReader recv = null;
         HttpsURLConnection s = null;
+        BufferedWriter writer = null;
         if (StringUtils.isBlank(host)) {
             throw new CapException("sms.host is blank.", getClass());
         }
@@ -187,15 +189,7 @@ public class OTPServiceImpl implements OTPService {
             proxyHost = null;
             proxyPort = "-1";
         }
-        // HTTPS
-        s = HttpsConnectionOpener.openConnection("https", host, port, entry, timeout, "true".equalsIgnoreCase(proxyEnable), proxyHost, proxyPort);
-        if (s == null) {
-            throw new CapException("The httpd connection couldn't be opened ", getClass());
-        }
-        s.setRequestMethod("POST");
-        s.addRequestProperty("Authorization", "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes())));
-        s.addRequestProperty("CONTENT-LENGTH", Integer.toString(message.getBytes().length));
-        try (BufferedReader recv = new BufferedReader(new InputStreamReader(s.getInputStream())); BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), "BIG5"))) {
+        try {
             String tempMessage = "[MSISDN]\n";
             tempMessage += "List=" + mobilePhone + "\n";
             tempMessage += "[MESSAGE]\nText=";
@@ -203,14 +197,24 @@ public class OTPServiceImpl implements OTPService {
             message += "\n[SETUP]\n";
             message += "DCS=" + encoding + "\n";
             message += "[END]";
+            // HTTPS
+            s = HttpsConnectionOpener.openConnection("https", host, port, entry, timeout, "true".equalsIgnoreCase(proxyEnable), proxyHost, proxyPort);
+            if (s == null) {
+                throw new CapException("The httpd connection couldn't be opened ", getClass());
+            }
+            s.setRequestMethod("POST");
+            s.addRequestProperty("Authorization", "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes())));
+            s.addRequestProperty("CONTENT-LENGTH", Integer.toString(message.getBytes().length));
             int count = 0;
             int length = message.length() + count;
             if (length > 0) {
                 logger.debug("length={}", length);
             }
             logger.debug("sending message:\n{}", message);
+            writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), "BIG5"));
             writer.write(message);
             writer.flush();
+            recv = new BufferedReader(new InputStreamReader(s.getInputStream()));
             String line = null;
             while ((line = recv.readLine()) != null) {
                 answer.append(line).append("\n");
