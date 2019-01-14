@@ -19,25 +19,17 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.iisigroup.cap.base.CapSystemProperties;
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.utils.CapString;
-import com.iisigroup.cap.utils.CapSystemConfig;
 import com.iisigroup.colabase.otp.model.SmsConfig;
 import com.iisigroup.colabase.otp.service.OTPService;
 import com.iisigroup.colabase.otp.va.crypto.HttpsConnectionOpener;
 
 @Service
 public class OTPServiceImpl implements OTPService {
-
-    @Autowired
-    private CapSystemConfig sysConfig;
-    @Autowired
-    private CapSystemProperties sysProp;
 
     private static final DecimalFormat OTP_DECIMAL_FMT = new DecimalFormat("000000");
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -119,15 +111,6 @@ public class OTPServiceImpl implements OTPService {
         String otp = OTP_DECIMAL_FMT.format(nextInt);
         logger.debug("=========OTP number ========= {} ", otp);
         return otp;
-    }
-
-    public String getDbConfigOrSysConfigProperty(Object config, String configKey) {
-        if (config instanceof CapSystemConfig) {
-            return sysConfig.getProperty(configKey);
-        } else if (config instanceof CapSystemProperties) {
-            return sysProp.get(configKey);
-        }
-        return null;
     }
 
     /*
