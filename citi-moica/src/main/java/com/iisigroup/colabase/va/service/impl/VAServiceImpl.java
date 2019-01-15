@@ -52,9 +52,6 @@ public class VAServiceImpl implements VAService {
     private static final String SUCCESS_CODE = "0000";
 
     @Autowired
-    private CapSystemProperties sysProp;
-
-    @Autowired
     private IVerPathDao verPathDao;
 
     @Autowired
@@ -479,9 +476,9 @@ public class VAServiceImpl implements VAService {
 
     private Proxy getProxy() {
         Proxy proxy = null;
-        String proxyEnable = sysProp.get("PROXY_ENABLE");
-        String proxyHost = sysProp.get("PROXY_HOST");
-        String proxyPort = sysProp.get("PROXY_PORT");
+        String proxyEnable = config.getProperty("moica.proxy.enable");
+        String proxyHost = config.getProperty("moica.proxy.hostT");
+        String proxyPort = config.getProperty("moica.proxy.port");
         if (proxyEnable != null && proxyHost != null && proxyPort != null) {
             LOGGER.debug("PROXY_ENABLE: " + proxyEnable);
             LOGGER.debug("PROXY_HOST: " + proxyHost);
