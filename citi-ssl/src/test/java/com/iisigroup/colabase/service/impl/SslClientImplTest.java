@@ -73,6 +73,7 @@ public class SslClientImplTest {
 //            PostFormDataFactory.getInstance(DemoPostDataRequestContent.class);
 
         demoRequestContent.setHttpMethod(RequestContent.HTTPMethod.POST);
+        demoRequestContent.setUseOwnKeyAndTrustStore(true);
         demoRequestContent.setRetryTimes(3);
         demoRequestContent.setTimeout(30000);
         demoRequestContent.setTargetUrl(targetUrl);
@@ -119,6 +120,7 @@ public class SslClientImplTest {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("testData1", "testValue");
         requestContent.setRequestContent(jsonObject);
+        requestContent.setUseOwnKeyAndTrustStore(true);
 
         return requestContent;
     }

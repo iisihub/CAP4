@@ -23,7 +23,7 @@ public abstract class RequestContent extends JsonAbstract implements ApiRequest 
      * 是否使用自己的key store and trust store
      * key and trust store file path defined in config.properties
      */
-    private boolean isUseOwnKeyAndTrustStore = true;
+    private boolean isUseOwnKeyAndTrustStore = false;
 
     /**
      * API的名稱
