@@ -23,7 +23,7 @@ public abstract class RequestContent extends JsonAbstract implements ApiRequest 
      * 是否使用自己的key store and trust store
      * key and trust store file path defined in config.properties
      */
-    private boolean isUseOwnKeyAndTrustStore = true;
+    private boolean isUseOwnKeyAndTrustStore = false;
 
     /**
      * API的名稱
@@ -69,6 +69,11 @@ public abstract class RequestContent extends JsonAbstract implements ApiRequest 
      * 是否忽略檢查server SSL憑證
      */
     private boolean isIgnoreSSLcert = false;
+
+    /**
+     * Proxy 設定(選用)
+     */
+    private ProxyConfig proxyConfig;
 
     /**
      * SslClientImpl default protocol is TLS
@@ -179,5 +184,13 @@ public abstract class RequestContent extends JsonAbstract implements ApiRequest 
 
     public void setProtocol(String protocol) {
         this.protocol = protocol;
+    }
+
+    public ProxyConfig getProxyConfig() {
+        return proxyConfig;
+    }
+
+    public void setProxyConfig(ProxyConfig proxyConfig) {
+        this.proxyConfig = proxyConfig;
     }
 }
