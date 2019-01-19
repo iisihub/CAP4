@@ -71,6 +71,11 @@ public abstract class RequestContent extends JsonAbstract implements ApiRequest 
     private boolean isIgnoreSSLcert = false;
 
     /**
+     * Proxy 設定(選用)
+     */
+    private ProxyConfig proxyConfig;
+
+    /**
      * SslClientImpl default protocol is TLS
      * following params u can use:
      * SSL	    Supports some version of SSL; may support other versions
@@ -179,5 +184,13 @@ public abstract class RequestContent extends JsonAbstract implements ApiRequest 
 
     public void setProtocol(String protocol) {
         this.protocol = protocol;
+    }
+
+    public ProxyConfig getProxyConfig() {
+        return proxyConfig;
+    }
+
+    public void setProxyConfig(ProxyConfig proxyConfig) {
+        this.proxyConfig = proxyConfig;
     }
 }

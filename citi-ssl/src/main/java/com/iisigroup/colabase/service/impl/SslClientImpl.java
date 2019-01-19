@@ -16,9 +16,7 @@ import javax.net.ssl.*;
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.text.SimpleDateFormat;
@@ -164,6 +162,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
         Map<String, List<String>> requestHeaders = requestContent.getRequestHeaders();
         Map<String, List<String>> responseHeaders = null;
         String protocol = requestContent.getProtocol();
+        final ProxyConfig proxyConfig = requestContent.getProxyConfig();
         try {
             Date date = Calendar.getInstance().getTime();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -179,7 +178,8 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
             logger.debug("Request: need retry status = {}", requestContent.getRetryHttpStatus());
 
             //取得連線
-            HttpURLConnection connection = this.getConnection(targetURL, timeOut, method, isUseOwnSslFactory, isIgnoreSSLcert, protocol, requestHeaders, recordInfo);
+            HttpURLConnection connection = this.getConnection(targetURL, timeOut, method, isUseOwnSslFactory,
+                isIgnoreSSLcert, protocol, requestHeaders, recordInfo, proxyConfig);
 
             if (!RequestContent.HTTPMethod.GET.equals(method)) {
                 if(sendType == null)
@@ -251,9 +251,23 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
 
     private HttpURLConnection getConnection(String targetURL, int timeOut, ApiRequest.HTTPMethod method,
                                             boolean isUseOwnSslFactory, boolean isIgnoreSSLcert,
-                                            String protocol, Map<String, List<String>> requestHeaders, ArrayList<String> recordInfo) throws IOException {
+                                            String protocol, Map<String, List<String>> requestHeaders, ArrayList<String> recordInfo, ProxyConfig proxyConfig) throws IOException {
 
-        HttpURLConnection connection = (HttpURLConnection)new URL(targetURL).openConnection();
+        HttpURLConnection connection = null;
+        logger.debug("Request: use proxy = {}", proxyConfig != null && proxyConfig.isUseProxy());
+
+        //檢查是否使用Proxy
+        if (proxyConfig != null && proxyConfig.isUseProxy()) {
+            String host = proxyConfig.getHost();
+            int port = proxyConfig.getPort();
+            if (host == null || "".equals(host) || port == 0)
+                throw new IllegalStateException("if use proxy, must fill all proxy config");
+            logger.debug("Request: use proxy host: {}, port: {}", host, port);
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+            connection = (HttpURLConnection) new URL(targetURL).openConnection(proxy);
+        } else {
+            connection = (HttpURLConnection) new URL(targetURL).openConnection();
+        }
 
         //如果對象是https才需要進行憑證相關設定
         if(connection instanceof HttpsURLConnection) {
