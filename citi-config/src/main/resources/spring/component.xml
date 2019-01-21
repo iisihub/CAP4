@@ -48,8 +48,8 @@
             </props>
         </property> 
     </bean>
-    <!-- <bean id="init" class="com.iisigroup.colabase.va.util.LoadAllCaCertAndCRLBean"> -->
-    <!-- </bean> -->
+    <bean id="init" class="com.iisigroup.colabase.va.util.LoadAllCaCertAndCRLBean">
+    </bean>
     <!-- cola system properties -->
     <bean id="sysProp" class="com.iisigroup.colabase.common.jsp.ColaSysDbAndConfigProps">
         <constructor-arg index="0">

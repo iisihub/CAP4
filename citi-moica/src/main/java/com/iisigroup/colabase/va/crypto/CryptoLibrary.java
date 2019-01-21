@@ -1362,16 +1362,18 @@ public final class CryptoLibrary {
     public static boolean verifyCert(Certificate x509Cert, Certificate caCert) {
         boolean ret = false;
         java.security.PublicKey caKey = null;
-        X509CertificateObject ca = null;
-        X509CertificateObject x509 = null;
+        X509Certificate ca = null;
+        X509Certificate x509 = null;
 
         try {
+            LOGGER.debug("verify cert start");
             CryptoLibrary.checkProvider();
-            ca = new X509CertificateObject(caCert);
+            ca = getX509Cert(caCert);
             caKey = ca.getPublicKey();
-            x509 = new X509CertificateObject(x509Cert);
+            x509 = getX509Cert(x509Cert);
             x509.verify(caKey, "BC");
             ret = true;
+            LOGGER.debug("verify cert end, publicKey : {}", caKey);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
