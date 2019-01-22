@@ -57,16 +57,14 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
     }
 
     private SSLSocketFactory initSslSocketFactory(String protocol) {
-        if (sslSocketFactory == null) {
-            String keyStorePath = systemConfig.getProperty("keyStorePath");
-            String trustStorePath = systemConfig.getProperty("trustStorePath");
-            String keyStorePWD = systemConfig.getProperty("keyStorePWD");
-            try {
-                SSLSocketFactory sslSocketFactory = ColaSSLUtil.getSSLSocketFactory(protocol, keyStorePath, keyStorePWD, trustStorePath);
-                return sslSocketFactory;
-            } catch (CertificateException | UnrecoverableKeyException | KeyStoreException | NoSuchAlgorithmException | IOException | KeyManagementException e) {
-                logger.error("init SslSocketFactory fail >>> ", e);
-            }
+        String keyStorePath = systemConfig.getProperty("keyStorePath");
+        String trustStorePath = systemConfig.getProperty("trustStorePath");
+        String keyStorePWD = systemConfig.getProperty("keyStorePWD");
+        try {
+            SSLSocketFactory sslSocketFactory = ColaSSLUtil.getSSLSocketFactory(protocol, keyStorePath, keyStorePWD, trustStorePath);
+            return sslSocketFactory;
+        } catch (CertificateException | UnrecoverableKeyException | KeyStoreException | NoSuchAlgorithmException | IOException | KeyManagementException e) {
+            logger.error("init SslSocketFactory fail >>> ", e);
         }
         return null;
     }
