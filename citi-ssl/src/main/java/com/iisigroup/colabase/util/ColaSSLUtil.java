@@ -1,5 +1,6 @@
 package com.iisigroup.colabase.util;
 
+import com.iisigroup.cap.utils.CapString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,18 @@ public class ColaSSLUtil {
 
     public static SSLSocketFactory getSSLSocketFactory(String protocol, String keyStorePath, String keyStorePWD, String trustStorePath)
             throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
-        SSLSocketFactory factory;
+        final SSLSocketFactory factory;
+
+        if(CapString.isEmpty(protocol))
+            throw new IllegalArgumentException("protocol should NOT be empty");
+
+        SSLContext sslContext = SSLContext.getInstance(protocol);
+        //單純改變protocol
+        if(CapString.isEmpty(keyStorePath) || CapString.isEmpty(keyStorePWD) || CapString.isEmpty(trustStorePath)) {
+            sslContext.init(null, null, null);
+            return sslContext.getSocketFactory();
+        }
+
         try (InputStream keyStoreInputStream = new FileInputStream(keyStorePath); InputStream trustStoreInputStream = new FileInputStream(trustStorePath)) {
             // 讀取 Client KeyStore、TrustStore
             KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -45,9 +57,10 @@ public class ColaSSLUtil {
             trustStoreInputStream.close();
 
             TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+
             trustManagerFactory.init(trustStore);
 
-            SSLContext sslContext = SSLContext.getInstance(protocol);
+
             sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), new SecureRandom());
 
             factory = sslContext.getSocketFactory();
