@@ -56,10 +56,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
         return type;
     }
 
-    private SSLSocketFactory initSslSocketFactory(String protocol) {
-        String keyStorePath = systemConfig.getProperty("keyStorePath");
-        String trustStorePath = systemConfig.getProperty("trustStorePath");
-        String keyStorePWD = systemConfig.getProperty("keyStorePWD");
+    private SSLSocketFactory initSslSocketFactory(String protocol, String keyStorePath, String trustStorePath, String keyStorePWD) {
         try {
             SSLSocketFactory sslSocketFactory = ColaSSLUtil.getSSLSocketFactory(protocol, keyStorePath, keyStorePWD, trustStorePath);
             return sslSocketFactory;
@@ -67,6 +64,12 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
             logger.error("init SslSocketFactory fail >>> ", e);
         }
         return null;
+    }
+    private SSLSocketFactory initSslSocketFactory(String protocol) {
+        String keyStorePath = systemConfig.getProperty("keyStorePath");
+        String trustStorePath = systemConfig.getProperty("trustStorePath");
+        String keyStorePWD = systemConfig.getProperty("keyStorePWD");
+        return this.initSslSocketFactory(protocol, keyStorePath, trustStorePath, keyStorePWD);
     }
 
     private SSLSocketFactory initSslSocketFactory() {
@@ -313,6 +316,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
     private void processSSLSettings(HttpsURLConnection connection, boolean isUseOwnSslFactory,
                                     boolean isIgnoreSSLcert, String protocol) {
         // 設定 HttpsURLConnection 的 SSLSocketFactory
+        SSLSocketFactory sslSocketFactory = null;
         if (isUseOwnSslFactory) {
             if(CapString.isEmpty(protocol)) {
                 //檢查有無初始化factory
@@ -324,11 +328,13 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
                 }
             } else {
                 //使用自定義的protocol
-                SSLSocketFactory sslSocketFactory = this.initSslSocketFactory(protocol);
-                if(sslSocketFactory != null)
-                    connection.setSSLSocketFactory(sslSocketFactory);
+                sslSocketFactory = this.initSslSocketFactory(protocol);
             }
+        } else if(!CapString.isEmpty(protocol)) { //單純設定protocol
+            sslSocketFactory = this.initSslSocketFactory(protocol, null, null, null);
         }
+        if(sslSocketFactory != null)
+            connection.setSSLSocketFactory(sslSocketFactory);
 
         //是否忽略憑證驗證
         if (isIgnoreSSLcert) {

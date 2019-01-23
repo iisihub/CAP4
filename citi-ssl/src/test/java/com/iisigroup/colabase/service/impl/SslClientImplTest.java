@@ -1,6 +1,7 @@
 package com.iisigroup.colabase.service.impl;
 
 import com.google.gson.JsonObject;
+import com.iisigroup.cap.utils.CapSystemConfig;
 import com.iisigroup.colabase.demo.sslclient.model.DemoJsonRequestContent;
 import com.iisigroup.colabase.demo.sslclient.model.DemoPostDataRequestContent;
 import com.iisigroup.colabase.demo.sslclient.service.impl.DemoSslClientService;
@@ -14,24 +15,37 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
+
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by VALLA on 2018/4/10.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class SslClientImplTest {
 
-    SslClient sslClient;
+
 
     final String keyStorePath = "/Users/maiev/Documents/iisi/CITI_CLM/codeSpace/impl/workspace/CLM/clm-app/src/main/resources/keystore/keystore_client_1602006";
     final String keyStorePWD = "p@ssw0rd";
     final String trustStorePath = "/Users/maiev/Documents/iisi/CITI_CLM/codeSpace/impl/workspace/CLM/clm-app/src/main/resources/keystore/truststore_client_1602006_own.jks";
     final String targetUrl = "https://127.0.0.1:8443/mutual-authentication-server/v1/tw/onboarding/customers/deduplicationFlag";
+
+    @Spy
+    private CapSystemConfig systemConfig = new CapSystemConfig();
+
+    @InjectMocks
+    DemoSslClientService sslClient = new DemoSslClientService();
 
 
     @BeforeClass
@@ -41,7 +55,12 @@ public class SslClientImplTest {
 
     @Before
     public void setUp() throws Exception {
-        sslClient = new DemoSslClientService(keyStorePath, keyStorePWD, trustStorePath);
+
+//        sslClient = new DemoSslClientService(keyStorePath, keyStorePWD, trustStorePath);
+        Properties properties = systemConfig.getProperties();
+        properties.put("keyStorePath", keyStorePath);
+        properties.put("trustStorePath", trustStorePath);
+        properties.put("keyStorePWD", keyStorePWD);
         org.apache.log4j.BasicConfigurator.configure(new NullAppender());
     }
 
@@ -85,6 +104,8 @@ public class SslClientImplTest {
 //        demoRequestContent.putData("testKey2", "value2");
 //        demoRequestContent.putData("參數1", "國字1");
         demoRequestContent.setSendType(ApiRequest.SendType.POST_FORM);
+        demoRequestContent.setIgnoreSSLcert(true);
+        demoRequestContent.setProtocol("TLSv1.1");
         ResponseContent responseContent = sslClient.sendRequest(demoRequestContent);
         Assert.assertNotEquals("http status should not equals 0", responseContent.getStatusCode(), 0);
     }
@@ -98,6 +119,16 @@ public class SslClientImplTest {
 //        requestContent.setTargetUrl("use your url");
         ResponseContent responseContent = sslClient.sendRequestWithDefaultHeader(requestContent);
         Assert.assertEquals( "javax.net.ssl.SSLHandshakeException: Received fatal alert: bad_certificate", responseContent.getException().toString());
+    }
+
+    @Test //用於查看console ssl hand shake有沒有改變
+    public void test_only_set_protocol_ssl_connection() throws Exception {
+        RequestContent requestContent = this.getDummyContent();
+        requestContent.setUseOwnKeyAndTrustStore(false);
+        requestContent.setProtocol("TLSv1.2");
+//        requestContent.setTargetUrl("your url");
+        ResponseContent responseContent = sslClient.sendRequestWithDefaultHeader(requestContent);
+        Assert.assertEquals( "javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target", responseContent.getException().toString());
     }
 
     private RequestContent getDummyContent() throws InvocationTargetException, NoSuchMethodException,
