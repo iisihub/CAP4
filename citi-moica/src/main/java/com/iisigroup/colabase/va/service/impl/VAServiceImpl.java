@@ -477,7 +477,7 @@ public class VAServiceImpl implements VAService {
     private Proxy getProxy() {
         Proxy proxy = null;
         String proxyEnable = config.getProperty("moica.proxy.enable");
-        String proxyHost = config.getProperty("moica.proxy.hostT");
+        String proxyHost = config.getProperty("moica.proxy.host");
         String proxyPort = config.getProperty("moica.proxy.port");
         if (proxyEnable != null && proxyHost != null && proxyPort != null) {
             LOGGER.debug("PROXY_ENABLE: " + proxyEnable);
