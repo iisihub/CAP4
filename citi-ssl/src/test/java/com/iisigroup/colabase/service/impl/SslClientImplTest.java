@@ -104,8 +104,8 @@ public class SslClientImplTest {
 //        demoRequestContent.putData("testKey2", "value2");
 //        demoRequestContent.putData("參數1", "國字1");
         demoRequestContent.setSendType(ApiRequest.SendType.POST_FORM);
-        demoRequestContent.setIgnoreSSLcert(true);
-        demoRequestContent.setProtocol("TLSv1.1");
+//        demoRequestContent.setIgnoreSSLcert(true);
+//        demoRequestContent.setProtocol("TLSv1.1");
         ResponseContent responseContent = sslClient.sendRequest(demoRequestContent);
         Assert.assertNotEquals("http status should not equals 0", responseContent.getStatusCode(), 0);
     }
