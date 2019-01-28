@@ -321,10 +321,9 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
             if(CapString.isEmpty(protocol)) {
                 //檢查有無初始化factory
                 if (isInit) {
-                    connection.setSSLSocketFactory(sslSocketFactory);
+                    connection.setSSLSocketFactory(this.sslSocketFactory);
                 } else {
                     logger.debug("OwnSslFactory is not init. cancel use own ssl factory.");
-                    isUseOwnSslFactory = false;
                 }
             } else {
                 //使用自定義的protocol
