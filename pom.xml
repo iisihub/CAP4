@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.iisigroup.colabase</groupId>
     <artifactId>citi</artifactId>
-    <version>4.0.1-colabase-jdk1.7-201901291430</version>
+    <version>4.0.1-colabase-201801291630</version>
     <!-- 
     # update version script:
     # mvn versions:set -DnewVersion=4.0.1-colabase-jdk1.7-201901291430
