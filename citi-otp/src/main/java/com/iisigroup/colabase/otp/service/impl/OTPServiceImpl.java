@@ -50,7 +50,7 @@ public class OTPServiceImpl implements OTPService {
     public Map<String, String> genAndSendOTP(SmsConfig smsConfig, String mobilePhone, String smsMsg, int otpTimeoutSeconds) {
         Map<String, String> otpMap = new HashMap<>();
         try {
-            if (!CapString.isEmpty(mobilePhone) && mobilePhone.startsWith("09")) {
+            if (!CapString.isEmpty(mobilePhone)) {
                 String otp = generateOTP();
                 otpMap.put(OTP, otp);
                 String otpSmsMsg = MessageFormat.format(smsMsg, otp, otpTimeoutSeconds);
@@ -126,7 +126,9 @@ public class OTPServiceImpl implements OTPService {
         } else if (StringUtils.isEmpty(mobilePhone)) {
             throw new CapException("There is no mobile phone number.", getClass());
         } else if (!mobilePhone.startsWith("+886")) {
-            throw new CapException("There is wrong mobile phone number:" + mobilePhone, getClass());
+            logger.debug("There is not TW mobile phone number:" + mobilePhone);
+        } else if (!mobilePhone.startsWith("+")) {
+            logger.debug("There is mobile phone number no county code:" + mobilePhone);
         }
         if (StringUtils.isBlank(message)) {
             throw new CapException("Message is blank.", getClass());
