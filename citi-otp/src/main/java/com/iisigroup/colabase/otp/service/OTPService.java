@@ -57,11 +57,11 @@ public interface OTPService {
      * @param smsConfig
      *            sms config 設定
      * @param mobilePhone
-     *            需要去 0 加 +886 , 若為09開頭則會格式化為+886
+     *            若手機格式為09開頭，則會去0格式化為+886
      * @param message
      *            要傳送的訊息
      * @return SMS Server 回傳的結果，記在 AP log 即可，無論成功失敗都不影響交易。
-     * @throws ProtocolException 
+     * @throws ProtocolException
      * @throws CapException
      */
     String sendOTPbySMS(SmsConfig smsConfig, String mobilePhone, String message) throws ProtocolException;

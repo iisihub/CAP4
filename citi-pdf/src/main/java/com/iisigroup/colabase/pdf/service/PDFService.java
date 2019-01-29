@@ -12,76 +12,82 @@ import com.lowagie.text.pdf.BaseFont;
 
 public interface PDFService {
 
-    public enum PDFType {
-        FTL("ftl"),
-        HTML("html");
-        private String templateType;
-
-        public String getTemplateType() {
-            return templateType;
-        }
-
-        private PDFType(String templateType) {
-            this.templateType = templateType;
-        }
-    }
-
     /**
-     * 產生申請書PDF；可則自行處理processPDFContent後將PDF內容放置
+     * 產生PDF；可則自行處理processPDFContent後將PDF內容放置
      * 
-     * @param request
-     * @param pdfPath
-     *            PDF於路徑；若路徑有值，則產生PDF於路徑下
-     * @param pdfName
-     *            PDF檔案名稱
      * @param pdfContent
      *            PDF內容
-     * @param isDownlownPDF
-     *            是否為直接下載PDF
+     * @param pdfPath
+     *            PDF路徑；有值，則PDF產生於路徑下
+     * @param pdfName
+     *            PDF檔案名稱 (不用帶.pdf副檔名)
      * @param encryptPassword
      *            PDF加密密碼，不加密則空
-     * @param font
-     *            PDF字型
+     * @param fontName
+     *            PDF字型名稱
      * @return
      * @throws CapException
      */
-    public Result processPdf(Request request, String pdfPath, String pdfName, ByteArrayDownloadResult pdfContent, Boolean isDownlownPDF, String encryptPassword, String font);
+    public Result processPdf(ByteArrayDownloadResult pdfContent, String pdfPath, String pdfName, String encryptPassword, String font);
 
     /**
-     * 產生申請書PDF；若為FTL樣版可一起將PDF欄位值資料dataMap處理
+     * 產生PDF；若為FTL樣版可一起將PDF欄位值資料dataMap處理
      * 
-     * @param request
      * @param dataMap
      *            PDF欄位值資料Map
-     * @param templateName
+     * @param ftLTemplateName
      *            FTL樣版名稱
      * @param pdfPath
-     *            PDF於路徑；若路徑有值，則產生PDF於路徑下
+     *            PDF路徑；有值，則PDF產生於路徑下
      * @param pdfName
-     *            PDF檔案名稱
-     * @param isDownloadPDF
-     *            是否為直接下載PDF
+     *            PDF檔案名稱 (不用帶.pdf副檔名)
      * @param encryptPassword
      *            PDF加密密碼；不加密則空
-     * @param font
-     *            PDF字型
+     * @param fontName
+     *            PDF字型名稱
      * @return
      */
-    public Result processPdf(Request request, Map<String, Object> dataMap, String templateName, String pdfPath, String pdfName, Boolean isDownloadPDF, String encryptPassword, String font);
+    public Result processPdfByFtl(Map<String, Object> dataMap, String ftLTemplateName, String pdfPath, String pdfName, String encryptPassword, String font);
 
     /**
-     * Process PDF Content
+     * 下載PDF；可則自行處理processPDFContent後將PDF內容放置
+     * 
+     * @param request
+     *            request傳送前端資訊供下載使用
+     * @param pdfContent
+     *            PDF內容
+     * @param pdfName
+     *            PDF檔案名稱 (不用帶.pdf副檔名)
+     * @param encryptPassword
+     *            PDF加密密碼，不加密則空
+     * @param fontName
+     *            PDF字型名稱
+     * @return
+     * @throws CapException
+     */
+    public Result downloadPdf(Request request, ByteArrayDownloadResult pdfContent, String pdfName, String encryptPassword, String font);
+
+    /**
+     * 下載PDF；讀取已產生PDF路徑下載PDF
+     * 
+     * @param request
+     * @param pdfPath
+     *            PDF抓取路徑
+     * @return
+     */
+    public Result downloadPdf(Request request, String pdfPath);
+
+    /**
+     * Process FTL PDF Content
      * 
      * @param request
      * @param dataMap
      *            PDF欄位值資料Map
-     * @param templateName
+     * @param ftLTemplateName
      *            FTL樣版名稱
-     * @param pdfType
-     *            PDF套入樣板格式
      * @return
      */
-    public ByteArrayDownloadResult processPDFContent(Request request, Map<String, Object> dataMap, String templateName, PDFType pdfType);
+    public ByteArrayDownloadResult processPdfContent(Map<String, Object> dataMap, String ftLTemplateName);
 
     /**
      * Merge PDF Files
@@ -94,7 +100,7 @@ public interface PDFService {
      *            合併後PDF名稱
      * @return
      */
-    public boolean mergePDFFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName);
+    public boolean mergePdfFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName);
 
     /**
      * 將Pdf檔案分割為多頁
