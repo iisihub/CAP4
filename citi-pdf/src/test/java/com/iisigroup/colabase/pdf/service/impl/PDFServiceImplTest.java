@@ -1,6 +1,8 @@
 package com.iisigroup.colabase.pdf.service.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -38,7 +40,6 @@ import freemarker.template.Template;
 @RunWith(MockitoJUnitRunner.class)
 public class PDFServiceImplTest {
     private PDFServiceImpl pdfService;
-    private static final Boolean TEST_IS_DWN_PDF = false;
     private static final String TEST_CUST_NAME = "王測試";
     private static final String TEST_ID_NO = "M123456789";
     private static final String TEST_MPHONE = "0911222333";
@@ -74,17 +75,15 @@ public class PDFServiceImplTest {
         Request request = new CapSpringMVCRequest();
         String colabaseDemoPath = "colabaseDemo" + File.separator;
         String templateName = colabaseDemoPath + FTL_TEMPLETE_NAME;
-        String font = "";
         ByteArrayDownloadResult pdfContent = null;
         // PDF產生結果
         try {
-            font = fontFactory.getFontPath(DEFAULT_FONT, "");
             // Process PDF Content
             pdfContent = testProcessPDFContent(request, templateName);
             // Process PDF
-            AjaxFormResult result = (AjaxFormResult) pdfService.processPdf(request, PDF_OUT_PATH, PDF_NAME, pdfContent, TEST_IS_DWN_PDF, PDF_PASS_WORD, font);
+            AjaxFormResult result = (AjaxFormResult) pdfService.processPdf(pdfContent, PDF_OUT_PATH, PDF_NAME, PDF_PASS_WORD, DEFAULT_FONT);
             assertEquals(true, result.get("isSuccess"));
-            result = (AjaxFormResult) pdfService.processPdf(request, "", "", null, TEST_IS_DWN_PDF, "", font);
+            result = (AjaxFormResult) pdfService.processPdf(null, "", "", "", DEFAULT_FONT);
             assertEquals(false, result.get("isSuccess"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,9 +95,9 @@ public class PDFServiceImplTest {
         String[] filesPath = { PDF_PATH1, PDF_PATH2 };
         String[] failFilesPath = { PDF_PATH1, "" };
         try {
-            boolean isSuccess = pdfService.mergePDFFiles(filesPath, PDF_OUT_PATH, MERGE_PDF_NAME);
+            boolean isSuccess = pdfService.mergePdfFiles(filesPath, PDF_OUT_PATH, MERGE_PDF_NAME);
             assertTrue(isSuccess);
-            isSuccess = pdfService.mergePDFFiles(failFilesPath, PDF_OUT_PATH, MERGE_PDF_NAME);
+            isSuccess = pdfService.mergePdfFiles(failFilesPath, PDF_OUT_PATH, MERGE_PDF_NAME);
             assertFalse(isSuccess);
         } catch (Exception e) {
             e.printStackTrace();

@@ -21,8 +21,8 @@ import org.springframework.stereotype.Controller;
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
+import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
-import com.iisigroup.cap.report.factory.ItextFontFactory;
 import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.colabase.pdf.service.PDFService;
@@ -42,8 +42,6 @@ public class PDFHandler extends MFormHandler {
 
     @Autowired
     private PDFService pdfService;
-    @Autowired
-    private ItextFontFactory fontFactory;
     private static final String DEFAULT_FONT = "MSJH.TTF";// 微軟正黑體
     private static final String DATE_FORMAT = "yyyy/MM/dd";
     private static final String FTL_TEMPLETE_NAME = "PDF_TEMPLETE.ftl";
@@ -76,8 +74,6 @@ public class PDFHandler extends MFormHandler {
         String mPhone = request.get(M_PHONE, "");
         String colabaseDemoPath = "colabaseDemo" + File.separator;
         String templateName = colabaseDemoPath + FTL_TEMPLETE_NAME;
-        Boolean isDownlownPDF = false;
-        String font = "";
         // 給PDF值
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put(CUST_NAME, custName);
@@ -88,8 +84,7 @@ public class PDFHandler extends MFormHandler {
         // PDF產生結果
         if (!CapString.isEmpty(pdfPath)) {
             try {
-                font = fontFactory.getFontPath(DEFAULT_FONT, "");
-                pdfService.processPdf(request, dataMap, templateName, pdfPath, pdfName, isDownlownPDF, pdfPwd, font);
+                pdfService.processPdfByFtl(dataMap, templateName, pdfPath, pdfName, pdfPwd, DEFAULT_FONT);
                 result.set(PDF_RESULT, "ok");
             } catch (Exception e) {
                 logger.debug(e.getMessage(), e);
@@ -116,8 +111,6 @@ public class PDFHandler extends MFormHandler {
         String mPhone = request.get(M_PHONE, "");
         String colabaseDemoPath = "colabaseDemo" + File.separator;
         String templateName = colabaseDemoPath + FTL_TEMPLETE_NAME;
-        Boolean isDownlownPDF = true;
-        String font = "";
         // 給PDF值
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put(CUST_NAME, custName);
@@ -127,8 +120,11 @@ public class PDFHandler extends MFormHandler {
         dataMap.put(ONLINE_SIGN, TEST_SIGN_WORDING);
         // PDF產生結果
         try {
-            font = fontFactory.getFontPath(DEFAULT_FONT, "");
-            return pdfService.processPdf(request, dataMap, templateName, "", pdfName, isDownlownPDF, pdfPwd, font);
+            ByteArrayDownloadResult pdfContent = pdfService. processPdfContent(dataMap, templateName);
+            return pdfService.downloadPdf(request, pdfContent, pdfName, pdfPwd, DEFAULT_FONT);
+            // 用路徑位置下載PDF
+            // String pdfPath = "/Users/cathy/Downloads/test13.pdf";
+            // return pdfService.downloadPdf(request, pdfPath);
         } catch (Exception e) {
             logger.debug(e.getMessage(), e);
             result.set(PDF_RESULT, e.getMessage());
@@ -151,7 +147,7 @@ public class PDFHandler extends MFormHandler {
         String[] filesPath = { mgPDFPath1, mgPDFPath2 };
         if (!CapString.isEmpty(genMgPDFPath)) {
             try {
-                pdfService.mergePDFFiles(filesPath, genMgPDFPath, genMgPDFName);
+                pdfService.mergePdfFiles(filesPath, genMgPDFPath, genMgPDFName);
                 result.set(PDF_RESULT, "ok");
             } catch (Exception e) {
                 logger.debug(e.getMessage(), e);
