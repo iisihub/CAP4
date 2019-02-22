@@ -15,14 +15,20 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.tools.ant.filters.StringInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 import org.xhtmlrenderer.pdf.PDFEncryption;
 import org.xhtmlrenderer.resource.XMLResource;
+import org.xml.sax.SAXException;
 
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
@@ -453,15 +459,20 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      *            自行
      * @throws DocumentException
      * @throws IOException
+     * @throws SAXException 
+     * @throws ParserConfigurationException 
      */
-    private void genByRender(OutputStream out, byte[] pdfContent, String encrypt, String font) throws DocumentException, IOException {
-        /**
-         * just start your local test use VM Arguments : -Djavax.xml.transform.TransformerFactory="org.apache.xalan.xsltc.trax.TransformerFactoryImpl" to SVN
-         */
-        // local test please unmark below code, but don't commit unmark code to remote server
-        // System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.xsltc.trax.TransformerFactoryImpl");
+    private void genByRender(OutputStream out, byte[] pdfContent, String encrypt, String font) throws Exception {
+        String property = System.getProperty("javax.xml.transform.TransformerFactory");//org.apache.xalan.xsltc.trax.TransformerFactoryImpl
+        logger.debug("javax.xml.transform.TransformerFactory :: {}", property);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        String html = new String(pdfContent, "UTF-8");
+        // avoid The entity "nbsp" was referenced, but not declared. exception
+        html = html.replaceAll("&nbsp;", "&#160;");
+        org.w3c.dom.Document document = db.parse(new StringInputStream(html, "UTF-8"));
 
-        org.w3c.dom.Document document = XMLResource.load(new ByteArrayInputStream(pdfContent)).getDocument();
+        //org.w3c.dom.Document document = XMLResource.load(new ByteArrayInputStream(pdfContent)).getDocument();
         ITextRenderer iTextRenderer = new ITextRenderer();
         ITextFontResolver fontResolver = iTextRenderer.getFontResolver();
         fontResolver.addFont(font, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);// 字形
