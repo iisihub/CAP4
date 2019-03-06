@@ -28,12 +28,20 @@ import com.iisigroup.cap.component.Result;
 public interface EDMService {
     
     /**
-     * 寄送EDM from
-     * @param request
-     * @param String ftl路徑
-     * @param Map<String, Object>
+     * 寄送EDM
+     * dataMap參數對照:
+     * @param edmFtlPath ftl的檔案路徑
+     * @param mailAddress 欲寄送的目標mail
+     * @param edmImageFileLocation ftl會用到的image"資料夾"路徑
+     * @param edmSendFileLocation 附加檔案的路徑
+     * @param fromAddress 發送者位置
+     * @param fromPerson 發送者
+     * @param edmHost 主機
+     * @param edmUsr 使用者
+     * @param edmPwd 密碼
+     * @param edmSubject mail主旨
      */
-    void sendEDM(Request request, String edmFtlPath, Map<String, Object> dataMap);
+    void sendEDM(Map<String, Object> dataMap);
     
     /**
      * 寄送EDM from
