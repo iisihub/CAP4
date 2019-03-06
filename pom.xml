@@ -137,11 +137,6 @@
             </dependency>
             <dependency>
                 <groupId>com.iisigroup.colabase</groupId>
-                <artifactId>citi-address</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.iisigroup.colabase</groupId>
                 <artifactId>citi-edm</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -186,7 +181,6 @@
         <module>citi-loan</module>
         <module>citi-ssl</module>
         <module>citi-pdf</module>
-        <module>citi-address</module>
         <module>citi-edm</module>
         <module>citi-import</module>
         <module>citi-json</module>
