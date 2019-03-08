@@ -34,6 +34,9 @@ public class TransLog extends GenericBean implements DataObject {
 
     @Column(length = 40, nullable = false)
     private String idHash;
+    
+    @Column(length = 20)
+    private String idNo;
 
     // TEXT
     @Column
@@ -44,6 +47,18 @@ public class TransLog extends GenericBean implements DataObject {
 
     @Column(name = "trans_date")
     private Timestamp transDate;
+    
+    // Version of application form
+    @Column(name = "APPLICATION_VERSION", length = 100)
+    private String applicationVersion;
+    
+    // Final Version of application form
+    @Column(name = "FINAL_APPLICATION_VERSION", length = 100)
+    private String finalApplicationVersion;
+    
+    // 手機號碼
+    @Column(name = "MOBILE", length = 20)
+    private String mPhone;
 
     @Column(length = 256)
     private String pdfServer;
@@ -132,5 +147,43 @@ public class TransLog extends GenericBean implements DataObject {
 
     public void setPdfServer(String pdfServer) {
         this.pdfServer = pdfServer;
+    }
+    
+    public String getApplicationVersion() {
+        return applicationVersion;
+    }
+
+    public void setApplicationVersion(String applicationVersion) {
+        this.applicationVersion = applicationVersion;
+    }
+    
+    public String getFinalApplicationVersion() {
+        return finalApplicationVersion;
+    }
+
+    public void setFinalApplicationVersion(String finalApplicationVersion) {
+        this.finalApplicationVersion = finalApplicationVersion;
+    }
+
+    public String getmPhone() {
+        return mPhone;
+    }
+
+    public void setmPhone(String mPhone) {
+        this.mPhone = mPhone;
+    }
+
+    /**
+     * @return the idNo
+     */
+    public String getIdNo() {
+        return idNo;
+    }
+
+    /**
+     * @param idNo the idNo to set
+     */
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
     }
 }

@@ -56,6 +56,7 @@ public class EDMHandler extends MFormHandler {
               
               // 給EDM值
               Map<String, Object> dataMap = new HashMap<>();
+              dataMap.put("edmFtlPath", "report/" + edmFtlPath);
               dataMap.put("mailAddress", mailAddress);
               dataMap.put("edmCustomerName", edmCustomerName);
               dataMap.put("edmProject", edmProject);
@@ -68,7 +69,7 @@ public class EDMHandler extends MFormHandler {
               dataMap.put("edmSendFileLocation", "D:/COLA/圓滿貸線上申請.pdf");
               dataMap.put("edmImageFileLocation", "D:/COLA/image");
               
-              edmService.sendEDM(request, "report/" + edmFtlPath, dataMap);
+              edmService.sendEDM(dataMap);
             
         } catch (Exception e) {
             result.set(RESULT, "Fail, cause : " + e.getClass());

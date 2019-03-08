@@ -14,7 +14,6 @@ package com.iisigroup.colabase.edm.service.impl;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
@@ -44,10 +43,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
+import com.iisigroup.cap.component.impl.CapSpringMVCRequest;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.colabase.edm.service.EDMService;
 import com.iisigroup.colabase.report.CCBasePageReport;
@@ -75,21 +74,29 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
 
     private static final String DEFAULT_ENCORDING = "UTF-8";
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.iisigroup.colabase.edm.service.EDMService#sendEDM(com.iisigroup.cap.component.Request)
+    /**
+     * dataMap參數對照:
+     * @param edmFtlPath ftl的檔案路徑
+     * @param mailAddress 欲寄送的目標mail
+     * @param edmImageFileLocation ftl會用到的image"資料夾"路徑
+     * @param edmSendFileLocation 附加檔案的路徑
+     * @param fromAddress 發送者位置
+     * @param fromPerson 發送者
+     * @param edmHost 主機
+     * @param edmUsr 使用者
+     * @param edmPwd 密碼
+     * @param edmSubject mail主旨
      */
     @Override
-    public void sendEDM(Request request, String edmFtlPath, Map<String, Object> dataMap) {
+    public void sendEDM(Map<String, Object> dataMap) {
 
-        ByteArrayDownloadResult pdfContent = processTemplateEmail(request, edmFtlPath, dataMap);
+        ByteArrayDownloadResult pdfContent = processTemplateEmail((String) dataMap.get("edmFtlPath"), dataMap);
 
         String enable = getSysConfig().getProperty("mail.enable", "true");
         logRecord.info("[EDM] mail.enable is : {}", Boolean.valueOf(getSysConfig().getProperty("mail.enable", "true")));
 
         if (Boolean.valueOf(enable)) {
-            String mailAddress = CapString.trimNull(request.get("mailAddress"));
+            String mailAddress = CapString.trimNull(dataMap.get("mailAddress"));
             logRecord.info("[EDM] emailAccount is : {}", mailAddress);
             if (!CapString.isEmpty(mailAddress) && pdfContent != null) {
                 sendEDM(mailAddress, pdfContent.getByteArray(), dataMap);
@@ -169,8 +176,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
                 processImage(multipart, org, imagePath, keyword2, "\'");
                 
                 // 處理附加檔案
-                boolean isSendFile = dataMap.get("edmSendFileLocation") != null ? true : false;
-                if(isSendFile) {
+                if(dataMap.get("edmSendFileLocation") != null) {
                     multipart = sendFile(multipart, dataMap);
                 }
             }
@@ -196,12 +202,11 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
         return result;
     }
 
-    private ByteArrayDownloadResult processTemplateEmail(Request request, String edmFtlPath, Map<String, Object> dataMap) {
+    private ByteArrayDownloadResult processTemplateEmail(String edmFtlPath, Map<String, Object> dataMap) {
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
                 OutputStreamWriter wr = new OutputStreamWriter(out, getSysConfig().getProperty(PageReportParam.DEFAULT_ENCODING.toString(), DEFAULT_ENCORDING));
-                Writer writer = new BufferedWriter(wr);
-                FileInputStream is = null;) {
+                Writer writer = new BufferedWriter(wr)) {
             Configuration config = getFmConfg().getConfiguration();
             Template t = config.getTemplate(edmFtlPath);
 
@@ -215,7 +220,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
             }
             t.process(map, writer);
 
-            return new ByteArrayDownloadResult(request, out.toByteArray(), getSysConfig().getProperty("edmEncoding", "text/html"));
+            return new ByteArrayDownloadResult(new CapSpringMVCRequest(), out.toByteArray(), getSysConfig().getProperty("edmEncoding", "text/html"));
         } catch (Exception e) {
             logRecord.error(e.getMessage(), e);
         }
