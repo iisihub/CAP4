@@ -21,6 +21,7 @@ import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
+import com.iisigroup.colabase.edm.model.EdmSetting;
 import com.iisigroup.colabase.edm.service.EDMService;
 
 /**<pre>
@@ -51,25 +52,29 @@ public class EDMHandler extends MFormHandler {
         try {
               mailAddress = request.get("mailAddress");
               edmFtlPath = request.get("edmFtlPath");
+              //對應ftl內的變數
               edmCustomerName = request.get("edmCustomerName");
               edmProject = request.get("edmProject");
               
               // 給EDM值
-              Map<String, Object> dataMap = new HashMap<>();
-              dataMap.put("edmFtlPath", "report/" + edmFtlPath);
-              dataMap.put("mailAddress", mailAddress);
-              dataMap.put("edmCustomerName", edmCustomerName);
-              dataMap.put("edmProject", edmProject);
-              dataMap.put("fromAddress", "citi@imta.citicorp.com");
-              dataMap.put("fromPerson", "花旗（台灣）銀行");
-              dataMap.put("edmHost", "smtp.gmail.com");
-              dataMap.put("edmUsr", "css123456tw@gmail.com");
-              dataMap.put("edmPwd", "kvzulwkqdoiprtfb");
-              dataMap.put("edmSubject", "花旗(台灣)銀行 圓滿貸線上申請確認通知函");
-              dataMap.put("edmSendFileLocation", "D:/COLA/圓滿貸線上申請.pdf");
-              dataMap.put("edmImageFileLocation", "D:/COLA/image");
+              EdmSetting edmSetting = new EdmSetting();
+              edmSetting.setEdmFtlPath("report/" + edmFtlPath);
+              edmSetting.setMailAddress(mailAddress);
+              edmSetting.setFromAddress("citi@imta.citicorp.com");
+              edmSetting.setFromPerson("花旗（台灣）銀行");
+              edmSetting.setEdmHost("smtp.gmail.com");
+              edmSetting.setEdmUsr("css123456tw@gmail.com");
+              edmSetting.setEdmPwd("kvzulwkqdoiprtfb");
+              edmSetting.setEdmSubject("花旗(台灣)銀行 圓滿貸線上申請確認通知函");
+              edmSetting.setEdmAttachedFilePath("D:/COLA/圓滿貸線上申請.pdf");
+              edmSetting.setEdmImageFileFolder("D:/COLA/image");
               
-              edmService.sendEDM(dataMap);
+              Map<String, Object> ftlVar = new HashMap<String, Object>();
+              ftlVar.put("otherAccountTitleMask", edmCustomerName);
+              ftlVar.put("otherAccountNumberMask", edmProject);
+              edmSetting.setMappingFtlVar(ftlVar);
+              
+              edmService.sendEDM(edmSetting);
             
         } catch (Exception e) {
             result.set(RESULT, "Fail, cause : " + e.getClass());

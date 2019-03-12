@@ -11,10 +11,9 @@
  */
 package com.iisigroup.colabase.edm.service;
 
-import java.util.Map;
 
-import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
+import com.iisigroup.colabase.edm.model.EdmSetting;
 
 /**<pre>
  * send EDM service
@@ -29,19 +28,9 @@ public interface EDMService {
     
     /**
      * 寄送EDM
-     * dataMap參數對照:
-     * @param edmFtlPath ftl的檔案路徑
-     * @param mailAddress 欲寄送的目標mail
-     * @param edmImageFileLocation ftl會用到的image"資料夾"路徑
-     * @param edmSendFileLocation 附加檔案的路徑
-     * @param fromAddress 發送者位置
-     * @param fromPerson 發送者
-     * @param edmHost 主機
-     * @param edmUsr 使用者
-     * @param edmPwd 密碼
-     * @param edmSubject mail主旨
+     * @param EdmSetting model
      */
-    void sendEDM(Map<String, Object> dataMap);
+    void sendEDM(EdmSetting edmSetting);
     
     /**
      * 寄送EDM from
@@ -49,6 +38,6 @@ public interface EDMService {
      * @param byte 
      * @param Map<String, Object>
      */
-    Result sendEDM(String mailAddress, byte[] datas, Map<String, Object> dataMap);
+    Result sendEDM(String mailAddress, byte[] datas, EdmSetting edmSetting);
     
 }
