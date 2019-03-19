@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.iisigroup.colabase</groupId>
         <artifactId>citi</artifactId>
-        <version>4.0.1-colabase-jdk1.7-201903081130</version>
+        <version>4.0.1-colabase-jdk1.7-201903191745</version>
     </parent>
     <artifactId>citi-captcha</artifactId>
     <dependencies>
