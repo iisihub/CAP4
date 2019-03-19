@@ -402,12 +402,14 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * @return
      */
     private Map<String, Object> getPDFContent(Map<String, Object> dataMap) {
-        // pur image path
+        // put image path
         final String PDF_IMG_PATH_KEY = "imgPath";
         final String PDF_IMG_FILE_LOCATION = "pdfImageFileLocation";
         String imagesPath = getSysConfig().getProperty(PDF_IMG_FILE_LOCATION);
-        URL pdfImgPath = getClass().getResource(imagesPath);
-        dataMap.put(PDF_IMG_PATH_KEY, pdfImgPath);
+        if (!CapString.isEmpty(imagesPath)) {
+            URL pdfImgPath = getClass().getResource(imagesPath);
+            dataMap.put(PDF_IMG_PATH_KEY, pdfImgPath);
+        }
         // put parameter.
         String logData = "";
         for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
@@ -456,23 +458,18 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * @param encrypt
      *            加密密碼
      * @param font
-     *            自行
+     *            字型
      * @throws DocumentException
      * @throws IOException
-     * @throws SAXException 
-     * @throws ParserConfigurationException 
+     * @throws SAXException
+     * @throws ParserConfigurationException
      */
     private void genByRender(OutputStream out, byte[] pdfContent, String encrypt, String font) throws Exception {
-        String property = System.getProperty("javax.xml.transform.TransformerFactory");//org.apache.xalan.xsltc.trax.TransformerFactoryImpl
+        String property = System.getProperty("javax.xml.transform.TransformerFactory");// org.apache.xalan.xsltc.trax.TransformerFactoryImpl
         logger.debug("javax.xml.transform.TransformerFactory :: {}", property);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
-        String html = new String(pdfContent, "UTF-8");
-        // avoid The entity "nbsp" was referenced, but not declared. exception
-        html = html.replaceAll("&nbsp;", "&#160;");
-        org.w3c.dom.Document document = db.parse(new StringInputStream(html, "UTF-8"));
 
-        //org.w3c.dom.Document document = XMLResource.load(new ByteArrayInputStream(pdfContent)).getDocument();
         ITextRenderer iTextRenderer = new ITextRenderer();
         ITextFontResolver fontResolver = iTextRenderer.getFontResolver();
         fontResolver.addFont(font, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);// 字形
@@ -490,6 +487,10 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             logger.debug("[genByRender] create pdf with no password");
         }
 
+        String html = new String(pdfContent, "UTF-8");
+        html = html.replaceAll("&nbsp;", "&#160;");// avoid The entity "nbsp" was referenced, but not declared. exception
+        org.w3c.dom.Document document = db.parse(new StringInputStream(html, "UTF-8"));
+        // org.w3c.dom.Document document = XMLResource.load(new ByteArrayInputStream(pdfContent)).getDocument();
         iTextRenderer.setDocument(document, null);
         iTextRenderer.layout();
         iTextRenderer.createPDF(out);
