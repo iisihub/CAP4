@@ -203,10 +203,10 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
     /*
      * (non-Javadoc)
      * 
-     * @see com.iisigroup.colabase.pdf.service.PDFService#mergePdfFiles(java.lang.String[], java.lang.String, java.lang.String)
+     * @see com.iisigroup.colabase.pdf.service.PDFService#mergePdfFiles(java.lang.String[], java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
-    public boolean mergePdfFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName) {
+    public boolean mergePdfFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName, String encryptPassword) {
         boolean isSuccess = false;
         Document document = new Document();
         // PDF名稱
@@ -219,6 +219,8 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         try (OutputStream outputStream = new FileOutputStream(mergerPDFPath + File.separator + outputMergeFileName);) {
             document = new Document(new PdfReader(filesPath[0]).getPageSize(1));
             PdfCopy copy = new PdfCopy(document, outputStream);
+            if (!CapString.isEmpty(encryptPassword))
+                copy.setEncryption(encryptPassword.getBytes(), encryptPassword.getBytes(), PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128);
             document.open();
             for (int i = 0; i < filesPath.length; i++) {
                 PdfReader reader = new PdfReader(filesPath[i]);
@@ -244,9 +246,9 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
     /*
      * (non-Javadoc)
      * 
-     * @see com.iisigroup.colabase.pdf.service.PDFService#partitionPdfFile(java.lang.String, java.lang.String, int)
+     * @see com.iisigroup.colabase.pdf.service.PDFService#partitionPdfFile(java.lang.String, java.lang.String, int, java.lang.String)
      */
-    public boolean partitionPdfFile(String inputFilePath, String outputFilePath, int partitionPageNum) {
+    public boolean partitionPdfFile(String inputFilePath, String outputFilePath, int partitionPageNum, String encryptPassword) {
         boolean isSuccess = false;
         Document document = null;
         try {
@@ -275,6 +277,8 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             for (int i = 0; i < partitionPageNum - 1; i++) {
                 document = new Document(reader.getPageSize(1));
                 copy = new PdfCopy(document, new FileOutputStream(savePaths.get(i)));
+                if (!CapString.isEmpty(encryptPassword))
+                    copy.setEncryption(encryptPassword.getBytes(), encryptPassword.getBytes(), PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128);
                 document.open();
                 for (int j = size * i + 1; j <= size * (i + 1); j++) {
                     document.newPage();
@@ -286,6 +290,8 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
 
             document = new Document(reader.getPageSize(1));
             copy = new PdfCopy(document, new FileOutputStream(savePaths.get(partitionPageNum - 1)));
+            if (!CapString.isEmpty(encryptPassword))
+                copy.setEncryption(encryptPassword.getBytes(), encryptPassword.getBytes(), PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128);
             document.open();
             for (int j = size * (partitionPageNum - 1) + 1; j <= n; j++) {
                 document.newPage();

@@ -95,9 +95,9 @@ public class PDFServiceImplTest {
         String[] filesPath = { PDF_PATH1, PDF_PATH2 };
         String[] failFilesPath = { PDF_PATH1, "" };
         try {
-            boolean isSuccess = pdfService.mergePdfFiles(filesPath, PDF_OUT_PATH, MERGE_PDF_NAME);
+            boolean isSuccess = pdfService.mergePdfFiles(filesPath, PDF_OUT_PATH, MERGE_PDF_NAME, "");
             assertTrue(isSuccess);
-            isSuccess = pdfService.mergePdfFiles(failFilesPath, PDF_OUT_PATH, MERGE_PDF_NAME);
+            isSuccess = pdfService.mergePdfFiles(failFilesPath, PDF_OUT_PATH, MERGE_PDF_NAME, "");
             assertFalse(isSuccess);
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,9 +108,9 @@ public class PDFServiceImplTest {
     public void testPartitionPdfFile() {
         int partPDFStartPage = 2;
         try {
-            boolean isSuccess = pdfService.partitionPdfFile(PDF_PATH2, PDF_OUT_PATH + File.separator + PDF_OUT_PATH, partPDFStartPage);
+            boolean isSuccess = pdfService.partitionPdfFile(PDF_PATH2, PDF_OUT_PATH + File.separator + PDF_OUT_PATH, partPDFStartPage, "");
             assertTrue(isSuccess);
-            isSuccess = pdfService.partitionPdfFile("", PDF_OUT_PATH, partPDFStartPage);
+            isSuccess = pdfService.partitionPdfFile("", PDF_OUT_PATH, partPDFStartPage, "");
             assertFalse(isSuccess);
         } catch (Exception e) {
             e.printStackTrace();

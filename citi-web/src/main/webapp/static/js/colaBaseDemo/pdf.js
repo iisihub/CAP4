@@ -130,6 +130,7 @@ pageInit(function() {
       var mgPDFPath2 = $("#mgPDFPath2").val();
       var genMgPDFPath = $("#genMgPDFPath").val();
       var genMgPDFName = $("#genMgPDFName").val();
+      var mgPDFPwd = $("#mgPDFPwd").val();
       if (mgPDFPath1 && mgPDFPath2) {
         $.ajax({
           url : url('demopdfhandler/mergePDF'),
@@ -139,7 +140,8 @@ pageInit(function() {
             mgPDFPath1 : mgPDFPath1,
             mgPDFPath2 : mgPDFPath2,
             genMgPDFPath : genMgPDFPath,
-            genMgPDFName : genMgPDFName
+            genMgPDFName : genMgPDFName,
+            mgPDFPwd : mgPDFPwd
           },
           success : function(d) {
             var pdfResultMsg;
@@ -163,6 +165,7 @@ pageInit(function() {
       var partPDFPath = $("#partPDFPath").val();
       var partPDFOutputPath = $("#partPDFOutputPath").val();
       var partPDFStartPage = $("#partPDFStartPage").val();
+      var partPDFPwd = $("#partPDFPwd").val();
       if (partPDFPath && partPDFStartPage) {
         $.ajax({
           url : url('demopdfhandler/partitionPDF'),
@@ -171,7 +174,8 @@ pageInit(function() {
           data : {
             partPDFPath : partPDFPath,
             partPDFOutputPath : partPDFOutputPath,
-            partPDFStartPage : partPDFStartPage
+            partPDFStartPage : partPDFStartPage,
+            partPDFPwd : partPDFPwd
           },
           success : function(d) {
             var pdfResultMsg;

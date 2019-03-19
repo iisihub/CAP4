@@ -143,10 +143,11 @@ public class PDFHandler extends MFormHandler {
         String mgPDFPath2 = request.get("mgPDFPath2", "");
         String genMgPDFPath = request.get("genMgPDFPath", "");
         String genMgPDFName = request.get("genMgPDFName", "");
+        String mgPDFPwd = request.get("mgPDFPwd", "");
         String[] filesPath = { mgPDFPath1, mgPDFPath2 };
         if (!CapString.isEmpty(genMgPDFPath)) {
             try {
-                pdfService.mergePdfFiles(filesPath, genMgPDFPath, genMgPDFName);
+                pdfService.mergePdfFiles(filesPath, genMgPDFPath, genMgPDFName,mgPDFPwd);
                 result.set(PDF_RESULT, "ok");
             } catch (Exception e) {
                 logger.debug(e.getMessage(), e);
@@ -169,9 +170,10 @@ public class PDFHandler extends MFormHandler {
         String partPDFPath = request.get("partPDFPath", "");
         String partPDFOutputPath = request.get("partPDFOutputPath", "");
         int partPDFStartPage = Integer.parseInt(request.get("partPDFStartPage", "0"));
+        String partPDFPwd = request.get("partPDFPwd", "");
         if (!CapString.isEmpty(partPDFPath)) {
             try {
-                pdfService.partitionPdfFile(partPDFPath, partPDFOutputPath, partPDFStartPage);
+                pdfService.partitionPdfFile(partPDFPath, partPDFOutputPath, partPDFStartPage,partPDFPwd);
                 result.set(PDF_RESULT, "ok");
             } catch (Exception e) {
                 logger.debug(e.getMessage(), e);
