@@ -12,6 +12,7 @@
 package com.iisigroup.colabase.pdf.handler;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +45,7 @@ public class PDFHandler extends MFormHandler {
     private static final String DEFAULT_FONT = "MSJH.TTF";// 微軟正黑體
     private static final String DATE_FORMAT = "yyyy/MM/dd";
     private static final String FTL_TEMPLETE_NAME = "PDF_TEMPLETE.ftl";
+    private static final String FTL_TEMPLETE_NAME2 = "PDF_TEMPLETE2.ftl";
     // generatePDF parm
     private static final String PDF_NAME = "PDF_NAME";
     private static final String PDF_PATH = "PDF_PATH";
@@ -72,7 +74,8 @@ public class PDFHandler extends MFormHandler {
         String idNo = request.get(ID_NO, "");
         String mPhone = request.get(M_PHONE, "");
         String colabaseDemoPath = "colabaseDemo" + File.separator;
-        String templateName = colabaseDemoPath + FTL_TEMPLETE_NAME;
+        String templateName = colabaseDemoPath + FTL_TEMPLETE_NAME;//單個FTL
+        String[] ftlTemplateAry = { templateName, templateName};// 多個FTL
         // 給PDF值
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put(CUST_NAME, custName);
@@ -83,7 +86,9 @@ public class PDFHandler extends MFormHandler {
         // PDF產生結果
         if (!CapString.isEmpty(pdfPath)) {
             try {
-                pdfService.processPdfByFtl(dataMap, templateName, pdfPath, pdfName, pdfPwd, DEFAULT_FONT);
+//                ArrayList<byte[]> pdfContent = pdfService.processPdfContent(dataMap, ftlTemplateAry);//多個FTL
+                 byte[] pdfContent = pdfService. processPdfContent(dataMap, templateName); //單個FTL
+                pdfService.processPdf(pdfContent, pdfPath, pdfName, pdfPwd, DEFAULT_FONT);
                 result.set(PDF_RESULT, "ok");
             } catch (Exception e) {
                 logger.debug(e.getMessage(), e);
@@ -119,7 +124,7 @@ public class PDFHandler extends MFormHandler {
         dataMap.put(ONLINE_SIGN, TEST_SIGN_WORDING);
         // PDF產生結果
         try {
-            byte[] pdfContent = pdfService. processPdfContent(dataMap, templateName);
+            byte[] pdfContent = pdfService.processPdfContent(dataMap, templateName);
             return pdfService.downloadPdf(request, pdfContent, pdfName, pdfPwd, DEFAULT_FONT);
             // 用路徑位置下載PDF
             // String pdfPath = "/Users/cathy/Downloads/test13.pdf";
@@ -147,7 +152,7 @@ public class PDFHandler extends MFormHandler {
         String[] filesPath = { mgPDFPath1, mgPDFPath2 };
         if (!CapString.isEmpty(genMgPDFPath)) {
             try {
-                pdfService.mergePdfFiles(filesPath, genMgPDFPath, genMgPDFName,mgPDFPwd);
+                pdfService.mergePdfFiles(filesPath, genMgPDFPath, genMgPDFName, mgPDFPwd);
                 result.set(PDF_RESULT, "ok");
             } catch (Exception e) {
                 logger.debug(e.getMessage(), e);
@@ -173,7 +178,7 @@ public class PDFHandler extends MFormHandler {
         String partPDFPwd = request.get("partPDFPwd", "");
         if (!CapString.isEmpty(partPDFPath)) {
             try {
-                pdfService.partitionPdfFile(partPDFPath, partPDFOutputPath, partPDFStartPage,partPDFPwd);
+                pdfService.partitionPdfFile(partPDFPath, partPDFOutputPath, partPDFStartPage, partPDFPwd);
                 result.set(PDF_RESULT, "ok");
             } catch (Exception e) {
                 logger.debug(e.getMessage(), e);

@@ -126,6 +126,50 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         return result;
     }
 
+    public Result processPdf(ArrayList<byte[]> pdfContent, String pdfPath, String pdfName, String encryptPassword, String fontName) {
+        AjaxFormResult result = new AjaxFormResult();
+        // PDF名稱
+        String font = "";
+        String outputFileName = "";
+        if (!CapString.isEmpty(pdfName)) {
+            outputFileName = pdfName + ".pdf";
+        } else {
+            outputFileName = defalutPDFName();
+        }
+        if (!CapString.isEmpty(fontName)) {
+            try {
+                font = fontFactory.getFontPath(DEFAULT_FONT, "");
+            } catch (IOException e) {
+                logger.debug(e.getMessage(), e);
+            }
+        }
+        String encryptPdfOutputFilename = pdfPath + File.separator + outputFileName;
+        File encryptPdfFile = new File(encryptPdfOutputFilename);
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream();) {
+            // 加密密碼，建立PDF名稱並產出
+            String encrypt = CapString.trimNull(encryptPassword, "");
+            genByRender(out, pdfContent, encrypt, font);// gen encrypt Pdf
+            if (!CapString.isEmpty(pdfPath)) {// 產生實體PDF至pdfPath
+                // 產出有加密PDF
+                File tempDir = new File(pdfPath);
+                if (!tempDir.exists()) {
+                    tempDir.mkdirs();
+                }
+                try (OutputStream os = new FileOutputStream(encryptPdfFile);) {
+                    out.writeTo(os);
+                } catch (Exception e) {
+                    logger.debug(e.getMessage(), e);
+                    result.set("isSuccess", false);
+                }
+            }
+            result.set("isSuccess", true);
+        } catch (Exception e) {
+            logger.debug(e.getMessage(), e);
+            result.set("isSuccess", false);
+        }
+        return result;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -196,6 +240,16 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             // process ftl template
             Map<String, Object> contentMap = getPDFContent(dataMap);
             pdfContent = processPdfTemplate(ftlTemplateName, contentMap);
+        }
+        return pdfContent;
+    }
+
+    public ArrayList<byte[]> processPdfContent(Map<String, Object> dataMap, String[] ftlTemplateAry) {
+        ArrayList<byte[]> pdfContent = null;
+        if (ftlTemplateAry.length > 0) {
+            // process ftl template
+            Map<String, Object> contentMap = getPDFContent(dataMap);
+            pdfContent = processPdfTemplate(ftlTemplateAry, contentMap);
         }
         return pdfContent;
     }
@@ -451,6 +505,35 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
     }
 
     /**
+     * Process Multiple FTL Template
+     * 
+     * @param ftLTemplatAry
+     *            多個樣版陣列
+     * @param contentMap
+     *            PDF內容Map
+     * @return
+     */
+    private ArrayList<byte[]> processPdfTemplate(String[] ftLTemplatAry, Map<String, Object> contentMap) {
+        ArrayList<byte[]> ftLTemplatArybyte = new ArrayList<byte[]>();
+        for (String ftLTemplateName : ftLTemplatAry) {
+            try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    OutputStreamWriter wr = new OutputStreamWriter(out, getSysConfig().getProperty(PageReportParam.DEFAULT_ENCODING.toString(), DEFAULT_ENCORDING));
+                    Writer writer = new BufferedWriter(wr);) {
+                Configuration config = getFmConfg().getConfiguration();
+                Template t = config.getTemplate(ftLTemplateName);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("[processPDFTemplate] freemarker template name: {} , content data: {}", ftLTemplateName, contentMap);
+                }
+                t.process(contentMap, writer);
+                ftLTemplatArybyte.add(out.toByteArray());
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+        return ftLTemplatArybyte;
+    }
+
+    /**
      * 產出PDF
      * 
      * @param out
@@ -496,6 +579,65 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         iTextRenderer.setDocument(document, null);
         iTextRenderer.layout();
         iTextRenderer.createPDF(out);
+    }
+
+    /**
+     * 產出多個FTL Template的PDF
+     * 
+     * @param out
+     *            OutputStream
+     * @param pdfContent
+     *            PDF內容
+     * @param encrypt
+     *            加密密碼
+     * @param font
+     *            字型
+     * @throws DocumentException
+     * @throws IOException
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     */
+    private void genByRender(OutputStream out, ArrayList<byte[]> pdfContent, String encrypt, String font) throws Exception {
+        String property = System.getProperty("javax.xml.transform.TransformerFactory");// org.apache.xalan.xsltc.trax.TransformerFactoryImpl
+        logger.debug("javax.xml.transform.TransformerFactory :: {}", property);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        ITextRenderer iTextRenderer = new ITextRenderer();
+        ITextFontResolver fontResolver = iTextRenderer.getFontResolver();
+        fontResolver.addFont(font, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);// 字形
+
+        if (!CapString.isEmpty(encrypt)) {
+            // 只有列印權限 加密
+            PDFEncryption pdfEncryption = new PDFEncryption();
+            pdfEncryption.setEncryptionType(PdfWriter.ENCRYPTION_AES_128);// 花旗內部要求PDF加密格式為AES_128
+            pdfEncryption.setOwnerPassword(encrypt.getBytes());
+            pdfEncryption.setUserPassword(encrypt.getBytes());
+            pdfEncryption.setAllowedPrivileges(PdfWriter.ALLOW_PRINTING);
+            iTextRenderer.setPDFEncryption(pdfEncryption);
+            logger.debug("[genByRender] create pdf with password: {}", encrypt);
+        } else {
+            logger.debug("[genByRender] create pdf with no password");
+        }
+
+        org.w3c.dom.Document document;
+        int i = 0;
+        for (byte[] pdfbyte : pdfContent) {
+            String html = new String(pdfbyte, "UTF-8");
+            html = html.replaceAll("&nbsp;", "&#160;");// avoid The entity "nbsp" was referenced, but not declared. exception
+            document = db.parse(new StringInputStream(html, "UTF-8"));
+            iTextRenderer.setDocument(document, null);
+            iTextRenderer.layout();
+            // 第一次進來先create
+            if (i == 0) {
+                iTextRenderer.createPDF(out, false);
+                // 增加第一頁長度
+                i = 1;
+                // 之後的直接寫下一頁
+            } else if (i == 1) {
+                iTextRenderer.writeNextDocument();
+            }
+        }
+        iTextRenderer.finishPDF();
     }
 
     /**
