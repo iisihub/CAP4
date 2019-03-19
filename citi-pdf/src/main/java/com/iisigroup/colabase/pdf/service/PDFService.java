@@ -1,11 +1,11 @@
 package com.iisigroup.colabase.pdf.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
-import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
 import com.iisigroup.cap.exception.CapException;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
@@ -28,7 +28,25 @@ public interface PDFService {
      * @return
      * @throws CapException
      */
-    public Result processPdf(ByteArrayDownloadResult pdfContent, String pdfPath, String pdfName, String encryptPassword, String font);
+    public Result processPdf(byte[] pdfContent, String pdfPath, String pdfName, String encryptPassword, String font);
+
+    /**
+     * 由多個FTL模板產生的PDF；可則自行處理processPDFContent後將PDF內容放置
+     * 
+     * @param pdfContent
+     *            PDF內容
+     * @param pdfPath
+     *            PDF路徑；有值，則PDF產生於路徑下
+     * @param pdfName
+     *            PDF檔案名稱 (不用帶.pdf副檔名)
+     * @param encryptPassword
+     *            PDF加密密碼，不加密則空
+     * @param fontName
+     *            PDF字型名稱
+     * @return
+     * @throws CapException
+     */
+    public Result processPdf(ArrayList<byte[]> pdfContent, String pdfPath, String pdfName, String encryptPassword, String font);
 
     /**
      * 產生PDF；若為FTL樣版可一起將PDF欄位值資料dataMap處理
@@ -65,7 +83,7 @@ public interface PDFService {
      * @return
      * @throws CapException
      */
-    public Result downloadPdf(Request request, ByteArrayDownloadResult pdfContent, String pdfName, String encryptPassword, String font);
+    public Result downloadPdf(Request request, byte[] pdfContent, String pdfName, String encryptPassword, String font);
 
     /**
      * 下載PDF；讀取已產生PDF路徑下載PDF
@@ -87,7 +105,19 @@ public interface PDFService {
      *            FTL樣版名稱
      * @return
      */
-    public ByteArrayDownloadResult processPdfContent(Map<String, Object> dataMap, String ftLTemplateName);
+    public byte[] processPdfContent(Map<String, Object> dataMap, String ftLTemplateName);
+
+    /**
+     * Process Multiple FTL PDF Content
+     * 
+     * @param request
+     * @param dataMap
+     *            PDF欄位值資料Map
+     * @param ftLTemplateName
+     *            多個FTL樣版名稱陣列
+     * @return
+     */
+    public ArrayList<byte[]> processPdfContent(Map<String, Object> dataMap, String[] ftlTemplateAry);
 
     /**
      * Merge PDF Files
@@ -98,9 +128,11 @@ public interface PDFService {
      *            合併後PDF的路徑位置
      * @param mergerPDFName
      *            合併後PDF名稱
+     * @param encryptPassword
+     *            合併後PDF加密密碼，不加密則空
      * @return
      */
-    public boolean mergePdfFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName);
+    public boolean mergePdfFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName, String encryptPassword);
 
     /**
      * 將Pdf檔案分割為多頁
@@ -111,9 +143,11 @@ public interface PDFService {
      *            分割後PDF檔案路徑
      * @param partitionPageNum
      *            分割頁數
+     * @param encryptPassword
+     *            合併後PDF加密密碼，不加密則空
      * @return
      */
-    public boolean partitionPdfFile(String filePath, String partPDFOutputPath, int partitionPageNum);
+    public boolean partitionPdfFile(String filePath, String partPDFOutputPath, int partitionPageNum, String encryptPassword);
 
     /**
      * PDF 加入文字浮水印

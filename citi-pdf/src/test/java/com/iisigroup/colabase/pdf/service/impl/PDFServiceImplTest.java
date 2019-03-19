@@ -27,9 +27,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
-import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
 import com.iisigroup.cap.component.impl.CapSpringMVCRequest;
-import com.iisigroup.cap.report.constants.ContextTypeEnum;
 import com.iisigroup.cap.report.factory.ItextFontFactory;
 import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.cap.utils.CapString;
@@ -75,7 +73,7 @@ public class PDFServiceImplTest {
         Request request = new CapSpringMVCRequest();
         String colabaseDemoPath = "colabaseDemo" + File.separator;
         String templateName = colabaseDemoPath + FTL_TEMPLETE_NAME;
-        ByteArrayDownloadResult pdfContent = null;
+        byte[] pdfContent = null;
         // PDF產生結果
         try {
             // Process PDF Content
@@ -83,7 +81,8 @@ public class PDFServiceImplTest {
             // Process PDF
             AjaxFormResult result = (AjaxFormResult) pdfService.processPdf(pdfContent, PDF_OUT_PATH, PDF_NAME, PDF_PASS_WORD, DEFAULT_FONT);
             assertEquals(true, result.get("isSuccess"));
-            result = (AjaxFormResult) pdfService.processPdf(null, "", "", "", DEFAULT_FONT);
+            pdfContent = null;
+            result = (AjaxFormResult) pdfService.processPdf(pdfContent, "", "", "", DEFAULT_FONT);
             assertEquals(false, result.get("isSuccess"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,9 +94,9 @@ public class PDFServiceImplTest {
         String[] filesPath = { PDF_PATH1, PDF_PATH2 };
         String[] failFilesPath = { PDF_PATH1, "" };
         try {
-            boolean isSuccess = pdfService.mergePdfFiles(filesPath, PDF_OUT_PATH, MERGE_PDF_NAME);
+            boolean isSuccess = pdfService.mergePdfFiles(filesPath, PDF_OUT_PATH, MERGE_PDF_NAME, "");
             assertTrue(isSuccess);
-            isSuccess = pdfService.mergePdfFiles(failFilesPath, PDF_OUT_PATH, MERGE_PDF_NAME);
+            isSuccess = pdfService.mergePdfFiles(failFilesPath, PDF_OUT_PATH, MERGE_PDF_NAME, "");
             assertFalse(isSuccess);
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,9 +107,9 @@ public class PDFServiceImplTest {
     public void testPartitionPdfFile() {
         int partPDFStartPage = 2;
         try {
-            boolean isSuccess = pdfService.partitionPdfFile(PDF_PATH2, PDF_OUT_PATH + File.separator + PDF_OUT_PATH, partPDFStartPage);
+            boolean isSuccess = pdfService.partitionPdfFile(PDF_PATH2, PDF_OUT_PATH + File.separator + PDF_OUT_PATH, partPDFStartPage, "");
             assertTrue(isSuccess);
-            isSuccess = pdfService.partitionPdfFile("", PDF_OUT_PATH, partPDFStartPage);
+            isSuccess = pdfService.partitionPdfFile("", PDF_OUT_PATH, partPDFStartPage, "");
             assertFalse(isSuccess);
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,7 +137,7 @@ public class PDFServiceImplTest {
         }
     }
 
-    public ByteArrayDownloadResult testProcessPDFContent(Request request, String templateName) {
+    public byte[] testProcessPDFContent(Request request, String templateName) {
         ClassLoader classLoader = getClass().getClassLoader();
         // 給PDF值
         Map<String, Object> dataMap = new HashMap<>();
@@ -157,7 +156,7 @@ public class PDFServiceImplTest {
             logData = logData.concat(entry.getKey() + "=" + MapUtils.getString(dataMap, entry.getKey(), "") + " , ");
         }
         // Process Templete
-        ByteArrayDownloadResult pdfContent = null;
+        byte[] pdfContent = null;
         ByteArrayOutputStream out = null;
         OutputStreamWriter wr = null;
         FileInputStream is = null;
@@ -175,7 +174,7 @@ public class PDFServiceImplTest {
                 writer = new BufferedWriter(wr);
                 t.process(dataMap, writer);
             }
-            pdfContent = new ByteArrayDownloadResult(request, out.toByteArray(), ContextTypeEnum.text.toString());
+            pdfContent = out.toByteArray();
         } catch (Exception e) {
         } finally {
             IOUtils.closeQuietly(out);

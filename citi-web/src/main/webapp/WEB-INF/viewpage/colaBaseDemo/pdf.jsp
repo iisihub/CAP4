@@ -42,6 +42,8 @@
             <br />    
             <input id="genMgPDFName" type="text" placeholder="請輸入要合併後PDF檔案名稱" value=""/>
             <br />
+            <input id="mgPDFPwd" type="mgPDFPwd" maxlength="20" placeholder="請輸入合併後PDF加密密碼" value=""/>
+            <br />
             <button id="mergePDF" class="sendbtn" type="button" style="">合併PDF</button>
             <br />
             <hr/>
@@ -51,6 +53,8 @@
 	        <input id="partPDFOutputPath" type="text" placeholder="請輸入分割後PDF路徑" value=""/>
             <br />
 	        <input id="partPDFStartPage" type="text" placeholder="請輸入PDF欲分割之頁數" value=""/>
+            <br />
+            <input id="partPDFPwd" type="partPDFPwd" maxlength="20" placeholder="請輸入分割後PDF加密密碼" value=""/>
             <br />
             <button id="partitionPDF" class="sendbtn" type="button" style="">分割PDF</button>
             <h3>PDF Add WaterMark</h3>

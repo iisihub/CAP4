@@ -48,6 +48,7 @@ import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
 import com.iisigroup.cap.component.impl.CapSpringMVCRequest;
 import com.iisigroup.cap.utils.CapString;
+import com.iisigroup.colabase.edm.model.EdmSetting;
 import com.iisigroup.colabase.edm.service.EDMService;
 import com.iisigroup.colabase.report.CCBasePageReport;
 
@@ -74,32 +75,19 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
 
     private static final String DEFAULT_ENCORDING = "UTF-8";
 
-    /**
-     * dataMap參數對照:
-     * @param edmFtlPath ftl的檔案路徑
-     * @param mailAddress 欲寄送的目標mail
-     * @param edmImageFileLocation ftl會用到的image"資料夾"路徑
-     * @param edmSendFileLocation 附加檔案的路徑
-     * @param fromAddress 發送者位置
-     * @param fromPerson 發送者
-     * @param edmHost 主機
-     * @param edmUsr 使用者
-     * @param edmPwd 密碼
-     * @param edmSubject mail主旨
-     */
     @Override
-    public void sendEDM(Map<String, Object> dataMap) {
+    public void sendEDM(EdmSetting edmSetting) {
 
-        ByteArrayDownloadResult pdfContent = processTemplateEmail((String) dataMap.get("edmFtlPath"), dataMap);
+        ByteArrayDownloadResult pdfContent = processTemplateEmail(edmSetting.getEdmFtlPath(), edmSetting.getMappingFtlVar());
 
         String enable = getSysConfig().getProperty("mail.enable", "true");
         logRecord.info("[EDM] mail.enable is : {}", Boolean.valueOf(getSysConfig().getProperty("mail.enable", "true")));
 
         if (Boolean.valueOf(enable)) {
-            String mailAddress = CapString.trimNull(dataMap.get("mailAddress"));
+            String mailAddress = CapString.trimNull(edmSetting.getMailAddress());
             logRecord.info("[EDM] emailAccount is : {}", mailAddress);
             if (!CapString.isEmpty(mailAddress) && pdfContent != null) {
-                sendEDM(mailAddress, pdfContent.getByteArray(), dataMap);
+                sendEDM(mailAddress, pdfContent.getByteArray(), edmSetting);
             } else {
                 logRecord.error("[EDM] pdfContent is null: {}", (pdfContent == null));
                 throw new NullPointerException();
@@ -113,16 +101,16 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
      * @see com.iisigroup.colabase.edm.service.EDMService#sendEDM(java.lang.String, byte[], java.lang.String, com.iisigroup.cap.component.Request)
      */
     @Override
-    public Result sendEDM(String mailAddress, byte[] datas, Map<String, Object> dataMap) {
+    public Result sendEDM(String mailAddress, byte[] datas, EdmSetting edmSetting) {
         AjaxFormResult result = new AjaxFormResult();
 
         try {
-            final String FROM_ADDRESS = (String) dataMap.get("fromAddress");
-            final String FROM_PERSON = (String) dataMap.get("fromPerson");
-            final String EDM_HOST = (String) dataMap.get("edmHost");
-            final String EDM_USR = (String) dataMap.get("edmUsr");
-            final String EDM_PWD = (String) dataMap.get("edmPwd");
-            String edmSubject = (String) dataMap.get("edmSubject");
+            final String FROM_ADDRESS = edmSetting.getFromAddress();
+            final String FROM_PERSON = edmSetting.getFromPerson();
+            final String EDM_HOST = edmSetting.getEdmHost();
+            final String EDM_USR = edmSetting.getEdmUsr();
+            final String EDM_PWD = edmSetting.getEdmPwd();
+            String edmSubject = edmSetting.getEdmSubject();
 
             if (CapString.isEmpty(edmSubject)) {
                 edmSubject = "Citi Cola Notification";
@@ -162,7 +150,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
 
             if (html != null) {
 
-                String imagePath = (String) dataMap.get("edmImageFileLocation");
+                String imagePath = edmSetting.getEdmImageFileFolder();
                 messageBodyPart.setContent(html.toString(), "text/html;charset=utf-8");
                 // add it
                 multipart.addBodyPart(messageBodyPart);
@@ -176,8 +164,8 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
                 processImage(multipart, org, imagePath, keyword2, "\'");
                 
                 // 處理附加檔案
-                if(dataMap.get("edmSendFileLocation") != null) {
-                    multipart = sendFile(multipart, dataMap);
+                if(edmSetting.getEdmAttachedFilePath() != null) {
+                    multipart = sendFile(multipart, edmSetting);
                 }
             }
 
@@ -211,8 +199,11 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
             Template t = config.getTemplate(edmFtlPath);
 
             Map<String, Object> map = new HashMap<String, Object>();
-            for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
-                map.put(entry.getKey(), CapString.trimNull(entry.getValue()));
+            
+            if(dataMap != null) {
+                for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
+                    map.put(entry.getKey(), CapString.trimNull(entry.getValue()));
+                }
             }
 
             if (logRecord.isDebugEnabled()) {
@@ -227,13 +218,13 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
         return null;
     }
     
-    private MimeMultipart sendFile(MimeMultipart multipart, Map<String, Object> dataMap) {
+    private MimeMultipart sendFile(MimeMultipart multipart, EdmSetting edmSetting) {
         // 處理附加檔案
         File sendFile;
         MimeBodyPart filePart = new MimeBodyPart();
         // send file
         try {
-            String filePath = (String) dataMap.get("edmSendFileLocation");
+            String filePath = edmSetting.getEdmAttachedFilePath();
             sendFile = new File(filePath);
             logRecord.debug("[SendEmailServiceImpl] @ attachedFile Found >>>>>> " + sendFile);
             if (sendFile.exists()) {
