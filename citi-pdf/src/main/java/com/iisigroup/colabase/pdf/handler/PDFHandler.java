@@ -21,7 +21,6 @@ import org.springframework.stereotype.Controller;
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
-import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
 import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.cap.utils.CapString;
@@ -120,7 +119,7 @@ public class PDFHandler extends MFormHandler {
         dataMap.put(ONLINE_SIGN, TEST_SIGN_WORDING);
         // PDF產生結果
         try {
-            ByteArrayDownloadResult pdfContent = pdfService. processPdfContent(dataMap, templateName);
+            byte[] pdfContent = pdfService. processPdfContent(dataMap, templateName);
             return pdfService.downloadPdf(request, pdfContent, pdfName, pdfPwd, DEFAULT_FONT);
             // 用路徑位置下載PDF
             // String pdfPath = "/Users/cathy/Downloads/test13.pdf";

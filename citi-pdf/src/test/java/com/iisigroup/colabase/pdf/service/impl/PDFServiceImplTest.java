@@ -81,7 +81,7 @@ public class PDFServiceImplTest {
             // Process PDF Content
             pdfContent = testProcessPDFContent(request, templateName);
             // Process PDF
-            AjaxFormResult result = (AjaxFormResult) pdfService.processPdf(pdfContent, PDF_OUT_PATH, PDF_NAME, PDF_PASS_WORD, DEFAULT_FONT);
+            AjaxFormResult result = (AjaxFormResult) pdfService.processPdf(pdfContent.getByteArray(), PDF_OUT_PATH, PDF_NAME, PDF_PASS_WORD, DEFAULT_FONT);
             assertEquals(true, result.get("isSuccess"));
             result = (AjaxFormResult) pdfService.processPdf(null, "", "", "", DEFAULT_FONT);
             assertEquals(false, result.get("isSuccess"));

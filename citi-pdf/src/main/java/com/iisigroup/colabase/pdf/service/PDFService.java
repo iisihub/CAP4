@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
-import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
 import com.iisigroup.cap.exception.CapException;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
@@ -28,7 +27,7 @@ public interface PDFService {
      * @return
      * @throws CapException
      */
-    public Result processPdf(ByteArrayDownloadResult pdfContent, String pdfPath, String pdfName, String encryptPassword, String font);
+    public Result processPdf(byte[] pdfContent, String pdfPath, String pdfName, String encryptPassword, String font);
 
     /**
      * 產生PDF；若為FTL樣版可一起將PDF欄位值資料dataMap處理
@@ -65,7 +64,7 @@ public interface PDFService {
      * @return
      * @throws CapException
      */
-    public Result downloadPdf(Request request, ByteArrayDownloadResult pdfContent, String pdfName, String encryptPassword, String font);
+    public Result downloadPdf(Request request, byte[] pdfContent, String pdfName, String encryptPassword, String font);
 
     /**
      * 下載PDF；讀取已產生PDF路徑下載PDF
@@ -87,7 +86,7 @@ public interface PDFService {
      *            FTL樣版名稱
      * @return
      */
-    public ByteArrayDownloadResult processPdfContent(Map<String, Object> dataMap, String ftLTemplateName);
+    public byte[] processPdfContent(Map<String, Object> dataMap, String ftLTemplateName);
 
     /**
      * Merge PDF Files

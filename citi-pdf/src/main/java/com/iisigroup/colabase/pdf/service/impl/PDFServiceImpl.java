@@ -2,7 +2,6 @@ package com.iisigroup.colabase.pdf.service.impl;
 
 import java.awt.Color;
 import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,14 +26,12 @@ import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 import org.xhtmlrenderer.pdf.PDFEncryption;
-import org.xhtmlrenderer.resource.XMLResource;
 import org.xml.sax.SAXException;
 
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.component.impl.ByteArrayDownloadResult;
-import com.iisigroup.cap.component.impl.CapSpringMVCRequest;
 import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.report.constants.ContextTypeEnum;
 import com.iisigroup.cap.report.factory.ItextFontFactory;
@@ -75,17 +72,17 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      */
     @Override
     public Result processPdfByFtl(Map<String, Object> dataMap, String ftlTemplateName, String pdfPath, String pdfName, String encryptPassword, String fontName) {
-        ByteArrayDownloadResult pdfContent = processPdfContent(dataMap, ftlTemplateName);
+        byte[] pdfContent = processPdfContent(dataMap, ftlTemplateName);
         return processPdf(pdfContent, pdfPath, pdfName, encryptPassword, fontName);
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see com.iisigroup.colabase.pdf.service.PDFService#processPdf(com.iisigroup.cap.component.impl.ByteArrayDownloadResult, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     * @see com.iisigroup.colabase.pdf.service.PDFService#processPdf(byte[], java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
-    public Result processPdf(ByteArrayDownloadResult pdfContent, String pdfPath, String pdfName, String encryptPassword, String fontName) {
+    public Result processPdf(byte[] pdfContent, String pdfPath, String pdfName, String encryptPassword, String fontName) {
         AjaxFormResult result = new AjaxFormResult();
         // PDF名稱
         String font = "";
@@ -107,7 +104,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();) {
             // 加密密碼，建立PDF名稱並產出
             String encrypt = CapString.trimNull(encryptPassword, "");
-            genByRender(out, pdfContent.getByteArray(), encrypt, font);// gen encrypt Pdf
+            genByRender(out, pdfContent, encrypt, font);// gen encrypt Pdf
             if (!CapString.isEmpty(pdfPath)) {// 產生實體PDF至pdfPath
                 // 產出有加密PDF
                 File tempDir = new File(pdfPath);
@@ -153,11 +150,10 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
     /*
      * (non-Javadoc)
      * 
-     * @see com.iisigroup.colabase.pdf.service.PDFService#downloadPdf(com.iisigroup.cap.component.Request, com.iisigroup.cap.component.impl.ByteArrayDownloadResult, java.lang.String, java.lang.String,
-     * java.lang.String)
+     * @see com.iisigroup.colabase.pdf.service.PDFService#downloadPdf(com.iisigroup.cap.component.Request, byte[], java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
-    public Result downloadPdf(Request request, ByteArrayDownloadResult pdfContent, String pdfName, String encryptPassword, String fontName) {
+    public Result downloadPdf(Request request, byte[] pdfContent, String pdfName, String encryptPassword, String fontName) {
         AjaxFormResult result = new AjaxFormResult();
         // PDF名稱
         String font = "";
@@ -177,7 +173,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();) {
             // 加密密碼，建立PDF名稱並產出
             String encrypt = CapString.trimNull(encryptPassword, "");
-            genByRender(out, pdfContent.getByteArray(), encrypt, font);// gen encrypt Pdf
+            genByRender(out, pdfContent, encrypt, font);// gen encrypt Pdf
             // 直接下載PDF
             result.set("isSuccess", true);
             return new ByteArrayDownloadResult(request, out.toByteArray(), ContextTypeEnum.pdf.toString(), outputFileName);
@@ -194,8 +190,8 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * @see com.iisigroup.colabase.pdf.service.PDFService#processPdfContent(java.util.Map, java.lang.String)
      */
     @Override
-    public ByteArrayDownloadResult processPdfContent(Map<String, Object> dataMap, String ftlTemplateName) {
-        ByteArrayDownloadResult pdfContent = null;
+    public byte[] processPdfContent(Map<String, Object> dataMap, String ftlTemplateName) {
+        byte[] pdfContent = null;
         if (!CapString.isEmpty(ftlTemplateName)) {
             // process ftl template
             Map<String, Object> contentMap = getPDFContent(dataMap);
@@ -429,7 +425,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      *            PDF內容Map
      * @return
      */
-    private ByteArrayDownloadResult processPdfTemplate(String ftLTemplateName, Map<String, Object> contentMap) {
+    private byte[] processPdfTemplate(String ftLTemplateName, Map<String, Object> contentMap) {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
                 OutputStreamWriter wr = new OutputStreamWriter(out, getSysConfig().getProperty(PageReportParam.DEFAULT_ENCODING.toString(), DEFAULT_ENCORDING));
                 Writer writer = new BufferedWriter(wr);) {
@@ -441,7 +437,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
                 }
                 t.process(contentMap, writer);
             }
-            return new ByteArrayDownloadResult(new CapSpringMVCRequest(), out.toByteArray(), ContextTypeEnum.text.toString());
+            return out.toByteArray();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
