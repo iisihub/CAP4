@@ -92,7 +92,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         } else {
             outputFileName = defalutPDFName();
         }
-        if (!CapString.isEmpty(fontName)) {
+        if (CapString.isEmpty(fontName)) {
             try {
                 font = fontFactory.getFontPath(DEFAULT_FONT, "");
             } catch (IOException e) {
@@ -136,7 +136,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         } else {
             outputFileName = defalutPDFName();
         }
-        if (!CapString.isEmpty(fontName)) {
+        if (CapString.isEmpty(fontName)) {
             try {
                 font = fontFactory.getFontPath(DEFAULT_FONT, "");
             } catch (IOException e) {
@@ -207,7 +207,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         } else {
             outputFileName = defalutPDFName();
         }
-        if (!CapString.isEmpty(fontName)) {
+        if (CapString.isEmpty(fontName)) {
             try {
                 font = fontFactory.getFontPath(DEFAULT_FONT, "");
             } catch (IOException e) {
