@@ -41,10 +41,14 @@ import com.iisigroup.cap.exception.CapException;
  */
 public class ZipUtil {
 
-    private final Logger logRecord = LoggerFactory.getLogger(getClass());
+    private static final Logger logRecord = LoggerFactory.getLogger(ZipUtil.class);
     private static final int BUFFER_SIZE = 8192;
 
-    public void zip(File destination, boolean overwrite, String password, File... unzipFiles) throws IOException {
+    private ZipUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+    
+    public static void zip(File destination, boolean overwrite, String password, File... unzipFiles) throws IOException {
 
         if (destination.isDirectory()) {
             throw new IOException(destination + " is a directory");
@@ -100,12 +104,12 @@ public class ZipUtil {
                 out.closeEntry();
                 out.finish();
             } catch (ZipException e) {
-                throw new CapException(e, getClass());
+                throw new CapException(e, ZipUtil.class);
             }
         }
     }
 
-    public void unzip(File unzipFile, String password, File destination) throws IOException, ZipException {
+    public static void unzip(File unzipFile, String password, File destination) throws IOException, ZipException {
         if (!unzipFile.exists()) {
             throw new IOException(unzipFile + " is not exist.");
         }
@@ -132,7 +136,7 @@ public class ZipUtil {
                 zipFile.setPassword(password);
             }
         } catch (Exception e) {
-            throw new CapException(e, getClass());
+            throw new CapException(e, ZipUtil.class);
         }
 
         // get the header information for all the files in the ZipFile
@@ -154,14 +158,14 @@ public class ZipUtil {
                     UnzipUtil.applyFileAttributes(fileHeader, outputFile);
 
                 } catch (ZipException e) {
-                    throw new CapException(e, getClass());
+                    throw new CapException(e, ZipUtil.class);
                 }
 
             }
         }
     }
 
-    public Boolean isEmptyFolder(Boolean isDeleteEmptyFolder, String... fileList) {
+    public static Boolean isEmptyFolder(Boolean isDeleteEmptyFolder, String... fileList) {
 
         boolean hasFile = true;
 
@@ -183,16 +187,17 @@ public class ZipUtil {
         return hasFile;
     }
 
-    public void isExistsFolder(File folder, boolean isCreate) {
+    public static void isExistsFolder(File folder, boolean isCreate) {
 
         if (!folder.exists()) {
+            logRecord.debug("[ZIP] Folder not exists!");
             try {
                 if (isCreate) {
                     FileUtils.forceMkdir(folder);
+                    logRecord.debug("[ZIP] Folder Create!");
                 }
-                logRecord.debug("[ZIP] Folder not exists!");
             } catch (IOException e) {
-                logRecord.error("[ZIP] Create folder error!");
+                throw new CapException(e, ZipUtil.class);
             }
         } else {
             logRecord.debug("[ZIP] Folder exists!");

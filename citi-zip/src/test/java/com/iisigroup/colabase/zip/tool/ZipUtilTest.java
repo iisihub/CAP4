@@ -46,7 +46,9 @@ public class ZipUtilTest {
     /** check folder 資料路徑 */
     private final String emptyFolderPath = "D:\\COLA\\testFile\\zipComplete\\testEmptyFolder";
     private final String emptyFolder2Path = "D:\\COLA\\testFile\\zipComplete\\testEmptyFolder\\empty";
-
+    /** check folder 資料路徑 */
+    private final String existsFolderPath = "D:\\COLA\\testFile\\zipComplete\\testExists";
+    
     /**
      * class初始化之後調用，用來作測試的準備工作。
      * 
@@ -91,11 +93,10 @@ public class ZipUtilTest {
 
     @Test
     public void testZip() {
-        ZipUtil zipUtil = new ZipUtil();
         File zipFile = new File(zipFilePath);
         File zipOutputFile = new File(zipFileOutputPath, zipFileName);
         try {
-            zipUtil.zip(zipOutputFile, true, zipFilePassword, zipFile);
+            ZipUtil.zip(zipOutputFile, true, zipFilePassword, zipFile);
         } catch (Exception e) {
             e.printStackTrace();
             fail("Exception!");
@@ -107,11 +108,10 @@ public class ZipUtilTest {
 
     @Test
     public void testUnzip() {
-        ZipUtil zipUtil = new ZipUtil();
         File unzipFile = new File(unzipFilePath);
         File unzipOutputFile = new File(unzipOutputFolder);
         try {
-            zipUtil.unzip(unzipFile, zipFilePassword, unzipOutputFile);
+            ZipUtil.unzip(unzipFile, zipFilePassword, unzipOutputFile);
         } catch (Exception e) {
             e.printStackTrace();
             fail("Exception!");
@@ -124,8 +124,17 @@ public class ZipUtilTest {
     @Test
     public void testIsEmptyFolder() {
         try {
-            ZipUtil zipUtil = new ZipUtil();
-            zipUtil.isEmptyFolder(false, emptyFolderPath, emptyFolder2Path);
+            ZipUtil.isEmptyFolder(false, emptyFolderPath, emptyFolder2Path);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Exception!");
+        }
+    }
+    
+    @Test
+    public void testIsExistsFolder() {
+        try {
+            ZipUtil.isExistsFolder(new File(existsFolderPath), true);
         } catch (Exception e) {
             e.printStackTrace();
             fail("Exception!");

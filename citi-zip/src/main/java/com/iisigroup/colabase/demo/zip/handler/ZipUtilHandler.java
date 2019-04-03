@@ -31,17 +31,16 @@ public class ZipUtilHandler extends MFormHandler {
     
     public Result zipDemo(Request request) {
         AjaxFormResult result = new AjaxFormResult();
-        ZipUtil zip = new ZipUtil();
         try {
             File destination = new File(request.get("zipOutPath"));
             File unzipFiles = new File(request.get("zipFile"));
             String isOverwrite = request.get("overwrite");
-            Boolean overwrite = isOverwrite.equals("Y") ? true : false;
+            Boolean overwrite = ("Y").equals(isOverwrite);
             String password = request.get("zipPassword");
             String userDefineName = request.get("zipName");
 
-            zip.isExistsFolder(destination, true);
-            zip.zip(new File(destination, userDefineName + ".zip"), overwrite, password, unzipFiles);
+            ZipUtil.isExistsFolder(destination, true);
+            ZipUtil.zip(new File(destination, userDefineName + ".zip"), overwrite, password, unzipFiles);
             result.set(RESULT, "Success, zip path : " + destination + "\\" + userDefineName + ".zip");
         } catch (Exception e) {
             result.set(RESULT, FAIL + e.getClass());
@@ -51,13 +50,12 @@ public class ZipUtilHandler extends MFormHandler {
 
     public Result unzipDemo(Request request) {
         AjaxFormResult result = new AjaxFormResult();
-        ZipUtil zip = new ZipUtil();
         try {
             File destination = new File(request.get("unzipOutPath"));
             File unzipFiles = new File(request.get("unzipFile"));
             String password = request.get("unzipPassword");
 
-            zip.unzip(unzipFiles, password, destination);
+            ZipUtil.unzip(unzipFiles, password, destination);
             result.set(RESULT, "Success, unzip path : " + destination);
         } catch (Exception e) {
             result.set(RESULT, FAIL + e.getClass());
@@ -67,12 +65,11 @@ public class ZipUtilHandler extends MFormHandler {
 
     public Result isEmptyFolderDemo(Request request) {
         AjaxFormResult result = new AjaxFormResult();
-        ZipUtil zip = new ZipUtil();
         try {
             String isEmptyFolder1 = request.get("isEmptyFolder1");
             String isEmptyFolder2 = request.get("isEmptyFolder2");
 
-            Boolean isEmpty = zip.isEmptyFolder(false, isEmptyFolder1, isEmptyFolder2);
+            Boolean isEmpty = ZipUtil.isEmptyFolder(false, isEmptyFolder1, isEmptyFolder2);
             result.set(RESULT, "Success,  is empty folder ? : " + isEmpty);
         } catch (Exception e) {
             result.set(RESULT, FAIL + e.getClass());
