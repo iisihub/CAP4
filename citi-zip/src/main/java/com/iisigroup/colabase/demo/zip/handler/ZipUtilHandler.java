@@ -29,6 +29,10 @@ public class ZipUtilHandler extends MFormHandler {
     private static final String RESULT = "result";
     private static final String FAIL = "Fail, cause : ";
     
+    /**
+     * @param request
+     * @return
+     */
     public Result zipDemo(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         try {
@@ -48,6 +52,10 @@ public class ZipUtilHandler extends MFormHandler {
         return result;
     }
 
+    /**
+     * @param request
+     * @return
+     */
     public Result unzipDemo(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         try {
@@ -63,6 +71,10 @@ public class ZipUtilHandler extends MFormHandler {
         return result;
     }
 
+    /**
+     * @param request
+     * @return
+     */
     public Result isEmptyFolderDemo(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         try {

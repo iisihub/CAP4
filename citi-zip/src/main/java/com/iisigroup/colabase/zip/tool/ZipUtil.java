@@ -48,6 +48,14 @@ public class ZipUtil {
         throw new IllegalStateException("Utility class");
     }
     
+    /**
+     * 壓縮檔案
+     * @param destination 輸出zip的位置
+     * @param overwrite 是否覆寫
+     * @param password 加密密碼，空值則不加密
+     * @param unzipFiles 輸入欲zip的檔案位置
+     * @throws IOException
+     */
     public static void zip(File destination, boolean overwrite, String password, File... unzipFiles) throws IOException {
 
         if (destination.isDirectory()) {
@@ -109,6 +117,14 @@ public class ZipUtil {
         }
     }
 
+    /**
+     * 解壓縮檔案
+     * @param unzipFile 輸入壓縮檔位置
+     * @param password 壓縮檔密碼，無則放空值
+     * @param destination 解完壓縮的檔案位置
+     * @throws IOException
+     * @throws ZipException
+     */
     public static void unzip(File unzipFile, String password, File destination) throws IOException, ZipException {
         if (!unzipFile.exists()) {
             throw new IOException(unzipFile + " is not exist.");
@@ -165,6 +181,12 @@ public class ZipUtil {
         }
     }
 
+    /**
+     * 是否為空的資料夾，只要有任一個檔案存在即回傳true
+     * @param isDeleteEmptyFolder 是否刪除空的資料夾
+     * @param fileList 可輸入多個資料夾位置
+     * @return
+     */
     public static Boolean isEmptyFolder(Boolean isDeleteEmptyFolder, String... fileList) {
 
         boolean hasFile = true;
@@ -187,6 +209,11 @@ public class ZipUtil {
         return hasFile;
     }
 
+    /**
+     * 查看是否存在該資料夾，不存在的話，可創建該資料夾。
+     * @param folder 資料夾位置
+     * @param isCreate 是否創建該資料夾
+     */
     public static void isExistsFolder(File folder, boolean isCreate) {
 
         if (!folder.exists()) {
