@@ -375,6 +375,7 @@ public class ImageUtil {
         return fromSrc(imageSource, imageSources);
     }
 
+
     /**
      * 讀取圖片建立 ImageBuilder。
      * 
@@ -548,6 +549,13 @@ public class ImageUtil {
         return new ImageData(fileName, formatName, imagePages);
     }
 
+    /**
+     * 將圖片寫入到ByteArray
+     * @param originImageType 原始圖片型態
+     * @param imagePages BufferedImage[]
+     * @return byte array
+     * @throws IOException
+     */
     public static byte[] writeImageToByteArray(String originImageType, BufferedImage[] imagePages) throws IOException {
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
         ImageOutputStream ios = ImageIO.createImageOutputStream(bao);
@@ -648,6 +656,12 @@ public class ImageUtil {
         return imageReaderList.get(0);
     }
 
+    /**
+     * 單純取得ImageReader，不做其他操作。
+     * @param fis input stream
+     * @return ImageReader
+     * @throws IOException
+     */
     public static ImageReader getImageReader(InputStream fis) throws IOException {
         List<ImageReader> imageReaderList = getImageReaderList(new InputStream[] { fis });
         return imageReaderList.get(0);

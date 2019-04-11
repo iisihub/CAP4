@@ -40,6 +40,7 @@ public interface ImageBuilder {
      */
     ImageBuilder resize(int width, int height) throws IOException;
 
+
     /**
      * 旋轉圖片。
      *
