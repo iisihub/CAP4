@@ -36,6 +36,12 @@ public class JsonFactory {
 
     private JsonFactory() {}
 
+    /**
+     * 產生JsonObject包裝物件的主要方法，傳入自定義ModelClass產生出配置好的JsonObject包裝物件
+     * @param requestClass 一般Model物件class
+     * @param <T>
+     * @return JsonObject包裝物件
+     */
     public static <T extends JsonAbstract> T getInstance(Class<T> requestClass) {
         T instance;
         try {
@@ -46,6 +52,13 @@ public class JsonFactory {
         return instance;
     }
 
+    /**
+     * 產生JsonObject包裝物件的主要方法，傳入自定義ModelClass產生出配置好的JsonObject包裝物件
+     * @param requestClass 一般Model物件class
+     * @param objects 於Model物件中需要額外注入的Object
+     * @param <T>
+     * @return JsonObject包裝物件
+     */
     public static <T extends JsonAbstract> T getInstance(Class<T> requestClass, Object... objects) {
         T instance;
         try {
@@ -194,13 +207,6 @@ public class JsonFactory {
         String methodName = method.getName();
         String fieldName = methodNameToFieldName(methodName);
         jsonDataService.setParamToJsonContent((JsonAbstract) object, fieldName, value);
-    }
-
-    public static Object getFieldObject(Object requestObj, String fieldName) throws NoSuchFieldException, IllegalAccessException {
-        Class superclass = JsonAbstract.class;
-        Field reqContentField = superclass.getDeclaredField(fieldName);
-        reqContentField.setAccessible(true);
-        return reqContentField.get(requestObj);
     }
 
     private static String methodNameToFieldName(String methodName) {

@@ -27,11 +27,7 @@ public class ResponseContent implements ApiResponse {
         this.records = records;
     }
 
-    /**
-     * 紀錄response中的json字串
-     * 如果有針對特殊的呼叫(如送base64字串)導致過長，要自行override
-     * @param jsonStr
-     */
+
     @Override
     public void showResponseJsonStrLog(String jsonStr) {
         logger.debug("ApiResponse responseData: {}", jsonStr);

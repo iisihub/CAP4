@@ -37,8 +37,8 @@ public class JsonDataServiceImpl implements JsonDataService {
         Map<String, Object> arrayMap;
         Map<String, String> allPathMap;
         try {
-            arrayMap =  (Map<String, Object>) JsonFactory.getFieldObject(requestContent, ARRAY_MAP_KEY);
-            allPathMap =  (Map<String, String>) JsonFactory.getFieldObject(requestContent, ALL_PATH_MAP);
+            arrayMap =  (Map<String, Object>) getFieldObject(requestContent, ARRAY_MAP_KEY);
+            allPathMap =  (Map<String, String>) getFieldObject(requestContent, ALL_PATH_MAP);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new IllegalStateException("can not found arrayMap in requestContent");
         }
@@ -51,6 +51,14 @@ public class JsonDataServiceImpl implements JsonDataService {
         JsonObject jsonElement = this.getJsonElement(requestJson, path, arrayMap);
         jsonElement.addProperty(paths[paths.length - 1], value);
 
+    }
+
+    private Object getFieldObject(Object requestObj, String fieldName) throws NoSuchFieldException,
+        IllegalAccessException {
+        Class superclass = JsonAbstract.class;
+        Field reqContentField = superclass.getDeclaredField(fieldName);
+        reqContentField.setAccessible(true);
+        return reqContentField.get(requestObj);
     }
 
     /**
@@ -193,12 +201,7 @@ public class JsonDataServiceImpl implements JsonDataService {
         return field.getAnnotation(ApiRequest.class);
     }
 
-    /**
-     * 清空JsonObject內既有的值，保持個元素都是空值
-     * 同時獲取各屬性路徑
-     * @param reqInstance instance
-     * @param allPathList store all attribute path
-     */
+
     @Override
     public void cleanJsonObjectDataAndGetAllPath(JsonAbstract reqInstance, List<String> allPathList) {
         this.cleanJsonObjectAndGetAllPath(reqInstance.getRequestContent(), allPathList, "");
@@ -269,10 +272,7 @@ public class JsonDataServiceImpl implements JsonDataService {
     }
 
 
-    /**
-     * 根據提供的物件，取出noSendList，並移除該list所指定的路徑其值為空的元素
-     * @param requestContent instance
-     */
+
     @Override
     public JsonObject removeUnnecessaryNode(JsonAbstract requestContent) {
         List<String> noSendList;

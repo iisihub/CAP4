@@ -11,8 +11,16 @@ import com.google.gson.JsonObject;
  */
 interface Json {
 
+    /**
+     * 取得內含的JsonObject
+     * @return json object
+     */
     JsonObject getRequestContent();
 
+    /**
+     * 取得內含JsonObject的String字串
+     * @return jsonString
+     */
     String getJsonString();
 
 }

@@ -15,9 +15,9 @@ import java.io.InputStreamReader;
  *          </ul>
  * @since 2018/6/15
  */
-public class JsonFileUtil {
+class JsonFileUtil {
 
-    public static String loadFileFromConfigPath(String path) {
+    static String loadFileFromConfigPath(String path) {
         StringBuilder result = new StringBuilder();
         ClassPathResource resource = new ClassPathResource(path);
         try (InputStreamReader inputStreamReader = new InputStreamReader(resource.getInputStream()); BufferedReader reader = new BufferedReader(inputStreamReader)) {

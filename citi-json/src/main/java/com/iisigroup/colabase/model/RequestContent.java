@@ -88,20 +88,25 @@ public abstract class RequestContent extends JsonAbstract implements ApiRequest 
      */
     private String protocol;
 
-    /**
-     * 紀錄request中的json字串
-     * 如果有針對特殊的呼叫(如送base64字串)導致過長，要自行override
-     * @param jsonStr
-     */
+
     @Override
     public void showRequestJsonStrLog(String jsonStr) {
         logger.debug("ApiRequest: SendData = {}", jsonStr);
     }
 
+    /**
+     * 查看是否使用在Config.properties中設定的key and trust store
+     * @return setting value
+     */
     public boolean isUseOwnKeyAndTrustStore() {
         return isUseOwnKeyAndTrustStore;
     }
 
+
+    /**
+     * 設定是否使用在Config.properties中設定的key and trust store
+     * @param useOwnKeyAndTrustStore setting value
+     */
     public void setUseOwnKeyAndTrustStore(boolean useOwnKeyAndTrustStore) {
         isUseOwnKeyAndTrustStore = useOwnKeyAndTrustStore;
     }
@@ -178,10 +183,18 @@ public abstract class RequestContent extends JsonAbstract implements ApiRequest 
         isIgnoreSSLcert = ignoreSSLcert;
     }
 
+    /**
+     * 取得目前針對單一connection設定的protocol
+     * @return setting value
+     */
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * 設定目前針對單一connection設定的protocol
+     * @param protocol setting value
+     */
     public void setProtocol(String protocol) {
         this.protocol = protocol;
     }
