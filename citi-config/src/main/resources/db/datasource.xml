@@ -10,7 +10,7 @@
 <!--         </property> -->
 <!--     </bean> -->
     
-    <bean id="citi-db-sql" class="org.springframework.jndi.JndiObjectFactoryBean">
+    <bean id="citi-db-sql" class="com.iisigroup.colabase.common.monitor.proxy.MonitorJndiFactoryBean">
         <property name="jndiName">
             <value>${cc.jndiname}</value>
         </property>
