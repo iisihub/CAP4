@@ -20,11 +20,14 @@ public final class SqlStatementFormatUtil {
      * @return 加上with(nolock)的statement
      */
     public static String addNoLockStatement(String origin) {
-        String patternStr = "^select.* with\\s*\\(\\s*nolock\\s*\\)\\s*where.*$"; // 有加nolock
+        if (origin == null)
+            return null;
+        origin = origin.toLowerCase();
+        String patternStr = "^select[\\s\\S]*with\\s*\\(\\s*nolock\\s*\\)[\\s\\S]*$"; // 有加nolock
         Pattern pattern = Pattern.compile(patternStr);
         Matcher matcher = pattern.matcher(origin);
         if (!matcher.find()) {
-            String patternStr1 = "select.*?from\\s+(.*?)\\s+where.*?"; // 僅適用簡單查詢語句
+            String patternStr1 = "select[\\s\\S]*?from\\s+(.*?)\\s+where[\\s\\S]*?"; // 僅適用簡單查詢語句
             Pattern pattern1 = Pattern.compile(patternStr1);
             Matcher matcher1 = pattern1.matcher(origin);
             while (matcher1.find()) {
