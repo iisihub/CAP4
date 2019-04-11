@@ -10,7 +10,9 @@ import java.util.regex.Pattern;
  * </ul>
  * @since 2019/4/9
  */
-public class SqlStatementFormatUtil {
+public final class SqlStatementFormatUtil {
+
+    private SqlStatementFormatUtil() {}
 
     /**
      * 將SQL語句中沒有no lock的，加上with(nolock)
