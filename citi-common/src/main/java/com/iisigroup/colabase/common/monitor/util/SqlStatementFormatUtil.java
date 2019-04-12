@@ -23,7 +23,7 @@ public final class SqlStatementFormatUtil {
         if (origin == null)
             return null;
         origin = origin.toLowerCase();
-        String patternStr = "^select[\\s\\S]*with\\s*\\(\\s*nolock\\s*\\)[\\s\\S]*$"; // 有加nolock
+        String patternStr = "select[\\s\\S]*with\\s*\\(\\s*nolock\\s*\\)"; // statement有加nolock就全跳過
         Pattern pattern = Pattern.compile(patternStr);
         Matcher matcher = pattern.matcher(origin);
         if (!matcher.find()) {
