@@ -1,4 +1,4 @@
-package com.iisigroup.colabase.json.util;
+package com.iisigroup.colabase.ssl.util;
 
 import com.iisigroup.cap.utils.CapString;
 import org.slf4j.Logger;

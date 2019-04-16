@@ -1,4 +1,5 @@
-package com.iisigroup.colabase.json.service;
+package com.iisigroup.colabase.ssl.service;
+
 
 import com.iisigroup.colabase.json.model.RequestContent;
 import com.iisigroup.colabase.json.model.ResponseContent;

@@ -1,7 +1,7 @@
-package com.iisigroup.colabase.demo.sslclient.service.impl;
+package com.iisigroup.colabase.ssl.sslclient.service.impl;
 
 import com.iisigroup.colabase.json.model.ResponseContent;
-import com.iisigroup.colabase.json.service.impl.SslClientImpl;
+import com.iisigroup.colabase.ssl.service.impl.SslClientImpl;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ import java.security.cert.CertificateException;
  * @since 2018/5/18
  */
 @Service
-public class DemoSslClientService extends SslClientImpl<ResponseContent>{
+public class DemoSslClientService extends SslClientImpl<ResponseContent> {
 
     public DemoSslClientService() {
     }

@@ -1,7 +1,8 @@
-package com.iisigroup.colabase.json.model;
+package com.iisigroup.colabase.ssl.model;
 
 import com.google.gson.JsonObject;
 import com.iisigroup.colabase.json.annotation.ApiRequest;
+import com.iisigroup.colabase.json.model.RequestContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

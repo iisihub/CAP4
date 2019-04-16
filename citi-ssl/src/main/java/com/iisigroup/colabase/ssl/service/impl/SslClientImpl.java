@@ -1,13 +1,17 @@
-package com.iisigroup.colabase.json.service.impl;
+package com.iisigroup.colabase.ssl.service.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.cap.utils.CapSystemConfig;
-import com.iisigroup.colabase.json.model.*;
-import com.iisigroup.colabase.json.service.SslClient;
-import com.iisigroup.colabase.json.util.ColaSSLUtil;
+import com.iisigroup.colabase.json.model.ApiRequest;
+import com.iisigroup.colabase.json.model.ProxyConfig;
+import com.iisigroup.colabase.json.model.RequestContent;
+import com.iisigroup.colabase.json.model.ResponseContent;
+import com.iisigroup.colabase.ssl.model.*;
+import com.iisigroup.colabase.ssl.service.SslClient;
+import com.iisigroup.colabase.ssl.util.ColaSSLUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

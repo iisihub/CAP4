@@ -1,12 +1,12 @@
-package com.iisigroup.colabase.demo.sslclient.model;
+package com.iisigroup.colabase.ssl.sslclient.model;
 
 import com.iisigroup.colabase.json.annotation.ApiRequest;
-import com.iisigroup.colabase.json.service.SslClient;
+import com.iisigroup.colabase.json.model.ResponseContent;
+import com.iisigroup.colabase.ssl.service.SslClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.iisigroup.colabase.json.model.PostFormData;
-import com.iisigroup.colabase.json.model.ResponseContent;
+import com.iisigroup.colabase.ssl.model.PostFormData;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

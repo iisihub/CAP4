@@ -1,14 +1,14 @@
-package com.iisigroup.colabase.json.service.impl;
+package com.iisigroup.colabase.ssl.service.impl;
 
 import com.google.gson.JsonObject;
 import com.iisigroup.cap.utils.CapSystemConfig;
-import com.iisigroup.colabase.demo.sslclient.model.DemoJsonRequestContent;
-import com.iisigroup.colabase.demo.sslclient.model.DemoPostDataRequestContent;
-import com.iisigroup.colabase.demo.sslclient.service.impl.DemoSslClientService;
 import com.iisigroup.colabase.json.model.ApiRequest;
 import com.iisigroup.colabase.json.model.RequestContent;
 import com.iisigroup.colabase.json.model.ResponseContent;
-import com.iisigroup.colabase.json.util.PostFormDataFactory;
+import com.iisigroup.colabase.ssl.sslclient.model.DemoJsonRequestContent;
+import com.iisigroup.colabase.ssl.sslclient.model.DemoPostDataRequestContent;
+import com.iisigroup.colabase.ssl.sslclient.service.impl.DemoSslClientService;
+import com.iisigroup.colabase.ssl.util.PostFormDataFactory;
 import org.apache.log4j.varia.NullAppender;
 import org.junit.Assert;
 import org.junit.Before;

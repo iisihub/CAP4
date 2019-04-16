@@ -1,6 +1,6 @@
-package com.iisigroup.colabase.json.util;
+package com.iisigroup.colabase.ssl.util;
 
-import com.iisigroup.colabase.json.model.PostFormData;
+import com.iisigroup.colabase.ssl.model.PostFormData;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Constructor;
