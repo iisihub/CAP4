@@ -1,7 +1,7 @@
 package com.iisigroup.colabase.demo.sslclient.service.impl;
 
-import com.iisigroup.colabase.model.ResponseContent;
-import com.iisigroup.colabase.service.impl.SslClientImpl;
+import com.iisigroup.colabase.json.model.ResponseContent;
+import com.iisigroup.colabase.json.service.impl.SslClientImpl;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

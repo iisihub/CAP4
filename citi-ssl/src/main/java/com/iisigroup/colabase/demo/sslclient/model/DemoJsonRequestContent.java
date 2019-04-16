@@ -1,7 +1,7 @@
 package com.iisigroup.colabase.demo.sslclient.model;
 
-import com.iisigroup.colabase.model.RequestContent;
-import com.iisigroup.colabase.model.ResponseContent;
+import com.iisigroup.colabase.json.model.RequestContent;
+import com.iisigroup.colabase.json.model.ResponseContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

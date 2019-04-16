@@ -17,9 +17,9 @@ import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
 import com.iisigroup.cap.utils.CapString;
-import com.iisigroup.colabase.model.RequestContent;
-import com.iisigroup.colabase.model.ResponseContent;
-import com.iisigroup.colabase.service.SslClient;
+import com.iisigroup.colabase.json.model.RequestContent;
+import com.iisigroup.colabase.json.model.ResponseContent;
+import com.iisigroup.colabase.json.service.SslClient;
 
 
 /**
