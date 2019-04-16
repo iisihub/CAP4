@@ -26,10 +26,22 @@ public class PostFormDataFactory {
     }
 
 
+    /**
+     * 取得繼承PostFormData實體，並且內部會掛上特定JsonProxy去改變JsonString
+     * @param tClass 繼承PostFormData的class
+     * @return 繼承PostFormData實體
+     */
     public static <T extends PostFormData> T getInstance(Class<T> tClass) {
         return getInstance(tClass, new Object());
     }
 
+    /**
+     *
+     * 取得繼承PostFormData實體，並且內部會掛上特定JsonProxy去改變JsonString
+     * @param tClass 繼承PostFormData的class
+     * @param objects 要產出的class中有標註@Autowired的field實體物件
+     * @return 繼承PostFormData實體
+     */
     public static <T extends PostFormData> T getInstance(Class<T> tClass, Object... objects) {
         T instance;
         try {

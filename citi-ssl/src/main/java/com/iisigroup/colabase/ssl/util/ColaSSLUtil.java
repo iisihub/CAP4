@@ -24,11 +24,26 @@ public class ColaSSLUtil {
 
     private final static Logger logger = LoggerFactory.getLogger(ColaSSLUtil.class);
 
+    /**
+     * 取得客製化的SSLSocketFactory
+     * @param keyStorePath 自定義的java key store path
+     * @param keyStorePWD key store password
+     * @param trustStorePath 自定義的java trust store path
+     * @return SSLSocketFactory物件
+     */
     public static SSLSocketFactory getSSLSocketFactory(String keyStorePath, String keyStorePWD, String trustStorePath)
         throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
         return getSSLSocketFactory("TLS", keyStorePath, keyStorePWD, trustStorePath);
     }
 
+    /**
+     * 取得客製化的SSLSocketFactory
+     * @param protocol 自定義的protocol. ex: TLSv1.2
+     * @param keyStorePath 自定義的java key store path
+     * @param keyStorePWD key store password
+     * @param trustStorePath 自定義的java trust store path
+     * @return SSLSocketFactory物件
+     */
     public static SSLSocketFactory getSSLSocketFactory(String protocol, String keyStorePath, String keyStorePWD, String trustStorePath)
             throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
         final SSLSocketFactory factory;
@@ -70,8 +85,13 @@ public class ColaSSLUtil {
     }
 
 
+    /**
+     * 取得一個任何Hostname都能過的Verifier
+     * @return HostnameVerifier
+     */
     public static HostnameVerifier getAllowAllHostnameVerifier() {
         return new HostnameVerifier() {
+            @Override
             public boolean verify(String urlHostName, SSLSession session) {
                 logger.debug("Warning: URL Host: " + urlHostName + " vs. " + session.getPeerHost());
                 return true;
@@ -79,11 +99,20 @@ public class ColaSSLUtil {
         };
     }
 
+    /**
+     * 取得一個任何憑證都能過的SSLSocketFactory，且使用預設protocol: TLS
+     * @return SSLSocketFactory
+     */
     public static SSLSocketFactory getAllTrustSSLSocketFactory() throws KeyManagementException,
         NoSuchAlgorithmException {
         return getAllTrustSSLSocketFactory("TLS");
     }
 
+    /**
+     * 取得一個指定protocol的任何憑證都能過的SSLSocketFactory
+     * @param protocol 指定protocol, ex: TLSv1.2
+     * @return SSLSocketFactory
+     */
     public static SSLSocketFactory getAllTrustSSLSocketFactory(String protocol) throws KeyManagementException,
         NoSuchAlgorithmException {
         javax.net.ssl.TrustManager[] trustAllCerts = new javax.net.ssl.TrustManager[1];
