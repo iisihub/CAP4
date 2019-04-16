@@ -37,8 +37,8 @@ public abstract class JsonAbstract implements Json {
     private String jsonStrCache = "";
 
     /**
-     * !!! 取json字串時使用本方法
-     * 實作no value no send的功能
+     * 取json字串時使用本方法，但此方法不會被執行
+     * 由JsonProxy實作no value no send的功能時取代此方法。
      * @return 去掉no value no send 的字串
      */
     @Override
