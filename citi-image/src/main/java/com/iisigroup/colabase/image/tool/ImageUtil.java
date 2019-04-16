@@ -1,4 +1,4 @@
-package com.iisigroup.colabase.tool;
+package com.iisigroup.colabase.image.tool;
 
 import com.levigo.jbig2.JBIG2ImageReader;
 import com.twelvemonkeys.image.ResampleOp;

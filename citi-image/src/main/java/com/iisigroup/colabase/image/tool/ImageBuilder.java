@@ -1,4 +1,4 @@
-package com.iisigroup.colabase.tool;
+package com.iisigroup.colabase.image.tool;
 
 import java.io.File;
 import java.io.IOException;
