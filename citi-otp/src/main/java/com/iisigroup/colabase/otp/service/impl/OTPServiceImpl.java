@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.ProtocolException;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -28,6 +27,16 @@ import com.iisigroup.colabase.otp.model.SmsConfig;
 import com.iisigroup.colabase.otp.service.OTPService;
 import com.iisigroup.colabase.otp.va.crypto.HttpsConnectionOpener;
 
+/**
+ * OTP Service Implement
+ * 
+ * @since Apr 16, 2019
+ * @author Cathy
+ * @version
+ *          <ul>
+ *          <li>Apr 16, 2019,Cathy,new
+ *          </ul>
+ */
 @Service
 public class OTPServiceImpl implements OTPService {
 
@@ -35,10 +44,15 @@ public class OTPServiceImpl implements OTPService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     // OTP回傳參數
+    /** OTP Key值 */
     public static final String OTP = "otp";
+    /** 傳送OTP簡訊文字訊息 */
     public static final String OTP_SMS_MSG = "otpSmsMsg";
+    /** 重送OTP訊息 */
     public static final String OTP_RETRY_MSG = "retryMsg";
+    /** 是否達最多重送OTP次數 */
     public static final String IS_MAX_RETRY = "isMaxRetry";
+    /** 是否傳送OTP */
     public static final String IS_SEND_OTP = "isSendOTP";
 
     /*
@@ -119,7 +133,7 @@ public class OTPServiceImpl implements OTPService {
      * @see com.iisigroup.colabase.otp.service.OTPService#sendOTPbySMS(com.iisigroup.colabase.otp.model.SmsConfig, java.lang.String, java.lang.String)
      */
     @Override
-    public String sendOTPbySMS(SmsConfig smsConfig, String mobilePhone, String message) throws ProtocolException {
+    public String sendOTPbySMS(SmsConfig smsConfig, String mobilePhone, String message) {
         if (!StringUtils.isEmpty(mobilePhone) && mobilePhone.startsWith("09")) {
             mobilePhone = "+886" + mobilePhone.substring(1, mobilePhone.length());
             logger.debug("send SMS mobile phone number: {}", mobilePhone);

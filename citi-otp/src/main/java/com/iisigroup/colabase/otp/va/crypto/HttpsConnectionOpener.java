@@ -40,6 +40,18 @@ public class HttpsConnectionOpener implements Runnable {
     private boolean proxyEnable;
     private HttpsURLConnection connection;
 
+    /**
+     * Https Connection Opener
+     * 
+     * @param protocol
+     *            Protocol
+     * @param host
+     *            Host
+     * @param port
+     *            Port
+     * @param entry
+     *            Entry
+     */
     public HttpsConnectionOpener(String protocol, String host, String port, String entry) {
         this.protocol = protocol;
         this.host = host;
@@ -51,6 +63,22 @@ public class HttpsConnectionOpener implements Runnable {
         connection = null;
     }
 
+    /**
+     * Https Connection Opener
+     * 
+     * @param protocol
+     *            Protocol
+     * @param host
+     *            Host
+     * @param port
+     *            Port
+     * @param entry
+     *            Entry
+     * @param proxyHost
+     *            Proxy Host
+     * @param proxyPort
+     *            Proxy Port
+     */
     public HttpsConnectionOpener(String protocol, String host, String port, String entry, String proxyHost, String proxyPort) {
         this.protocol = protocol;
         this.host = host;
@@ -77,6 +105,27 @@ public class HttpsConnectionOpener implements Runnable {
 
     }
 
+    /**
+     * Open Https URL Connection
+     * 
+     * @param protocol
+     *            Protocol
+     * @param host
+     *            Host
+     * @param port
+     *            Port
+     * @param entry
+     *            Entry
+     * @param timeout
+     *            Timeout
+     * @param proxyEnable
+     *            Proxy Enable
+     * @param proxyHost
+     *            Proxy Host
+     * @param proxyPort
+     *            Proxy Port
+     * @return HttpsConnectionOpener Connection
+     */
     public static HttpsURLConnection openConnection(String protocol, String host, String port, String entry, int timeout, boolean proxyEnable, String proxyHost, String proxyPort) {
         HttpsConnectionOpener opener = proxyEnable ? new HttpsConnectionOpener(protocol, host, port, entry, proxyHost, proxyPort) : new HttpsConnectionOpener(protocol, host, port, entry);
         Thread t = new Thread(opener);
@@ -89,10 +138,27 @@ public class HttpsConnectionOpener implements Runnable {
         return opener.getConnection();
     }
 
+    /**
+     * Get Https URL Connection
+     * 
+     * @return Https connection
+     */
     public HttpsURLConnection getConnection() {
         return connection;
     }
 
+    /**
+     * Get Http Connection
+     * 
+     * @param protocol
+     * @param host
+     * @param port
+     * @param proxy
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws KeyManagementException
+     * @throws IOException
+     */
     private HttpsURLConnection getHttpConnection(String protocol, String host, String port, Proxy proxy) throws NoSuchAlgorithmException, KeyManagementException, IOException {
         String str = protocol + "://" + host + ":" + port + entry;
         URL localURL = new URL(str);
