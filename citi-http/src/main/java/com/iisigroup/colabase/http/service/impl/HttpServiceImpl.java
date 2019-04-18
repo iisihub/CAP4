@@ -224,7 +224,7 @@ public class HttpServiceImpl implements HttpService {
             params.setContentEncoding("utf-8");
             httppost.addHeader("content-type", "application/json;charset=utf-8");
             httppost.addHeader("X-Requested-With", "XMLHttpRequest");
-//            httppost.addHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+            // httppost.addHeader("Accept", "application/json, text/javascript, */*; q=0.01");
             httppost.setEntity(params);
             /**
              * handle response here...
