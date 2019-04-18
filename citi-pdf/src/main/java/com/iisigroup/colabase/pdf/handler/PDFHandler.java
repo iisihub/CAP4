@@ -12,7 +12,6 @@
 package com.iisigroup.colabase.pdf.handler;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.colabase.pdf.service.PDFService;
 
 /**
- * Generate PDF
+ * PDF Handler
  * 
  * @since May 2, 2018
  * @author Cathy
@@ -42,10 +41,10 @@ public class PDFHandler extends MFormHandler {
 
     @Autowired
     private PDFService pdfService;
+
     private static final String DEFAULT_FONT = "MSJH.TTF";// 微軟正黑體
     private static final String DATE_FORMAT = "yyyy/MM/dd";
     private static final String FTL_TEMPLETE_NAME = "PDF_TEMPLETE.ftl";
-    private static final String FTL_TEMPLETE_NAME2 = "PDF_TEMPLETE2.ftl";
     // generatePDF parm
     private static final String PDF_NAME = "PDF_NAME";
     private static final String PDF_PATH = "PDF_PATH";
@@ -63,7 +62,8 @@ public class PDFHandler extends MFormHandler {
      * 產生PDF
      * 
      * @param request
-     * @return
+     *            Request
+     * @return 回傳前端是否PDF產生成功
      */
     public Result generatePDF(Request request) {
         AjaxFormResult result = new AjaxFormResult();
@@ -74,8 +74,8 @@ public class PDFHandler extends MFormHandler {
         String idNo = request.get(ID_NO, "");
         String mPhone = request.get(M_PHONE, "");
         String colabaseDemoPath = "colabaseDemo" + File.separator;
-        String templateName = colabaseDemoPath + FTL_TEMPLETE_NAME;//單個FTL
-        String[] ftlTemplateAry = { templateName, templateName};// 多個FTL
+        String templateName = colabaseDemoPath + FTL_TEMPLETE_NAME;// 單個FTL
+        // String[] ftlTemplateAry = { templateName, templateName};// 多個FTL
         // 給PDF值
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put(CUST_NAME, custName);
@@ -86,8 +86,8 @@ public class PDFHandler extends MFormHandler {
         // PDF產生結果
         if (!CapString.isEmpty(pdfPath)) {
             try {
-//                ArrayList<byte[]> pdfContent = pdfService.processPdfContent(dataMap, ftlTemplateAry);//多個FTL
-                 byte[] pdfContent = pdfService. processPdfContent(dataMap, templateName); //單個FTL
+                // ArrayList<byte[]> pdfContent = pdfService.processPdfContent(dataMap, ftlTemplateAry);//多個FTL
+                byte[] pdfContent = pdfService.processPdfContent(dataMap, templateName); // 單個FTL
                 pdfService.processPdf(pdfContent, pdfPath, pdfName, pdfPwd, DEFAULT_FONT);
                 result.set(PDF_RESULT, "ok");
             } catch (Exception e) {
@@ -104,7 +104,8 @@ public class PDFHandler extends MFormHandler {
      * 下載PDF
      * 
      * @param request
-     * @return
+     *            Request
+     * @return 回傳給前端下載PDF
      */
     public Result downloadPDF(Request request) {
         AjaxFormResult result = new AjaxFormResult();
@@ -140,7 +141,8 @@ public class PDFHandler extends MFormHandler {
      * 合併PDF
      * 
      * @param request
-     * @return
+     *            Request
+     * @return 回傳前端是否合併PDF成功
      */
     public Result mergePDF(Request request) {
         AjaxFormResult result = new AjaxFormResult();
@@ -168,7 +170,8 @@ public class PDFHandler extends MFormHandler {
      * 分割PDF
      * 
      * @param request
-     * @return
+     *            Request
+     * @return 回傳前端是否分割PDF成功
      */
     public Result partitionPDF(Request request) {
         AjaxFormResult result = new AjaxFormResult();
@@ -194,7 +197,8 @@ public class PDFHandler extends MFormHandler {
      * PDF加入浮水印
      * 
      * @param request
-     * @return
+     *            Request
+     * @return 回傳前端是否PDF加入浮水印成功
      */
     public Result pdfAddWatermark(Request request) {
         AjaxFormResult result = new AjaxFormResult();

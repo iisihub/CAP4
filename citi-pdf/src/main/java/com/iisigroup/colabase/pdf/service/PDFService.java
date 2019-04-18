@@ -6,10 +6,19 @@ import java.util.Map;
 
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
-import com.iisigroup.cap.exception.CapException;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 
+/**
+ * PDF Service
+ * 
+ * @since Apr 18, 2019
+ * @author Cathy
+ * @version
+ *          <ul>
+ *          <li>Apr 18, 2019,Cathy,new
+ *          </ul>
+ */
 public interface PDFService {
 
     /**
@@ -23,10 +32,9 @@ public interface PDFService {
      *            PDF檔案名稱 (不用帶.pdf副檔名)
      * @param encryptPassword
      *            PDF加密密碼，不加密則空
-     * @param fontName
+     * @param font
      *            PDF字型名稱
-     * @return
-     * @throws CapException
+     * @return PDF是否產生成功
      */
     public Result processPdf(byte[] pdfContent, String pdfPath, String pdfName, String encryptPassword, String font);
 
@@ -41,10 +49,9 @@ public interface PDFService {
      *            PDF檔案名稱 (不用帶.pdf副檔名)
      * @param encryptPassword
      *            PDF加密密碼，不加密則空
-     * @param fontName
+     * @param font
      *            PDF字型名稱
-     * @return
-     * @throws CapException
+     * @return PDF是否產生成功
      */
     public Result processPdf(ArrayList<byte[]> pdfContent, String pdfPath, String pdfName, String encryptPassword, String font);
 
@@ -61,9 +68,9 @@ public interface PDFService {
      *            PDF檔案名稱 (不用帶.pdf副檔名)
      * @param encryptPassword
      *            PDF加密密碼；不加密則空
-     * @param fontName
+     * @param font
      *            PDF字型名稱
-     * @return
+     * @return PDF是否產生成功
      */
     public Result processPdfByFtl(Map<String, Object> dataMap, String ftLTemplateName, String pdfPath, String pdfName, String encryptPassword, String font);
 
@@ -78,10 +85,9 @@ public interface PDFService {
      *            PDF檔案名稱 (不用帶.pdf副檔名)
      * @param encryptPassword
      *            PDF加密密碼，不加密則空
-     * @param fontName
+     * @param font
      *            PDF字型名稱
-     * @return
-     * @throws CapException
+     * @return 下載PDF
      */
     public Result downloadPdf(Request request, byte[] pdfContent, String pdfName, String encryptPassword, String font);
 
@@ -89,33 +95,32 @@ public interface PDFService {
      * 下載PDF；讀取已產生PDF路徑下載PDF
      * 
      * @param request
+     *            request傳送前端資訊供下載使用
      * @param pdfPath
      *            PDF抓取路徑
-     * @return
+     * @return 下載PDF
      */
     public Result downloadPdf(Request request, String pdfPath);
 
     /**
      * Process FTL PDF Content
      * 
-     * @param request
      * @param dataMap
      *            PDF欄位值資料Map
      * @param ftLTemplateName
      *            FTL樣版名稱
-     * @return
+     * @return PDF內容
      */
     public byte[] processPdfContent(Map<String, Object> dataMap, String ftLTemplateName);
 
     /**
      * Process Multiple FTL PDF Content
      * 
-     * @param request
      * @param dataMap
      *            PDF欄位值資料Map
-     * @param ftLTemplateName
+     * @param ftlTemplateAry
      *            多個FTL樣版名稱陣列
-     * @return
+     * @return PDF內容
      */
     public ArrayList<byte[]> processPdfContent(Map<String, Object> dataMap, String[] ftlTemplateAry);
 
@@ -130,7 +135,7 @@ public interface PDFService {
      *            合併後PDF名稱
      * @param encryptPassword
      *            合併後PDF加密密碼，不加密則空
-     * @return
+     * @return PDF是否合併成功
      */
     public boolean mergePdfFiles(String[] filesPath, String mergerPDFPath, String mergerPDFName, String encryptPassword);
 
@@ -145,7 +150,7 @@ public interface PDFService {
      *            分割頁數
      * @param encryptPassword
      *            合併後PDF加密密碼，不加密則空
-     * @return
+     * @return PDF是否分割成功
      */
     public boolean partitionPdfFile(String filePath, String partPDFOutputPath, int partitionPageNum, String encryptPassword);
 
@@ -158,9 +163,10 @@ public interface PDFService {
      *            加入浮水印後PDF產出路徑
      * @param textWatermark
      *            文字浮水印
-     * @throws IOException
      * @throws DocumentException
-     * @throws Exception
+     *             拋出DocumentException例外
+     * @throws IOException
+     *             拋出IOException例外
      */
     public void addTextWatermark(String inputFilePath, String outputFilePath, String textWatermark) throws DocumentException, IOException;
 
@@ -173,9 +179,10 @@ public interface PDFService {
      *            加入浮水印後PDF產出路徑
      * @param imgWatermarkPath
      *            圖片浮水印路徑
-     * @throws IOException
      * @throws DocumentException
-     * @throws Exception
+     *             拋出DocumentException例外
+     * @throws IOException
+     *             拋出IOException例外
      */
     public void addImgWatermark(String inputFilePath, String outputFilePath, String imgWatermarkPath) throws DocumentException, IOException;
 
@@ -200,9 +207,12 @@ public interface PDFService {
      *            浮水印旋轉角度
      * @param textWMRepeatNum
      *            文字浮水印重複次數
-     * @throws IOException
+     * @return PDF 加入浮水印是否成功
+     * 
      * @throws DocumentException
-     * @throws Exception
+     *             拋出DocumentException例外
+     * @throws IOException
+     *             拋出IOException例外
      */
     public boolean addWatermark(String inputFilePath, String outputFilePath, String textWatermark, String imgWatermarkPath, BaseFont font, float fontSize, Float opacity, int rotationDegree,
             int textWMRepeatNum) throws DocumentException, IOException;

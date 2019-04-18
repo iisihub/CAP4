@@ -16,7 +16,6 @@ import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.io.FileUtils;
@@ -26,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 import org.xhtmlrenderer.pdf.PDFEncryption;
-import org.xml.sax.SAXException;
 
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
@@ -56,11 +54,22 @@ import com.lowagie.text.pdf.PdfWriter;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
+/**
+ * PDF Service Implement
+ * 
+ * @since Apr 18, 2019
+ * @author Cathy
+ * @version
+ *          <ul>
+ *          <li>Apr 18, 2019,Cathy,new
+ *          </ul>
+ */
 @Service
 public class PDFServiceImpl extends CCBasePageReport implements PDFService {
 
     @Autowired
     private ItextFontFactory fontFactory;
+
     private static final String DEFAULT_FONT = "MSJH.TTF";// 微軟正黑體
     private static final String UNDER_LINE = "_";
     private static final String DEFAULT_ENCORDING = "utf-8";
@@ -126,6 +135,12 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         return result;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.colabase.pdf.service.PDFService#processPdf(java.util.ArrayList, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    @Override
     public Result processPdf(ArrayList<byte[]> pdfContent, String pdfPath, String pdfName, String encryptPassword, String fontName) {
         AjaxFormResult result = new AjaxFormResult();
         // PDF名稱
@@ -244,6 +259,12 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         return pdfContent;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.colabase.pdf.service.PDFService#processPdfContent(java.util.Map, java.lang.String[])
+     */
+    @Override
     public ArrayList<byte[]> processPdfContent(Map<String, Object> dataMap, String[] ftlTemplateAry) {
         ArrayList<byte[]> pdfContent = null;
         if (ftlTemplateAry.length > 0) {
@@ -302,6 +323,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * 
      * @see com.iisigroup.colabase.pdf.service.PDFService#partitionPdfFile(java.lang.String, java.lang.String, int, java.lang.String)
      */
+    @Override
     public boolean partitionPdfFile(String inputFilePath, String outputFilePath, int partitionPageNum, String encryptPassword) {
         boolean isSuccess = false;
         Document document = null;
@@ -369,6 +391,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * 
      * @see com.iisigroup.colabase.pdf.service.PDFService#addTextWatermark(java.lang.String, java.lang.String, java.lang.String)
      */
+    @Override
     public void addTextWatermark(String inputFilePath, String outputFilePath, String textWatermark) throws DocumentException, IOException {
         Float opacity = 0.7f;// 透明度
         int rotationDegree = 0;// 旋轉角度
@@ -388,6 +411,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * 
      * @see com.iisigroup.colabase.pdf.service.PDFService#addImgWatermark(java.lang.String, java.lang.String, java.lang.String)
      */
+    @Override
     public void addImgWatermark(String inputFilePath, String outputFilePath, String imgWatermarkPath) throws DocumentException, IOException {
         Float opacity = 0.4f;// 透明度
         int rotationDegree = 15;// 旋轉角度
@@ -398,8 +422,9 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * (non-Javadoc)
      * 
      * @see com.iisigroup.colabase.pdf.service.PDFService#addWatermark(java.lang.String, java.lang.String, java.lang.String, java.lang.String, com.lowagie.text.pdf.BaseFont, float, java.lang.Float,
-     * int)
+     * int, int)
      */
+    @Override
     public boolean addWatermark(String inputFilePath, String outputFilePath, String textWatermark, String imgWatermarkPath, BaseFont font, float fontSize, Float opacity, int rotationDegree,
             int textWMRepeatNum) throws DocumentException, IOException {
         boolean isSuccess = false;
@@ -455,7 +480,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * 
      * @param dataMap
      *            PDF欄位值資料Map
-     * @return
+     * @return 放置PDF內容的Map
      */
     private Map<String, Object> getPDFContent(Map<String, Object> dataMap) {
         // put image path
@@ -483,7 +508,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      *            樣版名稱
      * @param contentMap
      *            PDF內容Map
-     * @return
+     * @return FTL Template Byte陣列
      */
     private byte[] processPdfTemplate(String ftLTemplateName, Map<String, Object> contentMap) {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -511,7 +536,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      *            多個樣版陣列
      * @param contentMap
      *            PDF內容Map
-     * @return
+     * @return Multiple FTL Template Byte陣列
      */
     private ArrayList<byte[]> processPdfTemplate(String[] ftLTemplatAry, Map<String, Object> contentMap) {
         ArrayList<byte[]> ftLTemplatArybyte = new ArrayList<byte[]>();
@@ -545,9 +570,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      * @param font
      *            字型
      * @throws DocumentException
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
+     * @throws Exception
      */
     private void genByRender(OutputStream out, byte[] pdfContent, String encrypt, String font) throws Exception {
         String property = System.getProperty("javax.xml.transform.TransformerFactory");// org.apache.xalan.xsltc.trax.TransformerFactoryImpl
@@ -592,10 +615,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
      *            加密密碼
      * @param font
      *            字型
-     * @throws DocumentException
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
+     * @throws Exception
      */
     private void genByRender(OutputStream out, ArrayList<byte[]> pdfContent, String encrypt, String font) throws Exception {
         String property = System.getProperty("javax.xml.transform.TransformerFactory");// org.apache.xalan.xsltc.trax.TransformerFactoryImpl
@@ -643,7 +663,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
     /**
      * 若無指定PDF檔案名稱，則預設給定檔案PDF_yyyyMMdd_hhmm_ss.pdf
      * 
-     * @return defalutPDFName
+     * @return Defalut PDF Name
      */
     private String defalutPDFName() {
         String convertTimestampToString = CapDate.convertTimestampToString(CapDate.getCurrentTimestamp(), "yyyyMMdd_hhmm_ss");
@@ -653,7 +673,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
     /**
      * Get BaseFont 微軟正黑體
      *
-     * @return
+     * @return 取得微軟正黑體字型
      * @throws IOException
      * @throws DocumentException
      */
@@ -664,7 +684,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
     /**
      * Get String 微軟正黑體
      * 
-     * @return
+     * @return 取得微軟正黑體字型
      * @throws IOException
      */
     private String getMSJHFont() throws IOException {
@@ -674,7 +694,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
     /**
      * Get PdfGState 取得透明度
      *
-     * @return
+     * @return 取得透明度
      */
     private PdfGState getPdfGState(Float opacity) {
         PdfGState graphicState = new PdfGState();
