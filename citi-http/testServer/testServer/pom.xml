@@ -33,7 +33,7 @@
           <httpsPort>8443</httpsPort>
           <port>8888</port>
           <clientAuth>false</clientAuth>
-          <keystoreFile>${basedir}/src/main/resources/.keystore_server_1602006</keystoreFile>
+          <keystoreFile>${basedir}/src/main/resources/test.keystore_server_1602006</keystoreFile>
           <keystorePass>p@ssw0rd</keystorePass>
           <truststoreFile>${basedir}/src/main/resources/truststore_server_1602006_own.jks</truststoreFile>
           <systemProperties>
