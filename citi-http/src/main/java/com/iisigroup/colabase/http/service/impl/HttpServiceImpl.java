@@ -56,6 +56,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.iisigroup.colabase.http.response.CrossDomainAjaxFormResult;
+import com.iisigroup.colabase.http.model.HttpReceiveRequest;
+import com.iisigroup.colabase.http.model.HttpSendResponse;
 import com.iisigroup.colabase.http.service.HttpService;
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
@@ -69,26 +71,33 @@ import net.sf.json.JSONObject;
  * HTTP Send and Receive Service
  * </pre>
  * 
- * @since 2017/5/31
+ * @since 2017年5月31日
  * @author TimChiang
- * @version
- *          <ul>
- *          <li>2017/5/31,new
- *          <li>2017/12/1,Tim,ignore SSL check(trust all CAcert)
+ * @version <ul>
+ *          <li>2017年5月31日,Tim,new
+ *          <li>2017年12月1日,Tim,ignore SSL check(trust all CAcert)
  *          </ul>
  */
 @Service
 public class HttpServiceImpl implements HttpService {
 
     private static Logger logger = LoggerFactory.getLogger(HttpServiceImpl.class);
-    
+
     private static final String UTF_8 = "UTF-8";
     private static final String RECEIVE_CONTENT_TYPE_ERROR_MSG = "ReceiveContentTypeError=>>";
     private static final String STATUS_MSG = "status_msg";
     private static final String STATUS_CODE = "status_code";
 
-    public Result sendUrlEncodedForm(String sendUrl, String[] sendCols, Map<String, String> contents, boolean isTestMode) throws CapException {
-        AjaxFormResult result = new AjaxFormResult();
+    /**
+     * Send Url Encoded Form
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.colabase.http.service.HttpService#sendUrlEncodedForm(java.lang.String, java.lang.String[], java.util.Map)
+     */
+    public HttpSendResponse sendUrlEncodedForm(String sendUrl, String[] sendCols, Map<String, String> contents) throws CapException {
+        HttpSendResponse result = new HttpSendResponse();
         /**
          * prepare data
          */
@@ -100,41 +109,41 @@ public class HttpServiceImpl implements HttpService {
          * send HTTP post data use UrlEncodedFormEntity
          */
         CloseableHttpClient httpClient = null;
-        if (isTestMode) {
-            httpClient = HttpClientBuilder.create().build();
-        } else {
-            final SSLConnectionSocketFactory sslsf;
-            try {
-                // Ignore the SSL certificate and host name verifier
-                SSLContextBuilder sslBuilder = new SSLContextBuilder();
-                sslBuilder.loadTrustMaterial(null, new TrustStrategy() {
-                    public boolean isTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
-                        return true;
-                    }
-                }).build();
-                sslsf = new SSLConnectionSocketFactory(sslBuilder.build(), new String[] { "TLSv1", "SSLv3" }, null, new TrustAllHostNameVerifier());
-            } catch (NoSuchAlgorithmException e) {
-                logger.error("sendHTTPData >> NoSuchAlgorithmException::" + e.getLocalizedMessage(), e);
-                throw new RuntimeException(e);
-            } catch (KeyManagementException e) {
-                logger.error("sendHTTPData >> KeyManagementException::" + e.getLocalizedMessage(), e);
-                throw new RuntimeException(e);
-            } catch (KeyStoreException e) {
-                logger.error("sendHTTPData >> KeyStoreException::" + e.getLocalizedMessage(), e);
-                throw new RuntimeException(e);
-            }
-            final Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory> create().register("http", new PlainConnectionSocketFactory()).register("https", sslsf).build();
-            final PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
-            cm.setMaxTotal(100);
-            httpClient = HttpClients.custom().setSSLSocketFactory(sslsf).setConnectionManager(cm).build();
+        // if (isTestMode) {
+        // httpClient = HttpClientBuilder.create().build();
+        // } else {
+        final SSLConnectionSocketFactory sslsf;
+        try {
+            // Ignore the SSL certificate and host name verifier
+            SSLContextBuilder sslBuilder = new SSLContextBuilder();
+            sslBuilder.loadTrustMaterial(null, new TrustStrategy() {
+                public boolean isTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+                    return true;
+                }
+            }).build();
+            sslsf = new SSLConnectionSocketFactory(sslBuilder.build(), new String[] { "TLSv1", "SSLv3" }, null, new TrustAllHostNameVerifier());
+        } catch (NoSuchAlgorithmException e) {
+            logger.error("sendHTTPData >> NoSuchAlgorithmException::" + e.getLocalizedMessage(), e);
+            throw new RuntimeException(e);
+        } catch (KeyManagementException e) {
+            logger.error("sendHTTPData >> KeyManagementException::" + e.getLocalizedMessage(), e);
+            throw new RuntimeException(e);
+        } catch (KeyStoreException e) {
+            logger.error("sendHTTPData >> KeyStoreException::" + e.getLocalizedMessage(), e);
+            throw new RuntimeException(e);
         }
+        final Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory> create().register("http", new PlainConnectionSocketFactory()).register("https", sslsf).build();
+        final PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
+        cm.setMaxTotal(100);
+        httpClient = HttpClients.custom().setSSLSocketFactory(sslsf).setConnectionManager(cm).build();
+        // }
         try {
             logger.debug("Send Data URL => ", sendUrl);
             HttpPost httppost = new HttpPost(sendUrl);
             httppost.addHeader("content-type", "application/x-www-form-urlencoded;charset=utf-8");
             httppost.addHeader("X-Requested-With", "XMLHttpRequest");
             // httppost.addHeader("Accept", "application/json, text/javascript, */*; q=0.01");
-            httppost.setEntity(new UrlEncodedFormEntity(postParameters));
+            httppost.setEntity(new UrlEncodedFormEntity(postParameters, "UTF-8"));
             /**
              * handle response here...
              */
@@ -145,8 +154,10 @@ public class HttpServiceImpl implements HttpService {
                 entity = response.getEntity();
                 String responseString = EntityUtils.toString(entity, UTF_8);
                 result.set("responseString", responseString);
+                result.setResponseString(responseString);
                 int statusCode = response.getStatusLine().getStatusCode();
                 result.set("statusCode", statusCode);
+                result.setStatusCode(statusCode);
             } catch (Exception e) {
                 logger.debug("Send Data Exception >>> " + e.getMessage(), e);
             }
@@ -158,43 +169,50 @@ public class HttpServiceImpl implements HttpService {
         }
         return result;
     }
-    
-    public Result sendJson(String sendUrl, String jsonStr, boolean isTestMode) throws CapException {
-        AjaxFormResult result = new AjaxFormResult();
+
+    /**
+     * Send Json
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.colabase.http.service.HttpService#sendJson(java.lang.String, java.lang.String)
+     */
+    public HttpSendResponse sendJson(String sendUrl, String jsonStr) throws CapException {
+        // AjaxFormResult result = new AjaxFormResult();
+        HttpSendResponse result = new HttpSendResponse();
         /**
          * send HTTP post data use JSON
          */
         CloseableHttpClient httpClient = null;
-        if (isTestMode) {
-            httpClient = HttpClientBuilder.create().build();
-        } else {
-            final SSLConnectionSocketFactory sslsf;
-            try {
-                // Ignore the SSL certificate and host name verifier
-                SSLContextBuilder sslBuilder = new SSLContextBuilder();
-                sslBuilder.loadTrustMaterial(null, new TrustStrategy() {
-                    public boolean isTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
-                        return true;
-                    }
-                }).build();
-                sslsf = new SSLConnectionSocketFactory(sslBuilder.build(), new String[] { "TLSv1", "SSLv3" }, null, new TrustAllHostNameVerifier());
-            } catch (NoSuchAlgorithmException e) {
-                logger.error("sendHTTPData >> NoSuchAlgorithmException::" + e.getLocalizedMessage(), e);
-                throw new RuntimeException(e);
-            } catch (KeyManagementException e) {
-                logger.error("sendHTTPData >> KeyManagementException::" + e.getLocalizedMessage(), e);
-                throw new RuntimeException(e);
-            } catch (KeyStoreException e) {
-                logger.error("sendHTTPData >> KeyStoreException::" + e.getLocalizedMessage(), e);
-                throw new RuntimeException(e);
-            }
-
-            final Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory> create().register("http", new PlainConnectionSocketFactory()).register("https", sslsf).build();
-
-            final PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
-            cm.setMaxTotal(100);
-            httpClient = HttpClients.custom().setSSLSocketFactory(sslsf).setConnectionManager(cm).build();
+        // if (isTestMode) {
+        // httpClient = HttpClientBuilder.create().build();
+        // } else {
+        final SSLConnectionSocketFactory sslsf;
+        try {
+            // Ignore the SSL certificate and host name verifier
+            SSLContextBuilder sslBuilder = new SSLContextBuilder();
+            sslBuilder.loadTrustMaterial(null, new TrustStrategy() {
+                public boolean isTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+                    return true;
+                }
+            }).build();
+            sslsf = new SSLConnectionSocketFactory(sslBuilder.build(), new String[] { "TLSv1", "SSLv3" }, null, new TrustAllHostNameVerifier());
+        } catch (NoSuchAlgorithmException e) {
+            logger.error("sendHTTPData >> NoSuchAlgorithmException::" + e.getLocalizedMessage(), e);
+            throw new RuntimeException(e);
+        } catch (KeyManagementException e) {
+            logger.error("sendHTTPData >> KeyManagementException::" + e.getLocalizedMessage(), e);
+            throw new RuntimeException(e);
+        } catch (KeyStoreException e) {
+            logger.error("sendHTTPData >> KeyStoreException::" + e.getLocalizedMessage(), e);
+            throw new RuntimeException(e);
         }
+        final Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory> create().register("http", new PlainConnectionSocketFactory()).register("https", sslsf).build();
+        final PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
+        cm.setMaxTotal(100);
+        httpClient = HttpClients.custom().setSSLSocketFactory(sslsf).setConnectionManager(cm).build();
+        // }
         try {
             logger.debug("Send Data URL => ", sendUrl);
             HttpPost httppost = new HttpPost(sendUrl);
@@ -218,8 +236,10 @@ public class HttpServiceImpl implements HttpService {
                 entity = response.getEntity();
                 String responseString = EntityUtils.toString(entity, UTF_8);
                 result.set("responseString", responseString);
+                result.setResponseString(responseString);
                 int statusCode = response.getStatusLine().getStatusCode();
                 result.set("statusCode", statusCode);
+                result.setStatusCode(statusCode);
             } catch (Exception e) {
                 logger.debug("Send Data Exception >>> " + e.getMessage(), e);
             }
@@ -232,15 +252,20 @@ public class HttpServiceImpl implements HttpService {
 
         return result;
     }
-    
+
     /**
-     * 接收 傳送來的資料
+     * Receive Data
      */
-    @SuppressWarnings("unchecked")
-    public Result receiveData(Request request) throws CapException {
-        CrossDomainAjaxFormResult result = new CrossDomainAjaxFormResult();
-        result.setCallback(request.get("callback"));
-        result.setCorsDomain("*");
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.colabase.http.service.HttpService#receiveData(com.iisigroup.cap.component.Request)
+     */
+    public HttpReceiveRequest receiveData(Request request) throws CapException {
+        HttpReceiveRequest result = new HttpReceiveRequest();
+        // CrossDomainAjaxFormResult result = new CrossDomainAjaxFormResult();
+        // result.setCallback(request.get("callback"));
+        // result.setCorsDomain("*");
         HttpServletRequest sreq = (HttpServletRequest) request.getServletRequest();
         JSONObject js = new JSONObject();
 
@@ -261,6 +286,7 @@ public class HttpServiceImpl implements HttpService {
                 logger.debug(RECEIVE_CONTENT_TYPE_ERROR_MSG + contentType);
                 result.set(STATUS_MSG, RECEIVE_CONTENT_TYPE_ERROR_MSG + contentType + "is null");
                 result.set(STATUS_CODE, 507);
+                result.setStatusCode(507);
                 return result;
             }
             if (contentType.indexOf("application/json") != -1) {
@@ -272,13 +298,14 @@ public class HttpServiceImpl implements HttpService {
                     logger.error(e.getMessage(), e);
                     result.set(STATUS_MSG, "Read JsonString error: " + e.getLocalizedMessage());
                     result.set(STATUS_CODE, 504);
+                    result.setStatusCode(504);
                     return result;
                 }
             } else if (contentType.indexOf("application/x-www-form-urlencoded") != -1) {
-                Enumeration paramNames = sreq.getParameterNames();
+                Enumeration<String> paramNames = sreq.getParameterNames();
                 try {
                     while (paramNames.hasMoreElements()) {
-                        Object obj = paramNames.nextElement();
+                        String obj = paramNames.nextElement();
                         if (obj != null) {
                             logger.debug("ReceiveDataKey=>>" + obj);
                             logger.debug("ReceiveDataValue=>>" + request.get(obj));
@@ -289,6 +316,7 @@ public class HttpServiceImpl implements HttpService {
                     logger.error(e.getMessage(), e);
                     result.set(STATUS_MSG, "Read UrlEncodedForm error: " + e.getLocalizedMessage());
                     result.set(STATUS_CODE, 505);
+                    result.setStatusCode(505);
                     return result;
                 }
             } else {
@@ -302,13 +330,17 @@ public class HttpServiceImpl implements HttpService {
                     logger.debug("status_msg:{}", "Receive Data>>Success");
                     logger.debug("status_code:{}", 200);
                     logger.debug("receive content:{}", js);
+                    String requestString = js.toString();
+                    result.setRequestString(requestString);
                     result.set(STATUS_MSG, "Receive Data>>Success");
                     result.set(STATUS_CODE, 200);
+                    result.setStatusCode(200);
                 }
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
                 result.set(STATUS_MSG, "Read data error: " + e.getLocalizedMessage());
                 result.set(STATUS_CODE, 505);
+                result.setStatusCode(505);
                 return result;
             }
 
@@ -316,6 +348,7 @@ public class HttpServiceImpl implements HttpService {
             logger.error(e.getMessage(), e);
             result.set(STATUS_MSG, "get exception error>>" + e.getLocalizedMessage());
             result.set(STATUS_CODE, 500);
+            result.setStatusCode(500);
         }
         return result;
     }

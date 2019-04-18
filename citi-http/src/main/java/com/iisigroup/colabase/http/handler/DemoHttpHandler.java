@@ -10,10 +10,22 @@ import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.exception.CapException;
+import com.iisigroup.colabase.http.model.HttpReceiveRequest;
+import com.iisigroup.colabase.http.model.HttpSendResponse;
+import com.iisigroup.colabase.http.response.CrossDomainAjaxFormResult;
 import com.iisigroup.colabase.http.service.HttpService;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
 import com.iisigroup.cap.utils.CapString;
 
+/**<pre>
+ * Demo HTTP Handler
+ * </pre>
+ * @since  2018年7月
+ * @author LilyPeng
+ * @version <ul>
+ *           <li>2018年7月,LilyPeng,new
+ *          </ul>
+ */
 @Controller("demohttphandler")
 public class DemoHttpHandler extends MFormHandler {
     
@@ -24,7 +36,14 @@ public class DemoHttpHandler extends MFormHandler {
     private static final String[] SEND_COLS = new String[] { "name", "birthday", "mobile" };
     private static final String TEST_SEND_URL = "https://127.0.0.1:8443/http-test-server/v1/tw/sendTest";
     private static final String TEST_RECEIVE_URL = "http://127.0.0.1:8098/citi-web/demohttphandler/httpReceiveTest";
+    private static final String STATUS_MSG = "status_msg";
+    private static final String STATUS_CODE = "status_code";
     
+    /**
+     * @param request request
+     * @return result
+     * @throws CapException CapException
+     */
     public Result httpSend(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         try {
@@ -43,9 +62,9 @@ public class DemoHttpHandler extends MFormHandler {
             }
             
             if("basic".equalsIgnoreCase(way)){
-                result.add(httpSvc.sendUrlEncodedForm(url, SEND_COLS, contents, false));    //call test server，isTestMode = false
+                result.add(httpSvc.sendUrlEncodedForm(url, SEND_COLS, contents));
             }else if("json".equalsIgnoreCase(way)){
-                result.add(httpSvc.sendJson(url, jsonStr, false));    //call test server，isTestMode = false
+                result.add(httpSvc.sendJson(url, jsonStr));
             }
 
         } catch (Exception e) {
@@ -55,6 +74,11 @@ public class DemoHttpHandler extends MFormHandler {
         return result;
     }
     
+    /**
+     * @param request request
+     * @return result
+     * @throws CapException CapException
+     */
     public Result httpReceive(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         try {
@@ -73,9 +97,9 @@ public class DemoHttpHandler extends MFormHandler {
             }
             
             if("basic".equalsIgnoreCase(way)){
-                result.add(httpSvc.sendUrlEncodedForm(url, SEND_COLS, contents, true));   //local測試自己的receive，isTestMode = true
+                result.add(httpSvc.sendUrlEncodedForm(url, SEND_COLS, contents));
             }else if("json".equalsIgnoreCase(way)){
-                result.add(httpSvc.sendJson(url, jsonStr, true));             //local測試自己的receive，isTestMode = true
+                result.add(httpSvc.sendJson(url, jsonStr));
             }
 
         } catch (Exception e) {
@@ -85,8 +109,20 @@ public class DemoHttpHandler extends MFormHandler {
         return result;
     }
     
+    /**
+     * @param request request
+     * @return result
+     * @throws CapException CapException
+     */
     public Result httpReceiveTest(Request request) throws CapException {
-        Result result = httpSvc.receiveData(request);
+        CrossDomainAjaxFormResult result = new CrossDomainAjaxFormResult();
+        result.setCallback(request.get("callback"));
+        result.setCorsDomain("*");
+        HttpReceiveRequest httpResult = httpSvc.receiveData(request);
+        String requestString = httpResult.getRequestString();
+
+        result.set(STATUS_MSG, requestString);
+        result.set(STATUS_CODE, httpResult.getStatusCode());
         return result;
     }
     

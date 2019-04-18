@@ -45,7 +45,7 @@ public class HttpServiceImplTest {
         for(int i=0 ; i<SEND_COLUMNS.length; i++){
             contents.put(SEND_COLUMNS[i], SEND_VALUES[i]);
         }
-        result = (AjaxFormResult) httpServiceImpl.sendUrlEncodedForm(TEST_SEND_UTL, SEND_COLUMNS, contents, false);
+        result = (AjaxFormResult) httpServiceImpl.sendUrlEncodedForm(TEST_SEND_UTL, SEND_COLUMNS, contents);
 //        assertNotNull(result.get("responseString"));
         assertEquals(200, result.get(STATUS_CODE));
     }
@@ -53,7 +53,7 @@ public class HttpServiceImplTest {
     @Test
     public void testSend2() throws Exception {
         AjaxFormResult result = new AjaxFormResult();
-        result = (AjaxFormResult) httpServiceImpl.sendJson(TEST_SEND_UTL, JSON_STRING, false);
+        result = (AjaxFormResult) httpServiceImpl.sendJson(TEST_SEND_UTL, JSON_STRING);
 //        assertNotNull(result.get("responseString"));
         assertEquals(200, result.get(STATUS_CODE));
     }
@@ -65,7 +65,7 @@ public class HttpServiceImplTest {
         for(int i=0 ; i<SEND_COLUMNS.length; i++){
             contents.put(SEND_COLUMNS[i], SEND_VALUES[i]);
         }
-        result = (AjaxFormResult) httpServiceImpl.sendUrlEncodedForm(TEST_RECEIVE_URL, SEND_COLUMNS, contents, true);
+        result = (AjaxFormResult) httpServiceImpl.sendUrlEncodedForm(TEST_RECEIVE_URL, SEND_COLUMNS, contents);
         String responseString = (String) result.get("responseString");
         JSONObject resultJSON = JSONObject.fromObject(responseString);
         assertEquals(200, resultJSON.opt(RETURN_CODE));
@@ -75,7 +75,7 @@ public class HttpServiceImplTest {
     @Test
     public void testReceive2() throws Exception {
         AjaxFormResult result = new AjaxFormResult();
-        result = (AjaxFormResult) httpServiceImpl.sendJson(TEST_RECEIVE_URL, JSON_STRING, true);
+        result = (AjaxFormResult) httpServiceImpl.sendJson(TEST_RECEIVE_URL, JSON_STRING);
         String responseString = (String) result.get("responseString");
         JSONObject resultJSON = JSONObject.fromObject(responseString);
         assertEquals(200, resultJSON.opt(RETURN_CODE));

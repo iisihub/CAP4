@@ -15,24 +15,39 @@ import java.util.Map;
 
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
+import com.iisigroup.colabase.http.model.HttpReceiveRequest;
+import com.iisigroup.colabase.http.model.HttpSendResponse;
 
-/**
- * <pre>
+/**<pre>
  * HTTP Service
  * </pre>
- * 
- * @since 2017/5/31
+ * @since  2017年5月31日
  * @author TimChiang
  * @version <ul>
- *          <li>2017/5/31, new
+ *           <li>2017年5月31日,TimChiang,new
  *          </ul>
  */
 public interface HttpService {
     
-    public Result sendUrlEncodedForm(String sendUrl, String[] sendCols, Map<String, String> contents, boolean isTestMode);
+    /**
+     * @param sendUrl 目標URL
+     * @param sendCols 傳送欄位
+     * @param contents 有存放欄位與對應值的Map
+     * @return result
+     */
+    public HttpSendResponse sendUrlEncodedForm(String sendUrl, String[] sendCols, Map<String, String> contents);
     
-    public Result sendJson(String sendUrl, String jsonStr, boolean isTestMode);
-
-    public Result receiveData(Request request);
+    /**
+     * @param sendUrl 目標URL
+     * @param jsonStr JSON字串
+     * @return result
+     */
+    public HttpSendResponse sendJson(String sendUrl, String jsonStr);
+    
+    /**
+     * @param request request
+     * @return result
+     */
+    public HttpReceiveRequest receiveData(Request request);
     
 }
