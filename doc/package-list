@@ -3,3 +3,6 @@ com.iisigroup.colabase.otp.model
 com.iisigroup.colabase.otp.service
 com.iisigroup.colabase.otp.service.impl
 com.iisigroup.colabase.otp.va.crypto
+com.iisigroup.colabase.pdf.handler
+com.iisigroup.colabase.pdf.service
+com.iisigroup.colabase.pdf.service.impl
