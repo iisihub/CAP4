@@ -75,6 +75,9 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
 
     private static final String DEFAULT_ENCORDING = "UTF-8";
 
+    /* (non-Javadoc)
+     * @see com.iisigroup.colabase.edm.service.EDMService#sendEDM(com.iisigroup.colabase.edm.model.EdmSetting)
+     */
     @Override
     public void sendEDM(EdmSetting edmSetting) {
 
@@ -95,10 +98,9 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.iisigroup.colabase.edm.service.EDMService#sendEDM(java.lang.String, byte[], java.lang.String, com.iisigroup.cap.component.Request)
+   
+    /* (non-Javadoc)
+     * @see com.iisigroup.colabase.edm.service.EDMService#sendEDM(java.lang.String, byte[], com.iisigroup.colabase.edm.model.EdmSetting)
      */
     @Override
     public Result sendEDM(String mailAddress, byte[] datas, EdmSetting edmSetting) {
@@ -190,6 +192,11 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
         return result;
     }
 
+    /**
+     * @param edmFtlPath
+     * @param dataMap
+     * @return
+     */
     private ByteArrayDownloadResult processTemplateEmail(String edmFtlPath, Map<String, Object> dataMap) {
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -218,6 +225,11 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
         return null;
     }
     
+    /**
+     * @param multipart
+     * @param edmSetting
+     * @return
+     */
     private MimeMultipart sendFile(MimeMultipart multipart, EdmSetting edmSetting) {
         // 處理附加檔案
         File sendFile;
@@ -252,6 +264,14 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
         return multipart;
     }
     
+    /**
+     * @param multipart
+     * @param mailContent
+     * @param imagePath
+     * @param tag
+     * @param indexMark
+     * @throws MessagingException
+     */
     private void processImage(MimeMultipart multipart, String mailContent,
             String imagePath, String tag, String indexMark) throws MessagingException {
         BodyPart messageBodyPart;

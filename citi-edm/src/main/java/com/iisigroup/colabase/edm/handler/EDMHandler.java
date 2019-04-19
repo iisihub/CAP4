@@ -43,6 +43,10 @@ public class EDMHandler extends MFormHandler {
     private static final String RESULT = "result";
 
     
+    /**
+     * @param request
+     * @return
+     */
     public Result sendEdmDemo(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         String mailAddress = null;

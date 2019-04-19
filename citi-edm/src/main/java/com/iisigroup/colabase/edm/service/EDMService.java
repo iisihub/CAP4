@@ -33,10 +33,10 @@ public interface EDMService {
     void sendEDM(EdmSetting edmSetting);
     
     /**
-     * 寄送EDM from
-     * @param String mail地址
-     * @param byte 
-     * @param Map<String, Object>
+     * @param mailAddress
+     * @param datas
+     * @param edmSetting
+     * @return
      */
     Result sendEDM(String mailAddress, byte[] datas, EdmSetting edmSetting);
     

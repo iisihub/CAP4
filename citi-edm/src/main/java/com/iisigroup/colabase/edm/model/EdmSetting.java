@@ -39,17 +39,17 @@ public class EdmSetting {
     public EdmSetting() {
     }
     /**
-     * @param edmFtlPath ftl的檔案路徑
-     * @param mailAddress 欲寄送的目標mail
-     * @param fromAddress 發送者位置
-     * @param fromPerson 發送者
-     * @param edmHost 主機
-     * @param edmUsr 使用者
+     * @param edmFtlPath FTL的檔案路徑
+     * @param mailAddress 收件人email
+     * @param fromAddress 寄件者email
+     * @param fromPerson 寄件者名稱
+     * @param edmHost SMTP host name
+     * @param edmUsr 帳號
      * @param edmPwd 密碼
-     * @param edmSubject mail主旨
-     * @param edmAttachedFilePath 附加檔案的路徑
-     * @param edmImageFileFolder ftl會用到的image"資料夾"路徑
-     * @param mappingFtlVar ftl內對應的變數Map
+     * @param edmSubject 信件主旨
+     * @param edmAttachedFilePath 附件的檔案路徑
+     * @param edmImageFileFolder 對應FTL內的image"資料夾"路徑
+     * @param mappingFtlVar 對應FTL內的變數Map
      */
     public EdmSetting(String edmFtlPath, String mailAddress, String fromAddress, String fromPerson, String edmHost, String edmUsr, String edmPwd, String edmSubject, String edmAttachedFilePath,
             String edmImageFileFolder, Map<String, Object> mappingFtlVar) {

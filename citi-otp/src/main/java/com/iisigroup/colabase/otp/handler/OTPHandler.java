@@ -22,7 +22,6 @@ import org.springframework.stereotype.Controller;
 import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
-import com.iisigroup.cap.exception.CapException;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.cap.utils.CapSystemConfig;
@@ -31,7 +30,7 @@ import com.iisigroup.colabase.otp.service.OTPService;
 import com.iisigroup.colabase.otp.service.impl.OTPServiceImpl;
 
 /**
- * Generate & Send OTP password
+ * Generate And Send OTP password
  * 
  * @since Mar 13, 2018
  * @author Cathy
@@ -49,27 +48,33 @@ public class OTPHandler extends MFormHandler {
     private CapSystemConfig sysConfig;
 
     // 前端送來的參數
-    public static final String USER_OTP = "USER_OTP";// USER輸入的OTP
-    public static final String MOBILE_PHONE = "MOBILE_PHONE";// 手機號碼
-    public static final String OTP_TIMOUT_SECONDS = "OTP_TIMOUT_SECONDS";// OTP TIME OUT 秒數
-    public static final String IS_RESEND_OTP = "IS_RESEND_OTP";// OTP TIME OUT 秒數
-    public static final String OTP_MAX_RETRY = "OTP_MAX_RETRY";// OTP 重送最大次數
-    // 回前端的參數
+    /** USER輸入的OTP密碼 **/
+    public static final String USER_OTP = "USER_OTP";
+    /** 手機號碼 */
+    public static final String MOBILE_PHONE = "MOBILE_PHONE";
+    /** OTP TIME OUT 秒數 */
+    public static final String OTP_TIMOUT_SECONDS = "OTP_TIMOUT_SECONDS";
+    /** OTP TIME OUT 秒數 */
+    public static final String IS_RESEND_OTP = "IS_RESEND_OTP";
+    /** OTP 重送最大次數 */
+    public static final String OTP_MAX_RETRY = "OTP_MAX_RETRY";
+    /** 回前端的參數 */
     private static final String IS_VERIFY = "isVerify";
-    // Session 計算OTP傳送次數
+    /** Session 計算OTP傳送次數 */
     public static final String SESSION_RETRY_COUNT = "retryCount";
-    // OTP回傳的訊息
+    /** OTP回傳的訊息 */
     private static final String RETRY_MSG = "若密碼失效請按『重送OTP簡訊動態密碼』重送，最多可重送{0}次，你已重送了{1}次。";
+    /** 重送限制次數 */
     private static final String MAX_RETRY_MSG = "已達可重送次數{0}次限制。";
-    // SMS Msg
+    /** SMS Msg */
     private static final String SMS_MSG = "您的「簡訊動態密碼OTP」為{0}，密碼將於{1}秒後失效。請於網頁輸入密碼完成申請。";
 
     /**
      * 發/重送OTP密碼
      * 
      * @param request
-     * @return
-     * @throws CapException
+     *            Request
+     * @return Result Map
      */
     public Result sendOTP(Request request) {
         AjaxFormResult result = new AjaxFormResult();
@@ -131,8 +136,8 @@ public class OTPHandler extends MFormHandler {
      * Invalidate Session
      * 
      * @param request
-     * @return
-     * @throws CapException
+     *            Request
+     * @return Result Map
      */
     public Result invalidateSession(Request request) {
         AjaxFormResult result = new AjaxFormResult();
@@ -144,8 +149,8 @@ public class OTPHandler extends MFormHandler {
      * 驗證OTP密碼
      * 
      * @param request
-     * @return
-     * @throws CapException
+     *            Request
+     * @return Result Map
      */
     public Result verifyOTP(Request request) {
         AjaxFormResult result = new AjaxFormResult();

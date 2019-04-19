@@ -41,10 +41,22 @@ import com.iisigroup.cap.exception.CapException;
  */
 public class ZipUtil {
 
-    private final Logger logRecord = LoggerFactory.getLogger(getClass());
+    private static final Logger logRecord = LoggerFactory.getLogger(ZipUtil.class);
     private static final int BUFFER_SIZE = 8192;
 
-    public void zip(File destination, boolean overwrite, String password, File... unzipFiles) throws IOException {
+    private ZipUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+    
+    /**
+     * 壓縮檔案
+     * @param destination 輸出zip的位置
+     * @param overwrite 是否覆寫
+     * @param password 加密密碼，空值則不加密
+     * @param unzipFiles 輸入欲zip的檔案位置
+     * @throws IOException
+     */
+    public static void zip(File destination, boolean overwrite, String password, File... unzipFiles) throws IOException {
 
         if (destination.isDirectory()) {
             throw new IOException(destination + " is a directory");
@@ -100,12 +112,20 @@ public class ZipUtil {
                 out.closeEntry();
                 out.finish();
             } catch (ZipException e) {
-                throw new CapException(e, getClass());
+                throw new CapException(e, ZipUtil.class);
             }
         }
     }
 
-    public void unzip(File unzipFile, String password, File destination) throws IOException, ZipException {
+    /**
+     * 解壓縮檔案
+     * @param unzipFile 輸入壓縮檔位置
+     * @param password 壓縮檔密碼，無則放空值
+     * @param destination 解完壓縮的檔案位置
+     * @throws IOException
+     * @throws ZipException
+     */
+    public static void unzip(File unzipFile, String password, File destination) throws IOException, ZipException {
         if (!unzipFile.exists()) {
             throw new IOException(unzipFile + " is not exist.");
         }
@@ -132,7 +152,7 @@ public class ZipUtil {
                 zipFile.setPassword(password);
             }
         } catch (Exception e) {
-            throw new CapException(e, getClass());
+            throw new CapException(e, ZipUtil.class);
         }
 
         // get the header information for all the files in the ZipFile
@@ -154,14 +174,20 @@ public class ZipUtil {
                     UnzipUtil.applyFileAttributes(fileHeader, outputFile);
 
                 } catch (ZipException e) {
-                    throw new CapException(e, getClass());
+                    throw new CapException(e, ZipUtil.class);
                 }
 
             }
         }
     }
 
-    public Boolean isEmptyFolder(Boolean isDeleteEmptyFolder, String... fileList) {
+    /**
+     * 是否為空的資料夾，只要有任一個檔案存在即回傳true
+     * @param isDeleteEmptyFolder 是否刪除空的資料夾
+     * @param fileList 可輸入多個資料夾位置
+     * @return
+     */
+    public static Boolean isEmptyFolder(Boolean isDeleteEmptyFolder, String... fileList) {
 
         boolean hasFile = true;
 
@@ -183,16 +209,22 @@ public class ZipUtil {
         return hasFile;
     }
 
-    public void isExistsFolder(File folder, boolean isCreate) {
+    /**
+     * 查看是否存在該資料夾，不存在的話，可創建該資料夾。
+     * @param folder 資料夾位置
+     * @param isCreate 是否創建該資料夾
+     */
+    public static void isExistsFolder(File folder, boolean isCreate) {
 
         if (!folder.exists()) {
+            logRecord.debug("[ZIP] Folder not exists!");
             try {
                 if (isCreate) {
                     FileUtils.forceMkdir(folder);
+                    logRecord.debug("[ZIP] Folder Create!");
                 }
-                logRecord.debug("[ZIP] Folder not exists!");
             } catch (IOException e) {
-                logRecord.error("[ZIP] Create folder error!");
+                throw new CapException(e, ZipUtil.class);
             }
         } else {
             logRecord.debug("[ZIP] Folder exists!");

@@ -1,2 +1,0 @@
-該處resources為選用資源，如果單純用AddressOriginalService就需要該處資源。
-如果是要用AddressService因是讀XSL_ZIP_CODE中的資料，所以除了Village_H_10602.txt其他可不包。
