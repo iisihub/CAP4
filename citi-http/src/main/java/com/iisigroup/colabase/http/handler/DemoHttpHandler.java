@@ -41,7 +41,7 @@ public class DemoHttpHandler extends MFormHandler {
     
     /**
      * @param request request
-     * @return result
+     * @return result 回傳http send結果
      * @throws CapException CapException
      */
     public Result httpSend(Request request) throws CapException {
@@ -76,7 +76,7 @@ public class DemoHttpHandler extends MFormHandler {
     
     /**
      * @param request request
-     * @return result
+     * @return result 回傳http send(send目標為httpReceiveTest)結果
      * @throws CapException CapException
      */
     public Result httpReceive(Request request) throws CapException {
@@ -111,7 +111,7 @@ public class DemoHttpHandler extends MFormHandler {
     
     /**
      * @param request request
-     * @return result
+     * @return result 回傳http receive結果
      * @throws CapException CapException
      */
     public Result httpReceiveTest(Request request) throws CapException {
