@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>cap</artifactId>
+    <groupId>com.iisigroup.cap</groupId>
+    <version>4.1.0</version>
+  </parent>
+  <artifactId>cap-cloudconfig</artifactId>
+  <name>cap-cloudconfig</name>
+  <description>Cloud config project for Spring Boot</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-config-server</artifactId>
+      <version>${spring-boot.version}</version>
+    </dependency>
+    <!-- For Subversion Version Control System -->
+    <!-- <dependency>
+      <groupId>org.tmatesoft.svnkit</groupId>
+      <artifactId>svnkit</artifactId>
+    </dependency> -->
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring-boot.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <fork>true</fork>
+          <wait>1000</wait>
+          <maxAttempts>60</maxAttempts>
+          <addResources>true</addResources>
+          <folders>
+            <folder>${basedir}/../cap-config/src/main/resources</folder>
+            <folder>${basedir}/target/${project.build.finalName}/WEB-INF/classes</folder>
+          </folders>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

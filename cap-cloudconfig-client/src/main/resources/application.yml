@@ -1,0 +1,18 @@
+server:
+  port: 8002
+
+spring:
+  application:
+    name: spring-cloud-config-client
+
+# spring boot actuator
+info:
+  app:
+    name: com.iisigroup.cap
+    description: Cap4 Spring-cloud
+    version: 4.2.0
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health,info

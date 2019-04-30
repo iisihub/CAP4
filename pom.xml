@@ -15,6 +15,8 @@
         <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
         <bean.validation.version>1.1.0.Final</bean.validation.version>
         <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
     <repositories>
         <repository>
@@ -136,6 +138,8 @@
         <module>cap-websocket</module>
         <module>cap-captcha</module>
         <module>cap-report</module>
+        <module>cap-cloudconfig</module>
+        <module>cap-cloudconfig-client</module>
     </modules>
     <profiles>
         <profile>
@@ -159,7 +163,7 @@
                         <configuration>
                             <source>${java.version}</source>
                             <target>${java.version}</target>
-                            <encoding>UTF-8</encoding>
+                            <encoding>${project.build.sourceEncoding}</encoding>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -272,7 +276,7 @@
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
-                        <encoding>UTF-8</encoding>
+                        <encoding>${project.build.sourceEncoding}</encoding>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -316,7 +320,7 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.0.1</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
         </plugins>
