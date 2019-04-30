@@ -10,3 +10,8 @@ spring:
         git:
           uri: https://github.com/shawnyhw6n9/config-repo
           search-paths: cap
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-demo-rce.apps.example.com/eureka

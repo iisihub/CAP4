@@ -10,13 +10,24 @@
   <artifactId>cap-cloudconfig</artifactId>
   <name>cap-cloudconfig</name>
   <description>Cloud config project for Spring Boot</description>
-
+    
   <dependencies>
     <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-config-server</artifactId>
-      <version>${spring-boot.version}</version>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-config-server</artifactId>
     </dependency>
+
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    </dependency>
+    
+    <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>2.8.5</version>
+    </dependency>
+
     <!-- For Subversion Version Control System -->
     <!-- <dependency>
       <groupId>org.tmatesoft.svnkit</groupId>

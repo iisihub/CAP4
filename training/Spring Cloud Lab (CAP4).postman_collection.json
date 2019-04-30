@@ -9,7 +9,7 @@
 			"name": "a. Spring Cloud Config",
 			"item": [
 				{
-					"name": "1. config server (label=master, application=config, profile=dev)",
+					"name": "1. config server - 8001 (label=master, application=config, profile=dev)",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -123,6 +123,53 @@
 							"path": [
 								"actuator",
 								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. http://eureka-demo-rce.apps.example.com",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://eureka-demo-rce.apps.example.com",
+							"protocol": "http",
+							"host": [
+								"eureka-demo-rce",
+								"apps",
+								"example",
+								"com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Backup config server - 8003 (label=master, application=config, profile=dev)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8003/config/dev/master",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"config",
+								"dev",
+								"master"
 							]
 						}
 					},

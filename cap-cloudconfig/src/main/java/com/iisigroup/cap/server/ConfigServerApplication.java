@@ -2,6 +2,7 @@ package com.iisigroup.cap.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.config.server.EnableConfigServer;
 
 /**
@@ -16,6 +17,7 @@ import org.springframework.cloud.config.server.EnableConfigServer;
  *          <li>Apr 29, 2019,Sunkist Wang,new
  *          </ul>
  */
+@EnableDiscoveryClient
 @EnableConfigServer
 @SpringBootApplication
 public class ConfigServerApplication {
