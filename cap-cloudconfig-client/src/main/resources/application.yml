@@ -8,8 +8,8 @@ spring:
 # spring boot actuator
 info:
   app:
-    name: com.iisigroup.cap
-    description: Cap4 Spring-cloud
+    name: com.iisigroup.cap.cap-cloudconfig-client
+    description: Cap4 spring-cloud-config-client
     version: 4.2.0
 management:
   endpoints:

@@ -2,6 +2,6 @@ spring:
   cloud:
     config:
       name: config
-      profile: dev
+      profile: dev 
       uri: http://localhost:8001/
-      label: master
+      label: 'support/springcloud'

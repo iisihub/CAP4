@@ -8,5 +8,5 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/shawnyhw6n9/config-repo/
-          search-paths: '{application}'
+          uri: https://github.com/iisihub/CAP4/
+          search-paths: cap-config,'{application}'

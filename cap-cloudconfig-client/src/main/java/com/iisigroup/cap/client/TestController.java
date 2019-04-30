@@ -32,10 +32,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RefreshScope
 class TestController {
 
-    @Value("${upload.path}")
+    @Value("${upload.path:}")
     private String uploadPath;
 
-    @Value("${db.jdbc.url}")
+    @Value("${db.jdbc.url:}")
     private String dbJdbcUrl;
 
     @RequestMapping("/test")
