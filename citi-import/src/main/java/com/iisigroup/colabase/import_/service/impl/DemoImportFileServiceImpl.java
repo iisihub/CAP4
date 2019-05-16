@@ -1,6 +1,7 @@
 package com.iisigroup.colabase.import_.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,6 +103,14 @@ public class DemoImportFileServiceImpl implements DemoImportFileService {
     public boolean checkDate(String filePath, String fileName, String date, String dateFormat) {
         fileName += ".bak";
         return CheckFileUtil.checkFileModifiedDate(filePath, fileName, date, dateFormat);
+    }
+    
+    /* (non-Javadoc)
+     * @see com.iisigroup.colabase.import_.service.DemoImportFileService#checkDate(java.lang.String, java.lang.String, java.util.Date)
+     */
+    public boolean checkDate(String filePath, String fileName, Date date) {
+        fileName += ".bak";
+        return CheckFileUtil.checkFileModifiedDate(filePath, fileName, date);
     }
 
     /*

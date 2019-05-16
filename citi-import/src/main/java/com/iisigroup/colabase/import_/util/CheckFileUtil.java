@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,6 +122,36 @@ public class CheckFileUtil {
                     logger.debug("checkFileModifiedDate>>>>true");
                     return true;
                 }
+            }
+        } else {
+            throw new CapMessageException("讀取不存在或無法讀取，無法檢查檔案時間", CheckFileUtil.class);
+        }
+        return false;
+    }
+    
+    /**
+     * 判斷是否有某一天的檔案
+     * 
+     * @param filePath
+     *            檔案路徑
+     * @param fileName
+     *            檔案名稱
+     * @param date
+     *            日期
+     * @return 是否有某一天的檔案
+     */
+    public static boolean checkFileModifiedDate(String filePath, String fileName, Date date) {
+        File file = new File(filePath, fileName);
+        if (file.exists() && file.canRead()) {
+            long modifiedTime = file.lastModified();
+            Timestamp tsp = new Timestamp(modifiedTime);
+            String theDateStr = CapDate.formatDate(date, FILE_DATE_FORMAT);
+            String fileDate = CapDate.convertTimestampToString(tsp, FILE_DATE_FORMAT);
+            logger.debug("checkFileModifiedDate>>>>檢查日期(yyyyMMdd):" + theDateStr);
+            logger.debug("checkFileModifiedDate>>>>檔案日期(yyyyMMdd):" + fileDate);
+            if (theDateStr != null && theDateStr.equals(fileDate)) {
+                logger.debug("checkFileModifiedDate>>>>true");
+                return true;
             }
         } else {
             throw new CapMessageException("讀取不存在或無法讀取，無法檢查檔案時間", CheckFileUtil.class);

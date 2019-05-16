@@ -1,5 +1,6 @@
 package com.iisigroup.colabase.import_.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +55,19 @@ public interface DemoImportFileService {
      * @return 是否有某一天的檔案
      */
     boolean checkDate(String filePath, String fileName, String date, String dateFormat);
+    
+    /**
+     * 判斷是否有某一天的檔案
+     * 
+     * @param filePath
+     *            檔案路徑
+     * @param fileName
+     *            檔案名稱
+     * @param date
+     *            日期
+     * @return 是否有某一天的檔案
+     */
+    boolean checkDate(String filePath, String fileName, Date date);
 
     /**
      * 讀檔 看有幾行(總共有幾筆資料應該被匯入)
