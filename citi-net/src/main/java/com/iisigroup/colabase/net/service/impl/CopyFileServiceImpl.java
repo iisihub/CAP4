@@ -20,6 +20,9 @@ public class CopyFileServiceImpl implements CopyFileService {
     private static Logger logger = LoggerFactory.getLogger(CopyFileServiceImpl.class);
     private static String COLA_FREE_DRIVE_LETTERS = "YXWVUTSRQPONMLKJIHGFEDCBA";
     
+    /* (non-Javadoc)
+     * @see com.iisigroup.colabase.net.service.CopyFileService#copyFile(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
     @NonTransactional
     public void copyFile(String path, String domain, String userName, String userXwd, String exportFilePath, String importFilePath, String fileName) {
         
