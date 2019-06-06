@@ -101,12 +101,13 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         } else {
             outputFileName = defalutPDFName();
         }
-        if (CapString.isEmpty(fontName)) {
-            try {
-                font = fontFactory.getFontPath(DEFAULT_FONT, "");
-            } catch (IOException e) {
-                logger.debug(e.getMessage(), e);
+        try {
+            if (CapString.isEmpty(fontName)) {
+                fontName = DEFAULT_FONT;
             }
+            fontFactory.getFontPath(fontName, "");
+        } catch (IOException e) {
+            logger.debug(e.getMessage(), e);
         }
         String encryptPdfOutputFilename = pdfPath + File.separator + outputFileName;
         File encryptPdfFile = new File(encryptPdfOutputFilename);
@@ -151,12 +152,13 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         } else {
             outputFileName = defalutPDFName();
         }
-        if (CapString.isEmpty(fontName)) {
-            try {
-                font = fontFactory.getFontPath(DEFAULT_FONT, "");
-            } catch (IOException e) {
-                logger.debug(e.getMessage(), e);
+        try {
+            if (CapString.isEmpty(fontName)) {
+                fontName = DEFAULT_FONT;
             }
+            fontFactory.getFontPath(fontName, "");
+        } catch (IOException e) {
+            logger.debug(e.getMessage(), e);
         }
         String encryptPdfOutputFilename = pdfPath + File.separator + outputFileName;
         File encryptPdfFile = new File(encryptPdfOutputFilename);
@@ -222,12 +224,13 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
         } else {
             outputFileName = defalutPDFName();
         }
-        if (CapString.isEmpty(fontName)) {
-            try {
-                font = fontFactory.getFontPath(DEFAULT_FONT, "");
-            } catch (IOException e) {
-                logger.debug(e.getMessage(), e);
+        try {
+            if (CapString.isEmpty(fontName)) {
+                fontName = DEFAULT_FONT;
             }
+            fontFactory.getFontPath(fontName, "");
+        } catch (IOException e) {
+            logger.debug(e.getMessage(), e);
         }
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();) {
             // 加密密碼，建立PDF名稱並產出
