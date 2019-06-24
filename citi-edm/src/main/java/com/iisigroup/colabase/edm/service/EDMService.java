@@ -11,33 +11,40 @@
  */
 package com.iisigroup.colabase.edm.service;
 
-
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.colabase.edm.model.EdmSetting;
 
-/**<pre>
+/**
+ * <pre>
  * send EDM service
  * </pre>
- * @since  2018年4月30日
+ * 
+ * @since 2018年4月30日
  * @author Johnson Ho
- * @version <ul>
- *           <li>2018年4月30日,Johnson Ho,new
+ * @version
+ *          <ul>
+ *          <li>2018年4月30日,Johnson Ho,new
  *          </ul>
  */
 public interface EDMService {
-    
+
     /**
      * 寄送EDM
-     * @param EdmSetting model
+     * 
+     * @param EdmSetting
+     *            Edm相關設定參數
      */
     void sendEDM(EdmSetting edmSetting);
-    
+
     /**
      * @param mailAddress
+     *            收件人email
      * @param datas
+     *            byte[]
      * @param edmSetting
+     *            Edm相關設定參數
      * @return
      */
     Result sendEDM(String mailAddress, byte[] datas, EdmSetting edmSetting);
-    
+
 }

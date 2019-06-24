@@ -29,7 +29,7 @@ public class HttpServiceImplTest {
     private final String STATUS_CODE = "statusCode";
     // 返回值
     private final String RETURN_CODE = "status_code";
-    
+
     @Spy
     private HttpServiceImpl httpServiceImpl;
 
@@ -42,19 +42,19 @@ public class HttpServiceImplTest {
     public void testSend() throws Exception {
         AjaxFormResult result = new AjaxFormResult();
         Map<String, String> contents = new HashMap<String, String>();
-        for(int i=0 ; i<SEND_COLUMNS.length; i++){
+        for (int i = 0; i < SEND_COLUMNS.length; i++) {
             contents.put(SEND_COLUMNS[i], SEND_VALUES[i]);
         }
-        result = (AjaxFormResult) httpServiceImpl.sendUrlEncodedForm(TEST_SEND_UTL, SEND_COLUMNS, contents, false);
-//        assertNotNull(result.get("responseString"));
+        result = (AjaxFormResult) httpServiceImpl.sendUrlEncodedForm(TEST_SEND_UTL, SEND_COLUMNS, contents);
+        // assertNotNull(result.get("responseString"));
         assertEquals(200, result.get(STATUS_CODE));
     }
 
     @Test
     public void testSend2() throws Exception {
         AjaxFormResult result = new AjaxFormResult();
-        result = (AjaxFormResult) httpServiceImpl.sendJson(TEST_SEND_UTL, JSON_STRING, false);
-//        assertNotNull(result.get("responseString"));
+        result = (AjaxFormResult) httpServiceImpl.sendJson(TEST_SEND_UTL, JSON_STRING);
+        // assertNotNull(result.get("responseString"));
         assertEquals(200, result.get(STATUS_CODE));
     }
 
@@ -62,24 +62,24 @@ public class HttpServiceImplTest {
     public void testReceive() throws Exception {
         AjaxFormResult result = new AjaxFormResult();
         Map<String, String> contents = new HashMap<String, String>();
-        for(int i=0 ; i<SEND_COLUMNS.length; i++){
+        for (int i = 0; i < SEND_COLUMNS.length; i++) {
             contents.put(SEND_COLUMNS[i], SEND_VALUES[i]);
         }
-        result = (AjaxFormResult) httpServiceImpl.sendUrlEncodedForm(TEST_RECEIVE_URL, SEND_COLUMNS, contents, true);
+        result = (AjaxFormResult) httpServiceImpl.sendUrlEncodedForm(TEST_RECEIVE_URL, SEND_COLUMNS, contents);
         String responseString = (String) result.get("responseString");
         JSONObject resultJSON = JSONObject.fromObject(responseString);
         assertEquals(200, resultJSON.opt(RETURN_CODE));
-//        assertEquals(200, result.get(STATUS_CODE));
+        // assertEquals(200, result.get(STATUS_CODE));
     }
-    
+
     @Test
     public void testReceive2() throws Exception {
         AjaxFormResult result = new AjaxFormResult();
-        result = (AjaxFormResult) httpServiceImpl.sendJson(TEST_RECEIVE_URL, JSON_STRING, true);
+        result = (AjaxFormResult) httpServiceImpl.sendJson(TEST_RECEIVE_URL, JSON_STRING);
         String responseString = (String) result.get("responseString");
         JSONObject resultJSON = JSONObject.fromObject(responseString);
         assertEquals(200, resultJSON.opt(RETURN_CODE));
-//        assertEquals(200, result.get(STATUS_CODE));
+        // assertEquals(200, result.get(STATUS_CODE));
     }
 
 }

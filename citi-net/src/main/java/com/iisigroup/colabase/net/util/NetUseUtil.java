@@ -242,19 +242,19 @@ public class NetUseUtil {
     
     /**
      * 取得可使用磁碟機代號，自訂磁碟機代號列表
-     * @param 自訂搜尋代號列表
+     * @param allCustomizedLetters 自訂搜尋代號列表
      * @return 磁碟機代號
      */
-    public static String getFreeDriveLetter(String all) {
-        if(StringUtils.isEmpty(all)){
-            all = ALL_FREE_DRIVE_LETTERS;
+    public static String getFreeDriveLetter(String allCustomizedLetters) {
+        if(StringUtils.isEmpty(allCustomizedLetters)){
+            allCustomizedLetters = ALL_FREE_DRIVE_LETTERS;
         }
         File[] roots = File.listRoots();
         for (File root : roots) {
             String s = root.toString().toUpperCase();
             s = s.substring(0, s.indexOf(':'));
-            all = all.replace(s, "");
+            allCustomizedLetters = allCustomizedLetters.replace(s, "");
         }
-        return String.valueOf(all.charAt(0));
+        return String.valueOf(allCustomizedLetters.charAt(0));
     }
 }

@@ -1,5 +1,8 @@
 package com.iisigroup.colabase.import_.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,6 +60,13 @@ public class DemoImportFileServiceImplTest {
     @Test
     public void testCheckDate() throws Exception {
         boolean result = importFileService.checkDate(filePath, fileName, date, dateFormat);
+        assertEquals(true, result);
+    }
+    
+    @Test
+    public void testCheckDate2() throws Exception {
+        Date d1 = new SimpleDateFormat(dateFormat).parse(date);
+        boolean result = importFileService.checkDate(filePath, fileName, d1);
         assertEquals(true, result);
     }
     

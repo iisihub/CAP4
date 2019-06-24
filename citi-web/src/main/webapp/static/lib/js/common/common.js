@@ -620,43 +620,45 @@ $.holdReady(true);
             });
 
             // 設定blockUI
-            if ($.blockUI) {
+            require(['blockui'],function(blockui){
+              if ($.blockUI) {
                 $.blockUI.showBG = true;
                 $.extend({
-                    startBlockUI: function(event, xhr) {
-                        $.blockUI({
-                            fadeIn: 0,
-                            fadeOut: 0,
-                            message: i18n.def.loading + '   <img src="' + url("static/images/ajax-loader.gif") + '" style="width: 16px;hight:11px;"/>',
-                            css: {
-                                'z-index': 10010,
-                                top: '0',
-                                left: '40%',
-                                backgroundColor: '#E0ECFF',
-                                border: '#000 1px solid',
-                                '-webkit-border-radius': '5px',
-                                '-moz-border-radius': '5px',
-                                // opacity: .85,
-                                'font-size': '0.8em',
-                                padding: '2px',
-                                fontWeight: 'bolder',
-                                height: '18px',
-                                width: '20%',
-                                color: '#000',
-                                cursor: 'default'
-                            },
-                            overlayCSS: {
-                                'z-index': 10010,
-                                backgroundColor: '#CCC',
-                                opacity: $.blockUI.showBG ? 0.3 : 0,
-                                cursor: 'default'
-                            }
-                        });
-                    }
+                  startBlockUI: function(event, xhr) {
+                    $.blockUI({
+                      fadeIn: 0,
+                      fadeOut: 0,
+                      message: i18n.def.loading + '   <img src="' + url("static/images/ajax-loader.gif") + '" style="width: 16px;hight:11px;"/>',
+                      css: {
+                        'z-index': 10010,
+                        top: '0',
+                        left: '40%',
+                        backgroundColor: '#E0ECFF',
+                        border: '#000 1px solid',
+                        '-webkit-border-radius': '5px',
+                        '-moz-border-radius': '5px',
+                        // opacity: .85,
+                        'font-size': '0.8em',
+                        padding: '2px',
+                        fontWeight: 'bolder',
+                        height: '18px',
+                        width: '20%',
+                        color: '#000',
+                        cursor: 'default'
+                      },
+                      overlayCSS: {
+                        'z-index': 10010,
+                        backgroundColor: '#CCC',
+                        opacity: $.blockUI.showBG ? 0.3 : 0,
+                            cursor: 'default'
+                      }
+                    });
+                  }
                 });
                 $(document).on("ajaxStart", $.startBlockUI);
                 $(document).on("ajaxStop", $.unblockUI);
-            }
+              }
+            })
 
             // 檔案上傳動作
             if ($.ajaxFileUpload) {
@@ -1546,10 +1548,6 @@ $.holdReady(true);
         i18n.set('def', {"sure": "確定","cancel": "取消","sessionTimeout": "您的登入己經過期\n請重新登入","confirmTitle": "提示","close": "關閉","timeout": "伺服器連線逾時，請稍後再試。","connectError": "伺服器連線失敗，請稍後再試，或檢查網路連線是否正常。","loading": "遠端系統《連線中》，請稍待","fileUploading": "檔案讀取中請耐心等候…","fileUploadSuccess": "檔案上傳完成!","fileSelect": "請先選擇檔案","newData": "新增","fileSelError": "請確認檔案類型,副檔名為","fileUploadError": "檔案讀取失敗，請重新上傳","selectOption": "選項","comboSpace": ""});
     })(_jQuery);
 
-    require(['blockui'], function(blockui) {
-        $.blockUI.showBG = true;
-        $.startBlockUI && $.startBlockUI();
-    });
     // 非同步載入伺服器上的 i18n
     window.i18n.load("def", {async: true});
     // 所有動作改以載入 default i18n 完成後再動作

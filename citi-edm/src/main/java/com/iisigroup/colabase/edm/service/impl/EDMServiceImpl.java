@@ -56,10 +56,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 /**
- * <pre>
- * 1.實作html/xml → ftl
- * 2.實作ftl  → 發送EDM
- * </pre>
+ * EDM Service Implement
  * 
  * @since 2018年4月30日
  * @author Johnson Ho
@@ -75,7 +72,9 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
 
     private static final String DEFAULT_ENCORDING = "UTF-8";
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.iisigroup.colabase.edm.service.EDMService#sendEDM(com.iisigroup.colabase.edm.model.EdmSetting)
      */
     @Override
@@ -98,8 +97,9 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
         }
     }
 
-   
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.iisigroup.colabase.edm.service.EDMService#sendEDM(java.lang.String, byte[], com.iisigroup.colabase.edm.model.EdmSetting)
      */
     @Override
@@ -164,9 +164,9 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
 
                 String keyword2 = "background:url('cid:";
                 processImage(multipart, org, imagePath, keyword2, "\'");
-                
+
                 // 處理附加檔案
-                if(edmSetting.getEdmAttachedFilePath() != null) {
+                if (edmSetting.getEdmAttachedFilePath() != null) {
                     multipart = sendFile(multipart, edmSetting);
                 }
             }
@@ -206,8 +206,8 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
             Template t = config.getTemplate(edmFtlPath);
 
             Map<String, Object> map = new HashMap<String, Object>();
-            
-            if(dataMap != null) {
+
+            if (dataMap != null) {
                 for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
                     map.put(entry.getKey(), CapString.trimNull(entry.getValue()));
                 }
@@ -224,7 +224,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
         }
         return null;
     }
-    
+
     /**
      * @param multipart
      * @param edmSetting
@@ -242,12 +242,10 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
             if (sendFile.exists()) {
                 logRecord.debug("[SendEmailServiceImpl] @ attachedFile has Found");
                 // 要顯示的檔名，檔名使用UTF-8編碼
-                filePart.setHeader("Content-Type",  "application/octet-stream; charset=\"utf-8\"");
+                filePart.setHeader("Content-Type", "application/octet-stream; charset=\"utf-8\"");
                 /*
-                 * the legal values for "encoding" are "Q" and "B"... The "Q"
-                 * encoding is recommended for use when most of the characters to be
-                 * encoded are in the ASCII character set; otherwise, the "B"
-                 * encoding should be used.
+                 * the legal values for "encoding" are "Q" and "B"... The "Q" encoding is recommended for use when most of the characters to be encoded are in the ASCII character set; otherwise, the
+                 * "B" encoding should be used.
                  */
                 /** WAS 6.1 不支援 */
                 filePart.attachFile(sendFile);
@@ -260,10 +258,10 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
         } catch (Exception e) {
             logRecord.debug("sendEdmFileNotification:" + e.getMessage(), e);
         }
-        
+
         return multipart;
     }
-    
+
     /**
      * @param multipart
      * @param mailContent
@@ -272,8 +270,7 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
      * @param indexMark
      * @throws MessagingException
      */
-    private void processImage(MimeMultipart multipart, String mailContent,
-            String imagePath, String tag, String indexMark) throws MessagingException {
+    private void processImage(MimeMultipart multipart, String mailContent, String imagePath, String tag, String indexMark) throws MessagingException {
         BodyPart messageBodyPart;
         int index = mailContent.indexOf(tag);
         int end = 0;
@@ -290,9 +287,9 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
                     DataSource fds = new FileDataSource(file);
                     messageBodyPart.setDataHandler(new DataHandler(fds));
                     messageBodyPart.setHeader("Content-ID", "<" + fileName + ">");
-                    if(fileName.endsWith(".gif")){                              // /** .gif若Content-Type設IMAGE/JPEG，IE瀏覽器看不到*/
+                    if (fileName.endsWith(".gif")) { // /** .gif若Content-Type設IMAGE/JPEG，IE瀏覽器看不到*/
                         messageBodyPart.setHeader("Content-Type", "IMAGE/GIF");
-                    }else{
+                    } else {
                         messageBodyPart.setHeader("Content-Type", "IMAGE/JPEG");// /** WAS 8.5 Mail 在MAC會發生的問題 */
                     }
                     // add image to the multipart
@@ -305,5 +302,5 @@ public class EDMServiceImpl extends CCBasePageReport implements EDMService {
             index = mailContent.indexOf(tag, indexOfTag);
         }
     }
-    
+
 }

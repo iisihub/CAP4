@@ -36,6 +36,11 @@ public class DemoCopyFileHandler extends MFormHandler {
     private static final String RESULT_MSG = "result";
     private static final String ERROR_MSG = "error";
 
+    /**
+     * @param request request
+     * @return result 回傳整個搬檔流程結果
+     * @throws CapException CapException
+     */
     public Result copyFileProcess(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         String path = request.get(PATH_1);
@@ -54,6 +59,11 @@ public class DemoCopyFileHandler extends MFormHandler {
         return result;
     }
 
+    /**
+     * @param request request
+     * @return result 回傳檢查本地是否已掛載目標網路磁碟機結果
+     * @throws CapException CapException
+     */
     public Result mappingLocalPath(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         String path = request.get(PATH_1);
@@ -73,6 +83,11 @@ public class DemoCopyFileHandler extends MFormHandler {
         return result;
     }
 
+    /**
+     * @param request request
+     * @return result 回傳連接網路磁碟機(指定本地磁碟機代號)結果
+     * @throws CapException CapException
+     */
     public Result connectDiskWithDrive(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         String path = request.get(PATH_1);
@@ -100,6 +115,11 @@ public class DemoCopyFileHandler extends MFormHandler {
         return result;
     }
 
+    /**
+     * @param request request
+     * @return 回傳連接網路磁碟機(不指定本地磁碟機代號)結果
+     * @throws CapException CapException
+     */
     public Result connectDisk(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         String path = request.get(PATH_1);
@@ -142,6 +162,11 @@ public class DemoCopyFileHandler extends MFormHandler {
         return result;
     }
 
+    /**
+     * @param request request
+     * @return 回傳搬檔結果
+     * @throws CapException CapException
+     */
     public Result copyFile(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         String exportFilePath = request.get(EXPORT_PATH_1);
@@ -201,6 +226,11 @@ public class DemoCopyFileHandler extends MFormHandler {
         return result;
     }
 
+    /**
+     * @param request request
+     * @return 回傳卸載特定網路磁碟機結果
+     * @throws CapException CapException
+     */
     public Result disconnectNetworkPath(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         String diskLtr = request.get(DRIVE_1);
@@ -220,6 +250,11 @@ public class DemoCopyFileHandler extends MFormHandler {
         return result;
     }
 
+    /**
+     * @param request request
+     * @return 回傳卸載所有網路磁碟機結果
+     * @throws CapException CapException
+     */
     public Result disconnectAllNetworkPath(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();
         if(!request.isEmpty() && "disconnectAllNetworkPath".equals(request.get("formAction"))){
