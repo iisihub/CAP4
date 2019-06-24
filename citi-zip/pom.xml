@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.iisigroup.colabase</groupId>
 		<artifactId>citi</artifactId>
-		<version>4.0.1-colabase-jdk1.7-201904191500</version>
+		<version>4.0.1-colabase-jdk1.7-201906241745</version>
 	</parent>
 	<artifactId>citi-zip</artifactId>
 	<dependencies>
