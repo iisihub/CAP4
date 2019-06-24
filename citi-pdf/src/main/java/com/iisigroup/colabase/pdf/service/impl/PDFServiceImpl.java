@@ -105,7 +105,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             if (CapString.isEmpty(fontName)) {
                 fontName = DEFAULT_FONT;
             }
-            fontFactory.getFontPath(fontName, "");
+            font = font = fontFactory.getFontPath(fontName, "");
         } catch (IOException e) {
             logger.debug(e.getMessage(), e);
         }
@@ -156,7 +156,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             if (CapString.isEmpty(fontName)) {
                 fontName = DEFAULT_FONT;
             }
-            fontFactory.getFontPath(fontName, "");
+            font = fontFactory.getFontPath(fontName, "");
         } catch (IOException e) {
             logger.debug(e.getMessage(), e);
         }
@@ -228,7 +228,7 @@ public class PDFServiceImpl extends CCBasePageReport implements PDFService {
             if (CapString.isEmpty(fontName)) {
                 fontName = DEFAULT_FONT;
             }
-            fontFactory.getFontPath(fontName, "");
+            font = fontFactory.getFontPath(fontName, "");
         } catch (IOException e) {
             logger.debug(e.getMessage(), e);
         }
