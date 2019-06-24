@@ -12,6 +12,7 @@
 package com.iisigroup.cap.report.factory;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.IOException;
 
 import org.slf4j.Logger;
@@ -68,7 +69,12 @@ public class ItextFontFactory {
     }
 
     public String getFontPath(String fontname, String fontType) throws IOException {
-        return CapAppContext.getResource(basePath + fontname).getURI().getPath() + (CapString.isEmpty(fontType) ? "" : "," + fontType);
+        File font = new File(basePath + fontname);
+        if (font.exists() && font.canRead()) {
+            return basePath + fontname + (CapString.isEmpty(fontType) ? "" : "," + fontType);
+        } else {
+            return CapAppContext.getResource(basePath + fontname).getURI().getPath() + (CapString.isEmpty(fontType) ? "" : "," + fontType);
+        }
     }
 
 }
