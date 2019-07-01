@@ -18,7 +18,11 @@ public class LoanServiceImpl implements LoanService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private static final int SCALE = 50;
-
+    
+    /*
+     * (non-Javadoc)
+     * @see com.iisigroup.colabase.loan.service.LoanService#calFixedFee(java.math.BigDecimal, int, java.math.BigDecimal, java.math.BigDecimal)
+     */
     public LoanInfo calFixedFee(BigDecimal amount, int tenor, BigDecimal eppRate, BigDecimal upfrontFee) {
         logger.debug("calFixedFee => ");
         logger.debug("amount : {}, tenor : {}, eppRate : {}, upfrontFee : {}", amount, tenor, eppRate, upfrontFee);
@@ -81,6 +85,10 @@ public class LoanServiceImpl implements LoanService {
         return loanInfo;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.iisigroup.colabase.loan.service.LoanService#calTwoTierFee(java.math.BigDecimal, int, int, java.math.BigDecimal, java.math.BigDecimal, java.math.BigDecimal)
+     */
     public LoanInfo calTwoTierFee(BigDecimal amount, int tenor, int firstTenor, BigDecimal firstEppRate, BigDecimal secondEppRate, BigDecimal upfrontFee) {
         logger.debug("calTwoTierFee=> ");
         logger.debug("amount: {}, tenor: {}, firstTenor: {}, firstEppRate: {}, secondEppRate: {}, upfrontFee: {}", amount, tenor, firstTenor, firstEppRate, secondEppRate, upfrontFee);

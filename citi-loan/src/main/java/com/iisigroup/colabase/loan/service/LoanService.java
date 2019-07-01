@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 import com.iisigroup.colabase.loan.model.LoanInfo;
 
-
 public interface LoanService {
     /**
      * 固定借款利率的總費用年率計算。
@@ -17,7 +16,7 @@ public interface LoanService {
      *            借款利率
      * @param upfrontFee
      *            手續費
-     * @return
+     * @return LoanInfo
      */
     LoanInfo calFixedFee(BigDecimal amount, int tenor, BigDecimal eppRate, BigDecimal upfrontFee);
 
@@ -36,7 +35,7 @@ public interface LoanService {
      *            第二階利率
      * @param upfrontFee
      *            手續費
-     * @return
+     * @return LoanInfo
      */
     LoanInfo calTwoTierFee(BigDecimal amount, int tenor, int tenorTier1, BigDecimal eppRateTier1, BigDecimal eppRateTier2, BigDecimal upfrontFee);
 }
