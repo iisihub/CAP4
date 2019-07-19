@@ -62,7 +62,11 @@ public class VAServiceImpl implements VAService {
 
     @Autowired
     private ICrlCertDao crlCertDao;
-
+    
+    /*
+     * (non-Javadoc)
+     * @see com.iisigroup.colabase.va.service.VAService#doVerifyPKCS7(java.lang.String, java.lang.String[])
+     */
     public String doVerifyPKCS7(String personalId, String... p7bDatas) {
         String rc = SUCCESS_CODE;
         for (String p7b : p7bDatas) {
@@ -75,18 +79,21 @@ public class VAServiceImpl implements VAService {
 //            }
             ret = verifier.verify(CryptoLibrary.base64Decode(p7b));
             if (!ret) {
-                rc = "E001, PKCS7格式錯誤";
+                rc = "E001";
+                LOGGER.error("E001, PKCS7格式錯誤");
                 break;
             }
             Certificate signerCert = verifier.getSignerCert();
             ret = CryptoLibrary.verifyCertChain(signerCert);
             if (!ret) {
-                rc = "E002, 驗證憑證鏈錯誤";
+                rc = "E002";
+                LOGGER.error("E002, 驗證憑證鏈錯誤");
                 break;
             }
             int ret1 = CryptoLibrary.checkCertDateValid(signerCert, null);
             if (ret1 != 0) {
-                rc = "E003, 憑證已經失效";
+                rc = "E003";
+                LOGGER.error("E003, 憑證已經失效");
                 break;
             }
             try {
@@ -103,7 +110,8 @@ public class VAServiceImpl implements VAService {
                 ret1 = verifyCertCRL(signerCert);
                 if (ret1 != 0) {
                     LOGGER.error("verifyCertCRL fail : " + personalId);
-                    rc = "E006, 憑證已經廢止";
+                    rc = "E006";
+                    LOGGER.error("E006, 憑證已經廢止");
                     break;
                 }
             }
@@ -192,11 +200,19 @@ public class VAServiceImpl implements VAService {
         throw new CapException("Unknown algorithm id:" + algorithm, getClass());
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.iisigroup.colabase.va.service.VAService#verifyPKCS7Signature(java.lang.String)
+     */
     public boolean verifyPKCS7Signature(String p7b) {
         PKCS7Verify verifier = new PKCS7Verify();
         return verifier.verify(CryptoLibrary.base64Decode(p7b));
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.iisigroup.colabase.va.service.VAService#loadAllCaCertAndCRL()
+     */
     public int loadAllCaCertAndCRL() {
         SearchSetting search = caInfoDao.createSearchTemplete();
         List<CAInfo> list = caInfoDao.find(search);
@@ -229,6 +245,10 @@ public class VAServiceImpl implements VAService {
         return 0;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.iisigroup.colabase.va.service.VAService#loadAllCaCert()
+     */
     public void loadAllCaCert() {
         SearchSetting search = caInfoDao.createSearchTemplete();
         List<CAInfo> list = caInfoDao.find(search);
@@ -250,6 +270,10 @@ public class VAServiceImpl implements VAService {
         return new File(path, fileName);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.iisigroup.colabase.va.service.VAService#md5(byte[])
+     */
     public String md5(final byte[] data) {
         String result = null;
         try {
@@ -265,6 +289,10 @@ public class VAServiceImpl implements VAService {
         return result;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.iisigroup.colabase.va.service.VAService#downloadAllCRL()
+     */
     public void downloadAllCRL() {
         SearchSetting search = caInfoDao.createSearchTemplete();
         List<CAInfo> list = caInfoDao.find(search);
@@ -306,6 +334,10 @@ public class VAServiceImpl implements VAService {
         return CryptoLibrary.verifyCRLEffectiveDate(crlList);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.iisigroup.colabase.va.service.VAService#saveAllCRL()
+     */
     public void saveAllCRL() {
         SearchSetting search = caInfoDao.createSearchTemplete();
         List<CAInfo> list = caInfoDao.find(search);
@@ -388,6 +420,10 @@ public class VAServiceImpl implements VAService {
         return ret;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.iisigroup.colabase.va.service.VAService#updateAllCaCertStatus()
+     */
     public void updateAllCaCertStatus() {
         SearchSetting search = caInfoDao.createSearchTemplete();
         List<CAInfo> list = caInfoDao.find(search);
@@ -397,6 +433,10 @@ public class VAServiceImpl implements VAService {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.iisigroup.colabase.va.service.VAService#getCaCertStatus(java.util.Date)
+     */
     public String getCaCertStatus(Date ExpiredDate) {
         if (CapDate.calculateDays(ExpiredDate, new Date()) < 0) {
             return "1";
@@ -405,6 +445,10 @@ public class VAServiceImpl implements VAService {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.iisigroup.colabase.va.service.VAService#loadCaCerts(byte[])
+     */
     public Certificate loadCaCerts(byte[] p7bcertchain) throws CertException {
         Certificate caCert = CryptoLibrary.loadCaCerts(p7bcertchain);
         if (caCert == null) {
@@ -418,6 +462,10 @@ public class VAServiceImpl implements VAService {
         return caCert;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.iisigroup.colabase.va.service.VAService#getCertInfoByType(org.bouncycastle.asn1.x509.Certificate, com.iisigroup.colabase.va.service.VAService.CertInfoType)
+     */
     public String getCertInfoByType(Certificate cert, CertInfoType type) {
         String result = null;
         switch (type) {
@@ -465,6 +513,10 @@ public class VAServiceImpl implements VAService {
         return result;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.iisigroup.colabase.va.service.VAService#getSignerCert(java.lang.String)
+     */
     public Certificate getSignerCert(String p7b) {
         PKCS7Verify verifier = new PKCS7Verify();
         if (verifier.verify(CryptoLibrary.base64Decode(p7b))) {

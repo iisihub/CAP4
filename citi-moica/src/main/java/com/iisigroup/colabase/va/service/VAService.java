@@ -28,7 +28,7 @@ public interface VAService {
      *
      * @param p7b
      *            Base64格式的PKCS7
-     * @return
+     * @return 驗證結果
      */
     boolean verifyPKCS7Signature(String p7b);
 
@@ -36,15 +36,18 @@ public interface VAService {
      * 取得簽章者憑證
      *
      * @param p7b
-     * @return
+     *            p7bdata
+     * @return Certificate
      */
     Certificate getSignerCert(String p7b);
 
     /**
      * 驗證 PKCS7 的有效性，包含驗章、憑證鏈、ICSC、OCSP、CRL
      *
-     * @param Request
-     *            request
+     * @param personalId
+     *            身分證
+     * @param p7bDatas
+     *            p7b datas
      * @return 若回傳的 return code 第一位為 E 代表是錯誤，第一位為 W 代表 WARNING。0000 為成功。
      * @throws SecurityException
      *             exception 其 message 代表 i18n 的 key
@@ -54,7 +57,7 @@ public interface VAService {
     /**
      * 載入所有 CA 憑證和憑證廢止清單
      *
-     * @return
+     * @return 不中斷流程只會回0
      */
     int loadAllCaCertAndCRL();
 
@@ -91,7 +94,9 @@ public interface VAService {
      * 載入 CA 憑證並驗證
      *
      * @param p7bcertchain
-     * @return
+     *            p7bcertchain
+     * @return Certificate
+     * @throws org.bouncycastle.cert.CertException CertException
      */
     Certificate loadCaCerts(byte[] p7bcertchain) throws CertException;
 
@@ -102,7 +107,7 @@ public interface VAService {
      *            憑證
      * @param type
      *            CertInfoType
-     * @return
+     * @return 憑證內容資訊
      */
     String getCertInfoByType(Certificate cert, CertInfoType type);
 
@@ -110,7 +115,8 @@ public interface VAService {
      * hash
      *
      * @param data
-     * @return
+     *            需要被運算的data陣列
+     * @return md5運算後hash值
      */
     String md5(final byte[] data);
 }

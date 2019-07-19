@@ -27,6 +27,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
+/**
+ * 要使用的人，請”繼承“這個class，不然會報錯。
+ * @param <T> 傳入想要送API回傳的Response (extends ResponseContent)
+ */
 public abstract class SslClientImpl<T extends ResponseContent> implements SslClient<T> {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

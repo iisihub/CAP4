@@ -55,7 +55,7 @@ public class JsonFactory {
     /**
      * 產生JsonObject包裝物件的主要方法，傳入自定義ModelClass產生出配置好的JsonObject包裝物件
      * @param requestClass 一般Model物件class
-     * @param objects 於Model物件中需要額外注入的Object
+     * @param objects 於Model物件中需要額外注入的Object (@Autowired)
      * @param <T>
      * @return JsonObject包裝物件
      */
