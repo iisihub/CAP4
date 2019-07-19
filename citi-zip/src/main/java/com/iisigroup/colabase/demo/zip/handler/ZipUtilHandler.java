@@ -1,6 +1,7 @@
 package com.iisigroup.colabase.demo.zip.handler;
 
 import com.iisigroup.cap.mvc.handler.MFormHandler;
+import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.colabase.zip.tool.ZipUtil;
 
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * <pre>
@@ -37,14 +39,25 @@ public class ZipUtilHandler extends MFormHandler {
         AjaxFormResult result = new AjaxFormResult();
         try {
             File destination = new File(request.get("zipOutPath"));
-            File unzipFiles = new File(request.get("zipFile"));
+            ArrayList<File> files = new ArrayList<File>();
+            
+            if(!CapString.isEmpty(request.get("zipFile1"))) {
+                files.add(new File(request.get("zipFile1")));
+            }
+            if(!CapString.isEmpty(request.get("zipFile2"))) {
+                files.add(new File(request.get("zipFile2")));
+            }
+            if(!CapString.isEmpty(request.get("zipFile3"))) {
+                files.add(new File(request.get("zipFile3")));
+            }
+            
             String isOverwrite = request.get("overwrite");
             Boolean overwrite = ("Y").equals(isOverwrite);
             String password = request.get("zipPassword");
             String userDefineName = request.get("zipName");
 
             ZipUtil.isExistsFolder(destination, true);
-            ZipUtil.zip(new File(destination, userDefineName + ".zip"), overwrite, password, unzipFiles);
+            ZipUtil.zip(new File(destination, userDefineName + ".zip"), overwrite, password, files);
             result.set(RESULT, "Success, zip path : " + destination + "\\" + userDefineName + ".zip");
         } catch (Exception e) {
             result.set(RESULT, FAIL + e.getClass());
