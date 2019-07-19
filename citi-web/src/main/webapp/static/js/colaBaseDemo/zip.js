@@ -4,7 +4,9 @@ pageInit(function() {
 		// Zip
 		$("#sendZipBtn").click(function() {
 			var datas = {
-				zipFile : $('#zipFile').val(),
+				zipFile1 : $('#zipFile1').val(),
+				zipFile2 : $('#zipFile2').val(),
+				zipFile3 : $('#zipFile3').val(),
 				zipOutPath : $('#zipOutPath').val(),
 				zipPassword : $('#zipPassword').val(),
 				zipName : $('#zipName').val(),

@@ -59,7 +59,13 @@
 		<div class="leftBox">
 			<form id="zipForm" autocomplete="off" method="post">
 				<div>
-					選擇檔案 <input type="text" id="zipFile" name="zipFile" />
+					選擇檔案 <input type="text" id="zipFile1" name="zipFile1" />
+				</div>
+				<div>
+					選擇檔案 <input type="text" id="zipFile2" name="zipFile2" />
+				</div>
+				<div>
+					選擇檔案 <input type="text" id="zipFile3" name="zipFile3" />
 				</div>
 				<div>
 					輸出目錄 <input type="text" id="zipOutPath" name="zipOutPath" />

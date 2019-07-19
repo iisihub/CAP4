@@ -14,6 +14,7 @@ package com.iisigroup.colabase.zip.tool;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -91,12 +92,18 @@ public class ZipUtilTest {
 
     }
 
+    /**
+     * 測試壓縮功能。
+     * 
+     */
     @Test
     public void testZip() {
-        File zipFile = new File(zipFilePath);
+        ArrayList<File> files = new ArrayList<File>();
+        files.add(new File(zipFilePath));
+        
         File zipOutputFile = new File(zipFileOutputPath, zipFileName);
         try {
-            ZipUtil.zip(zipOutputFile, true, zipFilePassword, zipFile);
+            ZipUtil.zip(zipOutputFile, true, zipFilePassword, files);
         } catch (Exception e) {
             e.printStackTrace();
             fail("Exception!");
@@ -106,6 +113,10 @@ public class ZipUtilTest {
         }
     }
 
+    /**
+     * 測試解壓縮功能。
+     * 
+     */
     @Test
     public void testUnzip() {
         File unzipFile = new File(unzipFilePath);
@@ -121,6 +132,10 @@ public class ZipUtilTest {
         }
     }
 
+    /**
+     * 測試是否為空資料夾。
+     * 
+     */
     @Test
     public void testIsEmptyFolder() {
         try {
@@ -131,6 +146,10 @@ public class ZipUtilTest {
         }
     }
     
+    /**
+     * 測試檔案是否存在。
+     * 
+     */
     @Test
     public void testIsExistsFolder() {
         try {

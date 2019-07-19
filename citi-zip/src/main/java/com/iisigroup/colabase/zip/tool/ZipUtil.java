@@ -1,31 +1,25 @@
 package com.iisigroup.colabase.zip.tool;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.io.ZipInputStream;
-import net.lingala.zip4j.io.ZipOutputStream;
 import net.lingala.zip4j.model.FileHeader;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.unzip.UnzipUtil;
-import net.lingala.zip4j.util.CRCUtil;
 import net.lingala.zip4j.util.Zip4jConstants;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.iisigroup.cap.exception.CapException;
 
 /**
  * <pre>
@@ -50,13 +44,18 @@ public class ZipUtil {
     
     /**
      * 壓縮檔案
-     * @param destination 輸出zip的位置
-     * @param overwrite 是否覆寫
-     * @param password 加密密碼，空值則不加密
-     * @param unzipFiles 輸入欲zip的檔案位置
+     * @param destination 
+     *              輸出zip的位置
+     * @param overwrite 
+     *              是否覆寫
+     * @param password 
+     *              加密密碼，空值則不加密
+     * @param unzipFiles 
+     *              輸入欲zip的檔案位置
      * @throws IOException
+     * @throws ZipException 
      */
-    public static void zip(File destination, boolean overwrite, String password, File... unzipFiles) throws IOException {
+    public static void zip(File destination, boolean overwrite, String password, ArrayList<File> unzipFiles) throws Exception {
 
         if (destination.isDirectory()) {
             throw new IOException(destination + " is a directory");
@@ -83,9 +82,9 @@ public class ZipUtil {
             }
         }
 
-        byte[] buffer = new byte[BUFFER_SIZE];
-        int length = -1;
-
+        logRecord.debug("[ZIP] destination: {}", destination);
+        ZipFile zipFile = new ZipFile(destination);
+        
         ZipParameters parameters = new ZipParameters();
         parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
         parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_ULTRA);
@@ -94,34 +93,23 @@ public class ZipUtil {
             parameters.setEncryptionMethod(Zip4jConstants.ENC_METHOD_STANDARD);
             parameters.setPassword(password);
         }
-
-        for (File unzipFile : unzipFiles) {
-            try (FileOutputStream fileOutput = new FileOutputStream(destination);
-                    BufferedOutputStream buffOutput = new BufferedOutputStream(fileOutput, BUFFER_SIZE);
-                    ZipOutputStream out = new ZipOutputStream(buffOutput);
-                    FileInputStream fileInput = new FileInputStream(unzipFile);
-                    BufferedInputStream buffInput = new BufferedInputStream(fileInput);
-                    InputStream inputStream = new BufferedInputStream(buffInput);) {
-
-                parameters.setSourceFileCRC((int) CRCUtil.computeFileCRC(unzipFile.getAbsolutePath()));
-                out.putNextEntry(unzipFile, parameters);
-
-                while ((length = inputStream.read(buffer)) != -1) {
-                    out.write(buffer, 0, length);
-                }
-                out.closeEntry();
-                out.finish();
-            } catch (ZipException e) {
-                throw new CapException(e, ZipUtil.class);
-            }
+        if(unzipFiles != null && unzipFiles.size() > 0) {
+            zipFile.addFiles(unzipFiles, parameters);
+        } else {
+            logRecord.error("[ZIP] unzipFiles is empty");
         }
+        
     }
 
     /**
      * 解壓縮檔案
-     * @param unzipFile 輸入壓縮檔位置
-     * @param password 壓縮檔密碼，無則放空值
-     * @param destination 解完壓縮的檔案位置
+     * 
+     * @param unzipFile 
+     *              輸入壓縮檔位置
+     * @param password 
+     *              壓縮檔密碼，無則放空值
+     * @param destination 
+     *              解完壓縮的檔案位置
      * @throws IOException
      * @throws ZipException
      */
@@ -152,7 +140,8 @@ public class ZipUtil {
                 zipFile.setPassword(password);
             }
         } catch (Exception e) {
-            throw new CapException(e, ZipUtil.class);
+            logRecord.error("ZipException unzip function +" + e.getLocalizedMessage(), e);
+            throw e;
         }
 
         // get the header information for all the files in the ZipFile
@@ -174,7 +163,8 @@ public class ZipUtil {
                     UnzipUtil.applyFileAttributes(fileHeader, outputFile);
 
                 } catch (ZipException e) {
-                    throw new CapException(e, ZipUtil.class);
+                    logRecord.error("ZipException unzip function +" + e.getLocalizedMessage(), e);
+                    throw e;
                 }
 
             }
@@ -183,8 +173,11 @@ public class ZipUtil {
 
     /**
      * 是否為空的資料夾，只要有任一個檔案存在即回傳true
-     * @param isDeleteEmptyFolder 是否刪除空的資料夾
-     * @param fileList 可輸入多個資料夾位置
+     * 
+     * @param isDeleteEmptyFolder 
+     *                  是否刪除空的資料夾
+     * @param fileList 
+ *                      可輸入多個資料夾位置
      * @return
      */
     public static Boolean isEmptyFolder(Boolean isDeleteEmptyFolder, String... fileList) {
@@ -211,10 +204,14 @@ public class ZipUtil {
 
     /**
      * 查看是否存在該資料夾，不存在的話，可創建該資料夾。
-     * @param folder 資料夾位置
-     * @param isCreate 是否創建該資料夾
+     * 
+     * @param folder 
+ *              資料夾位置
+     * @param isCreate 
+     *          是否創建該資料夾
+     * @throws IOException 
      */
-    public static void isExistsFolder(File folder, boolean isCreate) {
+    public static void isExistsFolder(File folder, boolean isCreate) throws IOException {
 
         if (!folder.exists()) {
             logRecord.debug("[ZIP] Folder not exists!");
@@ -224,7 +221,8 @@ public class ZipUtil {
                     logRecord.debug("[ZIP] Folder Create!");
                 }
             } catch (IOException e) {
-                throw new CapException(e, ZipUtil.class);
+                logRecord.error("ZipException isExistsFolder function +" + e.getLocalizedMessage(), e);
+                throw e;
             }
         } else {
             logRecord.debug("[ZIP] Folder exists!");
