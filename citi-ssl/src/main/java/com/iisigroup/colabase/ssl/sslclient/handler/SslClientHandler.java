@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.iisigroup.colabase.json.model.RequestContent;
 import com.iisigroup.colabase.json.model.ResponseContent;
+import com.iisigroup.colabase.json.util.JsonFactory;
 import com.iisigroup.colabase.ssl.service.SslClient;
 import com.iisigroup.colabase.ssl.sslclient.model.DemoJsonRequestContent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +76,7 @@ public class SslClientHandler extends MFormHandler {
     }
 
     private RequestContent getDummyContent(String targetUrl, Map<String, List<String>> headers, JsonObject jsonData){
-        RequestContent requestContent = new DemoJsonRequestContent();
+        RequestContent requestContent = JsonFactory.getInstance(DemoJsonRequestContent.class);
         requestContent.setRequestHeaders(headers);
         requestContent.setHttpMethod(RequestContent.HTTPMethod.POST);
         requestContent.setRetryTimes(3);
