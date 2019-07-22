@@ -58,7 +58,8 @@ public class ZipUtil {
     public static void zip(File destination, boolean overwrite, String password, ArrayList<File> unzipFiles) throws Exception {
 
         if (destination.isDirectory()) {
-            throw new IOException(destination + " is a directory");
+            logRecord.error("[ZIP] is a directory :{}", destination);
+            throw new Exception("[ZIP] is a directory" + destination);
         }
         if (destination.exists()) {
             if (overwrite) {
@@ -66,6 +67,7 @@ public class ZipUtil {
                 boolean isDeleteSuccess = destination.delete();
                 if (!isDeleteSuccess) {
                     logRecord.error("[ZIP] Delete file error!");
+                    throw new IOException("[ZIP] Delete file error!");
                 }
             } else {
                 // 備份原本檔案
@@ -77,9 +79,14 @@ public class ZipUtil {
                 bckFileName.append(fileName.substring(fileName.lastIndexOf('.')));
                 boolean isRenameSuccess = destination.renameTo(new File(destination.getParentFile(), bckFileName.toString()));
                 if (!isRenameSuccess) {
-                    logRecord.error("[ZIP] Rename file error!");
+                    logRecord.error("[ZIP] Rename file error :{}", bckFileName);
+                    throw new IOException("[ZIP] Rename file error :" + bckFileName);
                 }
             }
+        } else {
+            //檢查output資料夾是否存在
+            File folder = destination.getParentFile();
+            isExistsFolder(folder, true);
         }
 
         logRecord.debug("[ZIP] destination: {}", destination);
@@ -97,6 +104,7 @@ public class ZipUtil {
             zipFile.addFiles(unzipFiles, parameters);
         } else {
             logRecord.error("[ZIP] unzipFiles is empty");
+            throw new IOException("[ZIP] unzipFiles is empty");
         }
         
     }
@@ -203,7 +211,7 @@ public class ZipUtil {
     }
 
     /**
-     * 查看是否存在該資料夾，不存在的話，可創建該資料夾。
+     * 檢查資料夾，不存在的話，可創建該資料夾。
      * 
      * @param folder 
  *              資料夾位置
