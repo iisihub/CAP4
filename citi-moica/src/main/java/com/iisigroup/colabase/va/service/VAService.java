@@ -2,6 +2,7 @@ package com.iisigroup.colabase.va.service;
 
 import java.util.Date;
 
+import com.iisigroup.colabase.va.model.VerParameterModel;
 import org.bouncycastle.asn1.x509.Certificate;
 import org.bouncycastle.cert.CertException;
 
@@ -53,6 +54,18 @@ public interface VAService {
      *             exception 其 message 代表 i18n 的 key
      */
     String doVerifyPKCS7(String personalId, String... p7bDatas);
+
+    /**
+     * 驗證 PKCS7 的有效性，包含驗章、憑證鏈、ICSC、OCSP、CRL
+     * @param personalId
+     *            身分證
+     * @param verParameterModel
+     *            ver參數model
+     * @param p7bDatas
+     *            p7b datas
+     * @return
+     */
+    String doVerifyPKCS7(String personalId, VerParameterModel verParameterModel, String... p7bDatas);
 
     /**
      * 載入所有 CA 憑證和憑證廢止清單

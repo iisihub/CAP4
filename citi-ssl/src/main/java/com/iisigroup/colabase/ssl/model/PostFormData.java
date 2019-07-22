@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ *
+ * 如果是要送form submit型態則繼承this
  * @author AndyChen
  * @version <ul>
  * <li>2018/9/27 AndyChen,new
