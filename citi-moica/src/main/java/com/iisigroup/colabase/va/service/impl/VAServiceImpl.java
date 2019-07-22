@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.iisigroup.colabase.va.model.VerParameterModel;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FileUtils;
 import org.bouncycastle.asn1.x509.Certificate;
@@ -126,6 +127,87 @@ public class VAServiceImpl implements VAService {
         String certPath = verPathDao.findByVerPathId("ICSC_CERT").getParmValue();
         String rsaKey = verPathDao.findByVerPathId("ICSC_RSA_KEY").getParmValue();
         String rsaKeyPwd = verPathDao.findByVerPathId("ICSC_RSA_KEY_PWD").getParmValue();
+        ICSCChecker check = new ICSCChecker();
+        boolean ret = false;
+        try {
+            rsaKeyPwd = CommonCryptUtils.decrypt(rsaKeyPwd);
+            check.setClientCertPath(certPath);
+            check.setURL(ip, port, uri);
+            ret = check.loadRSAkey(rsaKey, rsaKeyPwd);
+        } catch (Exception e) {
+            LOGGER.error("rsaKeyPwd decrypt fail.");
+            throw new SecurityException("E004");
+        }
+        if (!ret) {
+            LOGGER.error("loadRSAkey fail.");
+            throw new SecurityException("E004");
+        }
+        int ret1 = check.checkMOICAICSC(ee, personalId, getProxy());
+        if (ret1 != 0) {
+            LOGGER.error("checkMOICAICSC fail. rc = {}", ret1);
+            throw new SecurityException("E005");
+        }
+    }
+
+    public String doVerifyPKCS7(String personalId, VerParameterModel verParameterModel, String... p7bDatas) {
+        String rc = SUCCESS_CODE;
+        for (String p7b : p7bDatas) {
+            boolean ret = false;
+            PKCS7Verify verifier = new PKCS7Verify();
+            //            try {
+            //                p7b = URLDecoder.decode(p7b, "UTF-8");
+            //            } catch (UnsupportedEncodingException e) {
+            //                throw new CapMessageException(e, getClass());
+            //            }
+            ret = verifier.verify(CryptoLibrary.base64Decode(p7b));
+            if (!ret) {
+                rc = "E001";
+                LOGGER.error("E001, PKCS7格式錯誤");
+                break;
+            }
+            Certificate signerCert = verifier.getSignerCert();
+            ret = CryptoLibrary.verifyCertChain(signerCert);
+            if (!ret) {
+                rc = "E002";
+                LOGGER.error("E002, 驗證憑證鏈錯誤");
+                break;
+            }
+            int ret1 = CryptoLibrary.checkCertDateValid(signerCert, null);
+            if (ret1 != 0) {
+                rc = "E003";
+                LOGGER.error("E003, 憑證已經失效");
+                break;
+            }
+            try {
+                checkICSC(signerCert, personalId, verParameterModel);
+            } catch (Exception e) {
+                LOGGER.error("checkICSC fail : " + personalId, e);
+                rc = e.getMessage();
+                break;
+            }
+            try {
+                checkOCSP(signerCert);
+            } catch (Exception e) {
+                LOGGER.error("checkOCSP fail : " + personalId, e);
+                ret1 = verifyCertCRL(signerCert);
+                if (ret1 != 0) {
+                    LOGGER.error("verifyCertCRL fail : " + personalId);
+                    rc = "E006";
+                    LOGGER.error("E006, 憑證已經廢止");
+                    break;
+                }
+            }
+        }
+        return rc;
+    }
+
+    private void checkICSC(Certificate ee, String personalId, VerParameterModel verParameterModel) {
+        String ip = verParameterModel.getIcscIp();
+        String port = verParameterModel.getIcscPort();
+        String uri = verParameterModel.getIcscURI();
+        String certPath = verParameterModel.getIcscCert();
+        String rsaKey = verParameterModel.getIcscRSAKey();
+        String rsaKeyPwd = verParameterModel.getIcscRSAKeyPwd();
         ICSCChecker check = new ICSCChecker();
         boolean ret = false;
         try {
