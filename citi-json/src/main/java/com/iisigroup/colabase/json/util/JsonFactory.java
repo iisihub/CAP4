@@ -14,6 +14,7 @@ import java.util.*;
 
 
 /**
+ * Initialize request model for ssl module
  * @author AndyChen
  * @version
  *          <ul>

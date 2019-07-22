@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Request model for using SSL module
  * @author AndyChen
  * @version <ul>
  *          <li>2018/5/17 AndyChen,new

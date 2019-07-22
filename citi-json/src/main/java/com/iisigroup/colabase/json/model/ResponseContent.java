@@ -9,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+/**
+ * Response model for ssl module
+ */
 public class ResponseContent implements ApiResponse {
 
     private static Logger logger = LoggerFactory.getLogger(ResponseContent.class);
