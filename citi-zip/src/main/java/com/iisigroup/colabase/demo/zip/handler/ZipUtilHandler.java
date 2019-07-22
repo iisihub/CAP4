@@ -56,7 +56,7 @@ public class ZipUtilHandler extends MFormHandler {
             String password = request.get("zipPassword");
             String userDefineName = request.get("zipName");
 
-            ZipUtil.isExistsFolder(destination, true);
+//            ZipUtil.isExistsFolder(destination, true);
             ZipUtil.zip(new File(destination, userDefineName + ".zip"), overwrite, password, files);
             result.set(RESULT, "Success, zip path : " + destination + "\\" + userDefineName + ".zip");
         } catch (Exception e) {
