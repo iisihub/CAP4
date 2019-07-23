@@ -230,6 +230,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
             responseContent = getResponseInstance(statusCode, responseHeaders, responseJson, recordInfo);
             responseContent.showResponseJsonStrLog(responseBodySB.toString());
         } catch (Exception e) {
+            logger.warn("One exception had been trow: e: {}", e.toString());
             if (responseContent == null) {
                 if (responseHeaders == null)
                     responseHeaders = new HashMap<>();
