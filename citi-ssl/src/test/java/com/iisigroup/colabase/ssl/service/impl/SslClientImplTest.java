@@ -38,7 +38,7 @@ public class SslClientImplTest {
     final String keyStorePath = "/Users/maiev/Documents/iisi/CITI_CLM/codeSpace/impl/workspace/CLM/clm-app/src/main/resources/keystore/keystore_client_1602006";
     final String keyStorePWD = "p@ssw0rd";
     final String trustStorePath = "/Users/maiev/Documents/iisi/CITI_CLM/codeSpace/impl/workspace/CLM/clm-app/src/main/resources/keystore/truststore_client_1602006_own.jks";
-    final String targetUrl = "https://127.0.0.1:8443/mutual-authentication-server/v1/tw/onboarding/customers/deduplicationFlag";
+    final String targetUrl = "https://127.0.0.1:8443/emgmDummyServer/api/clmAllApi";
 
     @Spy
     private CapSystemConfig systemConfig = new CapSystemConfig();
