@@ -20,6 +20,10 @@ public class ResponseContent implements ApiResponse {
     private Map<String, List<String>> headers;
     private JsonObject responseJson;
     private Exception exception;
+    /**
+     * 未經轉換的raw data
+     */
+    private StringBuffer rawResponseData = new StringBuffer();
     
     private List<String> records = new ArrayList<>();
 
@@ -89,6 +93,10 @@ public class ResponseContent implements ApiResponse {
 
     public void setRecords(List<String> records) {
         this.records = records;
+    }
+
+    public StringBuffer getRawResponseData() {
+        return rawResponseData;
     }
 
     @Override

@@ -172,6 +172,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
         Map<String, List<String>> responseHeaders = null;
         String protocol = requestContent.getProtocol();
         final ProxyConfig proxyConfig = requestContent.getProxyConfig();
+        StringBuilder responseBodySB = new StringBuilder();
         try {
             Date date = Calendar.getInstance().getTime();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -225,7 +226,6 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
                 recordInfo.add("Response: Header Key = " + entry.getKey() + ", Value = " + entry.getValue());
             }
 
-            StringBuilder responseBodySB = new StringBuilder();
             JsonObject responseJson = this.readResponse(is, responseBodySB, recordInfo);
             responseContent = getResponseInstance(statusCode, responseHeaders, responseJson, recordInfo);
             responseContent.showResponseJsonStrLog(responseBodySB.toString());
@@ -238,6 +238,7 @@ public abstract class SslClientImpl<T extends ResponseContent> implements SslCli
                 responseContent.setException(e);
             }
         } finally {
+            responseContent.getRawResponseData().append(responseBodySB.toString());
             final ResponseContent renewResponseContent = responseContent;
             long endTime = new Date().getTime();
             long diffTime = endTime - startTime;
