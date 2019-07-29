@@ -6,7 +6,7 @@
     <version>4.0.1-colabase-jdk1.8-201907291200</version>
     <!-- 
     # update version script:
-    # mvn versions:set -DnewVersion=1.0.0-xxxxx-20181011 
+    # mvn versions:set -DnewVersion=4.0.1-colabase-jdk1.8-201907291200
     -->
     <packaging>pom</packaging>
     <properties>
@@ -24,6 +24,22 @@
             <url>file://${project.basedir}/../${localRepositoryPath}</url>
         </repository>
     </repositories>
+    <distributionManagement>
+        <!--
+        # add following config to your maven settings.xml
+        # <server>
+        #     <id>bolingcavalry-nexus-releases</id>
+        #     <username>admin</username>
+        #     <password>admin123</password>
+        # </server>
+        # to exec upload : mvn clean deploy -U
+        -->
+        <repository>
+            <id>bolingcavalry-nexus-releases</id>
+            <name>Nexus Release Repository</name>
+            <url>http://sssrv01.iead.local:8081/nexus/content/repositories/releases</url>
+        </repository>
+    </distributionManagement>
     <dependencyManagement>
         <dependencies>
             <dependency>
