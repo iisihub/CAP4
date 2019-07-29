@@ -3,7 +3,7 @@
     <parent>
         <artifactId>citi</artifactId>
         <groupId>com.iisigroup.colabase</groupId>
-        <version>4.0.1-colabase-jdk1.8-201907291200</version>
+        <version>4.0.1-colabase-jdk1.8-201907291222</version>
     </parent>
     <artifactId>citi-mvc</artifactId>
     <dependencies>
