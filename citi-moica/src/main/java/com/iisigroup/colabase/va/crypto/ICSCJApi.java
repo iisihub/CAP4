@@ -94,7 +94,7 @@ public class ICSCJApi {
             } else {
                 localHttpsURLConnection = (HttpsURLConnection) localURL.openConnection(proxy);
             }
-            SSLContext sc = SSLContext.getInstance("SSL");
+            SSLContext sc = SSLContext.getInstance("TLSv1.2");
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
             localHttpsURLConnection.setSSLSocketFactory(sc.getSocketFactory());
             localHttpsURLConnection.setHostnameVerifier(new IPHostNameVerifier());
