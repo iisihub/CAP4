@@ -72,8 +72,8 @@ public class EDMHandler extends MFormHandler {
             edmSetting.setEdmUsr("css123456tw@gmail.com");
             edmSetting.setEdmPwd("kvzulwkqdoiprtfb");
             edmSetting.setEdmSubject("花旗(台灣)銀行 圓滿貸線上申請確認通知函");
-            edmSetting.setEdmAttachedFilePath("D:/COLA/圓滿貸線上申請.pdf");
-            edmSetting.setEdmImageFileFolder("D:/COLA/image");
+            edmSetting.setEdmAttachedFilePath("../citi-edm/src/test/resources/ftl/colabaseDemo/edmImages/kv.jpg");
+            edmSetting.setEdmImageFileFolder("../citi-edm/src/test/resources/ftl/colabaseDemo/edmImages");
 
             Map<String, Object> ftlVar = new HashMap<String, Object>();
             ftlVar.put("otherAccountTitleMask", edmCustomerName);
