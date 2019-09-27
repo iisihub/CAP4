@@ -24,8 +24,12 @@ import org.springframework.stereotype.Service;
 import com.iisigroup.cap.base.dao.SequenceDao;
 import com.iisigroup.cap.base.model.Sequence;
 import com.iisigroup.cap.base.service.SequenceService;
+import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.db.constants.SearchMode;
+import com.iisigroup.cap.db.dao.SearchSetting;
 import com.iisigroup.cap.db.model.Page;
 import com.iisigroup.cap.utils.CapDate;
+import com.iisigroup.cap.utils.CapString;
 
 /**
  * <pre>
@@ -49,23 +53,23 @@ public class SequenceServiceImpl implements SequenceService {
 
     private Map<String, NodeSeq> nodeSeq = Collections.synchronizedMap(new HashMap<String, NodeSeq>());
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.cap.base.service.SequenceService#findPage(com.iisigroup.cap.db.dao.SearchSetting, com.iisigroup.cap.component.Request)
+     */
     @Override
-    public Page<Map<String, Object>> findPage(int start, int fetch) {
-        return sequenceDao.listAllForPaging(start, fetch);
+    public Page<Map<String, Object>> findPage(SearchSetting search, Request params) {
+        if (!CapString.isEmpty(params.get("seqNode"))) {
+            search.addSearchModeParameters(SearchMode.EQUALS, "seqNode", params.get("seqNode"));
+        }
+        return sequenceDao.findForSequencePage(search, params);
     }
 
-    /**
-     * 取得序號
+    /*
+     * (non-Javadoc)
      * 
-     * @param seqNode
-     *            序號key值
-     * @param interval
-     *            序號區間值
-     * @param startSeq
-     *            序號起啟值
-     * @param maxSeq
-     *            最大序號
-     * @return next seq
+     * @see com.iisigroup.cap.base.service.SequenceService#getNextSeqNo(java.lang.String, int, int, int)
      */
     public int getNextSeqNo(String seqNode, int interval, int startSeq, int maxSeq) {
         NodeSeq nSeq = nodeSeq.get(seqNode);

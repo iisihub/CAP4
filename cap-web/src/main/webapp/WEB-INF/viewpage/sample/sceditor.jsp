@@ -10,7 +10,7 @@
 </head>
 <body>
     <script>
-          loadScript('js/sample/sceditor_example');
+          loadScript('js/sample/sceditor');
         </script>
     <button id="ok" type="button" class="btn1">ok</button>
     <button id="reset" type="button" class="btn1">reset</button>

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import com.iisigroup.cap.base.dao.SequenceDao;
 import com.iisigroup.cap.base.model.Sequence;
+import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.db.dao.SearchSetting;
 import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
 import com.iisigroup.cap.db.model.Page;
 
@@ -17,25 +19,25 @@ import com.iisigroup.cap.db.model.Page;
 public class SequenceDaoImpl extends GenericDaoImpl<Sequence> implements SequenceDao {
 
     @Override
-    public Page<Map<String, Object>> listAllForPaging(int start, int fetch) {
-        return getNamedJdbcTemplate().queryForPage("Sequence.listAll", null, start, fetch);
+    public Page<Map<String, Object>> findForSequencePage(SearchSetting search, Request params) {
+        return getNamedJdbcTemplate().queryForPage("sequence_findForSequencePage", search);
     }
 
     @Override
     public void createFromMap(Map<String, Object> map) {
-        getNamedJdbcTemplate().update("Sequence.insert", map);
+        getNamedJdbcTemplate().update("sequence_createFromMap", map);
     }
 
     @Override
     public int updateByNodeAndNextSeqFromMap(Map<String, Object> map) {
-        return getNamedJdbcTemplate().update("Sequence.updateByNodeAndNextSeq", map);
+        return getNamedJdbcTemplate().update("sequence_updateByNodeAndNextSeqFromMap", map);
     }
 
     @Override
     public Sequence findBySeqNode(String seqNode) {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put("seqNode", seqNode);
-        return getNamedJdbcTemplate().queryForObject("Sequence.findBySeqNode", args, new RowMapper<Sequence>() {
+        return getNamedJdbcTemplate().queryForObject("sequence_findBySeqNode", args, new RowMapper<Sequence>() {
             @Override
             public Sequence mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Sequence seq = new Sequence();

@@ -37,6 +37,11 @@ import com.iisigroup.cap.db.dao.impl.GenericDaoImpl;
 @Repository
 public class CodeTypeDaoImpl extends GenericDaoImpl<CodeType> implements CodeTypeDao {
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.cap.base.dao.CodeTypeDao#findByCodeType(java.lang.String, java.lang.String)
+     */
     @Override
     public List<CodeType> findByCodeType(String codetype, String locale) {
         SearchSetting search = createSearchTemplete();
@@ -48,6 +53,11 @@ public class CodeTypeDaoImpl extends GenericDaoImpl<CodeType> implements CodeTyp
         return list;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.cap.base.dao.CodeTypeDao#findByCodeTypeAndCodeValue(java.lang.String, java.lang.String, java.lang.String)
+     */
     @Override
     public CodeType findByCodeTypeAndCodeValue(String cType, String cValue, String locale) {
         SearchSetting search = createSearchTemplete();
@@ -58,6 +68,11 @@ public class CodeTypeDaoImpl extends GenericDaoImpl<CodeType> implements CodeTyp
         return findUniqueOrNone(search);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.cap.base.dao.CodeTypeDao#findByCodeType(java.lang.String[], java.lang.String)
+     */
     @Override
     public List<CodeType> findByCodeType(String[] codetypes, String locale) {
         SearchSetting search = createSearchTemplete();
@@ -68,6 +83,11 @@ public class CodeTypeDaoImpl extends GenericDaoImpl<CodeType> implements CodeTyp
         return find(search);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.cap.base.dao.CodeTypeDao#findByCodeTypeAndCodeDesc(java.lang.String, java.lang.String, java.lang.String)
+     */
     @Override
     public List<CodeType> findByCodeTypeAndCodeDesc(String cType, String codeDesc, String locale) {
         SearchSetting search = createSearchTemplete();
@@ -77,6 +97,11 @@ public class CodeTypeDaoImpl extends GenericDaoImpl<CodeType> implements CodeTyp
         return find(search);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.iisigroup.cap.base.dao.CodeTypeDao#findByOid(java.lang.String)
+     */
     @Override
     public CodeType findByOid(String oid) {
         return find(oid);

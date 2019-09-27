@@ -202,7 +202,7 @@ public class MapGridResult extends AjaxFormResult implements GridResult<MapGridR
         List<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
         if (rowData != null && !rowData.isEmpty()) {
             for (Map<String, Object> data : rowData) {
-            	Map<String, Object> row = new HashMap<String, Object>();
+                Map<String, Object> row = new HashMap<String, Object>();
                 try {
                     row.put(GridEnum.CELL.getCode(), dataToJsonObject(data));
                 } catch (CapException e) {

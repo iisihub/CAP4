@@ -55,7 +55,7 @@ $(function() {
         selectHelper : true,
         select : function(start, end, allDay) {
           CommonAPI.formSubmit({
-            url : '../admin/remind_Page',
+            url : '../page/admin/remind_Page',
             data : {
               fromCal : true,
               startDate : $.fullCalendar.formatDate(start, 'yyyy-MM-dd'),

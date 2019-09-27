@@ -170,7 +170,7 @@ public class ConditionMntHandler extends MFormHandler {
                 delCtDtl = ctItm.getDivCtDtls();
             }
             for (int i = 0; i < ftGridData.length; i++) {
-                Map<String,Object> jsData = GsonUtil.jsonToMap(ftGridData[i]);
+                Map<String, Object> jsData = GsonUtil.jsonToMap(ftGridData[i]);
                 DivCtDtl ctDtl = new DivCtDtl();
                 // int j = 0;
                 // boolean haveOld = false;

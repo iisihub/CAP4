@@ -33,18 +33,14 @@ import com.iisigroup.cap.component.Request;
 import com.iisigroup.cap.component.Result;
 import com.iisigroup.cap.component.impl.AjaxFormResult;
 import com.iisigroup.cap.component.impl.BeanGridResult;
-import com.iisigroup.cap.db.constants.SearchMode;
+import com.iisigroup.cap.constants.Constants;
 import com.iisigroup.cap.db.dao.SearchSetting;
 import com.iisigroup.cap.db.model.Page;
-import com.iisigroup.cap.db.service.CommonService;
-import com.iisigroup.cap.exception.CapMessageException;
 import com.iisigroup.cap.formatter.Formatter;
 import com.iisigroup.cap.formatter.impl.ADDateFormatter;
 import com.iisigroup.cap.mvc.handler.MFormHandler;
 import com.iisigroup.cap.security.CapSecurityContext;
 import com.iisigroup.cap.utils.CapAppContext;
-import com.iisigroup.cap.utils.CapBeanUtil;
-import com.iisigroup.cap.utils.CapDate;
 import com.iisigroup.cap.utils.CapString;
 
 /**
@@ -67,34 +63,40 @@ public class CodeTypeHandler extends MFormHandler {
     @Resource
     private CodeTypeService codeTypeService;
 
-    @Resource
-    private CommonService commonService;
-
+    /**
+     * 共用參數 grid
+     * 
+     * @param search
+     * @param params
+     * @return
+     */
     @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.QUERY)
     @HandlerType(HandlerTypeEnum.GRID)
     public BeanGridResult query(SearchSetting search, Request params) {
-        if (!CapString.isEmpty(params.get("locale"))) {
-            search.addSearchModeParameters(SearchMode.EQUALS, "locale", params.get("locale"));
-        }
-        if (!CapString.isEmpty(params.get("codeType"))) {
-            search.addSearchModeParameters(SearchMode.EQUALS, "codeType", params.get("codeType"));
-        }
-        if (!search.hasOrderBy()) {
-            search.addOrderBy("codeType");
-            search.addOrderBy("codeOrder");
-        } else {
-            Map<String, Boolean> m = search.getOrderBy();
-            if (!m.containsKey("codeType")) {
-                search.addOrderBy("codeType");
-            }
-            if (!m.containsKey("codeOrder")) {
-                search.addOrderBy("codeOrder");
-            }
-        }
-        Page<CodeType> page = commonService.findPage(CodeType.class, search);
+        Page<CodeType> page = codeTypeService.findPage(search, params);
         Map<String, Formatter> fmt = new HashMap<String, Formatter>();
         fmt.put("updateTime", new ADDateFormatter());
         return new BeanGridResult(page.getContent(), page.getTotalRow(), fmt);
+    }
+
+    /**
+     * add codetype
+     * 
+     * @param request
+     *            request
+     * @return IResult
+     */
+    @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.ADD)
+    public Result add(Request request) {
+        AjaxFormResult result = new AjaxFormResult();
+        String codeType = request.get("codeType");
+        String codeValue = request.get("codeValue");
+        String codeDesc = request.get("codeDesc");
+        String codeOrder = request.get("codeOrder");
+        String locale = request.get("locale");
+        codeTypeService.addCodeType(codeType, codeValue, codeDesc, Integer.parseInt(codeOrder), locale);
+        result.set(Constants.AJAX_NOTIFY_MESSAGE, CapAppContext.getMessage("js.addSuccess"));
+        return result;
     }
 
     /**
@@ -107,31 +109,14 @@ public class CodeTypeHandler extends MFormHandler {
     @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.UPDATE)
     public Result modify(Request request) {
         AjaxFormResult result = new AjaxFormResult();
-        String type = request.get("type");
-        String locale = CapSecurityContext.getLocale().toString();
-        CodeType code = codeTypeService.getByCodeTypeAndValue(request.get("codeType"), request.get("codeValue"), locale);
-
-        if ("A".equals(type)) {
-            if (code != null) {
-                // codetype.0001 代碼重覆!
-                throw new CapMessageException(CapAppContext.getMessage("codetype.0001"), getClass());
-            }
-            code = new CodeType();
-        } else {
-            if (code != null && !code.getOid().equals(request.get("oid"))) {
-                // codetype.0001 代碼重覆!
-                throw new CapMessageException(CapAppContext.getMessage("codetype.0001"), getClass());
-            } else if (code == null) {
-                code = codeTypeService.getById(request.get("oid"));
-            }
-        }
-        CapBeanUtil.map2Bean(request, code, CodeType.class);
-        if ("A".equals(type)) {
-            code.setOid(null);
-        }
-        code.setUpdater(CapSecurityContext.getUserId());
-        code.setUpdateTime(CapDate.getCurrentTimestamp());
-        codeTypeService.saveCodeType(code);
+        String oid = request.get("oid");
+        String codeType = request.get("codeType");
+        String codeValue = request.get("codeValue");
+        String codeDesc = request.get("codeDesc");
+        String codeOrder = request.get("codeOrder");
+        String locale = request.get("locale");
+        codeTypeService.modifyCodeType(oid, codeType, codeValue, codeDesc, Integer.parseInt(codeOrder), locale);
+        result.set(Constants.AJAX_NOTIFY_MESSAGE, CapAppContext.getMessage("js.modifySuccess"));
         return result;
     }
 
@@ -146,6 +131,7 @@ public class CodeTypeHandler extends MFormHandler {
     public Result delete(Request request) {
         AjaxFormResult result = new AjaxFormResult();
         codeTypeService.deleteById(request.get("oid"));
+        result.set(Constants.AJAX_NOTIFY_MESSAGE, CapAppContext.getMessage("js.deleteSuccess"));
         return result;
     }
 

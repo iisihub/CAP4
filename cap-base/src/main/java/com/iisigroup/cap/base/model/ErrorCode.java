@@ -88,7 +88,7 @@ public class ErrorCode extends GenericBean implements DataObject {
     /**
      * 是否送監控
      */
-    @Column(length = 1, columnDefinition="CHAR")
+    @Column(length = 1, columnDefinition = "CHAR")
     private String sendMon;
 
     /**
@@ -276,10 +276,6 @@ public class ErrorCode extends GenericBean implements DataObject {
      */
     public String getSendMon() {
         return sendMon;
-    }
-
-    public boolean isSendMon() {
-        return "Y".equalsIgnoreCase(StringUtils.trimToEmpty(this.sendMon));
     }
 
     /**

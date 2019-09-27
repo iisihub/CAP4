@@ -1,11 +1,10 @@
 pageInit(function() {
   $(function() {
-    var grid, mform = $("#mform");
-    grid = $("#gridview").jqGrid({
+    var grid = $("#gridview").jqGrid({
       url : url('codetypehandler/query'),
       sortname : 'codeType',
       sortorder : "desc",
-      height : 250,
+      height : 350,
       colModel : [ {
         name : 'oid',
         hidden : true
@@ -39,59 +38,87 @@ pageInit(function() {
         name : 'updateTime',
         width : 80,
         align : "center"
-      } ],
-      onSelectRow : function() {
-        var ret = grid.getSelRowDatas();
-        ret && mform.injectData(ret);
-      }
+      } ]
     });
-    $("#qry").click(function() {
-      grid.jqGrid('setGridParam', {
-        postData : {
-          locale : mform.find("#locale").val(),
-          codeType : mform.find("#codeType").val()
-        }
-      });
-      grid.trigger("reloadGrid");
-    });
-    // 新增
-    $("#add").click(function() {
-      mform.validationEngine('validate') && API.showConfirmMessage(i18n.def.actoin_001, function(data) {
-        data && $.ajax({
-          url : url("codetypehandler/modify"),
-          data : $.extend(mform.serializeData(), {
-            type : "A"
-          })
-        }).done(function() {
-          grid.trigger("reloadGrid");
-        });
-      });
-    });
-    // 修改
-    $("#modify").click(function() {
-      if (grid.getSelRowDatas()) {
-        mform.validationEngine('validate') && API.showConfirmMessage(i18n.def.actoin_001, function(data) {
-          data && $.ajax({
-            url : url("codetypehandler/modify"),
-            data : $.extend(mform.serializeData(), {
-              type : "M"
-            })
-          }).done(function() {
-            grid.trigger("reloadGrid");
+
+    var qDialog = $("#qryDialog"), qform = qDialog.find("#qform");
+    qDialog.dialog({
+      height : 200,
+      width : 350,
+      modal : true,
+      close : function() {
+        qform.reset();
+      },
+      buttons : API.createJSON([ {
+        key : i18n.def.sure,
+        value : function() {
+          grid.jqGrid('setGridParam', {
+            postData : {
+              locale : qform.find("#locale").val(),
+              codeType : qform.find("#codeType").val()
+            }
           });
-        });
+          grid.trigger("reloadGrid");
+          qDialog.dialog('close');
+        }
+      }, {
+        key : i18n.def.close,
+        value : function() {
+          qDialog.dialog('close');
+        }
+      } ])
+    });
+
+    var eDialog = $("#editDialog"), eform = eDialog.find("#eform");
+    eDialog.dialog({
+      height : 300,
+      width : 650,
+      modal : true,
+      close : function() {
+        eform.reset();
+        eform.validationEngine('hide');
+      },
+      buttons : API.createJSON([ {
+        key : i18n.def.sure,
+        value : function() {
+          eform.validationEngine('validate') && API.showConfirmMessage(i18n.def.actoin_001, function(data) {
+            data && $.ajax({
+              url : url("codetypehandler/" + (eDialog.data('type') == 'A' ? 'add' : 'modify')),
+              data : eform.serializeData()
+            }).done(function() {
+              grid.trigger("reloadGrid");
+              eDialog.dialog('close');
+            });
+          });
+        }
+      }, {
+        key : i18n.def.close,
+        value : function() {
+          eDialog.dialog('close');
+        }
+      } ])
+    });
+
+    $(".btns").find("#qry").click(function() { // 查詢
+      qDialog.dialog('open');
+    }).end().find("#add").click(function() { // 新增
+      eDialog.data('type', 'A').dialog('open');
+    }).end().find("#modify").click(function() { // 修改
+      var sel = grid.getSelRowDatas();
+      if (sel) {
+        eform.injectData(sel);
+        eDialog.data('type', 'M').dialog('open');
       } else {
         API.showErrorMessage(i18n.def.grid_selector);
       }
-    });
-    // 删除
-    $("#delete").click(function() {
-      if (grid.getSelRowDatas()) {
+    }).end().find("#delete").click(function() { // 刪除
+      var sel = grid.getSelRowDatas();
+      if (sel) {
         API.showConfirmMessage(i18n.def.actoin_001, function(data) {
           data && $.ajax({
             url : url("codetypehandler/delete"),
             data : {
-              oid : $("#oid").val()
+              oid : sel.oid
             }
           }).done(function() {
             grid.trigger("reloadGrid");
@@ -100,12 +127,6 @@ pageInit(function() {
       } else {
         API.showErrorMessage(i18n.def.grid_selector);
       }
-
-    });
-    // 清除
-    $("#clear").click(function() {
-      mform.reset();
-      grid.resetSelection();
     });
   });
 });
