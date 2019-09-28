@@ -73,11 +73,6 @@
         <filter-name>OpenSessionInViewFilter</filter-name>
         <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
     </filter>
-    <!-- log4j MDC -->
-    <filter>
-        <filter-name>set log4j MDC for SessionId</filter-name>
-        <filter-class>com.iisigroup.cap.web.LogContextFilter</filter-class>
-    </filter>
     <filter>
         <description><![CDATA[
 			Url rewrite engine that acts as a mod_rewrite, uses the configuration located at WEB-INF/urlrewrite.xml
@@ -124,10 +119,6 @@
         <filter-name>rewriteFilter</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>set log4j MDC for SessionId</filter-name>
-        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>OpenSessionInViewFilter</filter-name>
