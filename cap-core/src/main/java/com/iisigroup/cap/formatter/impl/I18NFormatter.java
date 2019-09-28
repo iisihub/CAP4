@@ -1,7 +1,7 @@
 /* 
  * I18NFormatter.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -28,8 +28,10 @@ import com.iisigroup.cap.utils.CapString;
  *          <li>2012/11/12,iristu,new
  *          </ul>
  */
-@SuppressWarnings("serial")
+
 public class I18NFormatter implements Formatter {
+
+    private static final long serialVersionUID = 1L;
 
     String prefix;
     boolean hasPrefix = false;
@@ -48,7 +50,7 @@ public class I18NFormatter implements Formatter {
      * 
      * @see com.iisigroup.cap.formatter.IFormatter#reformat(java.lang.Object)
      */
-    @SuppressWarnings("unchecked")
+
     @Override
     public String reformat(Object in) {
         String key = CapString.trimNull(in);

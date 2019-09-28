@@ -1,20 +1,17 @@
-/*
- * IFormatter.java
- *
- * Copyright (c) 2009 International Integrated System, Inc.
- * 11F, No.133, Sec.4, Minsheng E. Rd., Taipei, 10574, Taiwan, R.O.C.
+/* 
+ * Formatter.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
- *
- * Licensed Materials - Property of International Integrated System,Inc.
- *
- * This software is confidential and proprietary information of
- * International Integrated System, Inc. ("Confidential Information").
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
 package com.iisigroup.cap.formatter;
 
 import java.io.Serializable;
-
-import com.iisigroup.cap.exception.CapFormatException;
 
 /**
  * <p>
@@ -33,13 +30,9 @@ public interface Formatter extends Serializable {
     /**
      * 重新format傳入的值
      * 
-     * @param <T>
-     *            type
      * @param in
-     *            the input
-     * @return String
-     * @throws CapFormatException
+     * @return
      */
-    public <T> T reformat(Object in);
+    public String reformat(Object in);
 
 }

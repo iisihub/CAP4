@@ -1,14 +1,13 @@
-/*
+/* 
  * FileDownloadResult.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc.
- * 11F, No.133, Sec.4, Minsheng E. Rd., Taipei, 10574, Taiwan, R.O.C.
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
- *
- * Licensed Materials - Property of International Integrated System,Inc.
- *
- * This software is confidential and proprietary information of
- * International Integrated System, Inc. ("Confidential Information").
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
 package com.iisigroup.cap.component.impl;
 
@@ -21,7 +20,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,8 +42,9 @@ import com.iisigroup.cap.utils.CapString;
  *          <li>2013/4/15,iristu,修正IE7下載時錯誤
  *          </ul>
  */
-@SuppressWarnings("serial")
 public class FileDownloadResult implements Result {
+
+    private static final long serialVersionUID = 1L;
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -117,9 +116,8 @@ public class FileDownloadResult implements Result {
     }
 
     public void respondResult(ServletResponse response) {
-        InputStream in = null;
-        OutputStream output = null;
-        try {
+        File file = new File(_file);
+        try (InputStream in = new FileInputStream(file); OutputStream output = response.getOutputStream();) {
             response.setContentType(_contentType);
             if (_outputName != null && response instanceof HttpServletResponse) {
                 HttpServletResponse resp = (HttpServletResponse) response;
@@ -127,13 +125,10 @@ public class FileDownloadResult implements Result {
                 resp.setHeader("Cache-Control", "public");
                 resp.setHeader("Pragma", "public");
             }
-            output = response.getOutputStream();
-            File file = new File(_file);
             int length = -1;
             // Stream to the requester.
             byte[] bbuf = new byte[1024 * 1024];
             int len = 0;
-            in = new FileInputStream(file);
             while ((in != null) && ((length = in.read(bbuf)) != -1)) {
                 output.write(bbuf, 0, length);
                 len += length;
@@ -142,11 +137,6 @@ public class FileDownloadResult implements Result {
             output.flush();
         } catch (Exception e) {
             throw new CapException(e, getClass());
-        } finally {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(output);
         }
-
     }
-
 }

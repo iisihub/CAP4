@@ -1,7 +1,7 @@
 /* 
  * ByteArrayDownloadResult.java
  * 
- * Copyright (c) 2009-2011 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -20,7 +20,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.iisigroup.cap.component.Request;
@@ -43,8 +42,9 @@ import com.iisigroup.cap.utils.CapWebUtil;
  *          <li>2013/4/15,iristu,修正IE7下載時錯誤
  *          </ul>
  */
-@SuppressWarnings("serial")
 public class ByteArrayDownloadResult extends FileDownloadResult {
+
+    private static final long serialVersionUID = 1L;
 
     private byte[] _byteArray = null;
 
@@ -99,9 +99,7 @@ public class ByteArrayDownloadResult extends FileDownloadResult {
     @Override
     public void respondResult(ServletResponse response) {
         int length = -1;
-        InputStream in = null;
-        OutputStream output = null;
-        try {
+        try (InputStream in = new ByteArrayInputStream(_byteArray); OutputStream output = response.getOutputStream();) {
             response.setContentType(getContentType());
             response.setContentLength(_byteArray.length);
             if (getOutputName() != null && response instanceof HttpServletResponse) {
@@ -116,20 +114,14 @@ public class ByteArrayDownloadResult extends FileDownloadResult {
                 resp.setHeader("Cache-Control", "public");
                 resp.setHeader("Pragma", "public");
             }
-            output = response.getOutputStream();
             // Stream to the requester.
             byte[] bbuf = new byte[1024 * 1024];
-
-            in = new ByteArrayInputStream(_byteArray);
             while ((in != null) && ((length = in.read(bbuf)) != -1)) {
                 output.write(bbuf, 0, length);
             }
             output.flush();
         } catch (IOException e) {
             e.getMessage();
-        } finally {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(output);
         }
     }
 }// ~

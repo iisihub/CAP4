@@ -1,7 +1,7 @@
 /* 
  * KeyValueFormatTypeEnum.java
  * 
- * Copyright (c) 2009-2013 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -25,9 +25,9 @@ package com.iisigroup.cap.constants;
  */
 public enum KeyValueFormatTypeEnum {
     /** print:key-value */
-    Key_Value,
+    KEY_VALUE,
     /** print:value */
-    Value,
+    VALUE,
     /** print:key value */
-    KeySpaceValue
+    KEY_SPACE_VALUE
 }

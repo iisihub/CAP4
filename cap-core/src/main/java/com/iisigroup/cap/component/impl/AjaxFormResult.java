@@ -1,14 +1,13 @@
-/*
- * CapAjaxFormResult.java
- *
- * Copyright (c) 2009-2012 International Integrated System, Inc.
- * 11F, No.133, Sec.4, Minsheng E. Rd., Taipei, 10574, Taiwan, R.O.C.
+/* 
+ * AjaxFormResult.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
- *
- * Licensed Materials - Property of International Integrated System,Inc.
- *
- * This software is confidential and proprietary information of
- * International Integrated System, Inc. ("Confidential Information").
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
 package com.iisigroup.cap.component.impl;
 
@@ -45,8 +44,9 @@ import com.iisigroup.cap.utils.GsonUtil;
  *          <li>2013/03/29,rodeschen,field change to protected
  *          </ul>
  */
-@SuppressWarnings("serial")
 public class AjaxFormResult implements Result {
+
+    private static final long serialVersionUID = 1L;
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 

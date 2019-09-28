@@ -1,7 +1,7 @@
 /* 
  * NumericFormatter.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -31,8 +31,10 @@ import com.iisigroup.cap.utils.CapMath;
  *          <li>2011/9/06,tammychen, handle BigDecimal
  *          </ul>
  */
-@SuppressWarnings("serial")
+
 public class NumericFormatter implements Formatter {
+
+    private static final long serialVersionUID = 1L;
 
     private DecimalFormat _nf;
 
@@ -54,7 +56,7 @@ public class NumericFormatter implements Formatter {
      * @return String
      * @throws CapFormatException
      */
-    @SuppressWarnings("unchecked")
+
     @Override
     public String reformat(Object in) {
 

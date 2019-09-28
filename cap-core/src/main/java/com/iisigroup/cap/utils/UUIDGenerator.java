@@ -1,7 +1,7 @@
 /* 
  * UUIDGenerator.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -27,6 +27,11 @@ import java.util.UUID;
  */
 public class UUIDGenerator {
 
+    /**
+     * 產生 32 位的 UUID
+     * 
+     * @return
+     */
     public static String getUUID() {
         return UUID.randomUUID().toString().replace("-", "");
     }

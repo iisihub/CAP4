@@ -1,7 +1,7 @@
 /* 
  * CapDateFormatter.java
  * 
- * Copyright (c) 2009-2013 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -27,8 +27,10 @@ import com.iisigroup.cap.utils.CapDate;
  *          <li>2013/4/16,iristu,new
  *          </ul>
  */
-@SuppressWarnings("serial")
+
 public class CapDateFormatter implements Formatter {
+
+    private static final long serialVersionUID = 1L;
 
     String fromDateFormat;
     String toDateFormat;
@@ -38,7 +40,6 @@ public class CapDateFormatter implements Formatter {
         this.toDateFormat = toDateFormat;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public String reformat(Object in) {
         if (in != null) {

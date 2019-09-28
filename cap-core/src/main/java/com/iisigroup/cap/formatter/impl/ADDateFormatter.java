@@ -1,14 +1,13 @@
-/*
+/* 
  * ADDateFormatter.java
- *
- * Copyright (c) 2009-2011 International Integrated System, Inc.
- * 11F, No.133, Sec.4, Minsheng E. Rd., Taipei, 10574, Taiwan, R.O.C.
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
- *
- * Licensed Materials - Property of International Integrated System,Inc.
- *
- * This software is confidential and proprietary information of
- * International Integrated System, Inc. ("Confidential Information").
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
 package com.iisigroup.cap.formatter.impl;
 
@@ -34,8 +33,9 @@ import com.iisigroup.cap.formatter.Formatter;
  *          <li>2011/11/1,rodeschen,from cap
  *          </ul>
  */
-@SuppressWarnings("serial")
 public class ADDateFormatter implements Formatter {
+
+    private static final long serialVersionUID = 1L;
 
     private SimpleDateFormat df;
 
@@ -54,7 +54,6 @@ public class ADDateFormatter implements Formatter {
      * 
      * @see tw.com.iisi.cap.formatter.IFormatter#reformat(java.lang.Object)
      */
-    @SuppressWarnings("unchecked")
     public String reformat(Object in) {
         if (in != null && !"".equals(in)) {
             if (in instanceof Calendar) {

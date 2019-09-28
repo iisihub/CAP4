@@ -1,3 +1,14 @@
+/* 
+ * ForwardFilter.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
+ * All Rights Reserved.
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
+ */
 package com.iisigroup.cap.web;
 
 import java.io.IOException;
@@ -45,7 +56,7 @@ public class ForwardFilter implements Filter {
      *            FilterConfig
      * @throws ServletException
      */
-    @SuppressWarnings("unchecked")
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         filterRules = new LinkedHashMap<String, String>();

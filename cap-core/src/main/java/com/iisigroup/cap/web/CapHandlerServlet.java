@@ -1,10 +1,12 @@
-/*
- * Copyright (c) 2009-2012 International Integrated System, Inc.
+/* 
+ * CapHandlerServlet.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
- *
+ * 
  * Licensed Materials - Property of International Integrated System, Inc.
- *
- * This software is confidential and proprietary information of
+ * 
+ * This software is confidential and proprietary information of 
  * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
 package com.iisigroup.cap.web;
@@ -51,9 +53,9 @@ import com.iisigroup.cap.utils.GsonUtil;
  *          <li>2013/2/28,rodeschen,add set request
  *          </ul>
  */
-@SuppressWarnings("serial")
 public class CapHandlerServlet extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
     protected final Logger logger = LoggerFactory.getLogger(CapHandlerServlet.class);
     public final String HANDLER = "_handler";
     public final String ACTION = "_action";

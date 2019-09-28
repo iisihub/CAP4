@@ -1,14 +1,13 @@
-/**
+/* 
  * CapSessioniExpireException.java
- *
- * Copyright (c) 2009 International Integrated System, Inc.
- * 11F, No.133, Sec.4, Minsheng E. Rd., Taipei, 10574, Taiwan, R.O.C.
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
- *
- * Licensed Materials - Property of International Integrated System,Inc.
- *
- * This software is confidential and proprietary information of
- * International Integrated System, Inc. ("Confidential Information").
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
 package com.iisigroup.cap.exception;
 
@@ -26,8 +25,9 @@ import com.iisigroup.cap.utils.CapString;
  *          <li>2012/2/28,rodeschen,new
  *          </ul>
  */
-@SuppressWarnings({ "serial" })
 public class CapSessioniExpireException extends CapException {
+
+    private static final long serialVersionUID = 1L;
 
     String i18nKey;
 
@@ -44,8 +44,7 @@ public class CapSessioniExpireException extends CapException {
      * @param causeClass
      *            the cause class
      */
-    @SuppressWarnings("rawtypes")
-    public CapSessioniExpireException(Class causeClass) {
+    public CapSessioniExpireException(Class<?> causeClass) {
         super();
         super.setCauseSource(causeClass);
     }
@@ -58,8 +57,7 @@ public class CapSessioniExpireException extends CapException {
      * @param causeClass
      *            the cause class
      */
-    @SuppressWarnings("rawtypes")
-    public CapSessioniExpireException(String message, Class causeClass) {
+    public CapSessioniExpireException(String message, Class<?> causeClass) {
         super(message, causeClass);
     }
 
@@ -71,8 +69,7 @@ public class CapSessioniExpireException extends CapException {
      * @param causeClass
      *            the cause class
      */
-    @SuppressWarnings("rawtypes")
-    public CapSessioniExpireException(Throwable cause, Class causeClass) {
+    public CapSessioniExpireException(Throwable cause, Class<?> causeClass) {
         super(cause, causeClass);
     }
 
@@ -86,8 +83,7 @@ public class CapSessioniExpireException extends CapException {
      * @param causeClass
      *            the cause class
      */
-    @SuppressWarnings("rawtypes")
-    public CapSessioniExpireException(String message, Throwable cause, Class causeClass) {
+    public CapSessioniExpireException(String message, Throwable cause, Class<?> causeClass) {
         super(message, cause, causeClass);
     }
 

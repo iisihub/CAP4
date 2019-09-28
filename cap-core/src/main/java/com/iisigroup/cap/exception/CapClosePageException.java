@@ -1,14 +1,13 @@
-/**
+/* 
  * CapClosePageException.java
- *
- * Copyright (c) 2009 International Integrated System, Inc.
- * 11F, No.133, Sec.4, Minsheng E. Rd., Taipei, 10574, Taiwan, R.O.C.
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
- *
- * Licensed Materials - Property of International Integrated System,Inc.
- *
- * This software is confidential and proprietary information of
- * International Integrated System, Inc. ("Confidential Information").
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
 package com.iisigroup.cap.exception;
 
@@ -27,8 +26,9 @@ import com.iisigroup.cap.utils.CapString;
  *          <li>2011/11/1,rodeschen,from cap
  *          </ul>
  */
-@SuppressWarnings({ "serial" })
 public class CapClosePageException extends CapException {
+
+    private static final long serialVersionUID = 1L;
 
     String i18nKey;
 
@@ -45,8 +45,7 @@ public class CapClosePageException extends CapException {
      * @param causeClass
      *            the cause class
      */
-    @SuppressWarnings("rawtypes")
-    public CapClosePageException(Class causeClass) {
+    public CapClosePageException(Class<?> causeClass) {
         super();
         super.setCauseSource(causeClass);
     }
@@ -59,8 +58,7 @@ public class CapClosePageException extends CapException {
      * @param causeClass
      *            the cause class
      */
-    @SuppressWarnings("rawtypes")
-    public CapClosePageException(String message, Class causeClass) {
+    public CapClosePageException(String message, Class<?> causeClass) {
         super(message, causeClass);
     }
 
@@ -72,8 +70,7 @@ public class CapClosePageException extends CapException {
      * @param causeClass
      *            the cause class
      */
-    @SuppressWarnings("rawtypes")
-    public CapClosePageException(Throwable cause, Class causeClass) {
+    public CapClosePageException(Throwable cause, Class<?> causeClass) {
         super(cause, causeClass);
     }
 
@@ -87,8 +84,7 @@ public class CapClosePageException extends CapException {
      * @param causeClass
      *            the cause class
      */
-    @SuppressWarnings("rawtypes")
-    public CapClosePageException(String message, Throwable cause, Class causeClass) {
+    public CapClosePageException(String message, Throwable cause, Class<?> causeClass) {
         super(message, cause, causeClass);
     }
 

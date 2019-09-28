@@ -1,7 +1,7 @@
 /* 
  * CapXmlUtil.java
  * 
- * Copyright (c) 2009-2013 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -14,11 +14,11 @@ package com.iisigroup.cap.utils;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.CharEncoding;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -117,7 +117,7 @@ public class CapXmlUtil {
     public static String convertDocumentToString(Document doc, boolean format) {
         Writer out = new StringWriter();
         try {
-            new XMLWriter(out, new OutputFormat(Constants.EMPTY_STRING, format, CharEncoding.UTF_8)).write(doc);
+            new XMLWriter(out, new OutputFormat(Constants.EMPTY_STRING, format, StandardCharsets.UTF_8.name())).write(doc);
             return out.toString();
         } catch (IOException e) {
             throw new CapMessageException(e, CapXmlUtil.class);
@@ -135,7 +135,6 @@ public class CapXmlUtil {
         return convertDocumentToString(doc, false);
     }
 
-    @SuppressWarnings("unchecked")
     private static Map<String, Object> travelXML(Element el) {
         Map<String, Object> map = new HashMap<String, Object>();
         String nodeName = el.getName();

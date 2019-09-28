@@ -1,7 +1,7 @@
 /* 
  * StrMessageFormatter.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -34,8 +34,10 @@ import com.iisigroup.cap.formatter.Formatter;
  *          <li>2011/12/1,iristu,new
  *          </ul>
  */
-@SuppressWarnings("serial")
+
 public class StrMessageFormatter implements Formatter {
+
+    private static final long serialVersionUID = 1L;
 
     String unformatMsg;
 
@@ -48,6 +50,7 @@ public class StrMessageFormatter implements Formatter {
      * 
      * @see tw.com.iisi.cap.formatter.IFormatter#reformat(java.lang.Object)
      */
+
     @SuppressWarnings("unchecked")
     @Override
     public String reformat(Object in) {

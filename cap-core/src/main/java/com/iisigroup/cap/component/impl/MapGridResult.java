@@ -1,7 +1,7 @@
 /* 
  * MapGridResult.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -48,8 +48,9 @@ import com.iisigroup.cap.utils.GsonUtil;
  *          <li>2013/5/21,rodeschen,修改format錯誤放入原值
  *          </ul>
  */
-@SuppressWarnings("serial")
 public class MapGridResult extends AjaxFormResult implements GridResult<MapGridResult, Map<String, Object>> {
+
+    private static final long serialVersionUID = 1L;
 
     protected List<? extends Map<String, Object>> rowData;
 

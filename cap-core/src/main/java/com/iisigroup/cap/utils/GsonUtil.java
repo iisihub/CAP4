@@ -1,7 +1,7 @@
 /* 
  * GsonUtil.java
  * 
- * Copyright (c) 2016 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -11,11 +11,13 @@
  */
 package com.iisigroup.cap.utils;
 
+import java.io.StringReader;
 import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 
 /**
  * <pre>
@@ -71,7 +73,9 @@ public class GsonUtil {
      */
     public static Map<String, Object> jsonToMap(String jsonString) {
         Gson gson = new Gson();
-        return gson.fromJson(jsonString, new TypeToken<Map<String, Object>>() {
+        JsonReader reader = new JsonReader(new StringReader(jsonString));
+        reader.setLenient(true);
+        return gson.fromJson(reader, new TypeToken<Map<String, Object>>() {
         }.getType());
     }
 
@@ -98,8 +102,17 @@ public class GsonUtil {
      */
     public static <T> T jsonToObj(String jsonString) {
         Gson gson = new Gson();
-        return gson.fromJson(jsonString, new TypeToken<T>() {
+        JsonReader reader = new JsonReader(new StringReader(jsonString));
+        reader.setLenient(true);
+        return gson.fromJson(reader, new TypeToken<T>() {
         }.getType());
+    }
+
+    public static <T> T jsonToObj(String jsonString, Class<T> c) {
+        Gson gson = new Gson();
+        JsonReader reader = new JsonReader(new StringReader(jsonString));
+        reader.setLenient(true);
+        return gson.fromJson(reader, c);
     }
 
     public static String objToJson(Object obj) {

@@ -1,6 +1,7 @@
-/*_
- * Copyright (c) 2009-2011 International Integrated System, Inc. 
- * 11F, No.133, Sec.4, Minsheng E. Rd., Taipei, 10574, Taiwan, R.O.C.
+/* 
+ * BeanGridResult.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -8,7 +9,6 @@
  * This software is confidential and proprietary information of 
  * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
-
 package com.iisigroup.cap.component.impl;
 
 import java.util.ArrayList;
@@ -43,8 +43,9 @@ import com.iisigroup.cap.utils.GsonUtil;
  *          <li>2013/03/29,rodeschen,add extends AjaxFormResult
  *          </ul>
  */
-@SuppressWarnings("serial")
 public class BeanGridResult extends AjaxFormResult implements GridResult<BeanGridResult, GenericBean> {
+
+    private static final long serialVersionUID = 1L;
 
     protected List<? extends GenericBean> rowData;
 

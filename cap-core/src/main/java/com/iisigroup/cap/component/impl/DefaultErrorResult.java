@@ -1,22 +1,22 @@
-/*
- * Copyright (c) 2009-2011 International Integrated System, Inc.
- * 11F, No.133, Sec.4, Minsheng E. Rd., Taipei, 10574, Taiwan, R.O.C.
+/* 
+ * DefaultErrorResult.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
- *
- * Licensed Materials - Property of International Integrated System,Inc.
- *
- * This software is confidential and proprietary information of
- * International Integrated System, Inc. ("Confidential Information").
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
 package com.iisigroup.cap.component.impl;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletResponse;
-
-import org.apache.commons.lang3.CharEncoding;
 
 import com.iisigroup.cap.component.ErrorResult;
 import com.iisigroup.cap.component.Request;
@@ -45,8 +45,9 @@ import com.iisigroup.cap.utils.GsonUtil;
  *          <li>2011/11/1,rodeschen,from cap
  *          </ul>
  */
-@SuppressWarnings("serial")
 public class DefaultErrorResult implements ErrorResult {
+
+    private static final long serialVersionUID = 1L;
 
     public static final String AJAX_HANDLER_EXCEPTION = "AJAX_HANDLER_EXCEPTION";
     public static final String AJAX_MESSAGE_HANDLER_EXCEPTION = "AJAX_MESSAGE_HANDLER_EXCEPTION";
@@ -54,9 +55,8 @@ public class DefaultErrorResult implements ErrorResult {
     /** 關閉畫面錯誤類別 */
     public static final String AJAX_CLOSE_PAGE_HANDLER_EXCEPTION = "AJAX_CLOSE_PAGE_HANDLER_EXCEPTION";
 
-    Map<String, Object> errorMessage = new HashMap<String, Object>();
-
-    String logMessage = "";
+    private Map<String, Object> errorMessage = new HashMap<String, Object>();
+    private String logMessage = "";
     private String contentType;
     private String encoding;
 
@@ -137,7 +137,7 @@ public class DefaultErrorResult implements ErrorResult {
         if (encoding != null) {
             return this.encoding;
         } else {
-            return CharEncoding.UTF_8;
+            return StandardCharsets.UTF_8.name();
         }
     }
 
