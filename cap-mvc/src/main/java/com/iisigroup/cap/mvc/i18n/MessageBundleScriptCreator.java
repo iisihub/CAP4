@@ -1,13 +1,13 @@
-/*
- *
- * Copyright (c) 2009-2012 International Integrated System, Inc.
- * 11F, No.133, Sec.4, Minsheng E. Rd., Taipei, 10574, Taiwan, R.O.C.
+/* 
+ * MessageBundleScriptCreator.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
- *
- * Licensed Materials - Property of International Integrated System,Inc.
- *
- * This software is confidential and proprietary information of
- * International Integrated System, Inc. ("Confidential Information").
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
 package com.iisigroup.cap.mvc.i18n;
 
@@ -19,7 +19,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -183,27 +182,16 @@ public class MessageBundleScriptCreator {
         } catch (Exception e) {
             locale = Locale.getDefault();
         }
-        String i18nFile = null;
-        InputStream is = null;
-        try {
-            i18nFile = new StringBuffer("classpath:/i18n/").append(i18nPath).append("_").append(locale.toString()).append(".properties").toString();
-            Resource rs = CapAppContext.getApplicationContext().getResource(i18nFile);
-            if (rs != null) {
-                is = rs.getInputStream();
-                prop.load(is);
-            } else {
-                i18nFile = new StringBuffer("classpath:/i18n/").append(i18nPath).append("_").append(".properties").toString();
-                rs = CapAppContext.getApplicationContext().getResource(i18nFile);
-                if (rs != null) {
-                    is = rs.getInputStream();
-                    prop.load(is);
-                }
-            }
-
+        String i18nFile = new StringBuffer("classpath:/i18n/").append(i18nPath).append("_").append(locale.toString()).append(".properties").toString();
+        Resource rs = CapAppContext.getApplicationContext().getResource(i18nFile);
+        if (rs == null) {
+            i18nFile = new StringBuffer("classpath:/i18n/").append(i18nPath).append("_").append(".properties").toString();
+            rs = CapAppContext.getApplicationContext().getResource(i18nFile);
+        }
+        try (InputStream is = rs.getInputStream();) {
+            prop.load(is);
         } catch (Exception e) {
             LOGGER.error("can't load " + i18nPath);
-        } finally {
-            IOUtils.closeQuietly(is);
         }
         return prop;
     }

@@ -1,7 +1,7 @@
 /* 
- * BQDUserSecurityInterceptor.java
+ * CapUserSecurityInterceptor.java
  * 
- * Copyright (c) 2009-2011 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -42,21 +42,11 @@ public class CapUserSecurityInterceptor extends HandlerInterceptorAdapter {
      * @see org.springframework.web.servlet.HandlerInterceptor#preHandle(javax.servlet .http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object)
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object arg2) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         CapUserDetails user = CapSecurityContext.getUser();
-        // try {
         if (user == null) {
             user = new CapUserDetails();
-            // user.setUnitNo("XXX");
-            // user.setUserId("testUser");
-            // user.setUserName("測試使用者");
         }
-        // } catch (CapException e) {
-        // Map<String, String> mapMessage = new HashMap<String, String>();
-        // mapMessage.put("ERRMSG", e.getMessage());
-        // throw new ModelAndViewDefiningException(new ModelAndView("/error",
-        // mapMessage));
-        // }
         if (user != null && request.getRequestURI().equals(request.getContextPath() + "/")) {
             response.sendRedirect(request.getContextPath() + "/page/index");
             return false;
