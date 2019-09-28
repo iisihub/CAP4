@@ -1,7 +1,7 @@
 /* 
  * CapDBException.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -25,8 +25,9 @@ import com.iisigroup.cap.exception.CapException;
  *          <li>2012/9/21,iristu,new
  *          </ul>
  */
-@SuppressWarnings("serial")
 public class CapDBException extends CapException {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Instantiates a new cap exception.
@@ -43,8 +44,7 @@ public class CapDBException extends CapException {
      * @param causeClass
      *            the cause class
      */
-    @SuppressWarnings("rawtypes")
-    public CapDBException(String message, Class causeClass) {
+    public CapDBException(String message, Class<?> causeClass) {
         super(message, causeClass);
     }
 
@@ -56,8 +56,7 @@ public class CapDBException extends CapException {
      * @param causeClass
      *            the cause class
      */
-    @SuppressWarnings("rawtypes")
-    public CapDBException(Throwable cause, Class causeClass) {
+    public CapDBException(Throwable cause, Class<?> causeClass) {
         super(cause, causeClass);
     }
 
@@ -71,8 +70,7 @@ public class CapDBException extends CapException {
      * @param causeClass
      *            the cause class
      */
-    @SuppressWarnings("rawtypes")
-    public CapDBException(String message, Throwable cause, Class causeClass) {
+    public CapDBException(String message, Throwable cause, Class<?> causeClass) {
         super(message, cause, causeClass);
     }
 

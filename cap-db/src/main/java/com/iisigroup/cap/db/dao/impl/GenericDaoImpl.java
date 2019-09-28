@@ -1,14 +1,13 @@
-/*
- * GenericDao.java
- *
- * Copyright (c) 2009-2012 International Integrated System, Inc.
- * 11F, No.133, Sec.4, Minsheng E. Rd., Taipei, 10574, Taiwan, R.O.C.
+/* 
+ * GenericDaoImpl.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
- *
- * Licensed Materials - Property of International Integrated System,Inc.
- *
- * This software is confidential and proprietary information of
- * International Integrated System, Inc. ("Confidential Information").
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
 package com.iisigroup.cap.db.dao.impl;
 
@@ -16,7 +15,6 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -288,8 +286,7 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
      *            SearchSetting
      * @return CriteriaQuery
      */
-    @SuppressWarnings({ "rawtypes" })
-    protected <S> CriteriaQuery<S> applySpecificationToCriteria(Root root, CriteriaQuery<S> query, CriteriaBuilder builder, SearchSetting search) {
+    protected <S> CriteriaQuery<S> applySpecificationToCriteria(Root<?> root, CriteriaQuery<S> query, CriteriaBuilder builder, SearchSetting search) {
         if (search.getSearchModeParameters() != null) {
             Predicate[] aryWhere = new Predicate[search.getSearchModeParameters().size()];
             int i = 0;
@@ -372,7 +369,7 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
             this._value = param.getValue();
         }
 
-        @SuppressWarnings({ "unchecked", "incomplete-switch" })
+        @SuppressWarnings("unchecked")
         public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder builder) {
             try {
                 if (_key instanceof SearchModeParameter && _value instanceof SearchModeParameter) {
@@ -453,6 +450,7 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
                     return builder.equal(path, _value);
                 case NOT_EQUALS:
                     return builder.notEqual(path, _value);
+                default:
                 }
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
@@ -466,16 +464,6 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
             } else {
                 return null;
             }
-        }
-
-        @SuppressWarnings("unused")
-        private Collection<?> asCollection(Object value) {
-            if (value instanceof Collection) {
-                return (Collection<?>) value;
-            } else if (value.getClass().isArray()) {
-                return Arrays.asList(value);
-            }
-            return Arrays.asList(value);
         }
 
         private Object[] asArray(Object value) {
@@ -496,8 +484,7 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
         return type;
     }
 
-    @SuppressWarnings("rawtypes")
-    public GenericDaoImpl setType(Class<T> type) {
+    public GenericDaoImpl<T> setType(Class<T> type) {
         this.type = type;
         return this;
     }

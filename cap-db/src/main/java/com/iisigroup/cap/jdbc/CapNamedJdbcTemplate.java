@@ -1,7 +1,7 @@
 /* 
  * CapNamedJdbcTemplate.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -26,10 +26,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterBatchUpdateUtils;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterUtils;
-import org.springframework.jdbc.core.namedparam.ParsedSql;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
@@ -259,7 +256,6 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
      * @return int
      * @throws GWException
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public int queryForInt(String sqlId, Map<String, ?> args) {
         StringBuffer sql = new StringBuffer((String) sqlp.getValue(sqlId, sqlId));
         sql.append(' ').append(sqltemp.getValue(CapJdbcConstants.SQL_QUERY_SUFFIX, ""));
@@ -268,7 +264,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         }
         long cur = System.currentTimeMillis();
         try {
-            Integer result = super.queryForObject(sql.toString(), (Map) args, Integer.class);
+            Integer result = super.queryForObject(sql.toString(), args, Integer.class);
             return result == null ? 0 : result.intValue();
         } catch (Exception e) {
             throw new CapDBException(e, causeClass);
@@ -301,7 +297,6 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
      * @return int
      * @throws GWException
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public int update(String sqlId, Map<String, ?> args) {
         String sql = sqlp.getValue(sqlId, sqlId);
         if (logger.isTraceEnabled()) {
@@ -309,7 +304,7 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         }
         long cur = System.currentTimeMillis();
         try {
-            return super.update(sql, (Map) args);
+            return super.update(sql, args);
         } catch (Exception e) {
             throw new CapDBException(e, causeClass);
         } finally {
@@ -317,12 +312,12 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public int batchUpdate(String sqlId, Map<String, Integer> sqlTypes, final List<Map<String, Object>> batchValues) {
         long cur = System.currentTimeMillis();
         try {
             int[] batchCount = null;
             String sql = sqlp.getValue(sqlId, sqlId);
-            ParsedSql parsedSql = NamedParameterUtils.parseSqlStatement(sql);
             if (sqlTypes != null && !sqlTypes.isEmpty()) {
                 MapSqlParameterSource[] batch = new MapSqlParameterSource[batchValues.size()];
                 for (int i = 0; i < batchValues.size(); i++) {
@@ -340,12 +335,11 @@ public class CapNamedJdbcTemplate extends NamedParameterJdbcTemplate {
                     }
                 }
                 cur = System.currentTimeMillis();
-                batchCount = NamedParameterBatchUpdateUtils.executeBatchUpdateWithNamedParameters(parsedSql, batch, super.getJdbcOperations());
-
+                batchCount = super.batchUpdate(sql, batch);
             } else {
                 SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(batchValues.toArray(new HashMap[batchValues.size()]));
                 cur = System.currentTimeMillis();
-                batchCount = NamedParameterBatchUpdateUtils.executeBatchUpdateWithNamedParameters(parsedSql, batch, super.getJdbcOperations());
+                batchCount = super.batchUpdate(sql, batch);
             }
             int rows = 0;
             for (int i : batchCount) {

@@ -1,7 +1,7 @@
 /* 
- * CapEntityUtils.java
+ * CapEntityUtil.java
  * 
- * Copyright (c) 2009-2011 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -62,11 +62,10 @@ public class CapEntityUtil {
         return getColumnName(entity, ignore);
     }
 
-    @SuppressWarnings({ "rawtypes" })
     public static <T> String[] getColumnName(T entity, Set<Class<? extends Annotation>> ignoreAnnotation) {
         Set<String> cols = new LinkedHashSet<String>();
         try {
-            Class searchClazz = getEntityClass(entity);
+            Class<?> searchClazz = getEntityClass(entity);
             while (!Object.class.equals(searchClazz) && searchClazz != null) {
                 Field[] fields = searchClazz.getDeclaredFields();
                 f: for (Field field : fields) {
@@ -97,11 +96,10 @@ public class CapEntityUtil {
      *            jpa entity
      * @return Map<String, Class>
      */
-    @SuppressWarnings("rawtypes")
-    public static <T> Map<String, Class> getColumnType(T entity) {
-        Map<String, Class> cols = new HashMap<String, Class>();
+    public static <T> Map<String, Class<?>> getColumnType(T entity) {
+        Map<String, Class<?>> cols = new HashMap<>();
         try {
-            Class searchClazz = getEntityClass(entity);
+            Class<?> searchClazz = getEntityClass(entity);
             while (!Object.class.equals(searchClazz) && searchClazz != null) {
                 Field[] fields = searchClazz.getDeclaredFields();
                 for (Field field : fields) {
@@ -129,13 +127,9 @@ public class CapEntityUtil {
     @SuppressWarnings({ "unchecked" })
     public static <T> Class<T> getEntityClass(T entity) throws ClassNotFoundException {
         return (Class<T>) entity.getClass();
-        // String entityName = PCEnhancer.toManagedTypeName(entity.getClass()
-        // .getName());
-        // return (Class<T>) Class.forName(entityName);
     }
 
-    @SuppressWarnings("rawtypes")
-    public static int getEntityFieldLength(Class clazz, String filedName, int defValue) {
+    public static int getEntityFieldLength(Class<?> clazz, String filedName, int defValue) {
         try {
             return clazz.getDeclaredField(filedName).getAnnotation(Column.class).length();
         } catch (Exception e) {

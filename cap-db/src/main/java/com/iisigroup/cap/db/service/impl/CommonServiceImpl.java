@@ -1,7 +1,7 @@
 /* 
  * CommonServiceImpl.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -90,7 +90,7 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public Map findMapById(Class<? extends GenericBean> clazz, String id) {
+    public Map<String, Object> findMapById(Class<? extends GenericBean> clazz, String id) {
         GenericBean bean = this.findById(clazz, id);
         return CapBeanUtil.bean2Map(bean, CapEntityUtil.getColumnName(bean));
     }
