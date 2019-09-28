@@ -8,7 +8,6 @@
     <artifactId>cap-batch</artifactId>
     <properties>
         <spring.batch.version>4.0.0.RELEASE</spring.batch.version>
-        <spring.batch.admin.version>1.3.1.RELEASE</spring.batch.admin.version>
         <spring.integration.version>5.0.0.RELEASE</spring.integration.version>
         <quartz-scheduler.version>2.3.0</quartz-scheduler.version>
     </properties>
@@ -16,11 +15,6 @@
         <dependency>
             <groupId>com.iisigroup.cap</groupId>
             <artifactId>cap-base</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.batch</groupId>
-            <artifactId>spring-batch-admin-manager</artifactId>
-            <version>${spring.batch.admin.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.integration</groupId>
@@ -45,11 +39,6 @@
             <artifactId>spring-integration-file</artifactId>
             <version>${spring.integration.version}</version>
             <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.batch</groupId>
-            <artifactId>spring-batch-admin-resources</artifactId>
-            <version>${spring.batch.admin.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.batch</groupId>

@@ -11,14 +11,6 @@
             <groupId>com.iisigroup.cap</groupId>
             <artifactId>cap-base</artifactId>
         </dependency>
-        <!-- ******************** JExcelApi(jxl) LIB BEGIN ******************** -->
-        <dependency>
-            <groupId>net.sourceforge.jexcelapi</groupId>
-            <artifactId>jxl</artifactId>
-            <version>2.6.12</version>
-            <type>jar</type>
-        </dependency>
-        <!-- ******************** JExcelApi(jxl) LIB END ******************** -->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>javax.mail-api</artifactId>
