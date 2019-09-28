@@ -1,7 +1,7 @@
 /* 
  * Remind.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -39,12 +39,12 @@ import com.iisigroup.cap.model.GenericBean;
  *          <li>2014/1/27,tammy,new
  *          </ul>
  */
-@SuppressWarnings("serial")
 @Entity
 @EntityListeners({ CapOidGeneratorListener.class })
 @Table(name = "CFG_REMIND", uniqueConstraints = @UniqueConstraint(columnNames = "oid"))
 public class Remind extends GenericBean implements DataObject {
 
+    private static final long serialVersionUID = 1L;
     /** id */
     @Id
     @Column(length = 32, nullable = false, columnDefinition = "CHAR")

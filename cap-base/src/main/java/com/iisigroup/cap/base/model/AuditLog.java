@@ -1,7 +1,7 @@
 /* 
  * AuditLog.java
  * 
- * Copyright (c) 2009-2014 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -15,11 +15,13 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.iisigroup.cap.db.model.DataObject;
+import com.iisigroup.cap.db.model.listener.CapOidGeneratorListener;
 import com.iisigroup.cap.model.GenericBean;
 
 /**
@@ -34,10 +36,12 @@ import com.iisigroup.cap.model.GenericBean;
  *          <li>2014/1/16,Sunkist Wang,new
  *          </ul>
  */
-@SuppressWarnings("serial")
 @Entity
+@EntityListeners({ CapOidGeneratorListener.class })
 @Table(name = "AUDIT_LOG", uniqueConstraints = @UniqueConstraint(columnNames = "oid"))
 public class AuditLog extends GenericBean implements DataObject {
+    private static final long serialVersionUID = 1L;
+
     /** unique id */
     @Id
     @Column(length = 32, nullable = false)

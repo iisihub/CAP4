@@ -1,7 +1,7 @@
 /* 
  * SysParm.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -15,11 +15,13 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.iisigroup.cap.db.model.DataObject;
+import com.iisigroup.cap.db.model.listener.CapOidGeneratorListener;
 import com.iisigroup.cap.model.GenericBean;
 
 /**
@@ -33,11 +35,12 @@ import com.iisigroup.cap.model.GenericBean;
  *          <li>2010/9/6,iristu,new
  *          </ul>
  */
-@SuppressWarnings("serial")
 @Entity
+@EntityListeners({ CapOidGeneratorListener.class })
 @Table(name = "CFG_SYSPARM", uniqueConstraints = @UniqueConstraint(columnNames = "parmId"))
 public class SysParm extends GenericBean implements DataObject {
 
+    private static final long serialVersionUID = 1L;
     /** 參數id */
     @Id
     @Column(length = 30, nullable = false)

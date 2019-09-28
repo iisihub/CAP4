@@ -1,7 +1,7 @@
 /* 
  * CodeType.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -37,11 +37,12 @@ import com.iisigroup.cap.model.GenericBean;
  *          <li>2012/9/20,iristu,new
  *          </ul>
  */
-@SuppressWarnings("serial")
 @Entity
 @EntityListeners({ CapOidGeneratorListener.class })
 @Table(name = "CFG_CODETYPE", uniqueConstraints = @UniqueConstraint(columnNames = { "locale", "codeType", "codeValue" }))
 public class CodeType extends GenericBean implements DataObject {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(nullable = false, length = 32)

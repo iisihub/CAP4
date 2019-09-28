@@ -1,6 +1,7 @@
 /* 
+ * CodeTypeHandler.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -143,7 +144,6 @@ public class CodeTypeHandler extends MFormHandler {
      * @return IResult
      */
     @CapAuditLogAction(functionCode = CapFunctionCode.F101, actionType = CapActionTypeEnum.QUERY)
-    @SuppressWarnings("rawtypes")
     public Result queryByKeys(Request request) {
         String locale = CapSecurityContext.getLocale().toString();
         String[] keys = request.getParamsAsStringArray("keys");
@@ -155,7 +155,7 @@ public class CodeTypeHandler extends MFormHandler {
             mresult.setResultMap(m);
         }
         if (aKeys.length > 0 && !CapString.isEmpty(aKeys[0])) {
-            Class[] paramTypes = { Request.class };
+            Class<?>[] paramTypes = { Request.class };
             Result rtn = null;
             for (String key : aKeys) {
                 if (mresult.containsKey(key)) {

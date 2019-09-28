@@ -1,7 +1,7 @@
 /* 
- * CCCheckRouteHandler.java
+ * CheckTimeoutHandler.java
  * 
- * Copyright (c) 2009-2013 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -183,7 +183,6 @@ public class CheckTimeoutHandler extends MFormHandler {
         return result;
     }
 
-    // @SuppressWarnings("unchecked")
     @SuppressWarnings("unchecked")
     public Result checkClosePage(Request request) throws CapException {
         AjaxFormResult result = new AjaxFormResult();

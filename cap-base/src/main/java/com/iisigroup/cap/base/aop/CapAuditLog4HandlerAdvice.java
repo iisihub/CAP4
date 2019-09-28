@@ -1,7 +1,7 @@
 /* 
- * AuditLog4HandlerAdvice.java
+ * CapAuditLog4HandlerAdvice.java
  * 
- * Copyright (c) 2009-2014 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -20,7 +20,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -40,7 +40,6 @@ import com.iisigroup.cap.security.CapSecurityContext;
 import com.iisigroup.cap.security.model.CapUserDetails;
 import com.iisigroup.cap.utils.CapBeanUtil;
 import com.iisigroup.cap.utils.CapString;
-import com.iisigroup.cap.utils.CapWebUtil;
 import com.iisigroup.cap.utils.UUIDGenerator;
 
 /**
@@ -59,9 +58,6 @@ import com.iisigroup.cap.utils.UUIDGenerator;
  */
 public class CapAuditLog4HandlerAdvice {
 
-    private static String HOST_NAME = CapWebUtil.getHostName();
-    private static String HOST_ID = HOST_NAME.trim().substring(HOST_NAME.length() - 1);
-    private static final String DEF_PROP = "def";
     private static final String MENU_PREFIX = "menu.";
     private static final String ACTION_PREFIX = "btn.";
     private static final String DISABLE_TYPE = "DisableType";
@@ -102,7 +98,7 @@ public class CapAuditLog4HandlerAdvice {
     public Object logAroundAjaxHandlerExecute(ProceedingJoinPoint pjp, Request params) throws Throwable {
         long start = System.currentTimeMillis();
         params.put(CapConstants.C_AUDITLOG_START_TS, String.valueOf(System.currentTimeMillis()));
-        final String TITLE = StrUtils.concat("#[AL_AROUND][", System.nanoTime(), "]");
+        final String title = StringUtils.join("#[AL_AROUND][", System.nanoTime(), "]");
 
         String targetName = pjp.getTarget().getClass().getName();
 
@@ -115,17 +111,17 @@ public class CapAuditLog4HandlerAdvice {
             action = (auditLogAction != null && auditLogAction.actionType() != null) ? auditLogAction.actionType().toString() : null;
             function = (auditLogAction != null && auditLogAction.functionCode() != null) ? auditLogAction.functionCode().getCode() : null;
             if (action != null && function != null) {
-                logAuditInfo = StrUtils.concat(auditLogAction.actionType().name(), CapConstants.SPACE, auditLogAction.functionCode().name(), CapConstants.SPACE,
+                logAuditInfo = StringUtils.join(auditLogAction.actionType().name(), CapConstants.SPACE, auditLogAction.functionCode().name(), CapConstants.SPACE,
                         auditLogAction.functionCode().getUrlPath());
             }
         }
         if (logger.isTraceEnabled()) {
-            logger.trace("{} ENTRY: {} Start Time: {} Audit Information: {}", new Object[] { TITLE, targetName, new Date(start), logAuditInfo });
+            logger.trace("{} ENTRY: {} Start Time: {} Audit Information: {}", new Object[] { title, targetName, new Date(start), logAuditInfo });
         }
 
         Object obj = pjp.proceed();
 
-        logger.info("{} TOTAL_COST= {} ms", TITLE, (System.currentTimeMillis() - start));
+        logger.info("{} TOTAL_COST= {} ms", title, (System.currentTimeMillis() - start));
 
         return obj;
     }
@@ -145,16 +141,16 @@ public class CapAuditLog4HandlerAdvice {
     public void logAfterAjaxHandlerExecute(JoinPoint joinPoint, Request params, Object reVal) {
         long t1 = System.currentTimeMillis();
         final String sno = String.valueOf(System.nanoTime());
-        final String TITLE = StrUtils.concat("##[AL_AFTER][", sno, "]");
+        final String title = StringUtils.join("##[AL_AFTER][", sno, "]");
         String targetName = joinPoint.getTarget().getClass().getName();
         if (logger.isTraceEnabled()) {
-            logger.trace("{} ENTRY: targetName:{} JoinPoint:{}\n IRequest:{}\n Object:{} ", new Object[] { TITLE, targetName, joinPoint, params, reVal });
+            logger.trace("{} ENTRY: targetName:{} JoinPoint:{}\n IRequest:{}\n Object:{} ", new Object[] { title, targetName, joinPoint, params, reVal });
         }
 
         try {
 
-            Class clazz = joinPoint.getTarget().getClass();
-            AuditLog auditLog = loggedFunction(TITLE, targetName, clazz, params);
+            Class<?> clazz = joinPoint.getTarget().getClass();
+            AuditLog auditLog = loggedFunction(title, targetName, clazz, params);
             if (auditLog != null) {
                 // 暫時不知道要放什麼值
                 auditLog.setRemark(CapConstants.EMPTY_STRING);
@@ -162,9 +158,9 @@ public class CapAuditLog4HandlerAdvice {
             }
 
         } catch (Exception ex) {
-            logger.error(StrUtils.concat(TITLE, "DO_LOG_EXCEPTION_OCCURED!!"), ex);
+            logger.error(StringUtils.join(title, "DO_LOG_EXCEPTION_OCCURED!!"), ex);
         } finally {
-            logger.info("{} TOTAL_COST= {} ms", TITLE, (System.currentTimeMillis() - t1));
+            logger.info("{} TOTAL_COST= {} ms", title, (System.currentTimeMillis() - t1));
         }
     }
 
@@ -182,31 +178,31 @@ public class CapAuditLog4HandlerAdvice {
      */
     public void logAfterAjaxHandlerThrowingException(JoinPoint joinPoint, Request params, Exception exception) {
         long t1 = System.currentTimeMillis();
-        final String TITLE = StrUtils.concat("###[AL_AFTER_EXCEPTION][", System.nanoTime(), "]");
+        final String title = StringUtils.join("###[AL_AFTER_EXCEPTION][", System.nanoTime(), "]");
 
         String targetName = joinPoint.getTarget().getClass().getName();
 
         if (logger.isTraceEnabled()) {
-            logger.trace("{} ENTRY: targetName:{} JoinPoint:{}\n IRequest:{}\n Exception:{} ", new Object[] { TITLE, targetName, joinPoint, params, exception });
+            logger.trace("{} ENTRY: targetName:{} JoinPoint:{}\n IRequest:{}\n Exception:{} ", new Object[] { title, targetName, joinPoint, params, exception });
         }
 
         try {
 
-            Class clazz = joinPoint.getTarget().getClass();
-            AuditLog auditLog = loggedFunction(TITLE, targetName, clazz, params);
+            Class<?> clazz = joinPoint.getTarget().getClass();
+            AuditLog auditLog = loggedFunction(title, targetName, clazz, params);
             if (auditLog != null) {
                 auditLog.setRemark(trimByLen(CapString.trimNull(new StringBuffer().append("Exception: ").append(exception.getMessage()).toString()), 50));
                 commonSrv.save(auditLog);
             }
 
         } catch (Exception ex) {
-            logger.error(StrUtils.concat(TITLE, "DO_LOG_EXCEPTION_OCCURED!!"), ex);
+            logger.error(StringUtils.join(title, "DO_LOG_EXCEPTION_OCCURED!!"), ex);
         } finally {
-            logger.info("{} TOTAL_COST= {} ms", TITLE, (System.currentTimeMillis() - t1));
+            logger.info("{} TOTAL_COST= {} ms", title, (System.currentTimeMillis() - t1));
         }
     }
 
-    private AuditLog loggedFunction(String TITLE, String targetName, Class clazz, Request params) {
+    private AuditLog loggedFunction(String TITLE, String targetName, Class<?> clazz, Request params) {
 
         // 判斷是否不需要記錄(放 SysParm)
         String sysparmDisableData = sysProp.get(targetName + "." + DISABLE_TYPE);
@@ -288,10 +284,6 @@ public class CapAuditLog4HandlerAdvice {
         this.sysId = CapString.trimNull(sysId).toUpperCase();
     }
 
-    private String getSno(String userId, String rno) {
-        return StrUtils.concat(System.nanoTime(), "-", userId, "-", HOST_ID, "-", rno + RandomStringUtils.randomNumeric(2));
-    }
-
     private String trimByLen(String src, int maxLen) {
         if (src != null) {
             byte[] bsrc = src.getBytes();
@@ -324,19 +316,5 @@ public class CapAuditLog4HandlerAdvice {
                 return super.equals(other);
             }
         }
-    }
-}
-
-class StrUtils {
-    public final static String concat(Object... params) {
-        StringBuffer strBuf = new StringBuffer();
-        for (Object o : params) {
-            if (o instanceof byte[]) {
-                strBuf.append(new String((byte[]) o));
-            } else {
-                strBuf.append(String.valueOf(o));
-            }
-        }
-        return strBuf.toString();
     }
 }

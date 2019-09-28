@@ -1,7 +1,7 @@
 /* 
  * EmailServiceImpl.java
  * 
- * Copyright (c) 2009-2013 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -71,9 +71,9 @@ public class EmailServiceImpl implements EmailService {
 
             mailSender.send(mm);
 
-            logger.debug("send mail from:{} to {} ,{}-{}", new String[] { sendFrom, Arrays.toString(sendTo), subject, sendContext });
+            logger.debug("send mail from:{} to {} ,{}-{}", new Object[] { sendFrom, Arrays.toString(sendTo), subject, sendContext });
         } catch (MessagingException e) {
-            logger.error("send mail error from:{} to {} ,{}-{}", new String[] { sendFrom, Arrays.toString(sendTo), subject, sendContext });
+            logger.error("send mail error from:{} to {} ,{}-{}", new Object[] { sendFrom, Arrays.toString(sendTo), subject, sendContext });
             logger.error(e.getMessage(), e);
         }
 

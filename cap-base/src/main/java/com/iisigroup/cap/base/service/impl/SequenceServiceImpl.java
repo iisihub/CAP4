@@ -1,7 +1,7 @@
 /* 
  * SequenceServiceImpl.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -74,7 +74,7 @@ public class SequenceServiceImpl implements SequenceService {
     public int getNextSeqNo(String seqNode, int interval, int startSeq, int maxSeq) {
         NodeSeq nSeq = nodeSeq.get(seqNode);
         if (nSeq == null) {
-            nSeq = new NodeSeq(seqNode);
+            nSeq = new NodeSeq();
             nodeSeq.put(seqNode, nSeq);
         }
         synchronized (nSeq) {
@@ -158,13 +158,10 @@ public class SequenceServiceImpl implements SequenceService {
      * </pre>
      */
     private class NodeSeq {
-        @SuppressWarnings("unused")
-        String seqNode;
         int nextSeqNo;
         int currentSeq;
 
-        NodeSeq(String seqNode) {
-            this.seqNode = seqNode;
+        NodeSeq() {
             this.nextSeqNo = 0;
             this.currentSeq = -1;
         }
