@@ -1,7 +1,7 @@
 /* 
- * CapUserDetail.java
+ * CapUserDetails.java
  * 
- * Copyright (c) 2009-2012 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -37,9 +37,9 @@ import com.google.gson.JsonArray;
  *          <li>2013/3/6,rodeschen,add set method
  *          </ul>
  */
-@SuppressWarnings("serial")
 public class CapUserDetails implements UserDetails {
 
+    private static final long serialVersionUID = 1L;
     private String password;
     private String userId;
     private String username;
@@ -168,15 +168,5 @@ public class CapUserDetails implements UserDetails {
     public void setExtraAttrib(Map<String, Object> extraAttrib) {
         this.extraAttrib = extraAttrib;
     }
-
-    // TODO Mark by sk
-    // public Map<String, Object> put(String k, Object v) {
-    // this.extraAttrib.put(k, v);
-    // return extraAttrib;
-    // }
-    // @SuppressWarnings("unchecked")
-    // public <T> T get(String k) {
-    // return (T) this.extraAttrib.get(k);
-    // }
 
 }
