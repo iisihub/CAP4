@@ -1,3 +1,14 @@
+/* 
+ * HGService.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
+ * All Rights Reserved.
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
+ */
 package com.iisigroup.cap.hg.service;
 
 import java.util.Map;
@@ -48,7 +59,7 @@ public interface HGService {
      * 
      * @return <T>
      */
-    <T> T getProperty(Object name);
+    Object getProperty(String name);
 
     /**
      * initial connection
@@ -63,7 +74,7 @@ public interface HGService {
      *            stauts
      * @return <T>
      */
-    <T> T getStatus();
+    ConnStatus getStatus();
 
     /**
      * set hg status
@@ -112,6 +123,6 @@ public interface HGService {
      *            exception
      * @return T
      */
-    <T> T errorHandle(Exception e);
+    String errorHandle(Exception e);
 
 }

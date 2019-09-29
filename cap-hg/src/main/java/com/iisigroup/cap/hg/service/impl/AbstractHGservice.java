@@ -1,7 +1,7 @@
 /* 
- * HGservice.java
+ * AbstractHGservice.java
  * 
- * Copyright (c) 2009-2011 International Integrated System, Inc. 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
  * 
  * Licensed Materials - Property of International Integrated System, Inc.
@@ -74,10 +74,9 @@ public abstract class AbstractHGservice implements HGService {
      * 
      * @see com.iisi.cap.hg.service.IHGService#getProperties(java.lang.Object)
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public <T> T getProperty(Object name) {
-        return (T) (properties != null && properties.containsKey(name) ? properties.get(name) : null);
+    public Object getProperty(String name) {
+        return properties != null && properties.containsKey(name) ? properties.get(name) : null;
     }
 
 }
