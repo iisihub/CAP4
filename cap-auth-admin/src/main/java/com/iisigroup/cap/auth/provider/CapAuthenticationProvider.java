@@ -1,3 +1,14 @@
+/* 
+ * CapAuthenticationProvider.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
+ * All Rights Reserved.
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
+ */
 package com.iisigroup.cap.auth.provider;
 
 import java.util.Map;
@@ -14,7 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 
 import com.iisigroup.cap.auth.exception.CapAuthenticationException;
 import com.iisigroup.cap.security.captcha.filter.CaptchaCaptureFilter;
@@ -193,7 +204,7 @@ public class CapAuthenticationProvider implements AuthenticationProvider {
     }
 
     private boolean verifyPassword(String username, String presentedPassword, String encodedPassword) {
-        PasswordEncoder passwordEncoder = new StandardPasswordEncoder(username);
+        PasswordEncoder passwordEncoder = new Pbkdf2PasswordEncoder(username);
         if (passwordEncoder.matches(presentedPassword, encodedPassword)) {
             return true;
         } else {

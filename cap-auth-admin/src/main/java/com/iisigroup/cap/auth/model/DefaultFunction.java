@@ -1,3 +1,14 @@
+/* 
+ * DefaultFunction.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
+ * All Rights Reserved.
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
+ */
 package com.iisigroup.cap.auth.model;
 
 import java.sql.Timestamp;
@@ -26,7 +37,6 @@ import com.iisigroup.cap.security.model.Function;
 /**
  * 權限物件
  */
-@SuppressWarnings("serial")
 @EntityListeners({ CapOidGeneratorListener.class })
 @Entity
 @Table(name = "DEF_FUNC", uniqueConstraints = @UniqueConstraint(columnNames = { "OID" }))
@@ -35,6 +45,7 @@ import com.iisigroup.cap.security.model.Function;
 @DiscriminatorValue(value = "P")
 public class DefaultFunction extends GenericBean implements Function, DataObject {
 
+    private static final long serialVersionUID = 1L;
     /** 權限代碼 **/
     @Id
     private String oid;

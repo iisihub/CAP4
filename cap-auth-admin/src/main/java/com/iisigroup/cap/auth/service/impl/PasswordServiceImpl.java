@@ -1,3 +1,14 @@
+/* 
+ * PasswordServiceImpl.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
+ * All Rights Reserved.
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
+ */
 package com.iisigroup.cap.auth.service.impl;
 
 import java.sql.Timestamp;
@@ -11,7 +22,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.iisigroup.cap.auth.dao.PwdLogDao;
@@ -66,7 +77,7 @@ public class PasswordServiceImpl implements PasswordService {
         if (user != null) {
             List<PwdLog> list = userPwdHistoryDao.findByUserCode(user.getCode(), maxHistory);
             int i = 0;
-            PasswordEncoder passwordEncoder = new StandardPasswordEncoder(userId);
+            PasswordEncoder passwordEncoder = new Pbkdf2PasswordEncoder(userId);
             for (PwdLog h : list) {
                 // user status 不為 1 時，check change interval: 最近一次變更不得小於間隔
                 if (i == 0 && !"1".equals(user.getStatus()) && !forcePwdChange) {
@@ -106,7 +117,7 @@ public class PasswordServiceImpl implements PasswordService {
     @Override
     public boolean validatePassword(String userId, String password) {
         DefaultUser user = userDao.findByCode(userId);
-        PasswordEncoder passwordEncoder = new StandardPasswordEncoder(userId);
+        PasswordEncoder passwordEncoder = new Pbkdf2PasswordEncoder(userId);
         return passwordEncoder.matches(password, user.getPassword());
     }
 
@@ -142,7 +153,7 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     private String encodePassword(String userId, String password) {
-        StandardPasswordEncoder spe = new StandardPasswordEncoder(userId);
+        PasswordEncoder spe = new Pbkdf2PasswordEncoder(userId);
         return spe.encode(password);
     }
 

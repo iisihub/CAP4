@@ -1,14 +1,13 @@
-/*
+/* 
  * CapPermissionVoter.java
- *
- * Copyright (c) 2009-2011 International Integrated System, Inc.
- * 11F, No.133, Sec.4, Minsheng E. Rd., Taipei, 10574, Taiwan, R.O.C.
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
- *
- * Licensed Materials - Property of International Integrated System,Inc.
- *
- * This software is confidential and proprietary information of
- * International Integrated System, Inc. ("Confidential Information").
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
 package com.iisigroup.cap.auth.vote;
 
@@ -40,15 +39,14 @@ public class CapPermissionVoter extends RoleVoter {
 
     protected AccessControlService securityService;
 
-    @SuppressWarnings("rawtypes")
     @Override
     public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
         int result = ACCESS_ABSTAIN;
-        Iterator iter = attributes.iterator();
+        Iterator<ConfigAttribute> iter = attributes.iterator();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
         while (iter.hasNext()) {
-            ConfigAttribute attribute = (ConfigAttribute) iter.next();
+            ConfigAttribute attribute = iter.next();
 
             if (this.supports(attribute)) {
                 result = ACCESS_DENIED;

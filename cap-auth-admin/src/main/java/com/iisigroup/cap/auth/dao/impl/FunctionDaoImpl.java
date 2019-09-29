@@ -1,14 +1,14 @@
-/*
- * Copyright (c) 2009-2012 International Integrated System, Inc.
- * 11F, No.133, Sec.4, Minsheng E. Rd., Taipei, 10574, Taiwan, R.O.C.
+/* 
+ * FunctionDaoImpl.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
  * All Rights Reserved.
- *
+ * 
  * Licensed Materials - Property of International Integrated System, Inc.
- *
- * This software is confidential and proprietary information of
+ * 
+ * This software is confidential and proprietary information of 
  * International Integrated System, Inc. (&quot;Confidential Information&quot;).
  */
-
 package com.iisigroup.cap.auth.dao.impl;
 
 import java.sql.ResultSet;
@@ -214,7 +214,6 @@ public class FunctionDaoImpl extends GenericDaoImpl<DefaultFunction> implements 
             Set<Integer> levels = roleSteps.get(role);
             if (levels == null) {
                 levels = new HashSet<Integer>();
-                roleSteps.get(levels);
             }
             for (Integer auth : entry.getValue().keySet()) {
                 DefaultFunction code = getFuncsBySysType(sysType).get(auth);

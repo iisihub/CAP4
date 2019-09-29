@@ -1,9 +1,21 @@
+/* 
+ * CapAuthenticationException.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
+ * All Rights Reserved.
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
+ */
 package com.iisigroup.cap.auth.exception;
 
 import org.springframework.security.core.AuthenticationException;
 
-@SuppressWarnings("serial")
 public class CapAuthenticationException extends AuthenticationException {
+
+    private static final long serialVersionUID = 1L;
 
     private boolean captchaEnabled;
 

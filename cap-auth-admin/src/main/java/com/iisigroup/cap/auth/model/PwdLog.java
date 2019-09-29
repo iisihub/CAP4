@@ -1,3 +1,14 @@
+/* 
+ * PwdLog.java
+ * 
+ * Copyright (c) 2019 International Integrated System, Inc. 
+ * All Rights Reserved.
+ * 
+ * Licensed Materials - Property of International Integrated System, Inc.
+ * 
+ * This software is confidential and proprietary information of 
+ * International Integrated System, Inc. (&quot;Confidential Information&quot;).
+ */
 package com.iisigroup.cap.auth.model;
 
 import java.sql.Timestamp;
@@ -30,7 +41,6 @@ import com.iisigroup.cap.model.GenericBean;
  *          <li>2014/01/27,yunglinliu,new</li>
  *          </ul>
  */
-@SuppressWarnings("serial")
 @Entity
 @EntityListeners({ CapOidGeneratorListener.class })
 @Table(name = "DEF_PWDLOG")
@@ -39,6 +49,7 @@ import com.iisigroup.cap.model.GenericBean;
 @DiscriminatorValue(value = "P")
 public class PwdLog extends GenericBean implements DataObject {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @Column(nullable = false, length = 32)
     private String oid;
