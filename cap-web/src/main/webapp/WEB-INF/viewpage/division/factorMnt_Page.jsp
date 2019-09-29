@@ -51,7 +51,7 @@
             <input type="text" class="hide" style="display: none" id="oid" name="oid" />
             <fieldset>
                 <legend>因子資訊</legend>
-                <table class="tb2" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <table class="tb2">
                     <tbody>
                         <tr>
                             <td width="13%" class="hd1"><span class="color-red">＊</span>因子代碼</td>
@@ -89,11 +89,11 @@
                         <span class="text-only">刪除</span>
                     </button>
                 </div>
-                <div id="ftDtlGrid" class="capgrid" />
+                <div id="ftDtlGrid" class="capgrid"></div>
             </fieldset>
             <fieldset>
                 <legend>異動記錄</legend>
-                <table class="tb2" border="0" cellpadding="0" cellspacing="0" width="100%">
+                <table class="tb2">
                     <tbody>
                         <tr>
                             <td class="hd1" width="20%">文件建立人員</td>
@@ -111,7 +111,7 @@
                 <input type="hidden" id="mod_colId" name="mod_colId" />
                 <fieldset>
                     <legend>值域資訊</legend>
-                    <table class="tb2" border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <table class="tb2">
                         <tbody>
                             <tr class="ftType1">
                                 <td class="hd1" width="20%">值域一</td>

@@ -40,7 +40,7 @@
         <!--Start : 查詢-->
         <div id="SEARCH" style="display: none">
             <form id="searchForm">
-                <table class="tb2" width="99%" border="0" cellspacing="0" cellpadding="0" id="searchTable">
+                <table class="tb2" id="searchTable">
                     <tbody>
                         <tr>
                             <td width="40%" class="hd1"><spring:message code="sysType1"></spring:message></td>

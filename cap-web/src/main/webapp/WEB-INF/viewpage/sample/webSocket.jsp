@@ -30,13 +30,7 @@
   float: left;
   margin-top: 15px;
 }
-</style>
-</head>
-<body>
-    <script>
-          loadScript('js/sample/websocket');
-        </script>
-    <style>
+
 body {
   padding: 20px;
 }
@@ -62,8 +56,10 @@ body {
   color: #888
 }
 </style>
+</head>
+<body>
     <script>
-          
+          loadScript('js/sample/websocket');
         </script>
     <h1>Netty-socketio Demo Chat</h1>
     <br />

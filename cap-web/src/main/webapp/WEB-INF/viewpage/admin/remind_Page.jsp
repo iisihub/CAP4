@@ -32,7 +32,7 @@
                         <!--提醒通知登錄-->
                     </spring:message>
                 </legend>
-                <table class="tb2" width="99%" border="0" cellspacing="0" cellpadding="0">
+                <table class="tb2">
                     <tbody>
                         <tr>
                             <td width="8%" class="hd2 rt"><spring:message code="scopeTyp"></spring:message></td>
@@ -71,15 +71,15 @@
     <!--Start : 新增通知方式-->
     <div id="DETAIL" style="display: none">
         <form id="dForm">
-            <table class="tb2" width="99%" border="0" cellspacing="0" cellpadding="0">
+            <table class="tb2">
                 <tbody>
                     <tr>
                         <td width="20%" class="hd1"><spring:message code="js.styleTyp"></spring:message></td>
                         <td width="30%"><select id="styleTyp" name="styleTyp" combokey="styleTyp" combotype="2"></select></td>
-                    <tr>
                     </tr>
-                    <td width="20%" class="hd1"><spring:message code="js.styleNum"></spring:message></td>
-                    <td width="30%"><input type="text" size="10" id="style" name="style" maxlength="5" class="number validate[required]" /></td>
+                    <tr>
+                        <td width="20%" class="hd1"><spring:message code="js.styleNum"></spring:message></td>
+                        <td width="30%"><input type="text" size="10" id="style" name="style" maxlength="5" class="number validate[required]" /></td>
                     </tr>
                     <tr>
                         <td width="20%" class="hd1"><spring:message code="js.styleUnit"></spring:message></td>

@@ -51,7 +51,7 @@
             <input type="text" class="hide" style="display: none" id="oid" name="oid" />
             <fieldset>
                 <legend>條件設定</legend>
-                <table class="tb2" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <table class="tb2">
                     <tbody>
                         <tr>
                             <td width="13%" class="hd1"><span class="color-red">＊</span>條件代碼</td>
@@ -73,7 +73,7 @@
                 <button id="add_btn" type="button">
                     <span class="text-only">新增</span>
                 </button>
-                <table class="tb2" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <table class="tb2">
                     <tbody>
                         <tr>
                             <td width="13%" class="hd1"><span class="color-red">＊</span>因子項目</td>
@@ -101,7 +101,7 @@
 					<span class="text-only"></span>案件分派設定
 				</button> -->
                 </div>
-                <table class="tb2" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <table class="tb2">
                     <tr>
                         <td width="60%">
                             <div id="cndtDtlGrid" class="capgrid"></div>
@@ -120,7 +120,7 @@
         </form>
         <fieldset>
             <legend>異動記錄</legend>
-            <table class="tb2" border="0" cellpadding="0" cellspacing="0" width="100%">
+            <table class="tb2">
                 <tbody>
                     <tr>
                         <td class="hd1" width="20%">文件建立人員</td>
@@ -137,7 +137,7 @@
             <form id="facform" onsubmit="return false;">
                 <fieldset>
                     <legend>值域資訊</legend>
-                    <table class="tb2" border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <table class="tb2">
                         <tbody>
                             <tr>
                                 <td class="hd1" width="20%"><span class="color-red">＊</span>值域一</td>
@@ -218,6 +218,5 @@
         <!-- dialog end-->
     </div>
     <!-- **********************************************內容 end *******************************************-->
-    </div>
 </body>
 </html>

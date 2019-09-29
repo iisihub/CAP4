@@ -35,7 +35,7 @@
         <!--Start : 編輯-->
         <div id="EDIT" style="display: none">
             <form id="JForm">
-                <table class="tb2" width="99%" border="0" cellspacing="0" cellpadding="0">
+                <table class="tb2">
                     <tbody>
                         <tr>
                             <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="js.depcode"></spring:message></td>

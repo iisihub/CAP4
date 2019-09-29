@@ -30,7 +30,7 @@
                 <legend>
                     <spring:message code="role"></spring:message>
                 </legend>
-                <table class="tb2" width="99%" border="0" cellspacing="0" cellpadding="0">
+                <table class="tb2">
                     <tbody>
                         <tr>
                             <td width="20%" class="hd1"><span class="color-red">＊</span> <spring:message code="rolecode"></spring:message></td>
@@ -88,7 +88,7 @@
     </div>
     <div id="editUsr" style="display: none">
         <form id="mform">
-            <table class="tb2" width="99%" border="0" cellspacing="0" cellpadding="0">
+            <table class="tb2">
                 <tr>
                     <td width="40%" class="hd1"><spring:message code="js.depname"></spring:message></td>
                     <td><select id="department" name="department" combotype="2"></select>
@@ -104,7 +104,7 @@
     </div>
     <div id="editFunc" style="display: none">
         <form id="mform">
-            <table class="tb2" width="99%" border="0" cellspacing="0" cellpadding="0">
+            <table class="tb2">
                 <tr>
                     <td width="20%" class="hd1"><spring:message code="js.topitem"></spring:message></td>
                     <td><select id="parent" name="parent" combotype="2"></select>

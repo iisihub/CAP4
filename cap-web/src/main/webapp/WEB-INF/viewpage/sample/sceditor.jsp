@@ -19,56 +19,7 @@
     </div>
     <hr>
     <div>
-        <textarea id="tt" name="tt" style="height: 280px; width: 730px;">
-<div id='gridview'>&nbsp;</div>
- <script>
-    var grid = $('#gridview').jqGrid({
-      url : 'webroot/codetypehandler/query',
-      sortname : 'codeType',
-      sortorder : 'desc',
-      height : 250,
-      colModel : [ {
-        name : 'oid',
-        hidden : true
-      }, {
-        header : 'A',
-        name : 'codeType',
-        width : 110,
-        align : 'center'
-      }, {
-        header : 'B',
-        name : 'codeValue',
-        width : 80,
-        align : 'center'
-      }, {
-        header : 'C',
-        name : 'codeDesc',
-        width : 80,
-        align : 'center'
-      }, {
-        header : 'D',
-        name : 'codeOrder',
-        width : 80,
-        align : 'center'
-      }, {
-        header : 'E',
-        name : 'updater',
-        width : 80,
-        align : 'center'
-      }, {
-        header : 'F',
-        name : 'updateTime',
-        width : 80,
-        align : 'center'
-      } ],
-      onSelectRow : function() {
-        var ret = grid.getSelRowDatas();
-        if (ret)
-          mform.injectData(ret);
-      }
-    });
-  </script>
-			</textarea>
+        <textarea id="tt" name="tt" style="height: 280px; width: 730px;"></textarea>
         <p>If you are using IE9+ or any other browser then it should automatically replace :) and other emoticon codes with theit emoticon images.</p>
     </div>
     <p>

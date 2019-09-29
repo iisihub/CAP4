@@ -54,7 +54,7 @@
             <input type="text" class="hide" style="display: none" id="oid" name="oid" />
             <fieldset>
                 <legend>條件設定</legend>
-                <table class="tb2" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <table class="tb2">
                     <tbody>
                         <tr>
                             <td width="13%" class="hd1"><span class="color-red">＊</span>規則表代碼</td>
@@ -78,7 +78,7 @@
                         <span class="text-only">新增</span>
                     </button>
                 </div>
-                <div id="conditionGrid" class="capgrid" />
+                <div id="conditionGrid" class="capgrid"></div>
             </fieldset>
             <fieldset id="ruleMap" name="ruleMap">
                 <legend>規則組合</legend>
@@ -93,9 +93,9 @@
 				-->
                 </div>
                 <div id="" style="width: 100%;">
-                    <table width="100%">
+                    <table>
                         <tr>
-                            <td width="60%"><div id="ruleMapGrid" class="capgrid" /></td>
+                            <td width="60%"><div id="ruleMapGrid" class="capgrid"></div></td>
                             <td width="40%">
                                 <button type="button" id="up_btn">
                                     <span class="text-only">提高優先序</span>
@@ -110,7 +110,7 @@
             </fieldset>
             <fieldset>
                 <legend>異動記錄</legend>
-                <table class="tb2" border="0" cellpadding="0" cellspacing="0" width="100%">
+                <table class="tb2">
                     <tbody>
                         <tr>
                             <td class="hd1" width="20%">文件建立人員</td>
@@ -129,7 +129,7 @@
         <form id="facform" onsubmit="return false;">
             <fieldset>
                 <legend>值域資訊</legend>
-                <table class="tb2" border="0" cellpadding="0" cellspacing="0" width="100%">
+                <table class="tb2">
                     <tbody>
                         <tr>
                             <td class="hd1" width="20%"><span class="color-red">＊</span>值域一</td>
@@ -149,7 +149,6 @@
         </form>
     </div>
     <!--Start : 啟動停用-->
-    </div>
     <!-- **********************************************內容 end *******************************************-->
 </body>
 </html>
