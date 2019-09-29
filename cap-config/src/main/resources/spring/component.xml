@@ -50,6 +50,7 @@
             </list>
         </property>
     </bean>
+    <!-- 
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPaths">
             <list>
@@ -63,4 +64,5 @@
             </props>
         </property>
     </bean>
+     -->
 </beans>
