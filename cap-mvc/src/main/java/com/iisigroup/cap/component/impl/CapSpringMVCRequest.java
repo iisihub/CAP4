@@ -39,8 +39,9 @@ import com.iisigroup.cap.utils.CapString;
  *          <li>2011/11/23,rodeschen,new
  *          </ul>
  */
-@SuppressWarnings("serial")
 public class CapSpringMVCRequest extends HashMap<String, Object> implements Request {
+
+    private static final long serialVersionUID = 1L;
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
