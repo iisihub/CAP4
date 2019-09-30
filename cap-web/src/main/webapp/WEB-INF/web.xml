@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
-         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-    version="3.1">
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+    <absolute-ordering />
     <!-- 日誌配置文件 -->
     <context-param>
         <description>log4j配置文件路徑</description>
@@ -24,12 +25,12 @@
         <!-- 採用utf-8 編碼 -->
         <param-value>UTF-8</param-value>
     </context-param>
-    <!-- 
-    <listener>
+    <!--
+        <listener>
         <description>log4j</description>
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-    </listener>
-     -->
+        </listener>
+    -->
     <listener>
         <description>spring</description>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
