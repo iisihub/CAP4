@@ -88,8 +88,12 @@
         <filter-class>org.tuckey.web.filters.urlrewrite.gzip.GzipFilter</filter-class>
     </filter>
     <filter>
+        <description><![CDATA[
+			Decorates the output view given the configuration found in WEB-INF/sitemesh.xml
+			see http://www.opensymphony.com/sitemesh/ for more details
+		]]></description>
         <filter-name>sitemeshFilter</filter-name>
-        <filter-class>org.sitemesh.config.ConfigurableSiteMeshFilter</filter-class>
+        <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
     </filter>
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>

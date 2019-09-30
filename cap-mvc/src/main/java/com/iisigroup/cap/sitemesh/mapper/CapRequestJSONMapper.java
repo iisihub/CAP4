@@ -11,10 +11,29 @@
  */
 package com.iisigroup.cap.sitemesh.mapper;
 
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.web.util.UrlUtils;
+
+import com.iisigroup.cap.component.Request;
+import com.iisigroup.cap.component.impl.CapSpringMVCRequest;
+import com.iisigroup.cap.utils.CapAppContext;
+import com.iisigroup.cap.utils.CapString;
+import com.iisigroup.cap.utils.GsonUtil;
+import com.opensymphony.module.sitemesh.Config;
+import com.opensymphony.module.sitemesh.Decorator;
+import com.opensymphony.module.sitemesh.DecoratorMapper;
+import com.opensymphony.module.sitemesh.Page;
+import com.opensymphony.module.sitemesh.mapper.AbstractDecoratorMapper;
 
 /**
  * <pre>
@@ -28,10 +47,54 @@ import org.slf4j.LoggerFactory;
  *          <li>2013/4/15,iristu,new
  *          </ul>
  */
-public class CapRequestJSONMapper {
+public class CapRequestJSONMapper extends AbstractDecoratorMapper {
+
     protected final Logger logger = LoggerFactory.getLogger(getClass());
-    public final static String PROP_KEY = "reqJSON";
-    public String ignorePathReg;
-    public Set<String> ignoreParams;
-    public Set<String> decoratorFile;
+    private final static String PROP_KEY = "reqJSON";
+    private String ignorePathReg;
+    private Set<String> ignoreParams;
+    private Set<String> decoratorFile;
+
+    public void init(Config config, Properties properties, DecoratorMapper parent) throws InstantiationException {
+        super.init(config, properties, parent);
+        ignorePathReg = properties.getProperty("ignorePathReg");
+        String decorator = properties.getProperty("decoratorFile");
+        if (!CapString.isEmpty(decorator)) {
+            decoratorFile = new HashSet<String>();
+            decoratorFile.addAll(Arrays.asList(decorator.split(",")));
+        }
+        String params = properties.getProperty("ignoreParams");
+        if (!CapString.isEmpty(params)) {
+            ignoreParams = new HashSet<String>();
+            ignoreParams.addAll(Arrays.asList(params.split(",")));
+        }
+    }
+
+    @Override
+    public Decorator getDecorator(HttpServletRequest request, Page page) {
+        if ((decoratorFile == null || decoratorFile.contains(page.getProperties().get("meta.decorator")))
+                && (ignorePathReg == null || !CapString.checkRegularMatch(UrlUtils.buildRequestUrl(request), ignorePathReg))) {
+            Request req = getDefaultRequest();
+            req.setRequestObject(request);
+            Enumeration<String> fids = request.getParameterNames();
+            HashMap<String, String> hm = new HashMap<String, String>();
+            while (fids.hasMoreElements()) {
+                String field = (String) fids.nextElement();
+                if (!ignoreParams.contains(field)) {
+                    String value = req.get(field);
+                    hm.put(field, value);
+                }
+            }
+            StringBuffer str = new StringBuffer("<script type=\"text/javascript\">var reqJSON=");
+            str.append(GsonUtil.objToJson(hm)).append(";</script>");
+            page.addProperty(PROP_KEY, str.toString());
+        }
+        return super.getDecorator(request, page);
+    }
+
+    private Request getDefaultRequest() {
+        Request cr = CapAppContext.getBean("CapDefaultRequest");
+        return cr != null ? cr : new CapSpringMVCRequest();
+    }
+
 }
