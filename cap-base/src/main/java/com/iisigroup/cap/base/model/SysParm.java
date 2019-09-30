@@ -15,13 +15,11 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.iisigroup.cap.db.model.DataObject;
-import com.iisigroup.cap.db.model.listener.CapOidGeneratorListener;
 import com.iisigroup.cap.model.GenericBean;
 
 /**
@@ -36,7 +34,6 @@ import com.iisigroup.cap.model.GenericBean;
  *          </ul>
  */
 @Entity
-@EntityListeners({ CapOidGeneratorListener.class })
 @Table(name = "CFG_SYSPARM", uniqueConstraints = @UniqueConstraint(columnNames = "parmId"))
 public class SysParm extends GenericBean implements DataObject {
 
