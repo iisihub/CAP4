@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+    <Properties>
+        <Property name="basePath">./logs</Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="fileLogger" fileName="${basePath}/cap-log.log" filePattern="${basePath}/$${date:yyyy-MM}/cap-log-%d{yyyy-MM-dd}-%i.log.zip">
+            <PatternLayout pattern="%d [%t] [%X{sessionId}] | %X{login} | %X{reqURI} | %-28.28c{1} [%-5p] %m%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy compressionLevel="9" />
+        </RollingFile>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d [%t] [%X{sessionId}] | %X{login} | %X{reqURI} | %-28.28c{1} [%-5p] %m%n" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="fileLogger" />
+        </Root>
+        <Logger name="org" level="error" />
+        <Logger name="net" level="error" />
+        <Logger name="com.iisigroup.cap.web.CapHandlerServlet" level="trace" />
+        <Logger name="com.iisigroup.cap.utils.CapBeanUtil" level="trace" />
+        <Logger name="com.iisigroup.cap.jdbc.CapNamedJdbcTemplate" level="trace" />
+        <!-- transaction -->
+        <Logger name="org.springframework.transaction" level="warn" />
+        <Logger name="org.springframework.orm.hibernate5" level="warn" />
+        <!-- hibernate & cache -->
+        <Logger name="org.hibernate" level="error" />
+        <Logger name="net.sf.ehcache" level="error" />
+        <Logger name="org.hibernate.SQL" level="debug" />
+        <Logger name="org.hibernate.type" level="warn" />
+        <!-- others -->
+        <Logger name="org.springframework.security" level="warn" />
+        <Logger name="org.apache.commons" level="warn" />
+        <Logger name="org.springframework" level="warn" />
+        <Logger name="com.mchange.v2" level="warn" />
+    </Loggers>
+</Configuration>
