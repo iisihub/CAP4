@@ -24,6 +24,7 @@
             <scope>provided</scope>
         </dependency>
         <!-- optional
+        -->
         <dependency>
             <groupId>com.iisigroup.cap</groupId>
             <artifactId>cap-batch</artifactId>
@@ -34,7 +35,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        -->
         <dependency>
             <groupId>com.iisigroup.cap</groupId>
             <artifactId>cap-auth-admin</artifactId>

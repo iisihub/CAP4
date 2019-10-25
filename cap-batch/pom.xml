@@ -7,9 +7,9 @@
     </parent>
     <artifactId>cap-batch</artifactId>
     <properties>
-        <spring.batch.version>4.0.0.RELEASE</spring.batch.version>
-        <spring.integration.version>5.0.0.RELEASE</spring.integration.version>
-        <quartz-scheduler.version>2.3.0</quartz-scheduler.version>
+        <spring.batch.version>4.2.0.RELEASE</spring.batch.version>
+        <spring.integration.version>5.2.0.RELEASE</spring.integration.version>
+        <quartz-scheduler.version>2.3.2</quartz-scheduler.version>
     </properties>
     <dependencies>
         <dependency>

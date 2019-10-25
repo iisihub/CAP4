@@ -11,3 +11,4 @@ h2db/capdb.lock.db
 /h2db
 .pmd
 .*
+*.versionsBackup

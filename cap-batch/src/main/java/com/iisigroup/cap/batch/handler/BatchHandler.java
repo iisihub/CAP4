@@ -116,7 +116,6 @@ public class BatchHandler extends MFormHandler {
 
             private Collection<String> jobs = jobRegistry.getJobNames();
 
-            @SuppressWarnings("unchecked")
             @Override
             public String reformat(Object in) {
                 BatchJob job = (BatchJob) in;

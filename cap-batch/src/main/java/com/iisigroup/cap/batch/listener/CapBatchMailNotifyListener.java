@@ -24,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.admin.web.JobParametersExtractor;
 import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.support.PropertiesConverter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
@@ -37,6 +39,7 @@ import com.iisigroup.cap.formatter.impl.DurationFormatter;
 import com.iisigroup.cap.utils.CapString;
 import com.iisigroup.cap.utils.CapSystemConfig;
 
+import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 /**
@@ -94,7 +97,8 @@ public class CapBatchMailNotifyListener implements JobListener, InitializingBean
         Map<String, Object> result = getExecutionResult(job);
         try {
             fmConfg.setTemplateLoaderPath(config.getProperty("batch.freemarkDir"));
-            Template t = fmConfg.getConfiguration().getTemplate(messageTemplate);
+            Configuration c = fmConfg.getConfiguration();
+            Template t = c.getTemplate(messageTemplate);
             return FreeMarkerTemplateUtils.processTemplateIntoString(t, result);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -136,7 +140,7 @@ public class CapBatchMailNotifyListener implements JobListener, InitializingBean
      */
     @Override
     public void jobToBeExecuted(JobExecutionContext context) {
-        logger.debug("Job : {} is going to start...", new String[] { context.getJobDetail().getKey().getName() });
+        logger.debug("Job : {} is going to start...", new Object[] { context.getJobDetail().getKey().getName() });
     }
 
     /*
@@ -146,7 +150,7 @@ public class CapBatchMailNotifyListener implements JobListener, InitializingBean
      */
     @Override
     public void jobExecutionVetoed(JobExecutionContext context) {
-        logger.debug("Job : {} execution vetoed", new String[] { context.getJobDetail().getKey().getName() });
+        logger.debug("Job : {} execution vetoed", new Object[] { context.getJobDetail().getKey().getName() });
     }
 
     @Override

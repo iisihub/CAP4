@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.iisigroup.cap</groupId>
     <artifactId>cap</artifactId>
@@ -6,8 +7,8 @@
     <packaging>pom</packaging>
     <properties>
         <slf4j.version>1.7.28</slf4j.version>
-        <spring.version>5.1.10.RELEASE</spring.version>
-        <spring-security.version>5.1.6.RELEASE</spring-security.version>
+        <spring.version>5.2.0.RELEASE</spring.version>
+        <spring-security.version>5.2.0.RELEASE</spring-security.version>
         <localRepositoryPath>src/localRepos</localRepositoryPath>
         <hibernate.version>5.4.5.Final</hibernate.version>
         <hibernate.validator.version>6.0.17.Final</hibernate.validator.version>
@@ -97,7 +98,7 @@
             <dependency>
                 <groupId>org.freemarker</groupId>
                 <artifactId>freemarker</artifactId>
-                <version>2.3.27-incubating</version>
+                <version>2.3.29</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
